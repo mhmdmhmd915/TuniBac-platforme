@@ -1,0 +1,357 @@
+generator client {
+  provider   = "prisma-client-js"
+  output     = "../generated/prisma"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum UserStatus {
+  PENDING
+  APPROVED
+  SUSPENDED
+  REJECTED
+}
+
+enum BacSection {
+  MATHEMATIQUES
+  SCIENCES_EXPERIMENTALES
+  TECHNIQUE
+  LETTRES
+  ECONOMIE_GESTION
+  INFORMATIQUE
+  SPORT
+}
+
+enum CommunicationType {
+  GENERAL_INFORMATION
+  EXAM_ANNOUNCEMENT
+  HOMEWORK
+  COURSE_REMINDER
+  ONLINE_COURSE
+  MEETING
+  COMPETITION
+  NEW_COURSE
+  PLATFORM_UPDATE
+  URGENT
+  HOLIDAY
+  MAINTENANCE
+  OTHER
+}
+
+enum CommunicationPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum CommunicationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum CommunicationAudience {
+  ALL_STUDENTS
+}
+
+model User {
+  id                    String          @id @default(uuid())
+  email                 String          @unique
+  password              String
+  firstName             String
+  lastName              String
+  phone                 String?
+  bacSection            BacSection      @default(SCIENCES_EXPERIMENTALES)
+  role                  Role            @default(STUDENT)
+  status                UserStatus      @default(PENDING)
+  tokenVersion          Int             @default(0)
+  approvalDate          DateTime?
+  lastLogin             DateTime?
+  isVerified            Boolean         @default(false)
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  progress              ProgressTracking[]
+  homeworks             HomeworkSubmission[]
+  enrollments           Enrollment[]
+  studyTasks            StudyTask[]
+  communicationsCreated Communication[] @relation("UserToCommunicationsCreated")
+
+  @@index([approvalDate])
+  @@index([role, status, createdAt])
+  @@index([bacSection, status, createdAt])
+}
+
+model Subject {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  bacSection  BacSection  @default(SCIENCES_EXPERIMENTALES)
+  color       String      @default("#3b82f6")
+  icon        String      @default("book")
+  order       Int         @default(0)
+  isActive    Boolean     @default(true)
+  courses     Course[]
+  exercises   Exercise[]
+  studyTasks  StudyTask[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([createdAt])
+  @@unique([name, bacSection])
+  @@index([bacSection, isActive, order])
+}
+
+model Course {
+  id          String             @id @default(uuid())
+  title       String
+  description String?
+  contentUrl  String?
+  videoUrl    String?
+  videoPath   String?
+  difficulty  Difficulty         @default(BEGINNER)
+  tags        String[]
+  subjectId   String
+  subject     Subject            @relation(fields: [subjectId], references: [id])
+  lessons     Lesson[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  progress    ProgressTracking[]
+  enrollments Enrollment[]
+  resources   CourseResource[]
+
+  @@index([subjectId, createdAt])
+}
+
+model Lesson {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  contentUrl  String?
+  videoUrl    String?
+  orderIndex  Int
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([courseId, orderIndex])
+}
+
+model Exercise {
+  id          String       @id @default(uuid())
+  title       String
+  description String?
+  contentUrl  String?
+  difficulty  Difficulty   @default(BEGINNER)
+  subjectId   String
+  subject     Subject      @relation(fields: [subjectId], references: [id])
+  corrections Correction[]
+  resources   ExerciseResource[]
+  progress    ProgressTracking[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([subjectId, createdAt])
+}
+
+model Correction {
+  id         String   @id @default(uuid())
+  title      String
+  contentUrl String
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([exerciseId, createdAt])
+}
+
+model ProgressTracking {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  courseId    String?
+  course      Course?   @relation(fields: [courseId], references: [id])
+  exerciseId  String?
+  exercise    Exercise? @relation(fields: [exerciseId], references: [id])
+  completed   Boolean   @default(false)
+  lastReadPos Int       @default(0)
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, courseId, exerciseId])
+  @@index([userId, updatedAt])
+}
+
+model Enrollment {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  courseId   String
+  course     Course   @relation(fields: [courseId], references: [id])
+  enrolledAt DateTime @default(now())
+  status     String   @default("ACTIVE")
+
+  @@unique([userId, courseId])
+  @@index([courseId, enrolledAt])
+}
+
+model HomeworkSubmission {
+  id            String     @id @default(uuid())
+  userId        String
+  user          User       @relation(fields: [userId], references: [id])
+  bacSection    BacSection @default(SCIENCES_EXPERIMENTALES)
+  fileUrl       String
+  fileType      String
+  submittedAt   DateTime   @default(now())
+  status        String     @default("SUBMITTED")
+  feedback      String?
+  grade         String?
+  correctionUrl String?
+
+  @@index([userId, bacSection, submittedAt])
+  @@index([userId, submittedAt])
+  @@index([bacSection, submittedAt])
+}
+
+model CourseResource {
+  id        String   @id @default(cuid())
+  title     String
+  url       String
+  type      String
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([courseId, createdAt])
+}
+
+model ExerciseResource {
+  id         String   @id @default(cuid())
+  title      String
+  url        String
+  type       String
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+  createdAt  DateTime @default(now())
+
+  @@index([exerciseId, createdAt])
+}
+
+model StudyTask {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  subjectId   String
+  subject     Subject  @relation(fields: [subjectId], references: [id])
+  date        DateTime
+  startTime   String?
+  endTime     String?
+  priority    String?
+  completed   Boolean  @default(false)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId, date])
+  @@index([subjectId, date])
+}
+
+model Parascolaire {
+  id            String     @id @default(uuid())
+  title         String
+  description   String?
+  bacSection    BacSection @default(SCIENCES_EXPERIMENTALES)
+  coverImage    String?
+  category      String
+  isFree        Boolean    @default(false)
+  hasPdf        Boolean    @default(false)
+  pdfUrl        String?
+  pdfPrice      Float?
+  hasPaperBook  Boolean    @default(false)
+  paperPrice    Float?
+  paperOrderUrl String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([bacSection, createdAt])
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
+}
+
+model AppSetting {
+  key       String   @id
+  value     String
+  updatedBy String?
+  updatedAt DateTime @updatedAt
+}
+
+model Communication {
+  id           String                @id @default(uuid())
+  type         CommunicationType     @default(GENERAL_INFORMATION)
+  priority     CommunicationPriority @default(MEDIUM)
+  priorityRank Int                   @default(1)
+  status       CommunicationStatus   @default(DRAFT)
+  isVisible    Boolean               @default(true)
+  audience     CommunicationAudience @default(ALL_STUDENTS)
+  bacSection   BacSection            @default(SCIENCES_EXPERIMENTALES)
+  title        String
+  description  String?
+  contentHtml  String
+  externalLink String?
+  meetingLink  String?
+  buttonText   String?
+  buttonUrl    String?
+  publishAt    DateTime?
+  expireAt     DateTime?
+  createdById  String?
+  createdBy    User?                 @relation("UserToCommunicationsCreated", fields: [createdById], references: [id])
+  attachments  CommunicationAttachment[]
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+
+  @@index([status, isVisible, publishAt])
+  @@index([priorityRank])
+  @@index([type])
+  @@index([bacSection, status, isVisible, publishAt])
+}
+
+model CommunicationAttachment {
+  id              String        @id @default(uuid())
+  communicationId String
+  communication   Communication @relation(fields: [communicationId], references: [id])
+  kind            String
+  label           String?
+  filePath        String?
+  url             String?
+  mimeType        String?
+  sizeBytes       Int?
+  createdAt       DateTime      @default(now())
+
+  @@index([communicationId])
+}
