@@ -25,3 +25,6 @@ uploads
 *.sln
 *.sw?
 .env
+
+# Local video upload test assets
+tmp-video-tests/*.mp4
