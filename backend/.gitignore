@@ -28,3 +28,6 @@ uploads
 
 # Local video upload test assets
 tmp-video-tests/*.mp4
+
+# Prisma temporary binaries
+generated/prisma/*.tmp*
