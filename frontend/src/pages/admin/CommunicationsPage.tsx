@@ -189,6 +189,25 @@ const defaultForm = (): FormState => ({
   attachments: [],
 })
 
+const toFormState = (item: CommunicationItem): FormState => ({
+  id: item.id,
+  type: item.type,
+  priority: item.priority,
+  status: item.status,
+  isVisible: item.isVisible,
+  audience: item.audience,
+  title: item.title,
+  description: item.description || '',
+  contentHtml: item.contentHtml,
+  externalLink: item.externalLink || '',
+  meetingLink: item.meetingLink || '',
+  buttonText: item.buttonText || '',
+  buttonUrl: item.buttonUrl || '',
+  publishAt: toLocalDateTimeInput(item.publishAt),
+  expireAt: toLocalDateTimeInput(item.expireAt),
+  attachments: item.attachments || [],
+})
+
 const getErrorMessage = (error: unknown) => {
   if (typeof error === 'object' && error && 'response' in error) {
     const candidate = error as any
@@ -373,6 +392,17 @@ const CommunicationsPage = () => {
     return () => window.clearTimeout(timer)
   }, [message])
 
+  useEffect(() => {
+    if (!selectedItem) {
+      return
+    }
+
+    // Keep the editor aligned with the persisted API record after fetch/save.
+    if (form.id !== selectedItem.id) {
+      setForm(toFormState(selectedItem))
+    }
+  }, [selectedItem, form.id])
+
   const fetchCommunications = async () => {
     setLoading(true)
 
@@ -417,24 +447,7 @@ const CommunicationsPage = () => {
 
   const beginEdit = (item: CommunicationItem) => {
     setSelectedId(item.id)
-    setForm({
-      id: item.id,
-      type: item.type,
-      priority: item.priority,
-      status: item.status,
-      isVisible: item.isVisible,
-      audience: item.audience,
-      title: item.title,
-      description: item.description || '',
-      contentHtml: item.contentHtml,
-      externalLink: item.externalLink || '',
-      meetingLink: item.meetingLink || '',
-      buttonText: item.buttonText || '',
-      buttonUrl: item.buttonUrl || '',
-      publishAt: toLocalDateTimeInput(item.publishAt),
-      expireAt: toLocalDateTimeInput(item.expireAt),
-      attachments: item.attachments || [],
-    })
+    setForm(toFormState(item))
   }
 
   const updateForm = <K extends keyof FormState>(key: K, value: FormState[K]) => {
@@ -606,6 +619,7 @@ const CommunicationsPage = () => {
 
     try {
       let communicationId = form.id || null
+      let latestItem: CommunicationItem | null = null
       const payload =
         mode === 'publish'
           ? buildPayload('PUBLISHED', true)
@@ -620,33 +634,44 @@ const CommunicationsPage = () => {
       }
 
       if (form.id) {
-        await adminAPI.updateCommunication(form.id, payload)
+        const updateResponse = await adminAPI.updateCommunication(form.id, payload)
+        latestItem = updateResponse.data?.item || latestItem
         if (mode === 'publish') {
-          await adminAPI.publishCommunication(form.id)
+          const publishResponse = await adminAPI.publishCommunication(form.id)
+          latestItem = publishResponse.data?.item || latestItem
         }
         if (mode === 'schedule' && payload.publishAt) {
-          await adminAPI.scheduleCommunication(form.id, {
+          const scheduleResponse = await adminAPI.scheduleCommunication(form.id, {
             publishAt: payload.publishAt,
             expireAt: payload.expireAt,
           })
+          latestItem = scheduleResponse.data?.item || latestItem
         }
       } else {
         const response = await adminAPI.createCommunication(payload)
+        latestItem = response.data?.item || latestItem
         if (response.data?.item?.id) {
           communicationId = response.data.item.id
           setSelectedId(response.data.item.id)
         }
 
         if (communicationId && mode === 'publish') {
-          await adminAPI.publishCommunication(communicationId)
+          const publishResponse = await adminAPI.publishCommunication(communicationId)
+          latestItem = publishResponse.data?.item || latestItem
         }
 
         if (communicationId && mode === 'schedule' && payload.publishAt) {
-          await adminAPI.scheduleCommunication(communicationId, {
+          const scheduleResponse = await adminAPI.scheduleCommunication(communicationId, {
             publishAt: payload.publishAt,
             expireAt: payload.expireAt,
           })
+          latestItem = scheduleResponse.data?.item || latestItem
         }
+      }
+
+      if (latestItem?.id) {
+        setSelectedId(latestItem.id)
+        setForm(toFormState(latestItem))
       }
 
       setMessage({
