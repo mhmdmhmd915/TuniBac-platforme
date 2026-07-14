@@ -1,78 +1,109 @@
+const path = require('path');
 const { PrismaClient } = require('../generated/prisma');
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
+dotenv.config({ path: path.join(__dirname, '..', '.env.local'), override: true });
 
 const prisma = new PrismaClient();
+const DEFAULT_ADMIN_EMAIL = 'admin@gmail.com';
+const DEFAULT_ADMIN_PASSWORD = 'admin123';
+const BAC_SECTIONS = [
+  'MATHEMATIQUES',
+  'SCIENCES_EXPERIMENTALES',
+  'TECHNIQUE',
+  'LETTRES',
+  'ECONOMIE_GESTION',
+  'INFORMATIQUE',
+  'SPORT',
+];
 
-async function main() {
+const DEFAULT_SUBJECTS = [
+  {
+    name: 'Mathematics',
+    description: 'Algebra, Calculus, Geometry, and more',
+    color: '#3B82F6',
+    icon: 'calculator',
+    order: 0,
+  },
+  {
+    name: 'Physics',
+    description: 'Mechanics, Thermodynamics, Electromagnetism',
+    color: '#8B5CF6',
+    icon: 'atom',
+    order: 1,
+  },
+  {
+    name: 'Science',
+    description: 'Biology, Chemistry, and general science',
+    color: '#22C55E',
+    icon: 'flask-conical',
+    order: 2,
+  },
+  {
+    name: 'French',
+    description: 'Language, Literature, and Grammar',
+    color: '#EF4444',
+    icon: 'book',
+    order: 3,
+  },
+  {
+    name: 'Arabic',
+    description: 'Language, Literature, and Grammar',
+    color: '#F97316',
+    icon: 'book-open',
+    order: 4,
+  },
+  {
+    name: 'English',
+    description: 'Language, Literature, and Grammar',
+    color: '#14B8A6',
+    icon: 'globe',
+    order: 5,
+  },
+  {
+    name: 'Philosophy',
+    description: 'Logic, Ethics, and Critical Thinking',
+    color: '#A855F7',
+    icon: 'brain',
+    order: 6,
+  },
+];
+
+async function seedSubjects() {
   console.log('Seeding default subjects...');
 
-  const defaultSubjects = [
-    {
-      name: 'Mathematics',
-      description: 'Algebra, Calculus, Geometry, and more',
-      color: '#3B82F6',
-      icon: 'calculator',
-      order: 0,
-    },
-    {
-      name: 'Physics',
-      description: 'Mechanics, Thermodynamics, Electromagnetism',
-      color: '#8B5CF6',
-      icon: 'atom',
-      order: 1,
-    },
-    {
-      name: 'Science',
-      description: 'Biology, Chemistry, and general science',
-      color: '#22C55E',
-      icon: 'flask-conical',
-      order: 2,
-    },
-    {
-      name: 'French',
-      description: 'Language, Literature, and Grammar',
-      color: '#EF4444',
-      icon: 'book',
-      order: 3,
-    },
-    {
-      name: 'Arabic',
-      description: 'Language, Literature, and Grammar',
-      color: '#F97316',
-      icon: 'book-open',
-      order: 4,
-    },
-    {
-      name: 'English',
-      description: 'Language, Literature, and Grammar',
-      color: '#14B8A6',
-      icon: 'globe',
-      order: 5,
-    },
-    {
-      name: 'Philosophy',
-      description: 'Logic, Ethics, and Critical Thinking',
-      color: '#A855F7',
-      icon: 'brain',
-      order: 6,
-    },
-  ];
-
-  for (const subject of defaultSubjects) {
-    await prisma.subject.upsert({
-      where: { name: subject.name },
-      update: {},
-      create: subject,
-    });
+  for (const bacSection of BAC_SECTIONS) {
+    for (const subject of DEFAULT_SUBJECTS) {
+      await prisma.subject.upsert({
+        where: {
+          name_bacSection: {
+            name: subject.name,
+            bacSection,
+          },
+        },
+        update: {
+          description: subject.description,
+          color: subject.color,
+          icon: subject.icon,
+          order: subject.order,
+          isActive: true,
+        },
+        create: {
+          ...subject,
+          bacSection,
+        },
+      });
+    }
   }
+}
 
+async function seedAdminUser() {
   console.log('Seeding default admin...');
 
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@gmail.com';
-  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+  const adminEmail = DEFAULT_ADMIN_EMAIL;
+  const adminPassword = DEFAULT_ADMIN_PASSWORD;
   const hashedAdminPassword = await bcrypt.hash(adminPassword, 12);
 
   const legacyAdminEmail = 'admin@mouhamed-academy.tn';
@@ -88,7 +119,7 @@ async function main() {
     }
   }
 
-  const adminUser = await prisma.user.upsert({
+  return prisma.user.upsert({
     where: { email: adminEmail },
     update: {
       password: hashedAdminPassword,
@@ -110,7 +141,9 @@ async function main() {
       approvalDate: new Date(),
     },
   });
+}
 
+async function seedPlatformSettings(adminUser) {
   await prisma.appSetting.upsert({
     where: { key: 'platformName' },
     update: {
@@ -123,7 +156,9 @@ async function main() {
       updatedBy: adminUser.id,
     },
   });
+}
 
+async function seedStudentUser() {
   console.log('Seeding default student...');
 
   const studentEmail = process.env.STUDENT_EMAIL || 'student@gmail.com';
@@ -152,6 +187,18 @@ async function main() {
       approvalDate: new Date(),
     },
   });
+}
+
+async function main() {
+  const adminUser = await seedAdminUser();
+  await seedPlatformSettings(adminUser);
+  await seedStudentUser();
+
+  try {
+    await seedSubjects();
+  } catch (error) {
+    console.error('Subject seeding failed, but admin and core settings were created:', error);
+  }
 
   console.log('Seeding completed!');
 }
