@@ -2525,7 +2525,11 @@ const AdminWorkspace = () => {
               </span>
               <PdfUploader
                 value={exerciseCorrectionFile?.name || ''}
-                onChange={() => setExerciseCorrectionFile(null)}
+                onChange={(value) => {
+                  if (!value) {
+                    setExerciseCorrectionFile(null)
+                  }
+                }}
                 onUpload={async (file) => {
                   setExerciseCorrectionFile(file);
                   return file.name;

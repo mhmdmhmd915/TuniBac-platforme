@@ -210,6 +210,19 @@ const toAssetUrl = (value?: string | null) => {
   return `${BACKEND_URL}/${value.replace(/^\/+/, '')}`
 }
 
+const toStoredAssetValue = (value?: string | null) => {
+  if (!value) {
+    return ''
+  }
+
+  if (value.startsWith(BACKEND_URL)) {
+    const normalized = value.slice(BACKEND_URL.length)
+    return normalized.startsWith('/') ? normalized : `/${normalized}`
+  }
+
+  return value
+}
+
 const toLocalDateTimeInput = (value?: string | null) => {
   if (!value) {
     return ''
@@ -433,7 +446,10 @@ const CommunicationsPage = () => {
       ...current,
       attachments: [
         ...current.attachments.filter((attachment) => attachment.kind !== nextAttachment.kind),
-        nextAttachment,
+        {
+          ...nextAttachment,
+          filePath: toStoredAssetValue(nextAttachment.filePath),
+        },
       ],
     }))
   }
@@ -577,7 +593,7 @@ const CommunicationsPage = () => {
           kind: attachment.kind,
           label: attachment.label || '',
           url: attachment.url || '',
-          filePath: attachment.filePath || '',
+          filePath: toStoredAssetValue(attachment.filePath),
           mimeType: attachment.mimeType || '',
           sizeBytes: attachment.sizeBytes || null,
         }))
