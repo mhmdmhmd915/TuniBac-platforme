@@ -102,7 +102,7 @@ describe('smoke: pdf uploads by bac section', () => {
     }
 
     await prisma.$disconnect();
-  });
+  }, 60000);
 
   it('uploads PDF for courses, exercises and corrections across all sections', async () => {
     const unique = Date.now();

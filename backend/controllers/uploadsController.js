@@ -41,20 +41,50 @@ async function findReferences(variants) {
     ),
   });
 
-  const [courseContent, courseVideo, exerciseContent, correctionContent, parascolaireCover, parascolairePdf, homeworkFile, homeworkCorrection, courseRes, exerciseRes, commAttachments] =
-    await Promise.all([
-      prisma.course.findMany({ where: makeContains('contentUrl'), select: { id: true, title: true } }),
-      prisma.course.findMany({ where: makeContains('videoPath'), select: { id: true, title: true } }),
-      prisma.exercise.findMany({ where: makeContains('contentUrl'), select: { id: true, title: true } }),
-      prisma.correction.findMany({ where: makeContains('contentUrl'), select: { id: true, title: true, exerciseId: true } }),
-      prisma.parascolaire.findMany({ where: makeContains('coverImage'), select: { id: true, title: true } }),
-      prisma.parascolaire.findMany({ where: makeContains('pdfUrl'), select: { id: true, title: true } }),
-      prisma.homeworkSubmission.findMany({ where: makeContains('fileUrl'), select: { id: true } }),
-      prisma.homeworkSubmission.findMany({ where: makeContains('correctionUrl'), select: { id: true } }),
-      prisma.courseResource.findMany({ where: makeContains('url'), select: { id: true, title: true, courseId: true } }),
-      prisma.exerciseResource.findMany({ where: makeContains('url'), select: { id: true, title: true, exerciseId: true } }),
-      prisma.communicationAttachment.findMany({ where: makeContains('filePath'), select: { id: true, communicationId: true } }),
-    ]);
+  const courseContent = await prisma.course.findMany({
+    where: makeContains('contentUrl'),
+    select: { id: true, title: true },
+  });
+  const courseVideo = await prisma.course.findMany({
+    where: makeContains('videoPath'),
+    select: { id: true, title: true },
+  });
+  const exerciseContent = await prisma.exercise.findMany({
+    where: makeContains('contentUrl'),
+    select: { id: true, title: true },
+  });
+  const correctionContent = await prisma.correction.findMany({
+    where: makeContains('contentUrl'),
+    select: { id: true, title: true, exerciseId: true },
+  });
+  const parascolaireCover = await prisma.parascolaire.findMany({
+    where: makeContains('coverImage'),
+    select: { id: true, title: true },
+  });
+  const parascolairePdf = await prisma.parascolaire.findMany({
+    where: makeContains('pdfUrl'),
+    select: { id: true, title: true },
+  });
+  const homeworkFile = await prisma.homeworkSubmission.findMany({
+    where: makeContains('fileUrl'),
+    select: { id: true },
+  });
+  const homeworkCorrection = await prisma.homeworkSubmission.findMany({
+    where: makeContains('correctionUrl'),
+    select: { id: true },
+  });
+  const courseRes = await prisma.courseResource.findMany({
+    where: makeContains('url'),
+    select: { id: true, title: true, courseId: true },
+  });
+  const exerciseRes = await prisma.exerciseResource.findMany({
+    where: makeContains('url'),
+    select: { id: true, title: true, exerciseId: true },
+  });
+  const commAttachments = await prisma.communicationAttachment.findMany({
+    where: makeContains('filePath'),
+    select: { id: true, communicationId: true },
+  });
 
   return {
     coursesContent: courseContent,
@@ -222,4 +252,3 @@ module.exports = {
   deleteUpload,
   replaceUpload,
 };
-

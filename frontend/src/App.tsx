@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
-import NoAdminRoute from './components/NoAdminRoute'
 
 const LandingPage = lazy(() => import('./pages/LandingPage'))
 const Login = lazy(() => import('./pages/Login'))
@@ -51,9 +50,7 @@ function App() {
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <NoAdminRoute>
-                    <Dashboard />
-                  </NoAdminRoute>
+                  <Dashboard />
                 </ProtectedRoute>
               }
             />
@@ -61,9 +58,7 @@ function App() {
               path="/homework"
               element={
                 <ProtectedRoute>
-                  <NoAdminRoute>
-                    <Homework />
-                  </NoAdminRoute>
+                  <Homework />
                 </ProtectedRoute>
               }
             />
@@ -71,9 +66,7 @@ function App() {
               path="/study-planner"
               element={
                 <ProtectedRoute>
-                  <NoAdminRoute>
-                    <StudyPlanner />
-                  </NoAdminRoute>
+                  <StudyPlanner />
                 </ProtectedRoute>
               }
             />
@@ -133,49 +126,19 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/courses"
-              element={
-                <NoAdminRoute>
-                  <CourseList />
-                </NoAdminRoute>
-              }
-            />
+            <Route path="/courses" element={<CourseList />} />
             <Route
               path="/courses/:id"
               element={
-                <NoAdminRoute>
-                  <ProtectedRoute>
-                    <CourseDetail />
-                  </ProtectedRoute>
-                </NoAdminRoute>
+                <ProtectedRoute>
+                  <CourseDetail />
+                </ProtectedRoute>
               }
             />
-            <Route
-              path="/exercises"
-              element={
-                <NoAdminRoute>
-                  <ExerciseList />
-                </NoAdminRoute>
-              }
-            />
+            <Route path="/exercises" element={<ExerciseList />} />
             <Route path="/faq" element={<FAQ />} />
-            <Route
-              path="/parascolaires"
-              element={
-                <NoAdminRoute>
-                  <ParascolairesList />
-                </NoAdminRoute>
-              }
-            />
-            <Route
-              path="/parascolaires/:id"
-              element={
-                <NoAdminRoute>
-                  <ParascolaireDetail />
-                </NoAdminRoute>
-              }
-            />
+            <Route path="/parascolaires" element={<ParascolairesList />} />
+            <Route path="/parascolaires/:id" element={<ParascolaireDetail />} />
           </Routes>
         </Suspense>
       </main>

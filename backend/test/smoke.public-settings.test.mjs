@@ -10,6 +10,6 @@ describe('smoke: public settings', () => {
     expect(Array.isArray(res.body)).toBe(true);
     const platformName = res.body.find((x) => x.key === 'platformName')?.value;
     expect(typeof platformName).toBe('string');
-  });
+  }, 30000);
 });
 

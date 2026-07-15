@@ -9,6 +9,7 @@ import {
   FileText,
   Layers,
   LayoutDashboard,
+  MessageSquare,
   MoreHorizontal,
   Pencil,
   Plus,
@@ -3373,6 +3374,20 @@ const AdminWorkspace = () => {
                 <div className="font-semibold">Uploads</div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">
                   Preview, replace, and delete files
+                </div>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate('/admin/communications')}
+              className="flex w-full items-start gap-3 rounded-2xl px-4 py-3 text-left transition-all hover:bg-gray-100 dark:hover:bg-white/5"
+            >
+              <MessageSquare size={18} className="mt-0.5 shrink-0" />
+              <div>
+                <div className="font-semibold">Communications</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  Announcements, scheduling, and student messaging
                 </div>
               </div>
             </button>

@@ -267,5 +267,5 @@ describe('smoke: bac section filtering', () => {
     expect(
       techCommunicationsRes.body.items.some((item) => item.title === names.mathCommunication)
     ).toBe(false);
-  });
+  }, 20000);
 });

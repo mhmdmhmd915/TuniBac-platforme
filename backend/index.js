@@ -7,7 +7,19 @@ const { sendError, isProduction } = require('./utils/http');
 const { logger } = require('./utils/logger');
 
 dotenv.config({ path: path.join(__dirname, '.env') });
-dotenv.config({ path: path.join(__dirname, '.env.local'), override: true });
+const localEnv = dotenv.config({ path: path.join(__dirname, '.env.local') });
+const nonOverridableEnvKeys = new Set(['DATABASE_URL', 'DIRECT_URL', 'SHADOW_DATABASE_URL']);
+
+if (localEnv.parsed) {
+  for (const [key, value] of Object.entries(localEnv.parsed)) {
+    if (nonOverridableEnvKeys.has(key) && process.env[key]) {
+      continue;
+    }
+
+    process.env[key] = value;
+  }
+}
+
 validateServerEnv();
 
 const app = express();
