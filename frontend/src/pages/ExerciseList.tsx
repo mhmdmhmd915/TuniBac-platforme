@@ -325,12 +325,10 @@ const ExerciseList = () => {
               whileTap={{ scale: 0.99, transition: { duration: 0.1 } }}
               onClick={() =>
                 withProtectedAccess(() => {
-                  return
+                  navigate(`/exercises/${ex.id}`)
                 })
               }
-              className={`glass-morphism p-6 sm:p-7 rounded-3xl border border-black/5 dark:border-white/5 hover:border-accent/40 dark:hover:border-accent/40 transition-all duration-300 ${
-                !user || (user.role !== 'ADMIN' && user.status !== 'APPROVED') ? 'cursor-pointer' : ''
-              }`}
+              className="glass-morphism p-6 sm:p-7 rounded-3xl border border-black/5 dark:border-white/5 hover:border-accent/40 dark:hover:border-accent/40 transition-all duration-300 cursor-pointer"
             >
               <div className="flex items-start gap-4 sm:gap-5 mb-4 sm:mb-5">
                 <div className="flex-shrink-0 p-3 sm:p-4 rounded-2xl border" style={subjectColor}>

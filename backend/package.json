@@ -9,6 +9,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "node prisma/seed.js",
+    "pretest": "prisma db push --skip-generate",
     "test": "vitest run --maxWorkers 1"
   },
   "dependencies": {

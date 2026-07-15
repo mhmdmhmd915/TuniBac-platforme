@@ -3,13 +3,23 @@ const prisma = require('../lib/prisma');
 const { sendError } = require('../utils/http');
 const { deleteObject, normalizeStoredFileValueToKey, toPublicUrlFromStoredValue } = require('../lib/r2');
 const { validateStoredUpload } = require('../utils/storedUploadSecurity');
-const { PDF_MAX_SIZE_BYTES, PDF_MIME_TYPES } = require('../utils/uploadPolicies');
+const {
+  IMAGE_MAX_SIZE_BYTES,
+  IMAGE_MIME_TYPES,
+  PDF_MAX_SIZE_BYTES,
+  PDF_MIME_TYPES,
+} = require('../utils/uploadPolicies');
 
 const EXERCISE_LIST_SELECT = {
   id: true,
   title: true,
   description: true,
   contentUrl: true,
+  advertisementImage: true,
+  advertisementTeacherName: true,
+  advertisementSubject: true,
+  advertisementWhatsapp: true,
+  advertisementDescription: true,
   difficulty: true,
   createdAt: true,
   updatedAt: true,
@@ -48,6 +58,9 @@ const mapExerciseFiles = (exercise) => {
   return {
     ...exercise,
     contentUrl: exercise.contentUrl ? toPublicUrlFromStoredValue(exercise.contentUrl) : null,
+    advertisementImage: exercise.advertisementImage
+      ? toPublicUrlFromStoredValue(exercise.advertisementImage)
+      : null,
     corrections: Array.isArray(exercise.corrections)
       ? exercise.corrections.map((correction) => ({
           ...correction,
@@ -61,6 +74,16 @@ const mapExerciseFiles = (exercise) => {
         }))
       : exercise.resources,
   };
+};
+
+const normalizeOptionalText = (value) => {
+  const normalized = String(value || '').trim();
+  return normalized || null;
+};
+
+const normalizeWhatsapp = (value) => {
+  const digits = String(value || '').replace(/\D+/g, '');
+  return digits || null;
 };
 
 const getAllExercises = async (req, res) => {
@@ -130,22 +153,50 @@ const getExerciseById = async (req, res) => {
 
 const createExercise = async (req, res) => {
   try {
-    const { title, description, contentUrl, difficulty, subjectId } = req.body;
+    const {
+      title,
+      description,
+      contentUrl,
+      difficulty,
+      subjectId,
+      advertisementImage,
+      advertisementTeacherName,
+      advertisementSubject,
+      advertisementWhatsapp,
+      advertisementDescription,
+    } = req.body;
     const normalizedContentUrl = contentUrl ? normalizeStoredFileValueToKey(contentUrl) : null;
+    const normalizedAdvertisementImage = advertisementImage
+      ? normalizeStoredFileValueToKey(advertisementImage)
+      : null;
 
-    if (normalizedContentUrl) {
-      await validateStoredUpload({
-        storedValue: normalizedContentUrl,
-        allowedMimeTypes: PDF_MIME_TYPES,
-        maxSizeBytes: PDF_MAX_SIZE_BYTES,
-      });
-    }
+    await Promise.all([
+      normalizedContentUrl
+        ? validateStoredUpload({
+            storedValue: normalizedContentUrl,
+            allowedMimeTypes: PDF_MIME_TYPES,
+            maxSizeBytes: PDF_MAX_SIZE_BYTES,
+          })
+        : Promise.resolve(),
+      normalizedAdvertisementImage
+        ? validateStoredUpload({
+            storedValue: normalizedAdvertisementImage,
+            allowedMimeTypes: IMAGE_MIME_TYPES,
+            maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
+          })
+        : Promise.resolve(),
+    ]);
     
     const exercise = await prisma.exercise.create({
       data: {
         title,
         description,
         contentUrl: normalizedContentUrl,
+        advertisementImage: normalizedAdvertisementImage,
+        advertisementTeacherName: normalizeOptionalText(advertisementTeacherName),
+        advertisementSubject: normalizeOptionalText(advertisementSubject),
+        advertisementWhatsapp: normalizeWhatsapp(advertisementWhatsapp),
+        advertisementDescription: normalizeOptionalText(advertisementDescription),
         difficulty,
         subjectId,
       },
@@ -160,16 +211,39 @@ const createExercise = async (req, res) => {
 const updateExercise = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, contentUrl, difficulty, subjectId } = req.body;
+    const {
+      title,
+      description,
+      contentUrl,
+      difficulty,
+      subjectId,
+      advertisementImage,
+      advertisementTeacherName,
+      advertisementSubject,
+      advertisementWhatsapp,
+      advertisementDescription,
+    } = req.body;
     const normalizedContentUrl = contentUrl ? normalizeStoredFileValueToKey(contentUrl) : null;
+    const normalizedAdvertisementImage = advertisementImage
+      ? normalizeStoredFileValueToKey(advertisementImage)
+      : null;
 
-    if (normalizedContentUrl) {
-      await validateStoredUpload({
-        storedValue: normalizedContentUrl,
-        allowedMimeTypes: PDF_MIME_TYPES,
-        maxSizeBytes: PDF_MAX_SIZE_BYTES,
-      });
-    }
+    await Promise.all([
+      normalizedContentUrl
+        ? validateStoredUpload({
+            storedValue: normalizedContentUrl,
+            allowedMimeTypes: PDF_MIME_TYPES,
+            maxSizeBytes: PDF_MAX_SIZE_BYTES,
+          })
+        : Promise.resolve(),
+      normalizedAdvertisementImage
+        ? validateStoredUpload({
+            storedValue: normalizedAdvertisementImage,
+            allowedMimeTypes: IMAGE_MIME_TYPES,
+            maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
+          })
+        : Promise.resolve(),
+    ]);
     
     const exercise = await prisma.exercise.update({
       where: { id },
@@ -177,6 +251,11 @@ const updateExercise = async (req, res) => {
         title,
         description,
         contentUrl: normalizedContentUrl,
+        advertisementImage: normalizedAdvertisementImage,
+        advertisementTeacherName: normalizeOptionalText(advertisementTeacherName),
+        advertisementSubject: normalizeOptionalText(advertisementSubject),
+        advertisementWhatsapp: normalizeWhatsapp(advertisementWhatsapp),
+        advertisementDescription: normalizeOptionalText(advertisementDescription),
         difficulty,
         subjectId,
       },
@@ -198,6 +277,7 @@ const deleteExercise = async (req, res) => {
       where: { id },
       select: {
         contentUrl: true,
+        advertisementImage: true,
         corrections: { select: { contentUrl: true } },
         resources: { select: { url: true } },
       },
@@ -209,6 +289,7 @@ const deleteExercise = async (req, res) => {
     ]);
     const keys = [
       existing?.contentUrl,
+      existing?.advertisementImage,
       ...(existing?.corrections || []).map((c) => c.contentUrl),
       ...(existing?.resources || []).map((r) => r.url),
     ].filter((value) => value && !/^https?:\/\//i.test(String(value)));

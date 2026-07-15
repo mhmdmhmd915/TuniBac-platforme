@@ -302,6 +302,52 @@ export const adminAPI = {
       })
     })(),
 
+  uploadCourseAdvertisementImage: (formData: FormData) =>
+    (() => {
+      const file = formData.get('image')
+      if (!(file instanceof File)) {
+        return api.post('/admin/courses/upload-advertisement-image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+      }
+      return uploadViaPresignedEndpoint({
+        file,
+        presignPath: '/admin/courses/upload-advertisement-image/presign',
+        mapResponse: (data) => ({ fileUrl: data.fileUrl }),
+        fallback: () =>
+          api.post('/admin/courses/upload-advertisement-image', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }),
+      })
+    })(),
+
+  uploadExerciseAdvertisementImage: (formData: FormData) =>
+    (() => {
+      const file = formData.get('image')
+      if (!(file instanceof File)) {
+        return api.post('/admin/exercises/upload-advertisement-image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+      }
+      return uploadViaPresignedEndpoint({
+        file,
+        presignPath: '/admin/exercises/upload-advertisement-image/presign',
+        mapResponse: (data) => ({ fileUrl: data.fileUrl }),
+        fallback: () =>
+          api.post('/admin/exercises/upload-advertisement-image', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }),
+      })
+    })(),
+
   uploadAdminVideo: (file: File, options?: VideoUploadOptions) =>
     uploadMultipartVideo({
       file,

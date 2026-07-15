@@ -12,6 +12,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard'))
 const CourseList = lazy(() => import('./pages/CourseList'))
 const CourseDetail = lazy(() => import('./pages/CourseDetail'))
 const ExerciseList = lazy(() => import('./pages/ExerciseList'))
+const ExerciseDetail = lazy(() => import('./pages/ExerciseDetail'))
 const FAQ = lazy(() => import('./pages/FAQ'))
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
 const Homework = lazy(() => import('./pages/Homework'))
@@ -136,6 +137,14 @@ function App() {
               }
             />
             <Route path="/exercises" element={<ExerciseList />} />
+            <Route
+              path="/exercises/:id"
+              element={
+                <ProtectedRoute>
+                  <ExerciseDetail />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/parascolaires" element={<ParascolairesList />} />
             <Route path="/parascolaires/:id" element={<ParascolaireDetail />} />

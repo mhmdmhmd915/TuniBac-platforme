@@ -5234,6 +5234,11 @@ export namespace Prisma {
     contentUrl: string | null
     videoUrl: string | null
     videoPath: string | null
+    advertisementImage: string | null
+    advertisementTeacherName: string | null
+    advertisementSubject: string | null
+    advertisementWhatsapp: string | null
+    advertisementDescription: string | null
     difficulty: $Enums.Difficulty | null
     subjectId: string | null
     createdAt: Date | null
@@ -5247,6 +5252,11 @@ export namespace Prisma {
     contentUrl: string | null
     videoUrl: string | null
     videoPath: string | null
+    advertisementImage: string | null
+    advertisementTeacherName: string | null
+    advertisementSubject: string | null
+    advertisementWhatsapp: string | null
+    advertisementDescription: string | null
     difficulty: $Enums.Difficulty | null
     subjectId: string | null
     createdAt: Date | null
@@ -5260,6 +5270,11 @@ export namespace Prisma {
     contentUrl: number
     videoUrl: number
     videoPath: number
+    advertisementImage: number
+    advertisementTeacherName: number
+    advertisementSubject: number
+    advertisementWhatsapp: number
+    advertisementDescription: number
     difficulty: number
     tags: number
     subjectId: number
@@ -5276,6 +5291,11 @@ export namespace Prisma {
     contentUrl?: true
     videoUrl?: true
     videoPath?: true
+    advertisementImage?: true
+    advertisementTeacherName?: true
+    advertisementSubject?: true
+    advertisementWhatsapp?: true
+    advertisementDescription?: true
     difficulty?: true
     subjectId?: true
     createdAt?: true
@@ -5289,6 +5309,11 @@ export namespace Prisma {
     contentUrl?: true
     videoUrl?: true
     videoPath?: true
+    advertisementImage?: true
+    advertisementTeacherName?: true
+    advertisementSubject?: true
+    advertisementWhatsapp?: true
+    advertisementDescription?: true
     difficulty?: true
     subjectId?: true
     createdAt?: true
@@ -5302,6 +5327,11 @@ export namespace Prisma {
     contentUrl?: true
     videoUrl?: true
     videoPath?: true
+    advertisementImage?: true
+    advertisementTeacherName?: true
+    advertisementSubject?: true
+    advertisementWhatsapp?: true
+    advertisementDescription?: true
     difficulty?: true
     tags?: true
     subjectId?: true
@@ -5389,6 +5419,11 @@ export namespace Prisma {
     contentUrl: string | null
     videoUrl: string | null
     videoPath: string | null
+    advertisementImage: string | null
+    advertisementTeacherName: string | null
+    advertisementSubject: string | null
+    advertisementWhatsapp: string | null
+    advertisementDescription: string | null
     difficulty: $Enums.Difficulty
     tags: string[]
     subjectId: string
@@ -5420,6 +5455,11 @@ export namespace Prisma {
     contentUrl?: boolean
     videoUrl?: boolean
     videoPath?: boolean
+    advertisementImage?: boolean
+    advertisementTeacherName?: boolean
+    advertisementSubject?: boolean
+    advertisementWhatsapp?: boolean
+    advertisementDescription?: boolean
     difficulty?: boolean
     tags?: boolean
     subjectId?: boolean
@@ -5440,6 +5480,11 @@ export namespace Prisma {
     contentUrl?: boolean
     videoUrl?: boolean
     videoPath?: boolean
+    advertisementImage?: boolean
+    advertisementTeacherName?: boolean
+    advertisementSubject?: boolean
+    advertisementWhatsapp?: boolean
+    advertisementDescription?: boolean
     difficulty?: boolean
     tags?: boolean
     subjectId?: boolean
@@ -5455,6 +5500,11 @@ export namespace Prisma {
     contentUrl?: boolean
     videoUrl?: boolean
     videoPath?: boolean
+    advertisementImage?: boolean
+    advertisementTeacherName?: boolean
+    advertisementSubject?: boolean
+    advertisementWhatsapp?: boolean
+    advertisementDescription?: boolean
     difficulty?: boolean
     tags?: boolean
     subjectId?: boolean
@@ -5490,6 +5540,11 @@ export namespace Prisma {
       contentUrl: string | null
       videoUrl: string | null
       videoPath: string | null
+      advertisementImage: string | null
+      advertisementTeacherName: string | null
+      advertisementSubject: string | null
+      advertisementWhatsapp: string | null
+      advertisementDescription: string | null
       difficulty: $Enums.Difficulty
       tags: string[]
       subjectId: string
@@ -5899,6 +5954,11 @@ export namespace Prisma {
     readonly contentUrl: FieldRef<"Course", 'String'>
     readonly videoUrl: FieldRef<"Course", 'String'>
     readonly videoPath: FieldRef<"Course", 'String'>
+    readonly advertisementImage: FieldRef<"Course", 'String'>
+    readonly advertisementTeacherName: FieldRef<"Course", 'String'>
+    readonly advertisementSubject: FieldRef<"Course", 'String'>
+    readonly advertisementWhatsapp: FieldRef<"Course", 'String'>
+    readonly advertisementDescription: FieldRef<"Course", 'String'>
     readonly difficulty: FieldRef<"Course", 'Difficulty'>
     readonly tags: FieldRef<"Course", 'String[]'>
     readonly subjectId: FieldRef<"Course", 'String'>
@@ -7346,6 +7406,11 @@ export namespace Prisma {
     title: string | null
     description: string | null
     contentUrl: string | null
+    advertisementImage: string | null
+    advertisementTeacherName: string | null
+    advertisementSubject: string | null
+    advertisementWhatsapp: string | null
+    advertisementDescription: string | null
     difficulty: $Enums.Difficulty | null
     subjectId: string | null
     createdAt: Date | null
@@ -7357,6 +7422,11 @@ export namespace Prisma {
     title: string | null
     description: string | null
     contentUrl: string | null
+    advertisementImage: string | null
+    advertisementTeacherName: string | null
+    advertisementSubject: string | null
+    advertisementWhatsapp: string | null
+    advertisementDescription: string | null
     difficulty: $Enums.Difficulty | null
     subjectId: string | null
     createdAt: Date | null
@@ -7368,6 +7438,11 @@ export namespace Prisma {
     title: number
     description: number
     contentUrl: number
+    advertisementImage: number
+    advertisementTeacherName: number
+    advertisementSubject: number
+    advertisementWhatsapp: number
+    advertisementDescription: number
     difficulty: number
     subjectId: number
     createdAt: number
@@ -7381,6 +7456,11 @@ export namespace Prisma {
     title?: true
     description?: true
     contentUrl?: true
+    advertisementImage?: true
+    advertisementTeacherName?: true
+    advertisementSubject?: true
+    advertisementWhatsapp?: true
+    advertisementDescription?: true
     difficulty?: true
     subjectId?: true
     createdAt?: true
@@ -7392,6 +7472,11 @@ export namespace Prisma {
     title?: true
     description?: true
     contentUrl?: true
+    advertisementImage?: true
+    advertisementTeacherName?: true
+    advertisementSubject?: true
+    advertisementWhatsapp?: true
+    advertisementDescription?: true
     difficulty?: true
     subjectId?: true
     createdAt?: true
@@ -7403,6 +7488,11 @@ export namespace Prisma {
     title?: true
     description?: true
     contentUrl?: true
+    advertisementImage?: true
+    advertisementTeacherName?: true
+    advertisementSubject?: true
+    advertisementWhatsapp?: true
+    advertisementDescription?: true
     difficulty?: true
     subjectId?: true
     createdAt?: true
@@ -7487,6 +7577,11 @@ export namespace Prisma {
     title: string
     description: string | null
     contentUrl: string | null
+    advertisementImage: string | null
+    advertisementTeacherName: string | null
+    advertisementSubject: string | null
+    advertisementWhatsapp: string | null
+    advertisementDescription: string | null
     difficulty: $Enums.Difficulty
     subjectId: string
     createdAt: Date
@@ -7515,6 +7610,11 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     contentUrl?: boolean
+    advertisementImage?: boolean
+    advertisementTeacherName?: boolean
+    advertisementSubject?: boolean
+    advertisementWhatsapp?: boolean
+    advertisementDescription?: boolean
     difficulty?: boolean
     subjectId?: boolean
     createdAt?: boolean
@@ -7531,6 +7631,11 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     contentUrl?: boolean
+    advertisementImage?: boolean
+    advertisementTeacherName?: boolean
+    advertisementSubject?: boolean
+    advertisementWhatsapp?: boolean
+    advertisementDescription?: boolean
     difficulty?: boolean
     subjectId?: boolean
     createdAt?: boolean
@@ -7543,6 +7648,11 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     contentUrl?: boolean
+    advertisementImage?: boolean
+    advertisementTeacherName?: boolean
+    advertisementSubject?: boolean
+    advertisementWhatsapp?: boolean
+    advertisementDescription?: boolean
     difficulty?: boolean
     subjectId?: boolean
     createdAt?: boolean
@@ -7573,6 +7683,11 @@ export namespace Prisma {
       title: string
       description: string | null
       contentUrl: string | null
+      advertisementImage: string | null
+      advertisementTeacherName: string | null
+      advertisementSubject: string | null
+      advertisementWhatsapp: string | null
+      advertisementDescription: string | null
       difficulty: $Enums.Difficulty
       subjectId: string
       createdAt: Date
@@ -7978,6 +8093,11 @@ export namespace Prisma {
     readonly title: FieldRef<"Exercise", 'String'>
     readonly description: FieldRef<"Exercise", 'String'>
     readonly contentUrl: FieldRef<"Exercise", 'String'>
+    readonly advertisementImage: FieldRef<"Exercise", 'String'>
+    readonly advertisementTeacherName: FieldRef<"Exercise", 'String'>
+    readonly advertisementSubject: FieldRef<"Exercise", 'String'>
+    readonly advertisementWhatsapp: FieldRef<"Exercise", 'String'>
+    readonly advertisementDescription: FieldRef<"Exercise", 'String'>
     readonly difficulty: FieldRef<"Exercise", 'Difficulty'>
     readonly subjectId: FieldRef<"Exercise", 'String'>
     readonly createdAt: FieldRef<"Exercise", 'DateTime'>
@@ -22551,6 +22671,11 @@ export namespace Prisma {
     contentUrl: 'contentUrl',
     videoUrl: 'videoUrl',
     videoPath: 'videoPath',
+    advertisementImage: 'advertisementImage',
+    advertisementTeacherName: 'advertisementTeacherName',
+    advertisementSubject: 'advertisementSubject',
+    advertisementWhatsapp: 'advertisementWhatsapp',
+    advertisementDescription: 'advertisementDescription',
     difficulty: 'difficulty',
     tags: 'tags',
     subjectId: 'subjectId',
@@ -22581,6 +22706,11 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     contentUrl: 'contentUrl',
+    advertisementImage: 'advertisementImage',
+    advertisementTeacherName: 'advertisementTeacherName',
+    advertisementSubject: 'advertisementSubject',
+    advertisementWhatsapp: 'advertisementWhatsapp',
+    advertisementDescription: 'advertisementDescription',
     difficulty: 'difficulty',
     subjectId: 'subjectId',
     createdAt: 'createdAt',
@@ -23253,6 +23383,11 @@ export namespace Prisma {
     contentUrl?: StringNullableFilter<"Course"> | string | null
     videoUrl?: StringNullableFilter<"Course"> | string | null
     videoPath?: StringNullableFilter<"Course"> | string | null
+    advertisementImage?: StringNullableFilter<"Course"> | string | null
+    advertisementTeacherName?: StringNullableFilter<"Course"> | string | null
+    advertisementSubject?: StringNullableFilter<"Course"> | string | null
+    advertisementWhatsapp?: StringNullableFilter<"Course"> | string | null
+    advertisementDescription?: StringNullableFilter<"Course"> | string | null
     difficulty?: EnumDifficultyFilter<"Course"> | $Enums.Difficulty
     tags?: StringNullableListFilter<"Course">
     subjectId?: StringFilter<"Course"> | string
@@ -23272,6 +23407,11 @@ export namespace Prisma {
     contentUrl?: SortOrderInput | SortOrder
     videoUrl?: SortOrderInput | SortOrder
     videoPath?: SortOrderInput | SortOrder
+    advertisementImage?: SortOrderInput | SortOrder
+    advertisementTeacherName?: SortOrderInput | SortOrder
+    advertisementSubject?: SortOrderInput | SortOrder
+    advertisementWhatsapp?: SortOrderInput | SortOrder
+    advertisementDescription?: SortOrderInput | SortOrder
     difficulty?: SortOrder
     tags?: SortOrder
     subjectId?: SortOrder
@@ -23294,6 +23434,11 @@ export namespace Prisma {
     contentUrl?: StringNullableFilter<"Course"> | string | null
     videoUrl?: StringNullableFilter<"Course"> | string | null
     videoPath?: StringNullableFilter<"Course"> | string | null
+    advertisementImage?: StringNullableFilter<"Course"> | string | null
+    advertisementTeacherName?: StringNullableFilter<"Course"> | string | null
+    advertisementSubject?: StringNullableFilter<"Course"> | string | null
+    advertisementWhatsapp?: StringNullableFilter<"Course"> | string | null
+    advertisementDescription?: StringNullableFilter<"Course"> | string | null
     difficulty?: EnumDifficultyFilter<"Course"> | $Enums.Difficulty
     tags?: StringNullableListFilter<"Course">
     subjectId?: StringFilter<"Course"> | string
@@ -23313,6 +23458,11 @@ export namespace Prisma {
     contentUrl?: SortOrderInput | SortOrder
     videoUrl?: SortOrderInput | SortOrder
     videoPath?: SortOrderInput | SortOrder
+    advertisementImage?: SortOrderInput | SortOrder
+    advertisementTeacherName?: SortOrderInput | SortOrder
+    advertisementSubject?: SortOrderInput | SortOrder
+    advertisementWhatsapp?: SortOrderInput | SortOrder
+    advertisementDescription?: SortOrderInput | SortOrder
     difficulty?: SortOrder
     tags?: SortOrder
     subjectId?: SortOrder
@@ -23333,6 +23483,11 @@ export namespace Prisma {
     contentUrl?: StringNullableWithAggregatesFilter<"Course"> | string | null
     videoUrl?: StringNullableWithAggregatesFilter<"Course"> | string | null
     videoPath?: StringNullableWithAggregatesFilter<"Course"> | string | null
+    advertisementImage?: StringNullableWithAggregatesFilter<"Course"> | string | null
+    advertisementTeacherName?: StringNullableWithAggregatesFilter<"Course"> | string | null
+    advertisementSubject?: StringNullableWithAggregatesFilter<"Course"> | string | null
+    advertisementWhatsapp?: StringNullableWithAggregatesFilter<"Course"> | string | null
+    advertisementDescription?: StringNullableWithAggregatesFilter<"Course"> | string | null
     difficulty?: EnumDifficultyWithAggregatesFilter<"Course"> | $Enums.Difficulty
     tags?: StringNullableListFilter<"Course">
     subjectId?: StringWithAggregatesFilter<"Course"> | string
@@ -23425,6 +23580,11 @@ export namespace Prisma {
     title?: StringFilter<"Exercise"> | string
     description?: StringNullableFilter<"Exercise"> | string | null
     contentUrl?: StringNullableFilter<"Exercise"> | string | null
+    advertisementImage?: StringNullableFilter<"Exercise"> | string | null
+    advertisementTeacherName?: StringNullableFilter<"Exercise"> | string | null
+    advertisementSubject?: StringNullableFilter<"Exercise"> | string | null
+    advertisementWhatsapp?: StringNullableFilter<"Exercise"> | string | null
+    advertisementDescription?: StringNullableFilter<"Exercise"> | string | null
     difficulty?: EnumDifficultyFilter<"Exercise"> | $Enums.Difficulty
     subjectId?: StringFilter<"Exercise"> | string
     createdAt?: DateTimeFilter<"Exercise"> | Date | string
@@ -23440,6 +23600,11 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     contentUrl?: SortOrderInput | SortOrder
+    advertisementImage?: SortOrderInput | SortOrder
+    advertisementTeacherName?: SortOrderInput | SortOrder
+    advertisementSubject?: SortOrderInput | SortOrder
+    advertisementWhatsapp?: SortOrderInput | SortOrder
+    advertisementDescription?: SortOrderInput | SortOrder
     difficulty?: SortOrder
     subjectId?: SortOrder
     createdAt?: SortOrder
@@ -23458,6 +23623,11 @@ export namespace Prisma {
     title?: StringFilter<"Exercise"> | string
     description?: StringNullableFilter<"Exercise"> | string | null
     contentUrl?: StringNullableFilter<"Exercise"> | string | null
+    advertisementImage?: StringNullableFilter<"Exercise"> | string | null
+    advertisementTeacherName?: StringNullableFilter<"Exercise"> | string | null
+    advertisementSubject?: StringNullableFilter<"Exercise"> | string | null
+    advertisementWhatsapp?: StringNullableFilter<"Exercise"> | string | null
+    advertisementDescription?: StringNullableFilter<"Exercise"> | string | null
     difficulty?: EnumDifficultyFilter<"Exercise"> | $Enums.Difficulty
     subjectId?: StringFilter<"Exercise"> | string
     createdAt?: DateTimeFilter<"Exercise"> | Date | string
@@ -23473,6 +23643,11 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     contentUrl?: SortOrderInput | SortOrder
+    advertisementImage?: SortOrderInput | SortOrder
+    advertisementTeacherName?: SortOrderInput | SortOrder
+    advertisementSubject?: SortOrderInput | SortOrder
+    advertisementWhatsapp?: SortOrderInput | SortOrder
+    advertisementDescription?: SortOrderInput | SortOrder
     difficulty?: SortOrder
     subjectId?: SortOrder
     createdAt?: SortOrder
@@ -23490,6 +23665,11 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Exercise"> | string
     description?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
     contentUrl?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    advertisementImage?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    advertisementTeacherName?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    advertisementSubject?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    advertisementWhatsapp?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    advertisementDescription?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
     difficulty?: EnumDifficultyWithAggregatesFilter<"Exercise"> | $Enums.Difficulty
     subjectId?: StringWithAggregatesFilter<"Exercise"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Exercise"> | Date | string
@@ -24930,6 +25110,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     createdAt?: Date | string
@@ -24948,6 +25133,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     subjectId: string
@@ -24966,6 +25156,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24984,6 +25179,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -25002,6 +25202,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     subjectId: string
@@ -25016,6 +25221,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25029,6 +25239,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -25124,6 +25339,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25138,6 +25358,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     subjectId: string
     createdAt?: Date | string
@@ -25152,6 +25377,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25166,6 +25396,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     subjectId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25180,6 +25415,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     subjectId: string
     createdAt?: Date | string
@@ -25191,6 +25431,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25201,6 +25446,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     subjectId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26948,6 +27198,11 @@ export namespace Prisma {
     contentUrl?: SortOrder
     videoUrl?: SortOrder
     videoPath?: SortOrder
+    advertisementImage?: SortOrder
+    advertisementTeacherName?: SortOrder
+    advertisementSubject?: SortOrder
+    advertisementWhatsapp?: SortOrder
+    advertisementDescription?: SortOrder
     difficulty?: SortOrder
     tags?: SortOrder
     subjectId?: SortOrder
@@ -26962,6 +27217,11 @@ export namespace Prisma {
     contentUrl?: SortOrder
     videoUrl?: SortOrder
     videoPath?: SortOrder
+    advertisementImage?: SortOrder
+    advertisementTeacherName?: SortOrder
+    advertisementSubject?: SortOrder
+    advertisementWhatsapp?: SortOrder
+    advertisementDescription?: SortOrder
     difficulty?: SortOrder
     subjectId?: SortOrder
     createdAt?: SortOrder
@@ -26975,6 +27235,11 @@ export namespace Prisma {
     contentUrl?: SortOrder
     videoUrl?: SortOrder
     videoPath?: SortOrder
+    advertisementImage?: SortOrder
+    advertisementTeacherName?: SortOrder
+    advertisementSubject?: SortOrder
+    advertisementWhatsapp?: SortOrder
+    advertisementDescription?: SortOrder
     difficulty?: SortOrder
     subjectId?: SortOrder
     createdAt?: SortOrder
@@ -27065,6 +27330,11 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     contentUrl?: SortOrder
+    advertisementImage?: SortOrder
+    advertisementTeacherName?: SortOrder
+    advertisementSubject?: SortOrder
+    advertisementWhatsapp?: SortOrder
+    advertisementDescription?: SortOrder
     difficulty?: SortOrder
     subjectId?: SortOrder
     createdAt?: SortOrder
@@ -27076,6 +27346,11 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     contentUrl?: SortOrder
+    advertisementImage?: SortOrder
+    advertisementTeacherName?: SortOrder
+    advertisementSubject?: SortOrder
+    advertisementWhatsapp?: SortOrder
+    advertisementDescription?: SortOrder
     difficulty?: SortOrder
     subjectId?: SortOrder
     createdAt?: SortOrder
@@ -27087,6 +27362,11 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     contentUrl?: SortOrder
+    advertisementImage?: SortOrder
+    advertisementTeacherName?: SortOrder
+    advertisementSubject?: SortOrder
+    advertisementWhatsapp?: SortOrder
+    advertisementDescription?: SortOrder
     difficulty?: SortOrder
     subjectId?: SortOrder
     createdAt?: SortOrder
@@ -30043,6 +30323,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     createdAt?: Date | string
@@ -30060,6 +30345,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     createdAt?: Date | string
@@ -30085,6 +30375,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30098,6 +30393,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30282,6 +30582,11 @@ export namespace Prisma {
     contentUrl?: StringNullableFilter<"Course"> | string | null
     videoUrl?: StringNullableFilter<"Course"> | string | null
     videoPath?: StringNullableFilter<"Course"> | string | null
+    advertisementImage?: StringNullableFilter<"Course"> | string | null
+    advertisementTeacherName?: StringNullableFilter<"Course"> | string | null
+    advertisementSubject?: StringNullableFilter<"Course"> | string | null
+    advertisementWhatsapp?: StringNullableFilter<"Course"> | string | null
+    advertisementDescription?: StringNullableFilter<"Course"> | string | null
     difficulty?: EnumDifficultyFilter<"Course"> | $Enums.Difficulty
     tags?: StringNullableListFilter<"Course">
     subjectId?: StringFilter<"Course"> | string
@@ -30313,6 +30618,11 @@ export namespace Prisma {
     title?: StringFilter<"Exercise"> | string
     description?: StringNullableFilter<"Exercise"> | string | null
     contentUrl?: StringNullableFilter<"Exercise"> | string | null
+    advertisementImage?: StringNullableFilter<"Exercise"> | string | null
+    advertisementTeacherName?: StringNullableFilter<"Exercise"> | string | null
+    advertisementSubject?: StringNullableFilter<"Exercise"> | string | null
+    advertisementWhatsapp?: StringNullableFilter<"Exercise"> | string | null
+    advertisementDescription?: StringNullableFilter<"Exercise"> | string | null
     difficulty?: EnumDifficultyFilter<"Exercise"> | $Enums.Difficulty
     subjectId?: StringFilter<"Exercise"> | string
     createdAt?: DateTimeFilter<"Exercise"> | Date | string
@@ -30659,6 +30969,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     createdAt?: Date | string
@@ -30676,6 +30991,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     subjectId: string
@@ -30709,6 +31029,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30726,6 +31051,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -30977,6 +31307,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30990,6 +31325,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     subjectId: string
     createdAt?: Date | string
@@ -31019,6 +31359,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31032,6 +31377,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     subjectId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31100,6 +31450,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     createdAt?: Date | string
@@ -31117,6 +31472,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     subjectId: string
@@ -31137,6 +31497,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31150,6 +31515,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     subjectId: string
     createdAt?: Date | string
@@ -31240,6 +31610,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31257,6 +31632,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -31283,6 +31663,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31296,6 +31681,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     subjectId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31364,6 +31754,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     createdAt?: Date | string
@@ -31381,6 +31776,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     subjectId: string
@@ -31473,6 +31873,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31490,6 +31895,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -31619,6 +32029,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     createdAt?: Date | string
@@ -31636,6 +32051,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     subjectId: string
@@ -31669,6 +32089,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31686,6 +32111,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -31701,6 +32131,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31714,6 +32149,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     subjectId: string
     createdAt?: Date | string
@@ -31743,6 +32183,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31756,6 +32201,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     subjectId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33228,6 +33678,11 @@ export namespace Prisma {
     contentUrl?: string | null
     videoUrl?: string | null
     videoPath?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     tags?: CourseCreatetagsInput | string[]
     createdAt?: Date | string
@@ -33239,6 +33694,11 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    advertisementImage?: string | null
+    advertisementTeacherName?: string | null
+    advertisementSubject?: string | null
+    advertisementWhatsapp?: string | null
+    advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -33305,6 +33765,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33322,6 +33787,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33339,6 +33809,11 @@ export namespace Prisma {
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     tags?: CourseUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33350,6 +33825,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33363,6 +33843,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33376,6 +33861,11 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -3,7 +3,14 @@ const prisma = require('../lib/prisma');
 const { sendError } = require('../utils/http');
 const { deleteObject, normalizeStoredFileValueToKey, toPublicUrlFromStoredValue } = require('../lib/r2');
 const { validateStoredUpload } = require('../utils/storedUploadSecurity');
-const { PDF_MAX_SIZE_BYTES, PDF_MIME_TYPES, VIDEO_MAX_SIZE_BYTES, VIDEO_MIME_TYPES } = require('../utils/uploadPolicies');
+const {
+  IMAGE_MAX_SIZE_BYTES,
+  IMAGE_MIME_TYPES,
+  PDF_MAX_SIZE_BYTES,
+  PDF_MIME_TYPES,
+  VIDEO_MAX_SIZE_BYTES,
+  VIDEO_MIME_TYPES,
+} = require('../utils/uploadPolicies');
 
 const COURSE_LIST_SELECT = {
   id: true,
@@ -12,6 +19,11 @@ const COURSE_LIST_SELECT = {
   contentUrl: true,
   videoUrl: true,
   videoPath: true,
+  advertisementImage: true,
+  advertisementTeacherName: true,
+  advertisementSubject: true,
+  advertisementWhatsapp: true,
+  advertisementDescription: true,
   difficulty: true,
   tags: true,
   createdAt: true,
@@ -43,6 +55,9 @@ const mapCourseFiles = (course) => {
     ...course,
     contentUrl: course.contentUrl ? toPublicUrlFromStoredValue(course.contentUrl) : null,
     videoPath: course.videoPath ? toPublicUrlFromStoredValue(course.videoPath) : null,
+    advertisementImage: course.advertisementImage
+      ? toPublicUrlFromStoredValue(course.advertisementImage)
+      : null,
     resources: Array.isArray(course.resources)
       ? course.resources.map((resource) => ({
           ...resource,
@@ -50,6 +65,16 @@ const mapCourseFiles = (course) => {
         }))
       : course.resources,
   };
+};
+
+const normalizeOptionalText = (value) => {
+  const normalized = String(value || '').trim();
+  return normalized || null;
+};
+
+const normalizeWhatsapp = (value) => {
+  const digits = String(value || '').replace(/\D+/g, '');
+  return digits || null;
 };
 
 const getAllCourses = async (req, res) => {
@@ -125,9 +150,26 @@ const getCourseById = async (req, res) => {
 
 const createCourse = async (req, res) => {
   try {
-    const { title, description, contentUrl, videoUrl, videoPath, difficulty, tags, subjectId } = req.body;
+    const {
+      title,
+      description,
+      contentUrl,
+      videoUrl,
+      videoPath,
+      difficulty,
+      tags,
+      subjectId,
+      advertisementImage,
+      advertisementTeacherName,
+      advertisementSubject,
+      advertisementWhatsapp,
+      advertisementDescription,
+    } = req.body;
     const normalizedContentUrl = contentUrl ? normalizeStoredFileValueToKey(contentUrl) : null;
     const normalizedVideoPath = videoPath ? normalizeStoredFileValueToKey(videoPath) : null;
+    const normalizedAdvertisementImage = advertisementImage
+      ? normalizeStoredFileValueToKey(advertisementImage)
+      : null;
 
     await Promise.all([
       normalizedContentUrl
@@ -144,6 +186,13 @@ const createCourse = async (req, res) => {
             maxSizeBytes: VIDEO_MAX_SIZE_BYTES,
           })
         : Promise.resolve(),
+      normalizedAdvertisementImage
+        ? validateStoredUpload({
+            storedValue: normalizedAdvertisementImage,
+            allowedMimeTypes: IMAGE_MIME_TYPES,
+            maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
+          })
+        : Promise.resolve(),
     ]);
     
     const course = await prisma.course.create({
@@ -153,6 +202,11 @@ const createCourse = async (req, res) => {
         contentUrl: normalizedContentUrl,
         videoUrl,
         videoPath: normalizedVideoPath,
+        advertisementImage: normalizedAdvertisementImage,
+        advertisementTeacherName: normalizeOptionalText(advertisementTeacherName),
+        advertisementSubject: normalizeOptionalText(advertisementSubject),
+        advertisementWhatsapp: normalizeWhatsapp(advertisementWhatsapp),
+        advertisementDescription: normalizeOptionalText(advertisementDescription),
         difficulty,
         tags,
         subjectId,
@@ -168,9 +222,26 @@ const createCourse = async (req, res) => {
 const updateCourse = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, contentUrl, videoUrl, videoPath, difficulty, tags, subjectId } = req.body;
+    const {
+      title,
+      description,
+      contentUrl,
+      videoUrl,
+      videoPath,
+      difficulty,
+      tags,
+      subjectId,
+      advertisementImage,
+      advertisementTeacherName,
+      advertisementSubject,
+      advertisementWhatsapp,
+      advertisementDescription,
+    } = req.body;
     const normalizedContentUrl = contentUrl ? normalizeStoredFileValueToKey(contentUrl) : null;
     const normalizedVideoPath = videoPath ? normalizeStoredFileValueToKey(videoPath) : null;
+    const normalizedAdvertisementImage = advertisementImage
+      ? normalizeStoredFileValueToKey(advertisementImage)
+      : null;
 
     await Promise.all([
       normalizedContentUrl
@@ -187,6 +258,13 @@ const updateCourse = async (req, res) => {
             maxSizeBytes: VIDEO_MAX_SIZE_BYTES,
           })
         : Promise.resolve(),
+      normalizedAdvertisementImage
+        ? validateStoredUpload({
+            storedValue: normalizedAdvertisementImage,
+            allowedMimeTypes: IMAGE_MIME_TYPES,
+            maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
+          })
+        : Promise.resolve(),
     ]);
     
     const course = await prisma.course.update({
@@ -197,6 +275,11 @@ const updateCourse = async (req, res) => {
         contentUrl: normalizedContentUrl,
         videoUrl,
         videoPath: normalizedVideoPath,
+        advertisementImage: normalizedAdvertisementImage,
+        advertisementTeacherName: normalizeOptionalText(advertisementTeacherName),
+        advertisementSubject: normalizeOptionalText(advertisementSubject),
+        advertisementWhatsapp: normalizeWhatsapp(advertisementWhatsapp),
+        advertisementDescription: normalizeOptionalText(advertisementDescription),
         difficulty,
         tags,
         subjectId,
@@ -220,6 +303,7 @@ const deleteCourse = async (req, res) => {
       select: {
         contentUrl: true,
         videoPath: true,
+        advertisementImage: true,
         resources: { select: { url: true } },
       },
     });
@@ -230,6 +314,7 @@ const deleteCourse = async (req, res) => {
     const keys = [
       existing?.contentUrl,
       existing?.videoPath,
+      existing?.advertisementImage,
       ...(existing?.resources || []).map((r) => r.url),
     ].filter((value) => value && !/^https?:\/\//i.test(String(value)));
     await Promise.all(keys.map((key) => deleteObject(key)));

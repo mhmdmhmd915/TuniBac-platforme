@@ -107,6 +107,11 @@ interface Course {
   contentUrl?: string | null;
   videoUrl?: string | null;
   videoPath?: string | null;
+  advertisementImage?: string | null;
+  advertisementTeacherName?: string | null;
+  advertisementSubject?: string | null;
+  advertisementWhatsapp?: string | null;
+  advertisementDescription?: string | null;
   difficulty: Difficulty;
   tags: string[];
   subjectId: string;
@@ -121,6 +126,11 @@ interface Exercise {
   title: string;
   description?: string | null;
   contentUrl?: string | null;
+  advertisementImage?: string | null;
+  advertisementTeacherName?: string | null;
+  advertisementSubject?: string | null;
+  advertisementWhatsapp?: string | null;
+  advertisementDescription?: string | null;
   difficulty: Difficulty;
   subjectId: string;
   subject?: Subject;
@@ -232,6 +242,11 @@ interface CourseFormState {
   tags: string;
   contentUrl: string;
   videoPath: string;
+  advertisementImage: string;
+  advertisementTeacherName: string;
+  advertisementSubject: string;
+  advertisementWhatsapp: string;
+  advertisementDescription: string;
   resourceTitle: string;
   resourceUrl: string;
   resourceType: string;
@@ -243,6 +258,11 @@ interface ExerciseFormState {
   subjectId: string;
   difficulty: Difficulty;
   contentUrl: string;
+  advertisementImage: string;
+  advertisementTeacherName: string;
+  advertisementSubject: string;
+  advertisementWhatsapp: string;
+  advertisementDescription: string;
   resourceTitle: string;
   resourceUrl: string;
   resourceType: string;
@@ -382,6 +402,11 @@ const defaultCourseForm = (subjectId = ''): CourseFormState => ({
   tags: '',
   contentUrl: '',
   videoPath: '',
+  advertisementImage: '',
+  advertisementTeacherName: '',
+  advertisementSubject: '',
+  advertisementWhatsapp: '',
+  advertisementDescription: '',
   resourceTitle: '',
   resourceUrl: '',
   resourceType: 'WEBSITE',
@@ -393,6 +418,11 @@ const defaultExerciseForm = (subjectId = ''): ExerciseFormState => ({
   subjectId,
   difficulty: 'BEGINNER',
   contentUrl: '',
+  advertisementImage: '',
+  advertisementTeacherName: '',
+  advertisementSubject: '',
+  advertisementWhatsapp: '',
+  advertisementDescription: '',
   resourceTitle: '',
   resourceUrl: '',
   resourceType: 'WEBSITE',
@@ -444,6 +474,22 @@ const toAssetUrl = (value?: string | null) => {
   }
 
   return `${BACKEND_URL}/${value.replace(/^\/+/, '')}`;
+};
+
+const toStoredAssetPath = (value?: string | null) => {
+  if (!value) {
+    return '';
+  }
+
+  if (!value.startsWith('http')) {
+    return value.replace(/^\/+/, '');
+  }
+
+  try {
+    return new URL(value).pathname.replace(/^\/+/, '');
+  } catch {
+    return value.replace(/^\/+/, '');
+  }
 };
 
 const formatDate = (value?: string | null) => {
@@ -748,6 +794,11 @@ const AdminWorkspace = () => {
         tags: course.tags.join(', '),
         contentUrl: course.contentUrl || '',
         videoPath: course.videoPath || '',
+        advertisementImage: course.advertisementImage || '',
+        advertisementTeacherName: course.advertisementTeacherName || '',
+        advertisementSubject: course.advertisementSubject || '',
+        advertisementWhatsapp: course.advertisementWhatsapp || '',
+        advertisementDescription: course.advertisementDescription || '',
         resourceTitle: '',
         resourceUrl: '',
         resourceType: 'WEBSITE',
@@ -762,6 +813,11 @@ const AdminWorkspace = () => {
         subjectId: exercise.subjectId,
         difficulty: exercise.difficulty,
         contentUrl: exercise.contentUrl || '',
+        advertisementImage: exercise.advertisementImage || '',
+        advertisementTeacherName: exercise.advertisementTeacherName || '',
+        advertisementSubject: exercise.advertisementSubject || '',
+        advertisementWhatsapp: exercise.advertisementWhatsapp || '',
+        advertisementDescription: exercise.advertisementDescription || '',
         resourceTitle: '',
         resourceUrl: '',
         resourceType: 'WEBSITE',
@@ -820,6 +876,26 @@ const AdminWorkspace = () => {
     setExerciseCorrectionFile(null);
   };
 
+  const cleanupPreviousAsset = async (
+    previousValue?: string | null,
+    nextValue?: string | null
+  ) => {
+    if (!previousValue || previousValue === nextValue) {
+      return;
+    }
+
+    const storedPath = toStoredAssetPath(previousValue);
+    if (!storedPath) {
+      return;
+    }
+
+    try {
+      await adminAPI.deleteUpload({ path: storedPath });
+    } catch (error) {
+      logger.error('Failed to cleanup replaced upload', error, { storedPath });
+    }
+  };
+
   const saveEditor = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -831,6 +907,9 @@ const AdminWorkspace = () => {
       setSaving(true);
 
       if (editorSection === 'courses') {
+        const previousCourse = editingId
+          ? courses.find((entry) => entry.id === editingId)
+          : undefined;
         const payload = {
           title: courseForm.title,
           description: courseForm.description,
@@ -840,6 +919,11 @@ const AdminWorkspace = () => {
           contentUrl: courseForm.contentUrl,
           videoPath: courseForm.videoPath,
           videoUrl: '',
+          advertisementImage: courseForm.advertisementImage,
+          advertisementTeacherName: courseForm.advertisementTeacherName,
+          advertisementSubject: courseForm.advertisementSubject,
+          advertisementWhatsapp: courseForm.advertisementWhatsapp,
+          advertisementDescription: courseForm.advertisementDescription,
         };
 
         let courseId = editingId;
@@ -861,15 +945,28 @@ const AdminWorkspace = () => {
             type: courseForm.resourceType,
           });
         }
+
+        await cleanupPreviousAsset(
+          previousCourse?.advertisementImage,
+          courseForm.advertisementImage || null
+        );
       }
 
       if (editorSection === 'exercises') {
+        const previousExercise = editingId
+          ? exercises.find((entry) => entry.id === editingId)
+          : undefined;
         const payload = {
           title: exerciseForm.title,
           description: exerciseForm.description,
           subjectId: exerciseForm.subjectId,
           difficulty: exerciseForm.difficulty,
           contentUrl: exerciseForm.contentUrl,
+          advertisementImage: exerciseForm.advertisementImage,
+          advertisementTeacherName: exerciseForm.advertisementTeacherName,
+          advertisementSubject: exerciseForm.advertisementSubject,
+          advertisementWhatsapp: exerciseForm.advertisementWhatsapp,
+          advertisementDescription: exerciseForm.advertisementDescription,
         };
 
         let exerciseId = editingId;
@@ -900,6 +997,11 @@ const AdminWorkspace = () => {
           formData.append('title', 'Correction');
           await adminAPI.uploadExerciseCorrection(formData);
         }
+
+        await cleanupPreviousAsset(
+          previousExercise?.advertisementImage,
+          exerciseForm.advertisementImage || null
+        );
       }
 
       if (editorSection === 'subjects') {
@@ -2405,6 +2507,88 @@ const AdminWorkspace = () => {
           </div>
           <div className="rounded-3xl border border-black/5 p-5 dark:border-white/5">
             <h3 className="font-semibold text-gray-900 dark:text-white">
+              Professor Advertisement
+            </h3>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              Optional card shown only on this course page.
+            </p>
+            <div className="mt-4 space-y-5">
+              <div className="space-y-2">
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Advertisement Image
+                </span>
+                <ImageUploader
+                  value={courseForm.advertisementImage ? toAssetUrl(courseForm.advertisementImage) : ''}
+                  onChange={(value) =>
+                    setCourseForm((previous) => ({
+                      ...previous,
+                      advertisementImage: value.replace(BACKEND_URL, ''),
+                    }))
+                  }
+                  onUpload={async (file) => {
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    const response = await adminAPI.uploadCourseAdvertisementImage(formData);
+                    return toAssetUrl(response.data.fileUrl as string);
+                  }}
+                  placeholder="Upload the professor image"
+                />
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                <input
+                  value={courseForm.advertisementTeacherName}
+                  onChange={(event) =>
+                    setCourseForm((previous) => ({
+                      ...previous,
+                      advertisementTeacherName: event.target.value,
+                    }))
+                  }
+                  className="rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
+                  placeholder="Teacher Name"
+                  aria-label="Course advertisement teacher name"
+                />
+                <input
+                  value={courseForm.advertisementSubject}
+                  onChange={(event) =>
+                    setCourseForm((previous) => ({
+                      ...previous,
+                      advertisementSubject: event.target.value,
+                    }))
+                  }
+                  className="rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
+                  placeholder="Subject"
+                  aria-label="Course advertisement subject"
+                />
+              </div>
+              <input
+                value={courseForm.advertisementWhatsapp}
+                onChange={(event) =>
+                  setCourseForm((previous) => ({
+                    ...previous,
+                    advertisementWhatsapp: event.target.value,
+                  }))
+                }
+                className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
+                placeholder="WhatsApp Number"
+                aria-label="Course advertisement WhatsApp number"
+              />
+              <textarea
+                rows={3}
+                value={courseForm.advertisementDescription}
+                onChange={(event) =>
+                  setCourseForm((previous) => ({
+                    ...previous,
+                    advertisementDescription: event.target.value,
+                  }))
+                }
+                className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
+                placeholder="Short Description"
+                aria-label="Course advertisement short description"
+              />
+            </div>
+          </div>
+          <div className="rounded-3xl border border-black/5 p-5 dark:border-white/5">
+            <h3 className="font-semibold text-gray-900 dark:text-white">
               Optional Resource
             </h3>
             <div className="mt-4 grid gap-4 md:grid-cols-3">
@@ -2620,6 +2804,92 @@ const AdminWorkspace = () => {
                   return file.name;
                 }}
                 placeholder="Attach a correction PDF"
+              />
+            </div>
+          </div>
+          <div className="rounded-3xl border border-black/5 p-5 dark:border-white/5">
+            <h3 className="font-semibold text-gray-900 dark:text-white">
+              Professor Advertisement
+            </h3>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              Optional card shown only on this exercise page.
+            </p>
+            <div className="mt-4 space-y-5">
+              <div className="space-y-2">
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Advertisement Image
+                </span>
+                <ImageUploader
+                  value={
+                    exerciseForm.advertisementImage
+                      ? toAssetUrl(exerciseForm.advertisementImage)
+                      : ''
+                  }
+                  onChange={(value) =>
+                    setExerciseForm((previous) => ({
+                      ...previous,
+                      advertisementImage: value.replace(BACKEND_URL, ''),
+                    }))
+                  }
+                  onUpload={async (file) => {
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    const response = await adminAPI.uploadExerciseAdvertisementImage(formData);
+                    return toAssetUrl(response.data.fileUrl as string);
+                  }}
+                  placeholder="Upload the professor image"
+                />
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                <input
+                  value={exerciseForm.advertisementTeacherName}
+                  onChange={(event) =>
+                    setExerciseForm((previous) => ({
+                      ...previous,
+                      advertisementTeacherName: event.target.value,
+                    }))
+                  }
+                  className="rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
+                  placeholder="Teacher Name"
+                  aria-label="Exercise advertisement teacher name"
+                />
+                <input
+                  value={exerciseForm.advertisementSubject}
+                  onChange={(event) =>
+                    setExerciseForm((previous) => ({
+                      ...previous,
+                      advertisementSubject: event.target.value,
+                    }))
+                  }
+                  className="rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
+                  placeholder="Subject"
+                  aria-label="Exercise advertisement subject"
+                />
+              </div>
+              <input
+                value={exerciseForm.advertisementWhatsapp}
+                onChange={(event) =>
+                  setExerciseForm((previous) => ({
+                    ...previous,
+                    advertisementWhatsapp: event.target.value,
+                  }))
+                }
+                className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
+                placeholder="WhatsApp Number"
+                aria-label="Exercise advertisement WhatsApp number"
+              />
+              <textarea
+                rows={3}
+                value={exerciseForm.advertisementDescription}
+                onChange={(event) =>
+                  setExerciseForm((previous) => ({
+                    ...previous,
+                    advertisementDescription: event.target.value,
+                  }))
+                }
+                className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
+                placeholder="Short Description"
+                aria-label="Exercise advertisement short description"
               />
             </div>
           </div>
@@ -3508,4 +3778,3 @@ const AdminWorkspace = () => {
 };
 
 export default AdminWorkspace;
-

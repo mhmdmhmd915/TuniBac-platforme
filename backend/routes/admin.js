@@ -82,6 +82,12 @@ const uploadCoursePdf = createUploadMiddleware({
   maxSizeBytes: PDF_MAX_SIZE_BYTES,
 });
 
+const uploadCourseAdvertisementImage = createUploadMiddleware({
+  relativeDir: 'course-advertisements',
+  allowedMimeTypes: IMAGE_MIME_TYPES,
+  maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
+});
+
 const uploadSettingFile = createUploadMiddleware({
   relativeDir: 'settings',
   allowedMimeTypes: [
@@ -96,6 +102,12 @@ const uploadExercisePdf = createUploadMiddleware({
   relativeDir: 'exercises',
   allowedMimeTypes: PDF_MIME_TYPES,
   maxSizeBytes: PDF_MAX_SIZE_BYTES,
+});
+
+const uploadExerciseAdvertisementImage = createUploadMiddleware({
+  relativeDir: 'exercise-advertisements',
+  allowedMimeTypes: IMAGE_MIME_TYPES,
+  maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
 });
 
 const uploadExerciseCorrection = createUploadMiddleware({
@@ -392,6 +404,30 @@ router.post(
   })
 );
 
+router.post(
+  '/courses/upload-advertisement-image',
+  uploadCourseAdvertisementImage.single('image'),
+  (req, res) => {
+    res.json({
+      fileUrl: toPublicUploadPath('course-advertisements', req.file.filename),
+    });
+  }
+);
+router.post(
+  '/courses/upload-advertisement-image/presign',
+  createSignedUploadHandler({
+    relativeDir: 'course-advertisements',
+    allowedMimeTypes: IMAGE_MIME_TYPES,
+    maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
+    buildResponse: ({ uploadUrl, publicUrl, key, filename }) => ({
+      uploadUrl,
+      fileUrl: publicUrl,
+      key,
+      filename,
+    }),
+  })
+);
+
 router.post('/uploads/video', uploadVideo.single('video'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: 'No video file uploaded' });
@@ -437,6 +473,30 @@ router.post(
     relativeDir: 'exercises',
     allowedMimeTypes: PDF_MIME_TYPES,
     maxSizeBytes: PDF_MAX_SIZE_BYTES,
+    buildResponse: ({ uploadUrl, publicUrl, key, filename }) => ({
+      uploadUrl,
+      fileUrl: publicUrl,
+      key,
+      filename,
+    }),
+  })
+);
+
+router.post(
+  '/exercises/upload-advertisement-image',
+  uploadExerciseAdvertisementImage.single('image'),
+  (req, res) => {
+    res.json({
+      fileUrl: toPublicUploadPath('exercise-advertisements', req.file.filename),
+    });
+  }
+);
+router.post(
+  '/exercises/upload-advertisement-image/presign',
+  createSignedUploadHandler({
+    relativeDir: 'exercise-advertisements',
+    allowedMimeTypes: IMAGE_MIME_TYPES,
+    maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
     buildResponse: ({ uploadUrl, publicUrl, key, filename }) => ({
       uploadUrl,
       fileUrl: publicUrl,

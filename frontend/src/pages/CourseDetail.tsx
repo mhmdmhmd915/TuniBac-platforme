@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Play, FileText, Download, ArrowLeft } from 'lucide-react'
+import ProfessorAdvertisementCard from '../components/ProfessorAdvertisementCard'
 import { coursesAPI } from '../services/api'
 import { toAssetUrl } from '../lib/assets'
 import { logger } from '../lib/logger'
@@ -111,10 +112,7 @@ const CourseDetail = () => {
             </div>
           )}
         </div> 
-        {/* Sidebar */}
         <div className="space-y-8">
-
-          {/* Other Resources */}
           <div className="glass-morphism rounded-3xl p-8 space-y-6">
             <h3 className="text-xl font-bold text-text-light dark:text-text">
               Other Resources
@@ -146,8 +144,6 @@ const CourseDetail = () => {
               )}
             </div>
           </div>
-
-          {/* Practice Exercises */}
           <div className="glass-morphism rounded-3xl p-8 space-y-6">
             <h3 className="text-xl font-bold text-text-light dark:text-text">
               Practice Exercises
@@ -164,9 +160,22 @@ const CourseDetail = () => {
               <span>Go to Exercises</span>
             </Link>
           </div>
-
         </div>
       </div>
+
+      {(course.advertisementImage ||
+        course.advertisementTeacherName ||
+        course.advertisementSubject ||
+        course.advertisementDescription ||
+        course.advertisementWhatsapp) && (
+        <ProfessorAdvertisementCard
+          image={course.advertisementImage}
+          teacherName={course.advertisementTeacherName}
+          subject={course.advertisementSubject}
+          description={course.advertisementDescription}
+          whatsapp={course.advertisementWhatsapp}
+        />
+      )}
     </div>
   )
 }

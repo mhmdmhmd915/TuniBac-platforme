@@ -34,6 +34,33 @@ const buildVariants = (key) => {
   ].filter(Boolean);
 };
 
+const isMissingOptionalColumnError = (error, field) => {
+  const message = String(error?.message || '').toLowerCase();
+  return message.includes(String(field || '').toLowerCase()) && message.includes('does not exist');
+};
+
+const findManyIfFieldExists = async (query, field) => {
+  try {
+    return await query();
+  } catch (error) {
+    if (isMissingOptionalColumnError(error, field)) {
+      return [];
+    }
+    throw error;
+  }
+};
+
+const updateManyIfFieldExists = async (query, field) => {
+  try {
+    return await query();
+  } catch (error) {
+    if (isMissingOptionalColumnError(error, field)) {
+      return { count: 0 };
+    }
+    throw error;
+  }
+};
+
 async function findReferences(variants) {
   const makeContains = (field) => ({
     OR: variants.map((value) => ({ [field]: { equals: value } })).concat(
@@ -49,10 +76,26 @@ async function findReferences(variants) {
     where: makeContains('videoPath'),
     select: { id: true, title: true },
   });
+  const courseAdvertisement = await findManyIfFieldExists(
+    () =>
+      prisma.course.findMany({
+        where: makeContains('advertisementImage'),
+        select: { id: true, title: true },
+      }),
+    'advertisementImage'
+  );
   const exerciseContent = await prisma.exercise.findMany({
     where: makeContains('contentUrl'),
     select: { id: true, title: true },
   });
+  const exerciseAdvertisement = await findManyIfFieldExists(
+    () =>
+      prisma.exercise.findMany({
+        where: makeContains('advertisementImage'),
+        select: { id: true, title: true },
+      }),
+    'advertisementImage'
+  );
   const correctionContent = await prisma.correction.findMany({
     where: makeContains('contentUrl'),
     select: { id: true, title: true, exerciseId: true },
@@ -89,7 +132,9 @@ async function findReferences(variants) {
   return {
     coursesContent: courseContent,
     coursesVideo: courseVideo,
+    coursesAdvertisement: courseAdvertisement,
     exercisesContent: exerciseContent,
+    exercisesAdvertisement: exerciseAdvertisement,
     corrections: correctionContent,
     parascolairesCover: parascolaireCover,
     parascolairesPdf: parascolairePdf,
@@ -188,7 +233,23 @@ async function deleteUpload(req, res) {
     await Promise.all([
       prisma.course.updateMany({ where: { OR: variants.map((value) => ({ contentUrl: { equals: value } })) }, data: { contentUrl: null } }),
       prisma.course.updateMany({ where: { OR: variants.map((value) => ({ videoPath: { equals: value } })) }, data: { videoPath: null } }),
+      updateManyIfFieldExists(
+        () =>
+          prisma.course.updateMany({
+            where: { OR: variants.map((value) => ({ advertisementImage: { equals: value } })) },
+            data: { advertisementImage: null },
+          }),
+        'advertisementImage'
+      ),
       prisma.exercise.updateMany({ where: { OR: variants.map((value) => ({ contentUrl: { equals: value } })) }, data: { contentUrl: null } }),
+      updateManyIfFieldExists(
+        () =>
+          prisma.exercise.updateMany({
+            where: { OR: variants.map((value) => ({ advertisementImage: { equals: value } })) },
+            data: { advertisementImage: null },
+          }),
+        'advertisementImage'
+      ),
       prisma.courseResource.deleteMany({ where: { OR: variants.map((value) => ({ url: { equals: value } })) } }),
       prisma.exerciseResource.deleteMany({ where: { OR: variants.map((value) => ({ url: { equals: value } })) } }),
       prisma.correction.deleteMany({ where: { OR: variants.map((value) => ({ contentUrl: { equals: value } })) } }),
