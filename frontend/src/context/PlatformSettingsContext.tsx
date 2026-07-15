@@ -92,9 +92,6 @@ export const PlatformSettingsProvider: React.FC<{ children: React.ReactNode }> =
     const platformName = settings.platformName || OFFICIAL_BRAND.name;
     const title = getBrandTitle(platformName);
     const officialFaviconHref = toAssetUrl(OFFICIAL_BRAND.assets.favicon32);
-    const configuredFaviconHref = settings.platformFavicon
-      ? toAssetUrl(settings.platformFavicon)
-      : officialFaviconHref;
     const socialImage = `${OFFICIAL_BRAND.siteUrl}${OFFICIAL_BRAND.assets.socialPreview}`;
     const ogImage = `${OFFICIAL_BRAND.siteUrl}${OFFICIAL_BRAND.assets.ogImage}`;
 
@@ -115,22 +112,7 @@ export const PlatformSettingsProvider: React.FC<{ children: React.ReactNode }> =
     upsertMeta('meta[name="twitter:title"]', 'name', title);
     upsertMeta('meta[name="twitter:description"]', 'name', OFFICIAL_BRAND.description);
     upsertMeta('meta[name="twitter:image"]', 'name', socialImage);
-
-    if (configuredFaviconHref && configuredFaviconHref !== officialFaviconHref) {
-      let cancelled = false;
-      const probe = new Image();
-      probe.onload = () => {
-        if (!cancelled) {
-          upsertLink('icon', configuredFaviconHref, 'image/png');
-        }
-      };
-      probe.onerror = () => void 0;
-      probe.src = configuredFaviconHref;
-      return () => {
-        cancelled = true;
-      };
-    }
-  }, [settings.platformFavicon, settings.platformName]);
+  }, [settings.platformName]);
 
   const value = useMemo(
     () => ({ settings, isLoading, refresh }),
