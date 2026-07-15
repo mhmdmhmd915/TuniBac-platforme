@@ -8,7 +8,7 @@ interface ActionButtonProps extends HTMLMotionProps<'button'> {
 }
 
 const toneClasses: Record<NonNullable<ActionButtonProps['tone']>, string> = {
-  primary: 'bg-[#FFD700] text-black hover:bg-[#E6C200]',
+  primary: 'bg-[#0B5ED7] text-white hover:bg-[#094FB6]',
   neutral: 'bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-white/5 dark:text-white dark:hover:bg-white/10',
   danger: 'bg-red-500 text-white hover:bg-red-600',
   success: 'bg-emerald-500 text-white hover:bg-emerald-600',
@@ -37,3 +37,4 @@ export const ActionButton = ({
     </motion.button>
   );
 };
+

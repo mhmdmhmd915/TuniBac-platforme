@@ -121,8 +121,8 @@ export const VideoUploader = ({
         transition-all duration-200
         ${
           isDragging
-            ? 'border-[#FFD700] bg-[#FFD700]/10'
-            : 'border-gray-300 dark:border-gray-600 hover:border-[#FFD700]'
+            ? 'border-[#0B5ED7] bg-[#0B5ED7]/10'
+            : 'border-gray-300 dark:border-gray-600 hover:border-[#0B5ED7]'
         }
       `}
     >
@@ -160,10 +160,10 @@ export const VideoUploader = ({
           <div className="p-4 bg-gray-100 dark:bg-white/5 rounded-full w-fit mx-auto">
             {isUploading ? (
               <div className="space-y-3">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FFD700] mx-auto"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0B5ED7] mx-auto"></div>
                 <div className="w-40 h-2 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#FFD700] transition-all duration-300"
+                    className="h-full bg-[#0B5ED7] transition-all duration-300"
                     style={{ width: `${uploadProgress}%` }}
                   />
                 </div>
@@ -219,3 +219,4 @@ export const VideoUploader = ({
     </div>
   );
 };
+

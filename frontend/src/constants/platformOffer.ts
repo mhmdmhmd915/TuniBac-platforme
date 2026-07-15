@@ -1,3 +1,5 @@
+import { OFFICIAL_BRAND } from '../lib/brand'
+
 export type PlatformOfferCard = {
   id: string
   title: string
@@ -133,10 +135,10 @@ export const buildPlatformOffer = (settings: Record<string, string>): PlatformOf
   backgroundImage: settings.platformOfferBackgroundImage || '',
   bannerImage: settings.platformOfferBannerImage || '',
   videoUrl: settings.platformOfferVideoUrl || '',
-  logo: settings.platformOfferLogo || settings.platformLogo || '',
-  primaryColor: settings.platformOfferPrimaryColor || '#2563EB',
-  secondaryColor: settings.platformOfferSecondaryColor || '#7C3AED',
-  accentColor: settings.platformOfferAccentColor || '#F59E0B',
+  logo: settings.platformOfferLogo || settings.platformLogo || OFFICIAL_BRAND.assets.logoHorizontal,
+  primaryColor: settings.platformOfferPrimaryColor || OFFICIAL_BRAND.colors.primaryBlue,
+  secondaryColor: settings.platformOfferSecondaryColor || OFFICIAL_BRAND.colors.deepBlue,
+  accentColor: settings.platformOfferAccentColor || OFFICIAL_BRAND.colors.tunisianRed,
   displayOrder: Number(settings.platformOfferDisplayOrder || '1'),
   features: parseStringArray(settings.platformOfferFeaturesJson, [
     'Unlimited Courses',

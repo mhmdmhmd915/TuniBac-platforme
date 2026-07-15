@@ -44,6 +44,7 @@ import { DeleteModal } from '../../components/admin/DeleteModal';
 import { ImageUploader } from '../../components/admin/ImageUploader';
 import { PdfUploader } from '../../components/admin/PdfUploader';
 import { VideoUploader } from '../../components/admin/VideoUploader';
+import BrandLogo from '../../components/BrandLogo';
 import {
   BAC_SECTION_OPTIONS,
   DEFAULT_BAC_SECTION,
@@ -315,7 +316,7 @@ const sections: SectionDefinition[] = [
     label: 'Dashboard',
     description: 'Overview, quick actions, and recent activity',
     icon: LayoutDashboard,
-    accent: 'from-[#FFD700]/30 via-[#FFD700]/10 to-transparent',
+    accent: 'from-[#0B5ED7]/30 via-[#0B5ED7]/10 to-transparent',
   },
   {
     key: 'courses',
@@ -400,7 +401,7 @@ const defaultExerciseForm = (subjectId = ''): ExerciseFormState => ({
 const defaultSubjectForm = (): SubjectFormState => ({
   name: '',
   description: '',
-  color: '#3B82F6',
+  color: '#0B5ED7',
   icon: 'book',
   order: 0,
   isActive: true,
@@ -462,9 +463,9 @@ const formatDateTime = (value?: string | null) => {
 };
 
 const badgeStyles = (color?: string) => ({
-  color: color || '#3B82F6',
-  backgroundColor: `${color || '#3B82F6'}14`,
-  borderColor: `${color || '#3B82F6'}35`,
+  color: color || '#0B5ED7',
+  backgroundColor: `${color || '#0B5ED7'}14`,
+  borderColor: `${color || '#0B5ED7'}35`,
 });
 
 const getDifficultyTone = (difficulty: string) => {
@@ -1960,7 +1961,7 @@ const AdminWorkspace = () => {
             {timelineItems.map((item, index) => (
               <div key={item.id} className="flex gap-4">
                 <div className="flex w-8 flex-col items-center">
-                  <div className="h-3 w-3 rounded-full bg-[#FFD700]" />
+                  <div className="h-3 w-3 rounded-full bg-[#0B5ED7]" />
                   {index !== timelineItems.length - 1 && (
                     <div className="mt-2 h-full w-px bg-black/10 dark:bg-white/10" />
                   )}
@@ -3286,15 +3287,15 @@ const AdminWorkspace = () => {
               className={`absolute inset-0 bg-gradient-to-br ${activeSectionMeta.accent}`}
             />
             <div className="relative">
-              <div className="mb-3 inline-flex rounded-2xl bg-white/70 p-3 text-gray-900 shadow-sm dark:bg-black/20 dark:text-white">
-                <Shield size={20} />
+              <div className="mb-4 inline-flex rounded-[20px] bg-white/80 px-3 py-2 shadow-sm ring-1 ring-black/5 dark:bg-slate-950/45 dark:ring-white/10">
+                <BrandLogo variant="horizontal" theme="default" className="h-9 w-auto" alt="TuniBac admin logo" />
               </div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                 Admin Workspace
               </h1>
               <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                Modular management for content, subjects, planner, and review
-                flows.
+                Official TuniBac control center for content, planner, communication,
+                and review flows.
               </p>
             </div>
           </div>
@@ -3315,7 +3316,7 @@ const AdminWorkspace = () => {
                   }}
                   className={`flex w-full items-start gap-3 rounded-2xl px-4 py-3 text-left transition-all ${
                     isActive
-                      ? 'bg-[#FFD700] text-black shadow-lg shadow-[#FFD700]/20'
+                      ? 'bg-brand-red text-white shadow-lg shadow-brand-red/20'
                       : 'hover:bg-gray-100 dark:hover:bg-white/5'
                   }`}
                 >
@@ -3325,7 +3326,7 @@ const AdminWorkspace = () => {
                     <div
                       className={`text-xs ${
                         isActive
-                          ? 'text-black/70'
+                          ? 'text-white/75'
                           : 'text-gray-500 dark:text-gray-400'
                       }`}
                     >
@@ -3457,7 +3458,7 @@ const AdminWorkspace = () => {
           {loading && activeSection === 'dashboard' ? (
             <AdminCard className="p-10">
               <div className="flex items-center justify-center py-20">
-                <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-[#FFD700]" />
+                <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-[#0B5ED7]" />
               </div>
             </AdminCard>
           ) : activeSection === 'dashboard' ? (
@@ -3507,3 +3508,4 @@ const AdminWorkspace = () => {
 };
 
 export default AdminWorkspace;
+

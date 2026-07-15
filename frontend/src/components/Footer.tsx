@@ -1,7 +1,8 @@
-import { GraduationCap, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
+import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { usePlatformSettings } from '../context/PlatformSettingsContext'
 import { useAuth } from '../context/AuthContext'
+import BrandLogo from './BrandLogo'
 
 const Footer = () => {
   const { settings } = usePlatformSettings()
@@ -19,12 +20,11 @@ const Footer = () => {
     <footer className="bg-primary-light dark:bg-primary pt-16 pb-8 border-t border-black/10 dark:border-white/10">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
         <div className="space-y-4">
-          <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-accent">
-            <GraduationCap size={32} />
-            <span>{platformName}</span>
+          <Link to="/" className="inline-flex items-center">
+            <BrandLogo variant="horizontal" className="h-11 w-auto" alt={`${platformName} footer logo`} />
           </Link>
           <p className="text-text-muted-light dark:text-text-muted">
-            The leading educational platform for Tunisian students. Master Mathematics, Physics, and Science with expert guidance.
+            Premium Bac learning for Tunisian students, with courses, exercises, planner tools, homework follow-up, and academic communication in one place.
           </p>
         </div>
 

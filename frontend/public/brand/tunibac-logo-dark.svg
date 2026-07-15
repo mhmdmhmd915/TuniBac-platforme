@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" fill="none">
+  <image href="/brand/tunibac-logo-icon.svg" x="0" y="36" width="248" height="248" />
+  <text x="292" y="150" fill="#FFFFFF" font-size="118" font-weight="800" font-family="Segoe UI, Inter, Arial, sans-serif">Tuni<tspan fill="#0B5ED7">Bac</tspan></text>
+  <text x="292" y="216" fill="#FFFFFF" font-size="40" font-weight="500" letter-spacing="1.2" font-family="Segoe UI, Inter, Arial, sans-serif">Premium Bac Learning Platform</text>
+  <rect x="292" y="252" width="128" height="10" rx="5" fill="#E70013" />
+</svg>

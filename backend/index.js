@@ -110,7 +110,7 @@ app.get('/test', (_req, res) => {
 });
 
 app.get('/', (_req, res) => {
-  res.json({ message: 'Welcome to Mouhamed Academy API', version: '1.0.0' });
+  res.json({ message: 'Welcome to TuniBac API', version: '1.0.0' });
 });
 
 const authRoutes = require('./routes/auth');

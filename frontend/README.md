@@ -1,6 +1,6 @@
-# Mouhamed Academy - Frontend
+# TuniBac - Frontend
 
-Welcome to the frontend of Mouhamed Academy, a premium Tunisian educational platform.
+Welcome to the frontend of TuniBac, a premium Tunisian educational platform.
 
 ## Setup Instructions
 

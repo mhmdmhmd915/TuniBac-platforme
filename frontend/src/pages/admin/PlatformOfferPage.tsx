@@ -189,7 +189,7 @@ const PlatformOfferPage = () => {
       {loading ? (
         <AdminCard className="p-10">
           <div className="flex items-center justify-center py-16">
-            <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-[#FFD700]" />
+            <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-[#0B5ED7]" />
           </div>
         </AdminCard>
       ) : (
@@ -364,7 +364,7 @@ const PlatformOfferPage = () => {
                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Primary Color</span>
                     <input
                       type="color"
-                      value={values.platformOfferPrimaryColor || '#2563EB'}
+                      value={values.platformOfferPrimaryColor || '#0B5ED7'}
                       onChange={(e) => setValue('platformOfferPrimaryColor', e.target.value)}
                       className="h-14 w-full rounded-2xl bg-gray-50 px-3 py-2 dark:bg-white/5"
                     />
@@ -373,7 +373,7 @@ const PlatformOfferPage = () => {
                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Secondary Color</span>
                     <input
                       type="color"
-                      value={values.platformOfferSecondaryColor || '#7C3AED'}
+                      value={values.platformOfferSecondaryColor || '#06295B'}
                       onChange={(e) => setValue('platformOfferSecondaryColor', e.target.value)}
                       className="h-14 w-full rounded-2xl bg-gray-50 px-3 py-2 dark:bg-white/5"
                     />
@@ -382,7 +382,7 @@ const PlatformOfferPage = () => {
                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Accent Color</span>
                     <input
                       type="color"
-                      value={values.platformOfferAccentColor || '#F59E0B'}
+                      value={values.platformOfferAccentColor || '#E70013'}
                       onChange={(e) => setValue('platformOfferAccentColor', e.target.value)}
                       className="h-14 w-full rounded-2xl bg-gray-50 px-3 py-2 dark:bg-white/5"
                     />
@@ -665,3 +665,4 @@ const PlatformOfferPage = () => {
 }
 
 export default PlatformOfferPage
+

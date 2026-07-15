@@ -23,6 +23,7 @@ import { toAssetUrl } from '../lib/assets'
 import { logger } from '../lib/logger'
 import { sanitizeRichHtml } from '../lib/sanitizeHtml'
 import { communicationsAPI, usersAPI } from '../services/api'
+import BrandLogo from '../components/BrandLogo'
 
 type CommunicationType =
   | 'GENERAL_INFORMATION'
@@ -259,6 +260,10 @@ const Dashboard = () => {
     <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
+          <div className="mb-4 inline-flex items-center gap-3 rounded-full border border-brand-blue/15 bg-brand-blue/10 px-4 py-2">
+            <BrandLogo variant="icon" className="h-9 w-9" alt="TuniBac student mark" />
+            <span className="text-xs font-semibold uppercase tracking-[0.24em] text-accent">Student Interface</span>
+          </div>
           <h1 className="text-4xl font-bold mb-2 text-text-light dark:text-text">Welcome back, {user?.firstName}!</h1>
           <p className="text-text-muted-light dark:text-text-muted text-lg">
             Your communication center keeps you updated with the latest classes, meetings, files, and platform announcements.

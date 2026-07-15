@@ -13,17 +13,7 @@ import {
 import { Link } from 'react-router-dom'
 import { buildPlatformOffer } from '../constants/platformOffer'
 import { usePlatformSettings } from '../context/PlatformSettingsContext'
-
-const BACKEND_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(
-  /\/api$/,
-  ''
-)
-
-const toAssetUrl = (value?: string) => {
-  if (!value) return ''
-  if (value.startsWith('http')) return value
-  return `${BACKEND_URL}/${value.replace(/^\/+/, '')}`
-}
+import { toAssetUrl } from '../lib/assets'
 
 const getCardIcon = (icon: string, title: string) => {
   const normalized = `${icon} ${title}`.toLowerCase()

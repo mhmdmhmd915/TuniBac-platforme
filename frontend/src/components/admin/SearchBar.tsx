@@ -25,8 +25,9 @@ export const SearchBar = ({
         aria-label={placeholder}
         className="w-full bg-gray-50 dark:bg-white/5 border-none rounded-xl pl-12 pr-4 py-3
           text-gray-900 dark:text-white
-          focus:ring-2 focus:ring-[#FFD700] outline-none"
+          focus:ring-2 focus:ring-[#0B5ED7] outline-none"
       />
     </div>
   );
 };
+

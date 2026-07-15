@@ -9,17 +9,24 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#0F172A",
-          light: "#F8FAFC"
+          DEFAULT: "#071D49",
+          light: "#F8FBFF"
         },
         secondary: {
-          DEFAULT: "#1E293B",
-          light: "#E2E8F0"
+          DEFAULT: "#0D2C66",
+          light: "#EAF2FF"
         },
-        accent: "#38BDF8",
+        accent: "#0B5ED7",
+        brand: {
+          blue: "#0B5ED7",
+          "blue-dark": "#06295B",
+          red: "#E70013",
+          white: "#FFFFFF",
+          mist: "#F5F8FF"
+        },
         success: "#10B981",
         background: {
-          DEFAULT: "#020617",
+          DEFAULT: "#03132F",
           light: "#FFFFFF"
         },
         text: {

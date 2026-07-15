@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { authAPI } from '../services/api'
+import BrandLogo from '../components/BrandLogo'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -50,8 +51,14 @@ const Login = () => {
         className="max-w-md w-full glass-morphism p-10 rounded-[32px] space-y-8"
       >
         <div className="text-center space-y-2">
+          <div className="flex justify-center">
+            <BrandLogo variant="horizontal" className="h-12 w-auto" alt="TuniBac login logo" />
+          </div>
+          <div className="mx-auto inline-flex items-center rounded-full border border-brand-red/20 bg-brand-red/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-brand-red">
+            Premium Student Access
+          </div>
           <h2 className="text-3xl font-bold text-text-light dark:text-text">Welcome Back</h2>
-          <p className="text-text-muted-light dark:text-text-muted">Continue your learning journey</p>
+          <p className="text-text-muted-light dark:text-text-muted">Continue your Bac journey with the official TuniBac platform.</p>
         </div>
 
         {error && (

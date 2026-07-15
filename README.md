@@ -1,4 +1,4 @@
-# Mouhamed Academy - Full Stack Tunisian Educational Platform
+# TuniBac - Full Stack Tunisian Educational Platform
 
 A modern, premium quality full stack educational platform built for Tunisian students, focusing on Mathematics, Physics, and Science.
 

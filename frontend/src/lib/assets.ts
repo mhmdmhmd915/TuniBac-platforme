@@ -1,3 +1,5 @@
+import { isBundledBrandAsset } from './brand'
+
 const DEFAULT_LOCAL_API_BASE_URL = 'http://localhost:5000/api'
 const DEFAULT_PROD_API_BASE_URL = 'https://tunibac-platforme.onrender.com/api'
 
@@ -37,5 +39,6 @@ export const BACKEND_URL = API_BASE_URL.replace(/\/api$/, '')
 export const toAssetUrl = (value?: string | null): string => {
   if (!value) return ''
   if (value.startsWith('http')) return value
+  if (isBundledBrandAsset(value)) return value
   return `${BACKEND_URL}/${value.replace(/^\/+/, '')}`
 }

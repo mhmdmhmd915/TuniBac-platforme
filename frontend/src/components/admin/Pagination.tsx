@@ -31,7 +31,7 @@ export const Pagination = ({
             w-10 h-10 rounded-lg font-medium transition-colors
             ${
               page === currentPage
-                ? 'bg-[#FFD700] text-black'
+                ? 'bg-[#0B5ED7] text-white'
                 : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5'
             }
           `}
@@ -50,3 +50,4 @@ export const Pagination = ({
     </div>
   );
 };
+

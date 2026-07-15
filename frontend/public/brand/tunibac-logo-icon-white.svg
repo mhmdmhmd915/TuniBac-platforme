@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="tileGradient" x1="76" y1="44" x2="456" y2="468" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#06295B" />
+      <stop offset="1" stop-color="#0B5ED7" />
+    </linearGradient>
+  </defs>
+  <rect x="36" y="36" width="440" height="440" rx="112" fill="#FFFFFF" />
+  <ellipse cx="200" cy="130" rx="160" ry="120" fill="#FFFFFF" fill-opacity="0.10" />
+  <path d="M128 220L220 154L240 198V374L158 404L128 394V220Z" fill="#FFFFFF" />
+  <path d="M384 220L292 154L272 198V374L354 404L384 394V220Z" fill="#FFFFFF" />
+  <path d="M154 374L220 338V374L170 392L154 387V374Z" fill="#FFFFFF" />
+  <path d="M358 374L292 338V374L342 392L358 387V374Z" fill="#FFFFFF" />
+  <rect x="248" y="178" width="16" height="198" rx="8" fill="#FFFFFF" />
+  <path d="M256 88L271 119H305L278 138L288 168L256 149L224 168L234 138L207 119H241L256 88Z" fill="#FFFFFF" />
+  <rect x="36" y="36" width="440" height="440" rx="112" fill="none" stroke="#FFFFFF" stroke-opacity="0.22" stroke-width="6" />
+</svg>

@@ -151,14 +151,14 @@ const SettingsPage = () => {
       {loading ? (
         <AdminCard className="p-10">
           <div className="flex items-center justify-center py-16">
-            <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-[#FFD700]" />
+            <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-[#0B5ED7]" />
           </div>
         </AdminCard>
       ) : (
         <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
           <div className="space-y-6">
             <AdminCard className="p-6 sm:p-8">
-              <SectionTitle title="Branding" subtitle="Nom, logo, favicon, couleurs" />
+              <SectionTitle title="Branding" subtitle="Official TuniBac identity, logo, favicon, and color palette" />
 
               <div className="mt-6 grid gap-5 md:grid-cols-2">
                 <label className="space-y-2">
@@ -174,7 +174,7 @@ const SettingsPage = () => {
                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Primary Color</span>
                     <input
                       type="color"
-                      value={values.primaryColor || '#3B82F6'}
+                      value={values.primaryColor || '#0B5ED7'}
                       onChange={(e) => setValue('primaryColor', e.target.value)}
                       className="h-14 w-full rounded-2xl bg-gray-50 px-3 py-2 dark:bg-white/5"
                     />
@@ -183,7 +183,7 @@ const SettingsPage = () => {
                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Secondary Color</span>
                     <input
                       type="color"
-                      value={values.secondaryColor || '#8B5CF6'}
+                      value={values.secondaryColor || '#E70013'}
                       onChange={(e) => setValue('secondaryColor', e.target.value)}
                       className="h-14 w-full rounded-2xl bg-gray-50 px-3 py-2 dark:bg-white/5"
                     />
@@ -365,4 +365,5 @@ const SettingsPage = () => {
 };
 
 export default SettingsPage;
+
 

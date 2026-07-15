@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom'
-import { GraduationCap, Menu, X, Sun, Moon, LogOut, BookOpen, FileText, Settings, Calendar, Megaphone } from 'lucide-react'
+import { Menu, X, Sun, Moon, LogOut, BookOpen, FileText, Settings, Calendar, Megaphone } from 'lucide-react'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { usePlatformSettings } from '../context/PlatformSettingsContext'
+import BrandLogo from './BrandLogo'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -19,9 +20,13 @@ const Navbar = () => {
   return (
     <nav className="glass-morphism sticky top-0 z-50 px-6 py-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-accent">
-          <GraduationCap size={32} />
-          <span className="hidden sm:inline">{platformName}</span>
+        <Link to="/" className="flex items-center">
+          <BrandLogo
+            variant="horizontal"
+            theme={isDark ? 'dark' : 'default'}
+            className="h-10 w-auto sm:h-11"
+            alt={`${platformName} home`}
+          />
         </Link>
 
         {/* Desktop Menu */}

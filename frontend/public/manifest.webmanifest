@@ -1,0 +1,28 @@
+{
+  "name": "TuniBac",
+  "short_name": "TuniBac",
+  "description": "Premium Bac learning platform for Tunisian students.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F8FF",
+  "theme_color": "#0B5ED7",
+  "icons": [
+    {
+      "src": "/brand/tunibac-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/brand/tunibac-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/brand/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "mouhamed-academy-backend",
   "version": "1.0.0",
-  "description": "Backend for Mouhamed Academy",
+  "description": "Backend for TuniBac",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

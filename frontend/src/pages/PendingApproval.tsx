@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Clock3, LogOut, ShieldCheck, Sparkles } from 'lucide-react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import BrandLogo from '../components/BrandLogo';
 
 const PendingApproval: React.FC = () => {
   const { user, logout } = useAuth();
@@ -33,6 +34,8 @@ const PendingApproval: React.FC = () => {
         className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.1fr_0.9fr]"
       >
         <section className="glass-morphism overflow-hidden rounded-[36px] border border-black/5 p-8 dark:border-white/10 sm:p-10">
+          <BrandLogo variant="horizontal" className="h-12 w-auto" alt="TuniBac pending approval logo" />
+
           <div className="inline-flex items-center gap-2 rounded-full border border-yellow-500/20 bg-yellow-500/10 px-4 py-2 text-sm font-semibold text-yellow-500">
             <Clock3 size={16} />
             Status: Pending Approval
@@ -88,6 +91,9 @@ const PendingApproval: React.FC = () => {
         </section>
 
         <aside className="glass-morphism rounded-[36px] border border-black/5 p-8 dark:border-white/10 sm:p-10">
+          <div className="flex justify-center">
+            <BrandLogo variant="icon" className="h-16 w-16" alt="TuniBac mark" />
+          </div>
           <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-[28px] bg-yellow-500/10 text-yellow-500 ring-1 ring-yellow-500/20">
             <Clock3 size={42} />
           </div>

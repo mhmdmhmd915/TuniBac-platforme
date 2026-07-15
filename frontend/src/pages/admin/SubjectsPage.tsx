@@ -384,7 +384,7 @@ export const SubjectsPage = () => {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-gray-50 dark:bg-white/5 border-none rounded-xl p-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#FFD700] outline-none"
+                    className="w-full bg-gray-50 dark:bg-white/5 border-none rounded-xl p-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-blue outline-none"
                     placeholder="e.g. Mathematics"
                   />
                 </div>
@@ -398,7 +398,7 @@ export const SubjectsPage = () => {
                     rows={3}
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full bg-gray-50 dark:bg-white/5 border-none rounded-xl p-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#FFD700] outline-none"
+                    className="w-full bg-gray-50 dark:bg-white/5 border-none rounded-xl p-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-blue outline-none"
                     placeholder="Brief description..."
                   />
                 </div>
@@ -438,7 +438,7 @@ export const SubjectsPage = () => {
                     type="number"
                     value={formData.order}
                     onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
-                    className="w-full bg-gray-50 dark:bg-white/5 border-none rounded-xl p-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#FFD700] outline-none"
+                    className="w-full bg-gray-50 dark:bg-white/5 border-none rounded-xl p-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-blue outline-none"
                   />
                 </div>
 

@@ -5,6 +5,7 @@ import { Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { authAPI } from '../services/api'
 import { BAC_SECTION_OPTIONS, DEFAULT_BAC_SECTION } from '../constants/bacSections'
+import BrandLogo from '../components/BrandLogo'
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -59,8 +60,14 @@ const Register = () => {
         className="max-w-xl w-full glass-morphism p-10 rounded-[32px] space-y-8"
       >
         <div className="text-center space-y-2">
+          <div className="flex justify-center">
+            <BrandLogo variant="horizontal" className="h-12 w-auto" alt="TuniBac registration logo" />
+          </div>
+          <div className="mx-auto inline-flex items-center rounded-full border border-brand-blue/15 bg-brand-blue/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-accent">
+            Official Registration
+          </div>
           <h2 className="text-3xl font-bold text-text-light dark:text-text">Create Account</h2>
-          <p className="text-text-muted-light dark:text-text-muted">Join the elite Tunisian learning community</p>
+          <p className="text-text-muted-light dark:text-text-muted">Join the premium Tunisian Bac learning community on TuniBac.</p>
         </div>
 
         {error && (

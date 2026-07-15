@@ -15,9 +15,9 @@ export const PrimaryButton = ({
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       className={`
-        bg-[#FFD700] text-black px-6 py-3 rounded-xl font-bold
+        bg-[#0B5ED7] text-white px-6 py-3 rounded-xl font-bold
         flex items-center justify-center gap-2
-        hover:bg-[#E6C200] transition-colors
+        hover:bg-[#094FB6] transition-colors
         disabled:opacity-50 disabled:cursor-not-allowed
         ${fullWidth ? 'w-full' : ''}
         ${className}
@@ -29,3 +29,4 @@ export const PrimaryButton = ({
     </motion.button>
   );
 };
+

@@ -1,4 +1,4 @@
-# Mouhamed Academy - Setup Guide
+# TuniBac - Setup Guide
 
 ## Prerequisites
 - Node.js (v18 or later)
