@@ -83,7 +83,6 @@ const StudyPlanner = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [formData, setFormData] = useState<FormData>({
     title: '',
     description: '',
@@ -239,7 +238,6 @@ const StudyPlanner = () => {
     });
     setIsEditMode(false);
     setEditingTaskId(null);
-    setEditingTask(null);
     setError(null);
     setIsModalOpen(true);
   };
@@ -257,7 +255,6 @@ const StudyPlanner = () => {
     });
     setIsEditMode(true);
     setEditingTaskId(task.id);
-    setEditingTask(task);
     setError(null);
     setIsModalOpen(true);
   };
@@ -277,11 +274,7 @@ const StudyPlanner = () => {
       };
 
       if (isEditMode && editingTaskId) {
-        if (editingTask && !editingTask.isPersonal) {
-          await studentPlannerAPI.updateTask(editingTaskId, { dueAt: payload.dueAt });
-        } else {
-          await studentPlannerAPI.updateTask(editingTaskId, payload);
-        }
+        await studentPlannerAPI.updateTask(editingTaskId, payload);
         setSuccess('Task updated successfully!');
       } else {
         await studentPlannerAPI.createTask(payload);
@@ -327,7 +320,6 @@ const StudyPlanner = () => {
     }));
     setIsEditMode(false);
     setEditingTaskId(null);
-    setEditingTask(null);
     setIsModalOpen(true);
   };
 
@@ -815,15 +807,15 @@ const StudyPlanner = () => {
                 )}
                 <div>
                   <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Title</label>
-                  <input type="text" value={formData.title} onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))} required disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60" placeholder="Enter task title" />
+                  <input type="text" value={formData.title} onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))} required className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" placeholder="Enter task title" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Description</label>
-                  <textarea value={formData.description} onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))} disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60" rows={3} placeholder="Enter task description" />
+                  <textarea value={formData.description} onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" rows={3} placeholder="Enter task description" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Subject</label>
-                  <select value={formData.subjectId} onChange={(e) => setFormData(prev => ({ ...prev, subjectId: e.target.value }))} disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60">
+                  <select value={formData.subjectId} onChange={(e) => setFormData(prev => ({ ...prev, subjectId: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50">
                     {subjects.map(subject => (
                       <option key={subject.id} value={subject.id}>{subject.name}</option>
                     ))}
@@ -837,7 +829,7 @@ const StudyPlanner = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Priority</label>
-                  <select value={formData.priority} onChange={(e) => setFormData(prev => ({ ...prev, priority: e.target.value as any }))} disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60">
+                  <select value={formData.priority} onChange={(e) => setFormData(prev => ({ ...prev, priority: e.target.value as any }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50">
                     <option value="LOW">Low</option>
                     <option value="MEDIUM">Medium</option>
                     <option value="HIGH">High</option>
@@ -846,11 +838,11 @@ const StudyPlanner = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Attachment URL</label>
-                    <input type="url" value={formData.attachmentUrl} onChange={(e) => setFormData(prev => ({ ...prev, attachmentUrl: e.target.value }))} disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60" placeholder="https://..." />
+                    <input type="url" value={formData.attachmentUrl} onChange={(e) => setFormData(prev => ({ ...prev, attachmentUrl: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" placeholder="https://..." />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Attachment Label</label>
-                    <input type="text" value={formData.attachmentLabel} onChange={(e) => setFormData(prev => ({ ...prev, attachmentLabel: e.target.value }))} disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60" placeholder="Optional" />
+                    <input type="text" value={formData.attachmentLabel} onChange={(e) => setFormData(prev => ({ ...prev, attachmentLabel: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" placeholder="Optional" />
                   </div>
                 </div>
                 <div className="flex gap-3 pt-4">
