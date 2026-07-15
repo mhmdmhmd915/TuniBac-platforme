@@ -135,7 +135,7 @@ export const buildPlatformOffer = (settings: Record<string, string>): PlatformOf
   backgroundImage: settings.platformOfferBackgroundImage || '',
   bannerImage: settings.platformOfferBannerImage || '',
   videoUrl: settings.platformOfferVideoUrl || '',
-  logo: settings.platformOfferLogo || settings.platformLogo || OFFICIAL_BRAND.assets.logoHorizontal,
+  logo: OFFICIAL_BRAND.assets.logoHorizontal,
   primaryColor: settings.platformOfferPrimaryColor || OFFICIAL_BRAND.colors.primaryBlue,
   secondaryColor: settings.platformOfferSecondaryColor || OFFICIAL_BRAND.colors.deepBlue,
   accentColor: settings.platformOfferAccentColor || OFFICIAL_BRAND.colors.tunisianRed,
