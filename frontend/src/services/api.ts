@@ -487,6 +487,22 @@ export const plannerAPI = {
   toggleComplete: (id: string) => api.patch(`/planner/${id}/complete`),
 };
 
+export const studentPlannerAPI = {
+  getTasks: () => api.get('/student-planner'),
+  createTask: (data: any) => api.post('/student-planner', data),
+  updateTask: (id: string, data: any) => api.put(`/student-planner/${id}`, data),
+  deleteTask: (id: string) => api.delete(`/student-planner/${id}`),
+  toggleComplete: (id: string) => api.patch(`/student-planner/${id}/complete`),
+};
+
+export const adminPlannerTemplatesAPI = {
+  getAll: (params?: { published?: boolean }) => api.get('/admin/planner-templates', { params }),
+  create: (data: any) => api.post('/admin/planner-templates', data),
+  update: (id: string, data: any) => api.put(`/admin/planner-templates/${id}`, data),
+  publish: (id: string) => api.post(`/admin/planner-templates/${id}/publish`),
+  delete: (id: string) => api.delete(`/admin/planner-templates/${id}`),
+};
+
 // Parascolaires API
 export const parascolairesAPI = {
   getAll: (params?: { bacSection?: BacSection }) => api.get('/parascolaires', { params }),

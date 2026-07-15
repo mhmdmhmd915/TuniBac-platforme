@@ -263,6 +263,48 @@ exports.Prisma.StudyTaskScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PlannerTemplateScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  dueAt: 'dueAt',
+  priority: 'priority',
+  subjectId: 'subjectId',
+  attachmentKind: 'attachmentKind',
+  attachmentLabel: 'attachmentLabel',
+  attachmentFilePath: 'attachmentFilePath',
+  attachmentUrl: 'attachmentUrl',
+  attachmentMimeType: 'attachmentMimeType',
+  attachmentSizeBytes: 'attachmentSizeBytes',
+  targetAll: 'targetAll',
+  targetBacSections: 'targetBacSections',
+  publishedAt: 'publishedAt',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StudentPlannerTaskScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  dueAt: 'dueAt',
+  priority: 'priority',
+  completed: 'completed',
+  attachmentKind: 'attachmentKind',
+  attachmentLabel: 'attachmentLabel',
+  attachmentFilePath: 'attachmentFilePath',
+  attachmentUrl: 'attachmentUrl',
+  attachmentMimeType: 'attachmentMimeType',
+  attachmentSizeBytes: 'attachmentSizeBytes',
+  isPersonal: 'isPersonal',
+  subjectId: 'subjectId',
+  userId: 'userId',
+  templateId: 'templateId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ParascolaireScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -420,6 +462,8 @@ exports.Prisma.ModelName = {
   CourseResource: 'CourseResource',
   ExerciseResource: 'ExerciseResource',
   StudyTask: 'StudyTask',
+  PlannerTemplate: 'PlannerTemplate',
+  StudentPlannerTask: 'StudentPlannerTask',
   Parascolaire: 'Parascolaire',
   Contact: 'Contact',
   AppSetting: 'AppSetting',

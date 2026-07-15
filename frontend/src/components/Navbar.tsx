@@ -12,8 +12,9 @@ const Navbar = () => {
   const { isDark, toggle } = useDarkMode()
   const { settings } = usePlatformSettings()
   const platformName = settings.platformName || 'TuniBac'
-  const hasStudentAccess = !!user && (user.role === 'ADMIN' || user.status === 'APPROVED')
-  const pendingOnly = !!user && user.role !== 'ADMIN' && user.status !== 'APPROVED'
+  const isAdmin = user?.role === 'ADMIN'
+  const hasStudentAccess = !!user && !isAdmin && user.status === 'APPROVED'
+  const pendingOnly = !!user && !isAdmin && user.status !== 'APPROVED'
 
   return (
     <nav className="glass-morphism sticky top-0 z-50 px-6 py-4">
@@ -25,9 +26,13 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link to="/courses" className="text-text-light dark:text-text hover:text-accent transition-colors">Courses</Link>
-          <Link to="/exercises" className="text-text-light dark:text-text hover:text-accent transition-colors">Exercises</Link>
-          <Link to="/parascolaires" className="text-text-light dark:text-text hover:text-accent transition-colors">Parascolaires</Link>
+          {!isAdmin && (
+            <>
+              <Link to="/courses" className="text-text-light dark:text-text hover:text-accent transition-colors">Courses</Link>
+              <Link to="/exercises" className="text-text-light dark:text-text hover:text-accent transition-colors">Exercises</Link>
+              <Link to="/parascolaires" className="text-text-light dark:text-text hover:text-accent transition-colors">Parascolaires</Link>
+            </>
+          )}
           
           {hasStudentAccess && (
             <>
@@ -44,18 +49,20 @@ const Navbar = () => {
                 <Calendar size={18} />
                 <span>Study Planner</span>
               </Link>
-              {user?.role === 'ADMIN' && (
-                <>
-                  <Link to="/admin" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
-                    <Settings size={18} />
-                    <span>Admin</span>
-                  </Link>
-                  <Link to="/admin/communications" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
-                    <Megaphone size={18} />
-                    <span>Comms</span>
-                  </Link>
-                </>
-              )}
+            </>
+          )}
+
+          {isAdmin && (
+            <>
+              <div className="h-6 w-px bg-black/10 dark:bg-white/10" />
+              <Link to="/admin" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
+                <Settings size={18} />
+                <span>Admin</span>
+              </Link>
+              <Link to="/admin/communications" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
+                <Megaphone size={18} />
+                <span>Comms</span>
+              </Link>
             </>
           )}
           
@@ -76,7 +83,7 @@ const Navbar = () => {
                   Pending Approval
                 </Link>
               )}
-              <Link to={hasStudentAccess ? '/dashboard' : '/pending-approval'} className="flex items-center space-x-2 group">
+              <Link to={isAdmin ? '/admin' : hasStudentAccess ? '/dashboard' : '/pending-approval'} className="flex items-center space-x-2 group">
                 <div className="w-10 h-10 bg-accent text-primary rounded-full flex items-center justify-center font-bold">
                   {user.firstName[0]}
                 </div>
@@ -126,21 +133,26 @@ const Navbar = () => {
             exit={{ opacity: 0, y: -20 }}
             className="md:hidden absolute top-full left-0 w-full bg-primary-light dark:bg-primary border-t border-black/10 dark:border-white/10 p-6 flex flex-col space-y-4"
           >
-            <Link to="/courses" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Courses</Link>
-            <Link to="/exercises" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Exercises</Link>
-            <Link to="/parascolaires" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Parascolaires</Link>
+            {!isAdmin && (
+              <>
+                <Link to="/courses" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Courses</Link>
+                <Link to="/exercises" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Exercises</Link>
+                <Link to="/parascolaires" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Parascolaires</Link>
+              </>
+            )}
             {hasStudentAccess && (
               <>
                 <div className="h-px bg-black/10 dark:bg-white/10" />
                 <Link to="/dashboard" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Dashboard</Link>
                 <Link to="/homework" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Homework</Link>
                 <Link to="/study-planner" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Study Planner</Link>
-                {user?.role === 'ADMIN' && (
-                  <>
-                    <Link to="/admin" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Admin Panel</Link>
-                    <Link to="/admin/communications" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Communication Center</Link>
-                  </>
-                )}
+              </>
+            )}
+            {isAdmin && (
+              <>
+                <div className="h-px bg-black/10 dark:bg-white/10" />
+                <Link to="/admin" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Admin Panel</Link>
+                <Link to="/admin/communications" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Communication Center</Link>
               </>
             )}
             {pendingOnly && (

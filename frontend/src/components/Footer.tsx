@@ -1,10 +1,13 @@
 import { GraduationCap, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { usePlatformSettings } from '../context/PlatformSettingsContext'
+import { useAuth } from '../context/AuthContext'
 
 const Footer = () => {
   const { settings } = usePlatformSettings()
+  const { user } = useAuth()
   const platformName = settings.platformName || 'TuniBac'
+  const isAdmin = user?.role === 'ADMIN'
   const socialItems = [
     { label: 'Facebook link not configured', icon: Facebook },
     { label: 'Twitter link not configured', icon: Twitter },
@@ -28,19 +31,28 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-bold mb-6 text-text-light dark:text-text">Quick Links</h3>
           <ul className="space-y-4 text-text-muted-light dark:text-text-muted">
-            <li><Link to="/courses" className="hover:text-accent">Courses</Link></li>
-            <li><Link to="/exercises" className="hover:text-accent">Exercises</Link></li>
+            {!isAdmin && (
+              <>
+                <li><Link to="/courses" className="hover:text-accent">Courses</Link></li>
+                <li><Link to="/exercises" className="hover:text-accent">Exercises</Link></li>
+              </>
+            )}
             <li><Link to="/faq" className="hover:text-accent">FAQ</Link></li>
-            <li><Link to="/study-planner" className="hover:text-accent">Study Planner</Link></li>
+            {!isAdmin && <li><Link to="/study-planner" className="hover:text-accent">Study Planner</Link></li>}
           </ul>
         </div>
 
         <div>
           <h3 className="text-lg font-bold mb-6 text-text-light dark:text-text">Platform</h3>
           <ul className="space-y-4 text-text-muted-light dark:text-text-muted">
-            <li><Link to="/dashboard" className="hover:text-accent">Dashboard</Link></li>
-            <li><Link to="/parascolaires" className="hover:text-accent">Parascolaires</Link></li>
-            <li><Link to="/homework" className="hover:text-accent">Homework</Link></li>
+            {!isAdmin && (
+              <>
+                <li><Link to="/dashboard" className="hover:text-accent">Dashboard</Link></li>
+                <li><Link to="/parascolaires" className="hover:text-accent">Parascolaires</Link></li>
+                <li><Link to="/homework" className="hover:text-accent">Homework</Link></li>
+              </>
+            )}
+            {isAdmin && <li><Link to="/admin" className="hover:text-accent">Admin Workspace</Link></li>}
           </ul>
         </div>
 

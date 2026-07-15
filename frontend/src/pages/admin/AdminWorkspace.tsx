@@ -24,7 +24,7 @@ import {
   coursesAPI,
   exercisesAPI,
   parascolairesAPI,
-  plannerAPI,
+  adminPlannerTemplatesAPI,
   subjectsAPI,
 } from '../../services/api';
 import { AdminCard } from '../../components/admin/AdminCard';
@@ -170,17 +170,24 @@ interface HomeworkSubmission {
   };
 }
 
-interface StudyTask {
+interface PlannerTemplate {
   id: string;
   title: string;
   description?: string | null;
   subjectId: string;
   subject?: Subject;
-  date: string;
-  startTime?: string | null;
-  endTime?: string | null;
+  dueAt: string;
   priority?: string | null;
-  completed: boolean;
+  attachmentKind?: string | null;
+  attachmentLabel?: string | null;
+  attachmentFilePath?: string | null;
+  attachmentUrl?: string | null;
+  attachmentMimeType?: string | null;
+  attachmentSizeBytes?: number | null;
+  targetAll: boolean;
+  targetBacSections: BacSection[];
+  publishedAt?: string | null;
+  createdAt: string;
   updatedAt: string;
 }
 
@@ -266,11 +273,13 @@ interface PlannerFormState {
   title: string;
   description: string;
   subjectId: string;
-  date: string;
-  startTime: string;
-  endTime: string;
+  dueAt: string;
   priority: string;
-  completed: boolean;
+  attachmentUrl: string;
+  attachmentLabel: string;
+  targetAll: boolean;
+  targetBacSections: BacSection[];
+  publish: boolean;
 }
 
 interface FiltersState {
@@ -341,11 +350,11 @@ const sections: SectionDefinition[] = [
   },
   {
     key: 'planner',
-    label: 'Study Planner',
-    description: 'Color-synced tasks and schedules',
+    label: 'Planner',
+    description: 'Publish tasks to students by BAC section',
     icon: CalendarRange,
     accent: 'from-emerald-500/30 via-emerald-500/10 to-transparent',
-    createAction: 'New Task',
+    createAction: 'New Planner Task',
   },
   {
     key: 'users',
@@ -414,11 +423,13 @@ const defaultPlannerForm = (subjectId = ''): PlannerFormState => ({
   title: '',
   description: '',
   subjectId,
-  date: new Date().toISOString().slice(0, 10),
-  startTime: '',
-  endTime: '',
+  dueAt: new Date().toISOString().slice(0, 10),
   priority: 'MEDIUM',
-  completed: false,
+  attachmentUrl: '',
+  attachmentLabel: '',
+  targetAll: false,
+  targetBacSections: [],
+  publish: false,
 });
 
 const toAssetUrl = (value?: string | null) => {
@@ -557,7 +568,7 @@ const AdminWorkspace = () => {
   const [parascolaires, setParascolaires] = useState<Parascolaire[]>([]);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [submissions, setSubmissions] = useState<HomeworkSubmission[]>([]);
-  const [tasks, setTasks] = useState<StudyTask[]>([]);
+  const [plannerTemplates, setPlannerTemplates] = useState<PlannerTemplate[]>([]);
 
   const [editorSection, setEditorSection] = useState<ModalSection | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -598,7 +609,7 @@ const AdminWorkspace = () => {
         ['parascolaires', parascolairesAPI.getAll(scopedParams)],
         ['users', adminAPI.getUsers({ page: 1, pageSize: 50, bacSection: currentBacSection })],
         ['submissions', adminAPI.getSubmissions({ bacSection: currentBacSection })],
-        ['tasks', plannerAPI.getTasks({ bacSection: currentBacSection })],
+        ['plannerTemplates', adminPlannerTemplatesAPI.getAll()],
       ] as const;
 
       const settledResponses = await Promise.allSettled(
@@ -639,8 +650,8 @@ const AdminWorkspace = () => {
         );
       }
 
-      if (results.tasks.status === 'fulfilled') {
-        setTasks(results.tasks.value.data as StudyTask[]);
+      if (results.plannerTemplates.status === 'fulfilled') {
+        setPlannerTemplates(results.plannerTemplates.value.data as PlannerTemplate[]);
       }
 
       const failedRequests = requestEntries
@@ -710,13 +721,16 @@ const AdminWorkspace = () => {
     }
 
     if (section === 'planner') {
-      setPlannerForm(defaultPlannerForm(firstSubjectId));
+      setPlannerForm({
+        ...defaultPlannerForm(firstSubjectId),
+        targetBacSections: [currentBacSection],
+      });
     }
   };
 
   const openEditModal = (
     section: ModalSection,
-    item: Course | Exercise | Subject | Parascolaire | StudyTask
+    item: Course | Exercise | Subject | Parascolaire | PlannerTemplate
   ) => {
     setEditorSection(section);
     setEditingId(item.id);
@@ -782,16 +796,18 @@ const AdminWorkspace = () => {
     }
 
     if (section === 'planner') {
-      const task = item as StudyTask;
+      const task = item as PlannerTemplate;
       setPlannerForm({
         title: task.title,
         description: task.description || '',
         subjectId: task.subjectId,
-        date: task.date.slice(0, 10),
-        startTime: task.startTime || '',
-        endTime: task.endTime || '',
+        dueAt: task.dueAt.slice(0, 10),
         priority: task.priority || 'MEDIUM',
-        completed: task.completed,
+        attachmentUrl: task.attachmentUrl || '',
+        attachmentLabel: task.attachmentLabel || '',
+        targetAll: task.targetAll,
+        targetBacSections: task.targetBacSections || [],
+        publish: false,
       });
     }
   };
@@ -915,14 +931,22 @@ const AdminWorkspace = () => {
 
       if (editorSection === 'planner') {
         const payload = {
-          ...plannerForm,
-          date: new Date(plannerForm.date).toISOString(),
+          title: plannerForm.title,
+          description: plannerForm.description,
+          subjectId: plannerForm.subjectId,
+          dueAt: new Date(plannerForm.dueAt).toISOString(),
+          priority: plannerForm.priority,
+          attachmentUrl: plannerForm.attachmentUrl,
+          attachmentLabel: plannerForm.attachmentLabel,
+          targetAll: plannerForm.targetAll,
+          targetBacSections: plannerForm.targetAll ? [] : plannerForm.targetBacSections,
+          publish: plannerForm.publish,
         };
 
         if (editingId) {
-          await plannerAPI.updateTask(editingId, payload);
+          await adminPlannerTemplatesAPI.update(editingId, payload);
         } else {
-          await plannerAPI.createTask(payload);
+          await adminPlannerTemplatesAPI.create(payload);
         }
       }
 
@@ -961,7 +985,7 @@ const AdminWorkspace = () => {
         if (deleteState.section === 'parascolaires') {
           return parascolairesAPI.delete(id);
         }
-        return plannerAPI.deleteTask(id);
+        return adminPlannerTemplatesAPI.delete(id);
       });
 
       await Promise.all(tasksToRun);
@@ -1036,21 +1060,21 @@ const AdminWorkspace = () => {
       subjects,
       parascolaires,
       users,
-      planner: tasks,
+      planner: plannerTemplates,
     }),
-    [courses, exercises, subjects, parascolaires, users, tasks]
+    [courses, exercises, subjects, parascolaires, users, plannerTemplates]
   );
 
   const filteredRows = useMemo(() => {
     if (activeSection === 'dashboard' || activeSection === 'submissions') {
       return [] as Array<
-        Course | Exercise | Subject | Parascolaire | AdminUser | StudyTask
+        Course | Exercise | Subject | Parascolaire | AdminUser | PlannerTemplate
       >;
     }
 
     const rows = sectionRows[
       activeSection as keyof typeof sectionRows
-    ] as Array<Course | Exercise | Subject | Parascolaire | AdminUser | StudyTask>;
+    ] as Array<Course | Exercise | Subject | Parascolaire | AdminUser | PlannerTemplate>;
 
     let nextRows = rows.filter((row) =>
       searchInObject(row as unknown as Record<string, unknown>, search)
@@ -1064,7 +1088,10 @@ const AdminWorkspace = () => {
 
     if (activeSection === 'planner') {
       nextRows = nextRows.filter(
-        (row) => 'subject' in row && Boolean(row.subject) && row.subject?.bacSection === currentBacSection
+        (row) =>
+          'targetAll' in row &&
+          (Boolean((row as PlannerTemplate).targetAll) ||
+            (row as PlannerTemplate).targetBacSections.includes(currentBacSection))
       );
     }
 
@@ -1074,8 +1101,9 @@ const AdminWorkspace = () => {
           return filters.status === 'ACTIVE' ? row.isActive : !row.isActive;
         }
 
-        if ('completed' in row) {
-          return filters.status === 'DONE' ? row.completed : !row.completed;
+        if ('publishedAt' in row) {
+          const isPublished = Boolean((row as PlannerTemplate).publishedAt);
+          return filters.status === 'PUBLISHED' ? isPublished : !isPublished;
         }
 
         return true;
@@ -1102,17 +1130,34 @@ const AdminWorkspace = () => {
   const totalPages = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE));
 
   const filtersConfig = useMemo(() => {
-    if (
-      activeSection === 'courses' ||
-      activeSection === 'exercises' ||
-      activeSection === 'planner'
-    ) {
+    if (activeSection === 'courses' || activeSection === 'exercises') {
       return [
         {
           key: 'subjectId',
           label: 'Subject',
           value: filters.subjectId,
           options: [{ label: 'All subjects', value: 'ALL' }, ...subjectOptions],
+        },
+      ];
+    }
+
+    if (activeSection === 'planner') {
+      return [
+        {
+          key: 'subjectId',
+          label: 'Subject',
+          value: filters.subjectId,
+          options: [{ label: 'All subjects', value: 'ALL' }, ...subjectOptions],
+        },
+        {
+          key: 'status',
+          label: 'Status',
+          value: filters.status,
+          options: [
+            { label: 'All statuses', value: 'ALL' },
+            { label: 'Published', value: 'PUBLISHED' },
+            { label: 'Draft', value: 'DRAFT' },
+          ],
         },
       ];
     }
@@ -1506,7 +1551,21 @@ const AdminWorkspace = () => {
     },
   ];
 
-  const plannerColumns: Column<StudyTask>[] = [
+  const publishTemplate = async (template: PlannerTemplate) => {
+    try {
+      setBulkLoading(true);
+      await adminPlannerTemplatesAPI.publish(template.id);
+      await fetchAdminData();
+      showToast('success', 'Planner task published successfully');
+    } catch (error) {
+      logger.error('Failed to publish planner task', error);
+      showToast('error', getRequestErrorMessage(error));
+    } finally {
+      setBulkLoading(false);
+    }
+  };
+
+  const plannerColumns: Column<PlannerTemplate>[] = [
     {
       header: 'Task',
       key: 'title',
@@ -1534,28 +1593,45 @@ const AdminWorkspace = () => {
       ),
     },
     {
-      header: 'Schedule',
-      key: 'date',
+      header: 'Due',
+      key: 'dueAt',
       render: (_value, task) => (
-        <div className="space-y-1 text-xs">
-          <div>{formatDate(task.date)}</div>
-          <div className="text-gray-500 dark:text-gray-400">
-            {task.startTime || '--'} - {task.endTime || '--'}
-          </div>
-        </div>
+        <div className="text-xs">{formatDate(task.dueAt)}</div>
       ),
     },
     {
       header: 'Status',
-      key: 'completed',
+      key: 'publishedAt',
       render: (value) => (
         <span
           className={`rounded-full px-3 py-1 text-xs font-semibold ${
             value ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'
           }`}
         >
-          {value ? 'Done' : 'Pending'}
+          {value ? 'Published' : 'Draft'}
         </span>
+      ),
+    },
+    {
+      header: 'Target',
+      key: 'targetAll',
+      render: (_value, task) => (
+        <div className="space-y-1 text-xs">
+          <div className="font-semibold text-gray-900 dark:text-white">
+            {task.targetAll ? 'All students' : 'Selected sections'}
+          </div>
+          {!task.targetAll && (
+            <div className="text-gray-500 dark:text-gray-400">
+              {task.targetBacSections
+                .map(
+                  (section) =>
+                    BAC_SECTION_OPTIONS.find((option) => option.value === section)?.label ||
+                    section
+                )
+                .join(', ') || '-'}
+            </div>
+          )}
+        </div>
       ),
     },
     {
@@ -1569,6 +1645,13 @@ const AdminWorkspace = () => {
             icon={<Pencil size={16} />}
           >
             Edit
+          </ActionButton>
+          <ActionButton
+            tone="success"
+            onClick={() => publishTemplate(task)}
+            icon={<Upload size={16} />}
+          >
+            {task.publishedAt ? 'Republish' : 'Publish'}
           </ActionButton>
           <ActionButton
             tone="danger"
@@ -1585,36 +1668,36 @@ const AdminWorkspace = () => {
   const activeColumns = useMemo(() => {
     if (activeSection === 'courses') {
       return courseColumns as Column<
-        Course | Exercise | Subject | Parascolaire | AdminUser | StudyTask
+        Course | Exercise | Subject | Parascolaire | AdminUser | PlannerTemplate
       >[];
     }
 
     if (activeSection === 'exercises') {
       return exerciseColumns as Column<
-        Course | Exercise | Subject | Parascolaire | AdminUser | StudyTask
+        Course | Exercise | Subject | Parascolaire | AdminUser | PlannerTemplate
       >[];
     }
 
     if (activeSection === 'subjects') {
       return subjectColumns as Column<
-        Course | Exercise | Subject | Parascolaire | AdminUser | StudyTask
+        Course | Exercise | Subject | Parascolaire | AdminUser | PlannerTemplate
       >[];
     }
 
     if (activeSection === 'parascolaires') {
       return parascolaireColumns as Column<
-        Course | Exercise | Subject | Parascolaire | AdminUser | StudyTask
+        Course | Exercise | Subject | Parascolaire | AdminUser | PlannerTemplate
       >[];
     }
 
     if (activeSection === 'users') {
       return userColumns as Column<
-        Course | Exercise | Subject | Parascolaire | AdminUser | StudyTask
+        Course | Exercise | Subject | Parascolaire | AdminUser | PlannerTemplate
       >[];
     }
 
     return plannerColumns as Column<
-      Course | Exercise | Subject | Parascolaire | AdminUser | StudyTask
+      Course | Exercise | Subject | Parascolaire | AdminUser | PlannerTemplate
     >[];
   }, [activeSection]);
 
@@ -1636,9 +1719,9 @@ const AdminWorkspace = () => {
           label: `Parascolaire offer: ${item.title}`,
           timestamp: item.createdAt,
         })),
-        ...tasks.slice(0, 4).map((task) => ({
-          id: `task-${task.id}`,
-          label: `Task scheduled: ${task.title}`,
+        ...plannerTemplates.slice(0, 4).map((task) => ({
+          id: `planner-${task.id}`,
+          label: `Planner task: ${task.title}`,
           timestamp: task.updatedAt,
         })),
       ]
@@ -1648,11 +1731,11 @@ const AdminWorkspace = () => {
             new Date(left.timestamp).getTime()
         )
         .slice(0, 8),
-    [courses, exercises, parascolaires, tasks]
+    [courses, exercises, parascolaires, plannerTemplates]
   );
 
-  const todaysTasks = tasks.filter(
-    (task) => task.date.slice(0, 10) === new Date().toISOString().slice(0, 10)
+  const todaysTasks = plannerTemplates.filter(
+    (task) => task.dueAt.slice(0, 10) === new Date().toISOString().slice(0, 10)
   );
 
   const activeSectionMeta =
@@ -1927,11 +2010,11 @@ const AdminWorkspace = () => {
 
           <AdminCard className="p-6 sm:p-8">
             <SectionTitle
-              title="Recent Study Tasks"
-              subtitle="Planner entries with subject colors"
+              title="Recent Planner Tasks"
+              subtitle="Published tasks with subject colors"
             />
             <div className="mt-6 space-y-3">
-              {tasks.slice(0, 5).map((task) => (
+              {plannerTemplates.slice(0, 5).map((task) => (
                 <div
                   key={task.id}
                   className="flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
@@ -1941,7 +2024,7 @@ const AdminWorkspace = () => {
                       {task.title}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {formatDate(task.date)}
+                      {formatDate(task.dueAt)}
                     </div>
                   </div>
                   <span
@@ -2041,7 +2124,7 @@ const AdminWorkspace = () => {
                   <option value="createdAt">Sort by created</option>
                   <option value="title">Sort by title</option>
                   <option value="name">Sort by name</option>
-                  <option value="date">Sort by date</option>
+                  {activeSection === 'planner' && <option value="dueAt">Sort by due date</option>}
                 </select>
                 <select
                   value={filters.sortDirection}
@@ -2065,7 +2148,7 @@ const AdminWorkspace = () => {
         <DataTable
           columns={activeColumns}
           data={paginatedRows as Array<
-            Course | Exercise | Subject | Parascolaire | AdminUser | StudyTask
+            Course | Exercise | Subject | Parascolaire | AdminUser | PlannerTemplate
           >}
           loading={loading}
           selectedIds={selectedIds}
@@ -3051,15 +3134,15 @@ const AdminWorkspace = () => {
           </label>
           <label className="space-y-2">
             <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-              Date
+              Due Date
             </span>
             <input
               type="date"
-              value={plannerForm.date}
+              value={plannerForm.dueAt}
               onChange={(event) =>
                 setPlannerForm((previous) => ({
                   ...previous,
-                  date: event.target.value,
+                  dueAt: event.target.value,
                 }))
               }
               className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
@@ -3067,30 +3150,6 @@ const AdminWorkspace = () => {
           </label>
         </div>
         <div className="grid gap-5 md:grid-cols-3">
-          <input
-            type="time"
-            value={plannerForm.startTime}
-            onChange={(event) =>
-              setPlannerForm((previous) => ({
-                ...previous,
-                startTime: event.target.value,
-              }))
-            }
-            className="rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-            aria-label="Task start time"
-          />
-          <input
-            type="time"
-            value={plannerForm.endTime}
-            onChange={(event) =>
-              setPlannerForm((previous) => ({
-                ...previous,
-                endTime: event.target.value,
-              }))
-            }
-            className="rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-            aria-label="Task end time"
-          />
           <select
             value={plannerForm.priority}
             onChange={(event) =>
@@ -3106,22 +3165,95 @@ const AdminWorkspace = () => {
             <option value="MEDIUM">MEDIUM</option>
             <option value="HIGH">HIGH</option>
           </select>
+          <input
+            value={plannerForm.attachmentUrl}
+            onChange={(event) =>
+              setPlannerForm((previous) => ({
+                ...previous,
+                attachmentUrl: event.target.value,
+              }))
+            }
+            className="rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
+            placeholder="Attachment URL (optional)"
+            aria-label="Attachment URL"
+          />
+          <input
+            value={plannerForm.attachmentLabel}
+            onChange={(event) =>
+              setPlannerForm((previous) => ({
+                ...previous,
+                attachmentLabel: event.target.value,
+              }))
+            }
+            className="rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
+            placeholder="Attachment label (optional)"
+            aria-label="Attachment label"
+          />
         </div>
         <label className="flex items-center gap-3 rounded-2xl bg-gray-50 px-4 py-3 text-sm font-medium text-gray-700 dark:bg-white/5 dark:text-gray-300">
           <input
             type="checkbox"
-            checked={plannerForm.completed}
+            checked={plannerForm.targetAll}
             onChange={(event) =>
               setPlannerForm((previous) => ({
                 ...previous,
-                completed: event.target.checked,
+                targetAll: event.target.checked,
+                targetBacSections: event.target.checked ? [] : previous.targetBacSections,
               }))
             }
           />
-          Mark task as completed
+          Target all students
+        </label>
+        {!plannerForm.targetAll && (
+          <div className="rounded-2xl bg-gray-50 px-4 py-4 dark:bg-white/5">
+            <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Target BAC sections
+            </div>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              {BAC_SECTION_OPTIONS.map((option) => {
+                const checked = plannerForm.targetBacSections.includes(option.value);
+                return (
+                  <label
+                    key={option.value}
+                    className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm dark:bg-black/20 dark:text-gray-200"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={(event) =>
+                        setPlannerForm((previous) => {
+                          const next = new Set(previous.targetBacSections);
+                          if (event.target.checked) {
+                            next.add(option.value);
+                          } else {
+                            next.delete(option.value);
+                          }
+                          return { ...previous, targetBacSections: Array.from(next) };
+                        })
+                      }
+                    />
+                    {option.label}
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        )}
+        <label className="flex items-center gap-3 rounded-2xl bg-gray-50 px-4 py-3 text-sm font-medium text-gray-700 dark:bg-white/5 dark:text-gray-300">
+          <input
+            type="checkbox"
+            checked={plannerForm.publish}
+            onChange={(event) =>
+              setPlannerForm((previous) => ({
+                ...previous,
+                publish: event.target.checked,
+              }))
+            }
+          />
+          Publish to students after saving
         </label>
         <PrimaryButton type="submit" fullWidth disabled={saving}>
-          {saving ? 'Saving...' : editingId ? 'Save Task' : 'Create Task'}
+          {saving ? 'Saving...' : editingId ? 'Save Planner Task' : 'Create Planner Task'}
         </PrimaryButton>
       </form>
     );

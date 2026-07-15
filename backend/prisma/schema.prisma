@@ -1,7 +1,7 @@
 generator client {
   provider   = "prisma-client-js"
   output     = "../generated/prisma"
-  engineType = "binary"
+  engineType = "library"
 }
 
 datasource db {
@@ -90,6 +90,8 @@ model User {
   homeworks             HomeworkSubmission[]
   enrollments           Enrollment[]
   studyTasks            StudyTask[]
+  plannerTemplates      PlannerTemplate[]
+  studentPlannerTasks   StudentPlannerTask[]
   communicationsCreated Communication[] @relation("UserToCommunicationsCreated")
 
   @@index([approvalDate])
@@ -109,6 +111,8 @@ model Subject {
   courses     Course[]
   exercises   Exercise[]
   studyTasks  StudyTask[]
+  plannerTemplates    PlannerTemplate[]
+  studentPlannerTasks StudentPlannerTask[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
@@ -271,6 +275,63 @@ model StudyTask {
 
   @@index([userId, date])
   @@index([subjectId, date])
+}
+
+model PlannerTemplate {
+  id               String     @id @default(uuid())
+  title            String
+  description      String?
+  dueAt            DateTime
+  priority         String?
+  subjectId        String
+  subject          Subject    @relation(fields: [subjectId], references: [id])
+  attachmentKind   String?
+  attachmentLabel  String?
+  attachmentFilePath String?
+  attachmentUrl    String?
+  attachmentMimeType String?
+  attachmentSizeBytes Int?
+  targetAll        Boolean    @default(false)
+  targetBacSections BacSection[]
+  publishedAt      DateTime?
+  createdById      String
+  createdBy        User       @relation(fields: [createdById], references: [id])
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  tasks StudentPlannerTask[]
+
+  @@index([createdById, createdAt])
+  @@index([publishedAt])
+  @@index([subjectId, dueAt])
+}
+
+model StudentPlannerTask {
+  id                 String          @id @default(uuid())
+  title              String
+  description        String?
+  dueAt              DateTime
+  priority           String?
+  completed          Boolean         @default(false)
+  attachmentKind     String?
+  attachmentLabel    String?
+  attachmentFilePath String?
+  attachmentUrl      String?
+  attachmentMimeType String?
+  attachmentSizeBytes Int?
+  isPersonal         Boolean         @default(false)
+  subjectId          String
+  subject            Subject         @relation(fields: [subjectId], references: [id])
+  userId             String
+  user               User            @relation(fields: [userId], references: [id])
+  templateId         String?
+  template           PlannerTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  @@index([userId, dueAt])
+  @@index([templateId])
+  @@index([subjectId, dueAt])
 }
 
 model Parascolaire {

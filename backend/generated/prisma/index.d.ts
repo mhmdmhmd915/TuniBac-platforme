@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/binary.js';
+import * as runtime from './runtime/library.js';
 import $Types = runtime.Types // general types
 import $Public = runtime.Types.Public
 import $Utils = runtime.Types.Utils
@@ -73,6 +73,16 @@ export type ExerciseResource = $Result.DefaultSelection<Prisma.$ExerciseResource
  * 
  */
 export type StudyTask = $Result.DefaultSelection<Prisma.$StudyTaskPayload>
+/**
+ * Model PlannerTemplate
+ * 
+ */
+export type PlannerTemplate = $Result.DefaultSelection<Prisma.$PlannerTemplatePayload>
+/**
+ * Model StudentPlannerTask
+ * 
+ */
+export type StudentPlannerTask = $Result.DefaultSelection<Prisma.$StudentPlannerTaskPayload>
 /**
  * Model Parascolaire
  * 
@@ -258,7 +268,7 @@ export class PrismaClient<
    */
 
   constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
-  $on<V extends (U | 'beforeExit')>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : V extends 'beforeExit' ? () => $Utils.JsPromise<void> : Prisma.LogEvent) => void): void;
+  $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): void;
 
   /**
    * Connect with the database
@@ -463,6 +473,26 @@ export class PrismaClient<
     * ```
     */
   get studyTask(): Prisma.StudyTaskDelegate<ExtArgs>;
+
+  /**
+   * `prisma.plannerTemplate`: Exposes CRUD operations for the **PlannerTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlannerTemplates
+    * const plannerTemplates = await prisma.plannerTemplate.findMany()
+    * ```
+    */
+  get plannerTemplate(): Prisma.PlannerTemplateDelegate<ExtArgs>;
+
+  /**
+   * `prisma.studentPlannerTask`: Exposes CRUD operations for the **StudentPlannerTask** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StudentPlannerTasks
+    * const studentPlannerTasks = await prisma.studentPlannerTask.findMany()
+    * ```
+    */
+  get studentPlannerTask(): Prisma.StudentPlannerTaskDelegate<ExtArgs>;
 
   /**
    * `prisma.parascolaire`: Exposes CRUD operations for the **Parascolaire** model.
@@ -966,6 +996,8 @@ export namespace Prisma {
     CourseResource: 'CourseResource',
     ExerciseResource: 'ExerciseResource',
     StudyTask: 'StudyTask',
+    PlannerTemplate: 'PlannerTemplate',
+    StudentPlannerTask: 'StudentPlannerTask',
     Parascolaire: 'Parascolaire',
     Contact: 'Contact',
     AppSetting: 'AppSetting',
@@ -986,7 +1018,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "subject" | "course" | "lesson" | "exercise" | "correction" | "progressTracking" | "enrollment" | "homeworkSubmission" | "courseResource" | "exerciseResource" | "studyTask" | "parascolaire" | "contact" | "appSetting" | "communication" | "communicationAttachment"
+      modelProps: "user" | "subject" | "course" | "lesson" | "exercise" | "correction" | "progressTracking" | "enrollment" | "homeworkSubmission" | "courseResource" | "exerciseResource" | "studyTask" | "plannerTemplate" | "studentPlannerTask" | "parascolaire" | "contact" | "appSetting" | "communication" | "communicationAttachment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1830,6 +1862,146 @@ export namespace Prisma {
           }
         }
       }
+      PlannerTemplate: {
+        payload: Prisma.$PlannerTemplatePayload<ExtArgs>
+        fields: Prisma.PlannerTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlannerTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlannerTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlannerTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlannerTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.PlannerTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlannerTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlannerTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlannerTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.PlannerTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlannerTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.PlannerTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlannerTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.PlannerTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlannerTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlannerTemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.PlannerTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlannerTemplatePayload>
+          }
+          update: {
+            args: Prisma.PlannerTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlannerTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.PlannerTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlannerTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PlannerTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlannerTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.PlannerTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlannerTemplate>
+          }
+          groupBy: {
+            args: Prisma.PlannerTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlannerTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlannerTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<PlannerTemplateCountAggregateOutputType> | number
+          }
+        }
+      }
+      StudentPlannerTask: {
+        payload: Prisma.$StudentPlannerTaskPayload<ExtArgs>
+        fields: Prisma.StudentPlannerTaskFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StudentPlannerTaskFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentPlannerTaskPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StudentPlannerTaskFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentPlannerTaskPayload>
+          }
+          findFirst: {
+            args: Prisma.StudentPlannerTaskFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentPlannerTaskPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StudentPlannerTaskFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentPlannerTaskPayload>
+          }
+          findMany: {
+            args: Prisma.StudentPlannerTaskFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentPlannerTaskPayload>[]
+          }
+          create: {
+            args: Prisma.StudentPlannerTaskCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentPlannerTaskPayload>
+          }
+          createMany: {
+            args: Prisma.StudentPlannerTaskCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StudentPlannerTaskCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentPlannerTaskPayload>[]
+          }
+          delete: {
+            args: Prisma.StudentPlannerTaskDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentPlannerTaskPayload>
+          }
+          update: {
+            args: Prisma.StudentPlannerTaskUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentPlannerTaskPayload>
+          }
+          deleteMany: {
+            args: Prisma.StudentPlannerTaskDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StudentPlannerTaskUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.StudentPlannerTaskUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentPlannerTaskPayload>
+          }
+          aggregate: {
+            args: Prisma.StudentPlannerTaskAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStudentPlannerTask>
+          }
+          groupBy: {
+            args: Prisma.StudentPlannerTaskGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StudentPlannerTaskGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StudentPlannerTaskCountArgs<ExtArgs>
+            result: $Utils.Optional<StudentPlannerTaskCountAggregateOutputType> | number
+          }
+        }
+      }
       Parascolaire: {
         payload: Prisma.$ParascolairePayload<ExtArgs>
         fields: Prisma.ParascolaireFieldRefs
@@ -2345,6 +2517,8 @@ export namespace Prisma {
     homeworks: number
     enrollments: number
     studyTasks: number
+    plannerTemplates: number
+    studentPlannerTasks: number
     communicationsCreated: number
   }
 
@@ -2353,6 +2527,8 @@ export namespace Prisma {
     homeworks?: boolean | UserCountOutputTypeCountHomeworksArgs
     enrollments?: boolean | UserCountOutputTypeCountEnrollmentsArgs
     studyTasks?: boolean | UserCountOutputTypeCountStudyTasksArgs
+    plannerTemplates?: boolean | UserCountOutputTypeCountPlannerTemplatesArgs
+    studentPlannerTasks?: boolean | UserCountOutputTypeCountStudentPlannerTasksArgs
     communicationsCreated?: boolean | UserCountOutputTypeCountCommunicationsCreatedArgs
   }
 
@@ -2398,6 +2574,20 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountPlannerTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlannerTemplateWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountStudentPlannerTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentPlannerTaskWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountCommunicationsCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CommunicationWhereInput
   }
@@ -2411,12 +2601,16 @@ export namespace Prisma {
     courses: number
     exercises: number
     studyTasks: number
+    plannerTemplates: number
+    studentPlannerTasks: number
   }
 
   export type SubjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     courses?: boolean | SubjectCountOutputTypeCountCoursesArgs
     exercises?: boolean | SubjectCountOutputTypeCountExercisesArgs
     studyTasks?: boolean | SubjectCountOutputTypeCountStudyTasksArgs
+    plannerTemplates?: boolean | SubjectCountOutputTypeCountPlannerTemplatesArgs
+    studentPlannerTasks?: boolean | SubjectCountOutputTypeCountStudentPlannerTasksArgs
   }
 
   // Custom InputTypes
@@ -2449,6 +2643,20 @@ export namespace Prisma {
    */
   export type SubjectCountOutputTypeCountStudyTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: StudyTaskWhereInput
+  }
+
+  /**
+   * SubjectCountOutputType without action
+   */
+  export type SubjectCountOutputTypeCountPlannerTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlannerTemplateWhereInput
+  }
+
+  /**
+   * SubjectCountOutputType without action
+   */
+  export type SubjectCountOutputTypeCountStudentPlannerTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentPlannerTaskWhereInput
   }
 
 
@@ -2556,6 +2764,37 @@ export namespace Prisma {
    */
   export type ExerciseCountOutputTypeCountProgressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProgressTrackingWhereInput
+  }
+
+
+  /**
+   * Count Type PlannerTemplateCountOutputType
+   */
+
+  export type PlannerTemplateCountOutputType = {
+    tasks: number
+  }
+
+  export type PlannerTemplateCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tasks?: boolean | PlannerTemplateCountOutputTypeCountTasksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PlannerTemplateCountOutputType without action
+   */
+  export type PlannerTemplateCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplateCountOutputType
+     */
+    select?: PlannerTemplateCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PlannerTemplateCountOutputType without action
+   */
+  export type PlannerTemplateCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentPlannerTaskWhereInput
   }
 
 
@@ -2876,6 +3115,8 @@ export namespace Prisma {
     homeworks?: boolean | User$homeworksArgs<ExtArgs>
     enrollments?: boolean | User$enrollmentsArgs<ExtArgs>
     studyTasks?: boolean | User$studyTasksArgs<ExtArgs>
+    plannerTemplates?: boolean | User$plannerTemplatesArgs<ExtArgs>
+    studentPlannerTasks?: boolean | User$studentPlannerTasksArgs<ExtArgs>
     communicationsCreated?: boolean | User$communicationsCreatedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -2921,6 +3162,8 @@ export namespace Prisma {
     homeworks?: boolean | User$homeworksArgs<ExtArgs>
     enrollments?: boolean | User$enrollmentsArgs<ExtArgs>
     studyTasks?: boolean | User$studyTasksArgs<ExtArgs>
+    plannerTemplates?: boolean | User$plannerTemplatesArgs<ExtArgs>
+    studentPlannerTasks?: boolean | User$studentPlannerTasksArgs<ExtArgs>
     communicationsCreated?: boolean | User$communicationsCreatedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -2933,6 +3176,8 @@ export namespace Prisma {
       homeworks: Prisma.$HomeworkSubmissionPayload<ExtArgs>[]
       enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
       studyTasks: Prisma.$StudyTaskPayload<ExtArgs>[]
+      plannerTemplates: Prisma.$PlannerTemplatePayload<ExtArgs>[]
+      studentPlannerTasks: Prisma.$StudentPlannerTaskPayload<ExtArgs>[]
       communicationsCreated: Prisma.$CommunicationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -3319,6 +3564,8 @@ export namespace Prisma {
     homeworks<T extends User$homeworksArgs<ExtArgs> = {}>(args?: Subset<T, User$homeworksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HomeworkSubmissionPayload<ExtArgs>, T, "findMany"> | Null>
     enrollments<T extends User$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany"> | Null>
     studyTasks<T extends User$studyTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$studyTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudyTaskPayload<ExtArgs>, T, "findMany"> | Null>
+    plannerTemplates<T extends User$plannerTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, User$plannerTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "findMany"> | Null>
+    studentPlannerTasks<T extends User$studentPlannerTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$studentPlannerTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "findMany"> | Null>
     communicationsCreated<T extends User$communicationsCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$communicationsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunicationPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3758,6 +4005,46 @@ export namespace Prisma {
   }
 
   /**
+   * User.plannerTemplates
+   */
+  export type User$plannerTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    where?: PlannerTemplateWhereInput
+    orderBy?: PlannerTemplateOrderByWithRelationInput | PlannerTemplateOrderByWithRelationInput[]
+    cursor?: PlannerTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlannerTemplateScalarFieldEnum | PlannerTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * User.studentPlannerTasks
+   */
+  export type User$studentPlannerTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    where?: StudentPlannerTaskWhereInput
+    orderBy?: StudentPlannerTaskOrderByWithRelationInput | StudentPlannerTaskOrderByWithRelationInput[]
+    cursor?: StudentPlannerTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudentPlannerTaskScalarFieldEnum | StudentPlannerTaskScalarFieldEnum[]
+  }
+
+  /**
    * User.communicationsCreated
    */
   export type User$communicationsCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4033,6 +4320,8 @@ export namespace Prisma {
     courses?: boolean | Subject$coursesArgs<ExtArgs>
     exercises?: boolean | Subject$exercisesArgs<ExtArgs>
     studyTasks?: boolean | Subject$studyTasksArgs<ExtArgs>
+    plannerTemplates?: boolean | Subject$plannerTemplatesArgs<ExtArgs>
+    studentPlannerTasks?: boolean | Subject$studentPlannerTasksArgs<ExtArgs>
     _count?: boolean | SubjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subject"]>
 
@@ -4066,6 +4355,8 @@ export namespace Prisma {
     courses?: boolean | Subject$coursesArgs<ExtArgs>
     exercises?: boolean | Subject$exercisesArgs<ExtArgs>
     studyTasks?: boolean | Subject$studyTasksArgs<ExtArgs>
+    plannerTemplates?: boolean | Subject$plannerTemplatesArgs<ExtArgs>
+    studentPlannerTasks?: boolean | Subject$studentPlannerTasksArgs<ExtArgs>
     _count?: boolean | SubjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SubjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4076,6 +4367,8 @@ export namespace Prisma {
       courses: Prisma.$CoursePayload<ExtArgs>[]
       exercises: Prisma.$ExercisePayload<ExtArgs>[]
       studyTasks: Prisma.$StudyTaskPayload<ExtArgs>[]
+      plannerTemplates: Prisma.$PlannerTemplatePayload<ExtArgs>[]
+      studentPlannerTasks: Prisma.$StudentPlannerTaskPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4455,6 +4748,8 @@ export namespace Prisma {
     courses<T extends Subject$coursesArgs<ExtArgs> = {}>(args?: Subset<T, Subject$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany"> | Null>
     exercises<T extends Subject$exercisesArgs<ExtArgs> = {}>(args?: Subset<T, Subject$exercisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findMany"> | Null>
     studyTasks<T extends Subject$studyTasksArgs<ExtArgs> = {}>(args?: Subset<T, Subject$studyTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudyTaskPayload<ExtArgs>, T, "findMany"> | Null>
+    plannerTemplates<T extends Subject$plannerTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Subject$plannerTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "findMany"> | Null>
+    studentPlannerTasks<T extends Subject$studentPlannerTasksArgs<ExtArgs> = {}>(args?: Subset<T, Subject$studentPlannerTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4865,6 +5160,46 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StudyTaskScalarFieldEnum | StudyTaskScalarFieldEnum[]
+  }
+
+  /**
+   * Subject.plannerTemplates
+   */
+  export type Subject$plannerTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    where?: PlannerTemplateWhereInput
+    orderBy?: PlannerTemplateOrderByWithRelationInput | PlannerTemplateOrderByWithRelationInput[]
+    cursor?: PlannerTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlannerTemplateScalarFieldEnum | PlannerTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * Subject.studentPlannerTasks
+   */
+  export type Subject$studentPlannerTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    where?: StudentPlannerTaskWhereInput
+    orderBy?: StudentPlannerTaskOrderByWithRelationInput | StudentPlannerTaskOrderByWithRelationInput[]
+    cursor?: StudentPlannerTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudentPlannerTaskScalarFieldEnum | StudentPlannerTaskScalarFieldEnum[]
   }
 
   /**
@@ -14863,6 +15198,2307 @@ export namespace Prisma {
 
 
   /**
+   * Model PlannerTemplate
+   */
+
+  export type AggregatePlannerTemplate = {
+    _count: PlannerTemplateCountAggregateOutputType | null
+    _avg: PlannerTemplateAvgAggregateOutputType | null
+    _sum: PlannerTemplateSumAggregateOutputType | null
+    _min: PlannerTemplateMinAggregateOutputType | null
+    _max: PlannerTemplateMaxAggregateOutputType | null
+  }
+
+  export type PlannerTemplateAvgAggregateOutputType = {
+    attachmentSizeBytes: number | null
+  }
+
+  export type PlannerTemplateSumAggregateOutputType = {
+    attachmentSizeBytes: number | null
+  }
+
+  export type PlannerTemplateMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    dueAt: Date | null
+    priority: string | null
+    subjectId: string | null
+    attachmentKind: string | null
+    attachmentLabel: string | null
+    attachmentFilePath: string | null
+    attachmentUrl: string | null
+    attachmentMimeType: string | null
+    attachmentSizeBytes: number | null
+    targetAll: boolean | null
+    publishedAt: Date | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlannerTemplateMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    dueAt: Date | null
+    priority: string | null
+    subjectId: string | null
+    attachmentKind: string | null
+    attachmentLabel: string | null
+    attachmentFilePath: string | null
+    attachmentUrl: string | null
+    attachmentMimeType: string | null
+    attachmentSizeBytes: number | null
+    targetAll: boolean | null
+    publishedAt: Date | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlannerTemplateCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    dueAt: number
+    priority: number
+    subjectId: number
+    attachmentKind: number
+    attachmentLabel: number
+    attachmentFilePath: number
+    attachmentUrl: number
+    attachmentMimeType: number
+    attachmentSizeBytes: number
+    targetAll: number
+    targetBacSections: number
+    publishedAt: number
+    createdById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PlannerTemplateAvgAggregateInputType = {
+    attachmentSizeBytes?: true
+  }
+
+  export type PlannerTemplateSumAggregateInputType = {
+    attachmentSizeBytes?: true
+  }
+
+  export type PlannerTemplateMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    dueAt?: true
+    priority?: true
+    subjectId?: true
+    attachmentKind?: true
+    attachmentLabel?: true
+    attachmentFilePath?: true
+    attachmentUrl?: true
+    attachmentMimeType?: true
+    attachmentSizeBytes?: true
+    targetAll?: true
+    publishedAt?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlannerTemplateMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    dueAt?: true
+    priority?: true
+    subjectId?: true
+    attachmentKind?: true
+    attachmentLabel?: true
+    attachmentFilePath?: true
+    attachmentUrl?: true
+    attachmentMimeType?: true
+    attachmentSizeBytes?: true
+    targetAll?: true
+    publishedAt?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlannerTemplateCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    dueAt?: true
+    priority?: true
+    subjectId?: true
+    attachmentKind?: true
+    attachmentLabel?: true
+    attachmentFilePath?: true
+    attachmentUrl?: true
+    attachmentMimeType?: true
+    attachmentSizeBytes?: true
+    targetAll?: true
+    targetBacSections?: true
+    publishedAt?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PlannerTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlannerTemplate to aggregate.
+     */
+    where?: PlannerTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlannerTemplates to fetch.
+     */
+    orderBy?: PlannerTemplateOrderByWithRelationInput | PlannerTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlannerTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlannerTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlannerTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlannerTemplates
+    **/
+    _count?: true | PlannerTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PlannerTemplateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PlannerTemplateSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlannerTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlannerTemplateMaxAggregateInputType
+  }
+
+  export type GetPlannerTemplateAggregateType<T extends PlannerTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlannerTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlannerTemplate[P]>
+      : GetScalarType<T[P], AggregatePlannerTemplate[P]>
+  }
+
+
+
+
+  export type PlannerTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlannerTemplateWhereInput
+    orderBy?: PlannerTemplateOrderByWithAggregationInput | PlannerTemplateOrderByWithAggregationInput[]
+    by: PlannerTemplateScalarFieldEnum[] | PlannerTemplateScalarFieldEnum
+    having?: PlannerTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlannerTemplateCountAggregateInputType | true
+    _avg?: PlannerTemplateAvgAggregateInputType
+    _sum?: PlannerTemplateSumAggregateInputType
+    _min?: PlannerTemplateMinAggregateInputType
+    _max?: PlannerTemplateMaxAggregateInputType
+  }
+
+  export type PlannerTemplateGroupByOutputType = {
+    id: string
+    title: string
+    description: string | null
+    dueAt: Date
+    priority: string | null
+    subjectId: string
+    attachmentKind: string | null
+    attachmentLabel: string | null
+    attachmentFilePath: string | null
+    attachmentUrl: string | null
+    attachmentMimeType: string | null
+    attachmentSizeBytes: number | null
+    targetAll: boolean
+    targetBacSections: $Enums.BacSection[]
+    publishedAt: Date | null
+    createdById: string
+    createdAt: Date
+    updatedAt: Date
+    _count: PlannerTemplateCountAggregateOutputType | null
+    _avg: PlannerTemplateAvgAggregateOutputType | null
+    _sum: PlannerTemplateSumAggregateOutputType | null
+    _min: PlannerTemplateMinAggregateOutputType | null
+    _max: PlannerTemplateMaxAggregateOutputType | null
+  }
+
+  type GetPlannerTemplateGroupByPayload<T extends PlannerTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlannerTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlannerTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlannerTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], PlannerTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlannerTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    dueAt?: boolean
+    priority?: boolean
+    subjectId?: boolean
+    attachmentKind?: boolean
+    attachmentLabel?: boolean
+    attachmentFilePath?: boolean
+    attachmentUrl?: boolean
+    attachmentMimeType?: boolean
+    attachmentSizeBytes?: boolean
+    targetAll?: boolean
+    targetBacSections?: boolean
+    publishedAt?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    tasks?: boolean | PlannerTemplate$tasksArgs<ExtArgs>
+    _count?: boolean | PlannerTemplateCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["plannerTemplate"]>
+
+  export type PlannerTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    dueAt?: boolean
+    priority?: boolean
+    subjectId?: boolean
+    attachmentKind?: boolean
+    attachmentLabel?: boolean
+    attachmentFilePath?: boolean
+    attachmentUrl?: boolean
+    attachmentMimeType?: boolean
+    attachmentSizeBytes?: boolean
+    targetAll?: boolean
+    targetBacSections?: boolean
+    publishedAt?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["plannerTemplate"]>
+
+  export type PlannerTemplateSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    dueAt?: boolean
+    priority?: boolean
+    subjectId?: boolean
+    attachmentKind?: boolean
+    attachmentLabel?: boolean
+    attachmentFilePath?: boolean
+    attachmentUrl?: boolean
+    attachmentMimeType?: boolean
+    attachmentSizeBytes?: boolean
+    targetAll?: boolean
+    targetBacSections?: boolean
+    publishedAt?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PlannerTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    tasks?: boolean | PlannerTemplate$tasksArgs<ExtArgs>
+    _count?: boolean | PlannerTemplateCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PlannerTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PlannerTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlannerTemplate"
+    objects: {
+      subject: Prisma.$SubjectPayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs>
+      tasks: Prisma.$StudentPlannerTaskPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string | null
+      dueAt: Date
+      priority: string | null
+      subjectId: string
+      attachmentKind: string | null
+      attachmentLabel: string | null
+      attachmentFilePath: string | null
+      attachmentUrl: string | null
+      attachmentMimeType: string | null
+      attachmentSizeBytes: number | null
+      targetAll: boolean
+      targetBacSections: $Enums.BacSection[]
+      publishedAt: Date | null
+      createdById: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["plannerTemplate"]>
+    composites: {}
+  }
+
+  type PlannerTemplateGetPayload<S extends boolean | null | undefined | PlannerTemplateDefaultArgs> = $Result.GetResult<Prisma.$PlannerTemplatePayload, S>
+
+  type PlannerTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PlannerTemplateFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PlannerTemplateCountAggregateInputType | true
+    }
+
+  export interface PlannerTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlannerTemplate'], meta: { name: 'PlannerTemplate' } }
+    /**
+     * Find zero or one PlannerTemplate that matches the filter.
+     * @param {PlannerTemplateFindUniqueArgs} args - Arguments to find a PlannerTemplate
+     * @example
+     * // Get one PlannerTemplate
+     * const plannerTemplate = await prisma.plannerTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlannerTemplateFindUniqueArgs>(args: SelectSubset<T, PlannerTemplateFindUniqueArgs<ExtArgs>>): Prisma__PlannerTemplateClient<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one PlannerTemplate that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {PlannerTemplateFindUniqueOrThrowArgs} args - Arguments to find a PlannerTemplate
+     * @example
+     * // Get one PlannerTemplate
+     * const plannerTemplate = await prisma.plannerTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlannerTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, PlannerTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlannerTemplateClient<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first PlannerTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlannerTemplateFindFirstArgs} args - Arguments to find a PlannerTemplate
+     * @example
+     * // Get one PlannerTemplate
+     * const plannerTemplate = await prisma.plannerTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlannerTemplateFindFirstArgs>(args?: SelectSubset<T, PlannerTemplateFindFirstArgs<ExtArgs>>): Prisma__PlannerTemplateClient<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first PlannerTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlannerTemplateFindFirstOrThrowArgs} args - Arguments to find a PlannerTemplate
+     * @example
+     * // Get one PlannerTemplate
+     * const plannerTemplate = await prisma.plannerTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlannerTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, PlannerTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlannerTemplateClient<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more PlannerTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlannerTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlannerTemplates
+     * const plannerTemplates = await prisma.plannerTemplate.findMany()
+     * 
+     * // Get first 10 PlannerTemplates
+     * const plannerTemplates = await prisma.plannerTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const plannerTemplateWithIdOnly = await prisma.plannerTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PlannerTemplateFindManyArgs>(args?: SelectSubset<T, PlannerTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a PlannerTemplate.
+     * @param {PlannerTemplateCreateArgs} args - Arguments to create a PlannerTemplate.
+     * @example
+     * // Create one PlannerTemplate
+     * const PlannerTemplate = await prisma.plannerTemplate.create({
+     *   data: {
+     *     // ... data to create a PlannerTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlannerTemplateCreateArgs>(args: SelectSubset<T, PlannerTemplateCreateArgs<ExtArgs>>): Prisma__PlannerTemplateClient<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many PlannerTemplates.
+     * @param {PlannerTemplateCreateManyArgs} args - Arguments to create many PlannerTemplates.
+     * @example
+     * // Create many PlannerTemplates
+     * const plannerTemplate = await prisma.plannerTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlannerTemplateCreateManyArgs>(args?: SelectSubset<T, PlannerTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PlannerTemplates and returns the data saved in the database.
+     * @param {PlannerTemplateCreateManyAndReturnArgs} args - Arguments to create many PlannerTemplates.
+     * @example
+     * // Create many PlannerTemplates
+     * const plannerTemplate = await prisma.plannerTemplate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PlannerTemplates and only return the `id`
+     * const plannerTemplateWithIdOnly = await prisma.plannerTemplate.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlannerTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, PlannerTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a PlannerTemplate.
+     * @param {PlannerTemplateDeleteArgs} args - Arguments to delete one PlannerTemplate.
+     * @example
+     * // Delete one PlannerTemplate
+     * const PlannerTemplate = await prisma.plannerTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one PlannerTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlannerTemplateDeleteArgs>(args: SelectSubset<T, PlannerTemplateDeleteArgs<ExtArgs>>): Prisma__PlannerTemplateClient<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one PlannerTemplate.
+     * @param {PlannerTemplateUpdateArgs} args - Arguments to update one PlannerTemplate.
+     * @example
+     * // Update one PlannerTemplate
+     * const plannerTemplate = await prisma.plannerTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlannerTemplateUpdateArgs>(args: SelectSubset<T, PlannerTemplateUpdateArgs<ExtArgs>>): Prisma__PlannerTemplateClient<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more PlannerTemplates.
+     * @param {PlannerTemplateDeleteManyArgs} args - Arguments to filter PlannerTemplates to delete.
+     * @example
+     * // Delete a few PlannerTemplates
+     * const { count } = await prisma.plannerTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlannerTemplateDeleteManyArgs>(args?: SelectSubset<T, PlannerTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlannerTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlannerTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlannerTemplates
+     * const plannerTemplate = await prisma.plannerTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlannerTemplateUpdateManyArgs>(args: SelectSubset<T, PlannerTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PlannerTemplate.
+     * @param {PlannerTemplateUpsertArgs} args - Arguments to update or create a PlannerTemplate.
+     * @example
+     * // Update or create a PlannerTemplate
+     * const plannerTemplate = await prisma.plannerTemplate.upsert({
+     *   create: {
+     *     // ... data to create a PlannerTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlannerTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlannerTemplateUpsertArgs>(args: SelectSubset<T, PlannerTemplateUpsertArgs<ExtArgs>>): Prisma__PlannerTemplateClient<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of PlannerTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlannerTemplateCountArgs} args - Arguments to filter PlannerTemplates to count.
+     * @example
+     * // Count the number of PlannerTemplates
+     * const count = await prisma.plannerTemplate.count({
+     *   where: {
+     *     // ... the filter for the PlannerTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlannerTemplateCountArgs>(
+      args?: Subset<T, PlannerTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlannerTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlannerTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlannerTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlannerTemplateAggregateArgs>(args: Subset<T, PlannerTemplateAggregateArgs>): Prisma.PrismaPromise<GetPlannerTemplateAggregateType<T>>
+
+    /**
+     * Group by PlannerTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlannerTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlannerTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlannerTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: PlannerTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlannerTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlannerTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlannerTemplate model
+   */
+  readonly fields: PlannerTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlannerTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlannerTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    subject<T extends SubjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SubjectDefaultArgs<ExtArgs>>): Prisma__SubjectClient<$Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    tasks<T extends PlannerTemplate$tasksArgs<ExtArgs> = {}>(args?: Subset<T, PlannerTemplate$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "findMany"> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlannerTemplate model
+   */ 
+  interface PlannerTemplateFieldRefs {
+    readonly id: FieldRef<"PlannerTemplate", 'String'>
+    readonly title: FieldRef<"PlannerTemplate", 'String'>
+    readonly description: FieldRef<"PlannerTemplate", 'String'>
+    readonly dueAt: FieldRef<"PlannerTemplate", 'DateTime'>
+    readonly priority: FieldRef<"PlannerTemplate", 'String'>
+    readonly subjectId: FieldRef<"PlannerTemplate", 'String'>
+    readonly attachmentKind: FieldRef<"PlannerTemplate", 'String'>
+    readonly attachmentLabel: FieldRef<"PlannerTemplate", 'String'>
+    readonly attachmentFilePath: FieldRef<"PlannerTemplate", 'String'>
+    readonly attachmentUrl: FieldRef<"PlannerTemplate", 'String'>
+    readonly attachmentMimeType: FieldRef<"PlannerTemplate", 'String'>
+    readonly attachmentSizeBytes: FieldRef<"PlannerTemplate", 'Int'>
+    readonly targetAll: FieldRef<"PlannerTemplate", 'Boolean'>
+    readonly targetBacSections: FieldRef<"PlannerTemplate", 'BacSection[]'>
+    readonly publishedAt: FieldRef<"PlannerTemplate", 'DateTime'>
+    readonly createdById: FieldRef<"PlannerTemplate", 'String'>
+    readonly createdAt: FieldRef<"PlannerTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"PlannerTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlannerTemplate findUnique
+   */
+  export type PlannerTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which PlannerTemplate to fetch.
+     */
+    where: PlannerTemplateWhereUniqueInput
+  }
+
+  /**
+   * PlannerTemplate findUniqueOrThrow
+   */
+  export type PlannerTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which PlannerTemplate to fetch.
+     */
+    where: PlannerTemplateWhereUniqueInput
+  }
+
+  /**
+   * PlannerTemplate findFirst
+   */
+  export type PlannerTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which PlannerTemplate to fetch.
+     */
+    where?: PlannerTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlannerTemplates to fetch.
+     */
+    orderBy?: PlannerTemplateOrderByWithRelationInput | PlannerTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlannerTemplates.
+     */
+    cursor?: PlannerTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlannerTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlannerTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlannerTemplates.
+     */
+    distinct?: PlannerTemplateScalarFieldEnum | PlannerTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * PlannerTemplate findFirstOrThrow
+   */
+  export type PlannerTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which PlannerTemplate to fetch.
+     */
+    where?: PlannerTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlannerTemplates to fetch.
+     */
+    orderBy?: PlannerTemplateOrderByWithRelationInput | PlannerTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlannerTemplates.
+     */
+    cursor?: PlannerTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlannerTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlannerTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlannerTemplates.
+     */
+    distinct?: PlannerTemplateScalarFieldEnum | PlannerTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * PlannerTemplate findMany
+   */
+  export type PlannerTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which PlannerTemplates to fetch.
+     */
+    where?: PlannerTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlannerTemplates to fetch.
+     */
+    orderBy?: PlannerTemplateOrderByWithRelationInput | PlannerTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlannerTemplates.
+     */
+    cursor?: PlannerTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlannerTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlannerTemplates.
+     */
+    skip?: number
+    distinct?: PlannerTemplateScalarFieldEnum | PlannerTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * PlannerTemplate create
+   */
+  export type PlannerTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PlannerTemplate.
+     */
+    data: XOR<PlannerTemplateCreateInput, PlannerTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * PlannerTemplate createMany
+   */
+  export type PlannerTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlannerTemplates.
+     */
+    data: PlannerTemplateCreateManyInput | PlannerTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlannerTemplate createManyAndReturn
+   */
+  export type PlannerTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many PlannerTemplates.
+     */
+    data: PlannerTemplateCreateManyInput | PlannerTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PlannerTemplate update
+   */
+  export type PlannerTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PlannerTemplate.
+     */
+    data: XOR<PlannerTemplateUpdateInput, PlannerTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which PlannerTemplate to update.
+     */
+    where: PlannerTemplateWhereUniqueInput
+  }
+
+  /**
+   * PlannerTemplate updateMany
+   */
+  export type PlannerTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlannerTemplates.
+     */
+    data: XOR<PlannerTemplateUpdateManyMutationInput, PlannerTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which PlannerTemplates to update
+     */
+    where?: PlannerTemplateWhereInput
+  }
+
+  /**
+   * PlannerTemplate upsert
+   */
+  export type PlannerTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PlannerTemplate to update in case it exists.
+     */
+    where: PlannerTemplateWhereUniqueInput
+    /**
+     * In case the PlannerTemplate found by the `where` argument doesn't exist, create a new PlannerTemplate with this data.
+     */
+    create: XOR<PlannerTemplateCreateInput, PlannerTemplateUncheckedCreateInput>
+    /**
+     * In case the PlannerTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlannerTemplateUpdateInput, PlannerTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * PlannerTemplate delete
+   */
+  export type PlannerTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    /**
+     * Filter which PlannerTemplate to delete.
+     */
+    where: PlannerTemplateWhereUniqueInput
+  }
+
+  /**
+   * PlannerTemplate deleteMany
+   */
+  export type PlannerTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlannerTemplates to delete
+     */
+    where?: PlannerTemplateWhereInput
+  }
+
+  /**
+   * PlannerTemplate.tasks
+   */
+  export type PlannerTemplate$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    where?: StudentPlannerTaskWhereInput
+    orderBy?: StudentPlannerTaskOrderByWithRelationInput | StudentPlannerTaskOrderByWithRelationInput[]
+    cursor?: StudentPlannerTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudentPlannerTaskScalarFieldEnum | StudentPlannerTaskScalarFieldEnum[]
+  }
+
+  /**
+   * PlannerTemplate without action
+   */
+  export type PlannerTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model StudentPlannerTask
+   */
+
+  export type AggregateStudentPlannerTask = {
+    _count: StudentPlannerTaskCountAggregateOutputType | null
+    _avg: StudentPlannerTaskAvgAggregateOutputType | null
+    _sum: StudentPlannerTaskSumAggregateOutputType | null
+    _min: StudentPlannerTaskMinAggregateOutputType | null
+    _max: StudentPlannerTaskMaxAggregateOutputType | null
+  }
+
+  export type StudentPlannerTaskAvgAggregateOutputType = {
+    attachmentSizeBytes: number | null
+  }
+
+  export type StudentPlannerTaskSumAggregateOutputType = {
+    attachmentSizeBytes: number | null
+  }
+
+  export type StudentPlannerTaskMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    dueAt: Date | null
+    priority: string | null
+    completed: boolean | null
+    attachmentKind: string | null
+    attachmentLabel: string | null
+    attachmentFilePath: string | null
+    attachmentUrl: string | null
+    attachmentMimeType: string | null
+    attachmentSizeBytes: number | null
+    isPersonal: boolean | null
+    subjectId: string | null
+    userId: string | null
+    templateId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StudentPlannerTaskMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    dueAt: Date | null
+    priority: string | null
+    completed: boolean | null
+    attachmentKind: string | null
+    attachmentLabel: string | null
+    attachmentFilePath: string | null
+    attachmentUrl: string | null
+    attachmentMimeType: string | null
+    attachmentSizeBytes: number | null
+    isPersonal: boolean | null
+    subjectId: string | null
+    userId: string | null
+    templateId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StudentPlannerTaskCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    dueAt: number
+    priority: number
+    completed: number
+    attachmentKind: number
+    attachmentLabel: number
+    attachmentFilePath: number
+    attachmentUrl: number
+    attachmentMimeType: number
+    attachmentSizeBytes: number
+    isPersonal: number
+    subjectId: number
+    userId: number
+    templateId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type StudentPlannerTaskAvgAggregateInputType = {
+    attachmentSizeBytes?: true
+  }
+
+  export type StudentPlannerTaskSumAggregateInputType = {
+    attachmentSizeBytes?: true
+  }
+
+  export type StudentPlannerTaskMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    dueAt?: true
+    priority?: true
+    completed?: true
+    attachmentKind?: true
+    attachmentLabel?: true
+    attachmentFilePath?: true
+    attachmentUrl?: true
+    attachmentMimeType?: true
+    attachmentSizeBytes?: true
+    isPersonal?: true
+    subjectId?: true
+    userId?: true
+    templateId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StudentPlannerTaskMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    dueAt?: true
+    priority?: true
+    completed?: true
+    attachmentKind?: true
+    attachmentLabel?: true
+    attachmentFilePath?: true
+    attachmentUrl?: true
+    attachmentMimeType?: true
+    attachmentSizeBytes?: true
+    isPersonal?: true
+    subjectId?: true
+    userId?: true
+    templateId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StudentPlannerTaskCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    dueAt?: true
+    priority?: true
+    completed?: true
+    attachmentKind?: true
+    attachmentLabel?: true
+    attachmentFilePath?: true
+    attachmentUrl?: true
+    attachmentMimeType?: true
+    attachmentSizeBytes?: true
+    isPersonal?: true
+    subjectId?: true
+    userId?: true
+    templateId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type StudentPlannerTaskAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StudentPlannerTask to aggregate.
+     */
+    where?: StudentPlannerTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentPlannerTasks to fetch.
+     */
+    orderBy?: StudentPlannerTaskOrderByWithRelationInput | StudentPlannerTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StudentPlannerTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentPlannerTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentPlannerTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StudentPlannerTasks
+    **/
+    _count?: true | StudentPlannerTaskCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StudentPlannerTaskAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StudentPlannerTaskSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StudentPlannerTaskMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StudentPlannerTaskMaxAggregateInputType
+  }
+
+  export type GetStudentPlannerTaskAggregateType<T extends StudentPlannerTaskAggregateArgs> = {
+        [P in keyof T & keyof AggregateStudentPlannerTask]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStudentPlannerTask[P]>
+      : GetScalarType<T[P], AggregateStudentPlannerTask[P]>
+  }
+
+
+
+
+  export type StudentPlannerTaskGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentPlannerTaskWhereInput
+    orderBy?: StudentPlannerTaskOrderByWithAggregationInput | StudentPlannerTaskOrderByWithAggregationInput[]
+    by: StudentPlannerTaskScalarFieldEnum[] | StudentPlannerTaskScalarFieldEnum
+    having?: StudentPlannerTaskScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StudentPlannerTaskCountAggregateInputType | true
+    _avg?: StudentPlannerTaskAvgAggregateInputType
+    _sum?: StudentPlannerTaskSumAggregateInputType
+    _min?: StudentPlannerTaskMinAggregateInputType
+    _max?: StudentPlannerTaskMaxAggregateInputType
+  }
+
+  export type StudentPlannerTaskGroupByOutputType = {
+    id: string
+    title: string
+    description: string | null
+    dueAt: Date
+    priority: string | null
+    completed: boolean
+    attachmentKind: string | null
+    attachmentLabel: string | null
+    attachmentFilePath: string | null
+    attachmentUrl: string | null
+    attachmentMimeType: string | null
+    attachmentSizeBytes: number | null
+    isPersonal: boolean
+    subjectId: string
+    userId: string
+    templateId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: StudentPlannerTaskCountAggregateOutputType | null
+    _avg: StudentPlannerTaskAvgAggregateOutputType | null
+    _sum: StudentPlannerTaskSumAggregateOutputType | null
+    _min: StudentPlannerTaskMinAggregateOutputType | null
+    _max: StudentPlannerTaskMaxAggregateOutputType | null
+  }
+
+  type GetStudentPlannerTaskGroupByPayload<T extends StudentPlannerTaskGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StudentPlannerTaskGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StudentPlannerTaskGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StudentPlannerTaskGroupByOutputType[P]>
+            : GetScalarType<T[P], StudentPlannerTaskGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StudentPlannerTaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    dueAt?: boolean
+    priority?: boolean
+    completed?: boolean
+    attachmentKind?: boolean
+    attachmentLabel?: boolean
+    attachmentFilePath?: boolean
+    attachmentUrl?: boolean
+    attachmentMimeType?: boolean
+    attachmentSizeBytes?: boolean
+    isPersonal?: boolean
+    subjectId?: boolean
+    userId?: boolean
+    templateId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    template?: boolean | StudentPlannerTask$templateArgs<ExtArgs>
+  }, ExtArgs["result"]["studentPlannerTask"]>
+
+  export type StudentPlannerTaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    dueAt?: boolean
+    priority?: boolean
+    completed?: boolean
+    attachmentKind?: boolean
+    attachmentLabel?: boolean
+    attachmentFilePath?: boolean
+    attachmentUrl?: boolean
+    attachmentMimeType?: boolean
+    attachmentSizeBytes?: boolean
+    isPersonal?: boolean
+    subjectId?: boolean
+    userId?: boolean
+    templateId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    template?: boolean | StudentPlannerTask$templateArgs<ExtArgs>
+  }, ExtArgs["result"]["studentPlannerTask"]>
+
+  export type StudentPlannerTaskSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    dueAt?: boolean
+    priority?: boolean
+    completed?: boolean
+    attachmentKind?: boolean
+    attachmentLabel?: boolean
+    attachmentFilePath?: boolean
+    attachmentUrl?: boolean
+    attachmentMimeType?: boolean
+    attachmentSizeBytes?: boolean
+    isPersonal?: boolean
+    subjectId?: boolean
+    userId?: boolean
+    templateId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type StudentPlannerTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    template?: boolean | StudentPlannerTask$templateArgs<ExtArgs>
+  }
+  export type StudentPlannerTaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    template?: boolean | StudentPlannerTask$templateArgs<ExtArgs>
+  }
+
+  export type $StudentPlannerTaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StudentPlannerTask"
+    objects: {
+      subject: Prisma.$SubjectPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+      template: Prisma.$PlannerTemplatePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string | null
+      dueAt: Date
+      priority: string | null
+      completed: boolean
+      attachmentKind: string | null
+      attachmentLabel: string | null
+      attachmentFilePath: string | null
+      attachmentUrl: string | null
+      attachmentMimeType: string | null
+      attachmentSizeBytes: number | null
+      isPersonal: boolean
+      subjectId: string
+      userId: string
+      templateId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["studentPlannerTask"]>
+    composites: {}
+  }
+
+  type StudentPlannerTaskGetPayload<S extends boolean | null | undefined | StudentPlannerTaskDefaultArgs> = $Result.GetResult<Prisma.$StudentPlannerTaskPayload, S>
+
+  type StudentPlannerTaskCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<StudentPlannerTaskFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: StudentPlannerTaskCountAggregateInputType | true
+    }
+
+  export interface StudentPlannerTaskDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StudentPlannerTask'], meta: { name: 'StudentPlannerTask' } }
+    /**
+     * Find zero or one StudentPlannerTask that matches the filter.
+     * @param {StudentPlannerTaskFindUniqueArgs} args - Arguments to find a StudentPlannerTask
+     * @example
+     * // Get one StudentPlannerTask
+     * const studentPlannerTask = await prisma.studentPlannerTask.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StudentPlannerTaskFindUniqueArgs>(args: SelectSubset<T, StudentPlannerTaskFindUniqueArgs<ExtArgs>>): Prisma__StudentPlannerTaskClient<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one StudentPlannerTask that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {StudentPlannerTaskFindUniqueOrThrowArgs} args - Arguments to find a StudentPlannerTask
+     * @example
+     * // Get one StudentPlannerTask
+     * const studentPlannerTask = await prisma.studentPlannerTask.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StudentPlannerTaskFindUniqueOrThrowArgs>(args: SelectSubset<T, StudentPlannerTaskFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StudentPlannerTaskClient<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first StudentPlannerTask that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentPlannerTaskFindFirstArgs} args - Arguments to find a StudentPlannerTask
+     * @example
+     * // Get one StudentPlannerTask
+     * const studentPlannerTask = await prisma.studentPlannerTask.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StudentPlannerTaskFindFirstArgs>(args?: SelectSubset<T, StudentPlannerTaskFindFirstArgs<ExtArgs>>): Prisma__StudentPlannerTaskClient<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first StudentPlannerTask that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentPlannerTaskFindFirstOrThrowArgs} args - Arguments to find a StudentPlannerTask
+     * @example
+     * // Get one StudentPlannerTask
+     * const studentPlannerTask = await prisma.studentPlannerTask.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StudentPlannerTaskFindFirstOrThrowArgs>(args?: SelectSubset<T, StudentPlannerTaskFindFirstOrThrowArgs<ExtArgs>>): Prisma__StudentPlannerTaskClient<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more StudentPlannerTasks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentPlannerTaskFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StudentPlannerTasks
+     * const studentPlannerTasks = await prisma.studentPlannerTask.findMany()
+     * 
+     * // Get first 10 StudentPlannerTasks
+     * const studentPlannerTasks = await prisma.studentPlannerTask.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const studentPlannerTaskWithIdOnly = await prisma.studentPlannerTask.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StudentPlannerTaskFindManyArgs>(args?: SelectSubset<T, StudentPlannerTaskFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a StudentPlannerTask.
+     * @param {StudentPlannerTaskCreateArgs} args - Arguments to create a StudentPlannerTask.
+     * @example
+     * // Create one StudentPlannerTask
+     * const StudentPlannerTask = await prisma.studentPlannerTask.create({
+     *   data: {
+     *     // ... data to create a StudentPlannerTask
+     *   }
+     * })
+     * 
+     */
+    create<T extends StudentPlannerTaskCreateArgs>(args: SelectSubset<T, StudentPlannerTaskCreateArgs<ExtArgs>>): Prisma__StudentPlannerTaskClient<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many StudentPlannerTasks.
+     * @param {StudentPlannerTaskCreateManyArgs} args - Arguments to create many StudentPlannerTasks.
+     * @example
+     * // Create many StudentPlannerTasks
+     * const studentPlannerTask = await prisma.studentPlannerTask.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StudentPlannerTaskCreateManyArgs>(args?: SelectSubset<T, StudentPlannerTaskCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many StudentPlannerTasks and returns the data saved in the database.
+     * @param {StudentPlannerTaskCreateManyAndReturnArgs} args - Arguments to create many StudentPlannerTasks.
+     * @example
+     * // Create many StudentPlannerTasks
+     * const studentPlannerTask = await prisma.studentPlannerTask.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many StudentPlannerTasks and only return the `id`
+     * const studentPlannerTaskWithIdOnly = await prisma.studentPlannerTask.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StudentPlannerTaskCreateManyAndReturnArgs>(args?: SelectSubset<T, StudentPlannerTaskCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a StudentPlannerTask.
+     * @param {StudentPlannerTaskDeleteArgs} args - Arguments to delete one StudentPlannerTask.
+     * @example
+     * // Delete one StudentPlannerTask
+     * const StudentPlannerTask = await prisma.studentPlannerTask.delete({
+     *   where: {
+     *     // ... filter to delete one StudentPlannerTask
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StudentPlannerTaskDeleteArgs>(args: SelectSubset<T, StudentPlannerTaskDeleteArgs<ExtArgs>>): Prisma__StudentPlannerTaskClient<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one StudentPlannerTask.
+     * @param {StudentPlannerTaskUpdateArgs} args - Arguments to update one StudentPlannerTask.
+     * @example
+     * // Update one StudentPlannerTask
+     * const studentPlannerTask = await prisma.studentPlannerTask.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StudentPlannerTaskUpdateArgs>(args: SelectSubset<T, StudentPlannerTaskUpdateArgs<ExtArgs>>): Prisma__StudentPlannerTaskClient<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more StudentPlannerTasks.
+     * @param {StudentPlannerTaskDeleteManyArgs} args - Arguments to filter StudentPlannerTasks to delete.
+     * @example
+     * // Delete a few StudentPlannerTasks
+     * const { count } = await prisma.studentPlannerTask.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StudentPlannerTaskDeleteManyArgs>(args?: SelectSubset<T, StudentPlannerTaskDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StudentPlannerTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentPlannerTaskUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StudentPlannerTasks
+     * const studentPlannerTask = await prisma.studentPlannerTask.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StudentPlannerTaskUpdateManyArgs>(args: SelectSubset<T, StudentPlannerTaskUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one StudentPlannerTask.
+     * @param {StudentPlannerTaskUpsertArgs} args - Arguments to update or create a StudentPlannerTask.
+     * @example
+     * // Update or create a StudentPlannerTask
+     * const studentPlannerTask = await prisma.studentPlannerTask.upsert({
+     *   create: {
+     *     // ... data to create a StudentPlannerTask
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StudentPlannerTask we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StudentPlannerTaskUpsertArgs>(args: SelectSubset<T, StudentPlannerTaskUpsertArgs<ExtArgs>>): Prisma__StudentPlannerTaskClient<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of StudentPlannerTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentPlannerTaskCountArgs} args - Arguments to filter StudentPlannerTasks to count.
+     * @example
+     * // Count the number of StudentPlannerTasks
+     * const count = await prisma.studentPlannerTask.count({
+     *   where: {
+     *     // ... the filter for the StudentPlannerTasks we want to count
+     *   }
+     * })
+    **/
+    count<T extends StudentPlannerTaskCountArgs>(
+      args?: Subset<T, StudentPlannerTaskCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StudentPlannerTaskCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StudentPlannerTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentPlannerTaskAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StudentPlannerTaskAggregateArgs>(args: Subset<T, StudentPlannerTaskAggregateArgs>): Prisma.PrismaPromise<GetStudentPlannerTaskAggregateType<T>>
+
+    /**
+     * Group by StudentPlannerTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentPlannerTaskGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StudentPlannerTaskGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StudentPlannerTaskGroupByArgs['orderBy'] }
+        : { orderBy?: StudentPlannerTaskGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StudentPlannerTaskGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStudentPlannerTaskGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StudentPlannerTask model
+   */
+  readonly fields: StudentPlannerTaskFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StudentPlannerTask.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StudentPlannerTaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    subject<T extends SubjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SubjectDefaultArgs<ExtArgs>>): Prisma__SubjectClient<$Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    template<T extends StudentPlannerTask$templateArgs<ExtArgs> = {}>(args?: Subset<T, StudentPlannerTask$templateArgs<ExtArgs>>): Prisma__PlannerTemplateClient<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StudentPlannerTask model
+   */ 
+  interface StudentPlannerTaskFieldRefs {
+    readonly id: FieldRef<"StudentPlannerTask", 'String'>
+    readonly title: FieldRef<"StudentPlannerTask", 'String'>
+    readonly description: FieldRef<"StudentPlannerTask", 'String'>
+    readonly dueAt: FieldRef<"StudentPlannerTask", 'DateTime'>
+    readonly priority: FieldRef<"StudentPlannerTask", 'String'>
+    readonly completed: FieldRef<"StudentPlannerTask", 'Boolean'>
+    readonly attachmentKind: FieldRef<"StudentPlannerTask", 'String'>
+    readonly attachmentLabel: FieldRef<"StudentPlannerTask", 'String'>
+    readonly attachmentFilePath: FieldRef<"StudentPlannerTask", 'String'>
+    readonly attachmentUrl: FieldRef<"StudentPlannerTask", 'String'>
+    readonly attachmentMimeType: FieldRef<"StudentPlannerTask", 'String'>
+    readonly attachmentSizeBytes: FieldRef<"StudentPlannerTask", 'Int'>
+    readonly isPersonal: FieldRef<"StudentPlannerTask", 'Boolean'>
+    readonly subjectId: FieldRef<"StudentPlannerTask", 'String'>
+    readonly userId: FieldRef<"StudentPlannerTask", 'String'>
+    readonly templateId: FieldRef<"StudentPlannerTask", 'String'>
+    readonly createdAt: FieldRef<"StudentPlannerTask", 'DateTime'>
+    readonly updatedAt: FieldRef<"StudentPlannerTask", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StudentPlannerTask findUnique
+   */
+  export type StudentPlannerTaskFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentPlannerTask to fetch.
+     */
+    where: StudentPlannerTaskWhereUniqueInput
+  }
+
+  /**
+   * StudentPlannerTask findUniqueOrThrow
+   */
+  export type StudentPlannerTaskFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentPlannerTask to fetch.
+     */
+    where: StudentPlannerTaskWhereUniqueInput
+  }
+
+  /**
+   * StudentPlannerTask findFirst
+   */
+  export type StudentPlannerTaskFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentPlannerTask to fetch.
+     */
+    where?: StudentPlannerTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentPlannerTasks to fetch.
+     */
+    orderBy?: StudentPlannerTaskOrderByWithRelationInput | StudentPlannerTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StudentPlannerTasks.
+     */
+    cursor?: StudentPlannerTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentPlannerTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentPlannerTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentPlannerTasks.
+     */
+    distinct?: StudentPlannerTaskScalarFieldEnum | StudentPlannerTaskScalarFieldEnum[]
+  }
+
+  /**
+   * StudentPlannerTask findFirstOrThrow
+   */
+  export type StudentPlannerTaskFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentPlannerTask to fetch.
+     */
+    where?: StudentPlannerTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentPlannerTasks to fetch.
+     */
+    orderBy?: StudentPlannerTaskOrderByWithRelationInput | StudentPlannerTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StudentPlannerTasks.
+     */
+    cursor?: StudentPlannerTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentPlannerTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentPlannerTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentPlannerTasks.
+     */
+    distinct?: StudentPlannerTaskScalarFieldEnum | StudentPlannerTaskScalarFieldEnum[]
+  }
+
+  /**
+   * StudentPlannerTask findMany
+   */
+  export type StudentPlannerTaskFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentPlannerTasks to fetch.
+     */
+    where?: StudentPlannerTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentPlannerTasks to fetch.
+     */
+    orderBy?: StudentPlannerTaskOrderByWithRelationInput | StudentPlannerTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StudentPlannerTasks.
+     */
+    cursor?: StudentPlannerTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentPlannerTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentPlannerTasks.
+     */
+    skip?: number
+    distinct?: StudentPlannerTaskScalarFieldEnum | StudentPlannerTaskScalarFieldEnum[]
+  }
+
+  /**
+   * StudentPlannerTask create
+   */
+  export type StudentPlannerTaskCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StudentPlannerTask.
+     */
+    data: XOR<StudentPlannerTaskCreateInput, StudentPlannerTaskUncheckedCreateInput>
+  }
+
+  /**
+   * StudentPlannerTask createMany
+   */
+  export type StudentPlannerTaskCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StudentPlannerTasks.
+     */
+    data: StudentPlannerTaskCreateManyInput | StudentPlannerTaskCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StudentPlannerTask createManyAndReturn
+   */
+  export type StudentPlannerTaskCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many StudentPlannerTasks.
+     */
+    data: StudentPlannerTaskCreateManyInput | StudentPlannerTaskCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StudentPlannerTask update
+   */
+  export type StudentPlannerTaskUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StudentPlannerTask.
+     */
+    data: XOR<StudentPlannerTaskUpdateInput, StudentPlannerTaskUncheckedUpdateInput>
+    /**
+     * Choose, which StudentPlannerTask to update.
+     */
+    where: StudentPlannerTaskWhereUniqueInput
+  }
+
+  /**
+   * StudentPlannerTask updateMany
+   */
+  export type StudentPlannerTaskUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StudentPlannerTasks.
+     */
+    data: XOR<StudentPlannerTaskUpdateManyMutationInput, StudentPlannerTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which StudentPlannerTasks to update
+     */
+    where?: StudentPlannerTaskWhereInput
+  }
+
+  /**
+   * StudentPlannerTask upsert
+   */
+  export type StudentPlannerTaskUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StudentPlannerTask to update in case it exists.
+     */
+    where: StudentPlannerTaskWhereUniqueInput
+    /**
+     * In case the StudentPlannerTask found by the `where` argument doesn't exist, create a new StudentPlannerTask with this data.
+     */
+    create: XOR<StudentPlannerTaskCreateInput, StudentPlannerTaskUncheckedCreateInput>
+    /**
+     * In case the StudentPlannerTask was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StudentPlannerTaskUpdateInput, StudentPlannerTaskUncheckedUpdateInput>
+  }
+
+  /**
+   * StudentPlannerTask delete
+   */
+  export type StudentPlannerTaskDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+    /**
+     * Filter which StudentPlannerTask to delete.
+     */
+    where: StudentPlannerTaskWhereUniqueInput
+  }
+
+  /**
+   * StudentPlannerTask deleteMany
+   */
+  export type StudentPlannerTaskDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StudentPlannerTasks to delete
+     */
+    where?: StudentPlannerTaskWhereInput
+  }
+
+  /**
+   * StudentPlannerTask.template
+   */
+  export type StudentPlannerTask$templateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlannerTemplate
+     */
+    select?: PlannerTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlannerTemplateInclude<ExtArgs> | null
+    where?: PlannerTemplateWhereInput
+  }
+
+  /**
+   * StudentPlannerTask without action
+   */
+  export type StudentPlannerTaskDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentPlannerTask
+     */
+    select?: StudentPlannerTaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentPlannerTaskInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Parascolaire
    */
 
@@ -20048,6 +22684,54 @@ export namespace Prisma {
   export type StudyTaskScalarFieldEnum = (typeof StudyTaskScalarFieldEnum)[keyof typeof StudyTaskScalarFieldEnum]
 
 
+  export const PlannerTemplateScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    dueAt: 'dueAt',
+    priority: 'priority',
+    subjectId: 'subjectId',
+    attachmentKind: 'attachmentKind',
+    attachmentLabel: 'attachmentLabel',
+    attachmentFilePath: 'attachmentFilePath',
+    attachmentUrl: 'attachmentUrl',
+    attachmentMimeType: 'attachmentMimeType',
+    attachmentSizeBytes: 'attachmentSizeBytes',
+    targetAll: 'targetAll',
+    targetBacSections: 'targetBacSections',
+    publishedAt: 'publishedAt',
+    createdById: 'createdById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PlannerTemplateScalarFieldEnum = (typeof PlannerTemplateScalarFieldEnum)[keyof typeof PlannerTemplateScalarFieldEnum]
+
+
+  export const StudentPlannerTaskScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    dueAt: 'dueAt',
+    priority: 'priority',
+    completed: 'completed',
+    attachmentKind: 'attachmentKind',
+    attachmentLabel: 'attachmentLabel',
+    attachmentFilePath: 'attachmentFilePath',
+    attachmentUrl: 'attachmentUrl',
+    attachmentMimeType: 'attachmentMimeType',
+    attachmentSizeBytes: 'attachmentSizeBytes',
+    isPersonal: 'isPersonal',
+    subjectId: 'subjectId',
+    userId: 'userId',
+    templateId: 'templateId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type StudentPlannerTaskScalarFieldEnum = (typeof StudentPlannerTaskScalarFieldEnum)[keyof typeof StudentPlannerTaskScalarFieldEnum]
+
+
   export const ParascolaireScalarFieldEnum: {
     id: 'id',
     title: 'title',
@@ -20362,6 +23046,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionListRelationFilter
     enrollments?: EnrollmentListRelationFilter
     studyTasks?: StudyTaskListRelationFilter
+    plannerTemplates?: PlannerTemplateListRelationFilter
+    studentPlannerTasks?: StudentPlannerTaskListRelationFilter
     communicationsCreated?: CommunicationListRelationFilter
   }
 
@@ -20385,6 +23071,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionOrderByRelationAggregateInput
     enrollments?: EnrollmentOrderByRelationAggregateInput
     studyTasks?: StudyTaskOrderByRelationAggregateInput
+    plannerTemplates?: PlannerTemplateOrderByRelationAggregateInput
+    studentPlannerTasks?: StudentPlannerTaskOrderByRelationAggregateInput
     communicationsCreated?: CommunicationOrderByRelationAggregateInput
   }
 
@@ -20411,6 +23099,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionListRelationFilter
     enrollments?: EnrollmentListRelationFilter
     studyTasks?: StudyTaskListRelationFilter
+    plannerTemplates?: PlannerTemplateListRelationFilter
+    studentPlannerTasks?: StudentPlannerTaskListRelationFilter
     communicationsCreated?: CommunicationListRelationFilter
   }, "id" | "email">
 
@@ -20475,6 +23165,8 @@ export namespace Prisma {
     courses?: CourseListRelationFilter
     exercises?: ExerciseListRelationFilter
     studyTasks?: StudyTaskListRelationFilter
+    plannerTemplates?: PlannerTemplateListRelationFilter
+    studentPlannerTasks?: StudentPlannerTaskListRelationFilter
   }
 
   export type SubjectOrderByWithRelationInput = {
@@ -20491,6 +23183,8 @@ export namespace Prisma {
     courses?: CourseOrderByRelationAggregateInput
     exercises?: ExerciseOrderByRelationAggregateInput
     studyTasks?: StudyTaskOrderByRelationAggregateInput
+    plannerTemplates?: PlannerTemplateOrderByRelationAggregateInput
+    studentPlannerTasks?: StudentPlannerTaskOrderByRelationAggregateInput
   }
 
   export type SubjectWhereUniqueInput = Prisma.AtLeast<{
@@ -20511,6 +23205,8 @@ export namespace Prisma {
     courses?: CourseListRelationFilter
     exercises?: ExerciseListRelationFilter
     studyTasks?: StudyTaskListRelationFilter
+    plannerTemplates?: PlannerTemplateListRelationFilter
+    studentPlannerTasks?: StudentPlannerTaskListRelationFilter
   }, "id" | "name_bacSection">
 
   export type SubjectOrderByWithAggregationInput = {
@@ -21286,6 +23982,262 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"StudyTask"> | Date | string
   }
 
+  export type PlannerTemplateWhereInput = {
+    AND?: PlannerTemplateWhereInput | PlannerTemplateWhereInput[]
+    OR?: PlannerTemplateWhereInput[]
+    NOT?: PlannerTemplateWhereInput | PlannerTemplateWhereInput[]
+    id?: StringFilter<"PlannerTemplate"> | string
+    title?: StringFilter<"PlannerTemplate"> | string
+    description?: StringNullableFilter<"PlannerTemplate"> | string | null
+    dueAt?: DateTimeFilter<"PlannerTemplate"> | Date | string
+    priority?: StringNullableFilter<"PlannerTemplate"> | string | null
+    subjectId?: StringFilter<"PlannerTemplate"> | string
+    attachmentKind?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentLabel?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentFilePath?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentUrl?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentMimeType?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentSizeBytes?: IntNullableFilter<"PlannerTemplate"> | number | null
+    targetAll?: BoolFilter<"PlannerTemplate"> | boolean
+    targetBacSections?: EnumBacSectionNullableListFilter<"PlannerTemplate">
+    publishedAt?: DateTimeNullableFilter<"PlannerTemplate"> | Date | string | null
+    createdById?: StringFilter<"PlannerTemplate"> | string
+    createdAt?: DateTimeFilter<"PlannerTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"PlannerTemplate"> | Date | string
+    subject?: XOR<SubjectRelationFilter, SubjectWhereInput>
+    createdBy?: XOR<UserRelationFilter, UserWhereInput>
+    tasks?: StudentPlannerTaskListRelationFilter
+  }
+
+  export type PlannerTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    dueAt?: SortOrder
+    priority?: SortOrderInput | SortOrder
+    subjectId?: SortOrder
+    attachmentKind?: SortOrderInput | SortOrder
+    attachmentLabel?: SortOrderInput | SortOrder
+    attachmentFilePath?: SortOrderInput | SortOrder
+    attachmentUrl?: SortOrderInput | SortOrder
+    attachmentMimeType?: SortOrderInput | SortOrder
+    attachmentSizeBytes?: SortOrderInput | SortOrder
+    targetAll?: SortOrder
+    targetBacSections?: SortOrder
+    publishedAt?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    subject?: SubjectOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+    tasks?: StudentPlannerTaskOrderByRelationAggregateInput
+  }
+
+  export type PlannerTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PlannerTemplateWhereInput | PlannerTemplateWhereInput[]
+    OR?: PlannerTemplateWhereInput[]
+    NOT?: PlannerTemplateWhereInput | PlannerTemplateWhereInput[]
+    title?: StringFilter<"PlannerTemplate"> | string
+    description?: StringNullableFilter<"PlannerTemplate"> | string | null
+    dueAt?: DateTimeFilter<"PlannerTemplate"> | Date | string
+    priority?: StringNullableFilter<"PlannerTemplate"> | string | null
+    subjectId?: StringFilter<"PlannerTemplate"> | string
+    attachmentKind?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentLabel?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentFilePath?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentUrl?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentMimeType?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentSizeBytes?: IntNullableFilter<"PlannerTemplate"> | number | null
+    targetAll?: BoolFilter<"PlannerTemplate"> | boolean
+    targetBacSections?: EnumBacSectionNullableListFilter<"PlannerTemplate">
+    publishedAt?: DateTimeNullableFilter<"PlannerTemplate"> | Date | string | null
+    createdById?: StringFilter<"PlannerTemplate"> | string
+    createdAt?: DateTimeFilter<"PlannerTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"PlannerTemplate"> | Date | string
+    subject?: XOR<SubjectRelationFilter, SubjectWhereInput>
+    createdBy?: XOR<UserRelationFilter, UserWhereInput>
+    tasks?: StudentPlannerTaskListRelationFilter
+  }, "id">
+
+  export type PlannerTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    dueAt?: SortOrder
+    priority?: SortOrderInput | SortOrder
+    subjectId?: SortOrder
+    attachmentKind?: SortOrderInput | SortOrder
+    attachmentLabel?: SortOrderInput | SortOrder
+    attachmentFilePath?: SortOrderInput | SortOrder
+    attachmentUrl?: SortOrderInput | SortOrder
+    attachmentMimeType?: SortOrderInput | SortOrder
+    attachmentSizeBytes?: SortOrderInput | SortOrder
+    targetAll?: SortOrder
+    targetBacSections?: SortOrder
+    publishedAt?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PlannerTemplateCountOrderByAggregateInput
+    _avg?: PlannerTemplateAvgOrderByAggregateInput
+    _max?: PlannerTemplateMaxOrderByAggregateInput
+    _min?: PlannerTemplateMinOrderByAggregateInput
+    _sum?: PlannerTemplateSumOrderByAggregateInput
+  }
+
+  export type PlannerTemplateScalarWhereWithAggregatesInput = {
+    AND?: PlannerTemplateScalarWhereWithAggregatesInput | PlannerTemplateScalarWhereWithAggregatesInput[]
+    OR?: PlannerTemplateScalarWhereWithAggregatesInput[]
+    NOT?: PlannerTemplateScalarWhereWithAggregatesInput | PlannerTemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PlannerTemplate"> | string
+    title?: StringWithAggregatesFilter<"PlannerTemplate"> | string
+    description?: StringNullableWithAggregatesFilter<"PlannerTemplate"> | string | null
+    dueAt?: DateTimeWithAggregatesFilter<"PlannerTemplate"> | Date | string
+    priority?: StringNullableWithAggregatesFilter<"PlannerTemplate"> | string | null
+    subjectId?: StringWithAggregatesFilter<"PlannerTemplate"> | string
+    attachmentKind?: StringNullableWithAggregatesFilter<"PlannerTemplate"> | string | null
+    attachmentLabel?: StringNullableWithAggregatesFilter<"PlannerTemplate"> | string | null
+    attachmentFilePath?: StringNullableWithAggregatesFilter<"PlannerTemplate"> | string | null
+    attachmentUrl?: StringNullableWithAggregatesFilter<"PlannerTemplate"> | string | null
+    attachmentMimeType?: StringNullableWithAggregatesFilter<"PlannerTemplate"> | string | null
+    attachmentSizeBytes?: IntNullableWithAggregatesFilter<"PlannerTemplate"> | number | null
+    targetAll?: BoolWithAggregatesFilter<"PlannerTemplate"> | boolean
+    targetBacSections?: EnumBacSectionNullableListFilter<"PlannerTemplate">
+    publishedAt?: DateTimeNullableWithAggregatesFilter<"PlannerTemplate"> | Date | string | null
+    createdById?: StringWithAggregatesFilter<"PlannerTemplate"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PlannerTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PlannerTemplate"> | Date | string
+  }
+
+  export type StudentPlannerTaskWhereInput = {
+    AND?: StudentPlannerTaskWhereInput | StudentPlannerTaskWhereInput[]
+    OR?: StudentPlannerTaskWhereInput[]
+    NOT?: StudentPlannerTaskWhereInput | StudentPlannerTaskWhereInput[]
+    id?: StringFilter<"StudentPlannerTask"> | string
+    title?: StringFilter<"StudentPlannerTask"> | string
+    description?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    dueAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
+    priority?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    completed?: BoolFilter<"StudentPlannerTask"> | boolean
+    attachmentKind?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentLabel?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentFilePath?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentUrl?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentMimeType?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentSizeBytes?: IntNullableFilter<"StudentPlannerTask"> | number | null
+    isPersonal?: BoolFilter<"StudentPlannerTask"> | boolean
+    subjectId?: StringFilter<"StudentPlannerTask"> | string
+    userId?: StringFilter<"StudentPlannerTask"> | string
+    templateId?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    createdAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
+    subject?: XOR<SubjectRelationFilter, SubjectWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    template?: XOR<PlannerTemplateNullableRelationFilter, PlannerTemplateWhereInput> | null
+  }
+
+  export type StudentPlannerTaskOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    dueAt?: SortOrder
+    priority?: SortOrderInput | SortOrder
+    completed?: SortOrder
+    attachmentKind?: SortOrderInput | SortOrder
+    attachmentLabel?: SortOrderInput | SortOrder
+    attachmentFilePath?: SortOrderInput | SortOrder
+    attachmentUrl?: SortOrderInput | SortOrder
+    attachmentMimeType?: SortOrderInput | SortOrder
+    attachmentSizeBytes?: SortOrderInput | SortOrder
+    isPersonal?: SortOrder
+    subjectId?: SortOrder
+    userId?: SortOrder
+    templateId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    subject?: SubjectOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+    template?: PlannerTemplateOrderByWithRelationInput
+  }
+
+  export type StudentPlannerTaskWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: StudentPlannerTaskWhereInput | StudentPlannerTaskWhereInput[]
+    OR?: StudentPlannerTaskWhereInput[]
+    NOT?: StudentPlannerTaskWhereInput | StudentPlannerTaskWhereInput[]
+    title?: StringFilter<"StudentPlannerTask"> | string
+    description?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    dueAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
+    priority?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    completed?: BoolFilter<"StudentPlannerTask"> | boolean
+    attachmentKind?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentLabel?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentFilePath?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentUrl?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentMimeType?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentSizeBytes?: IntNullableFilter<"StudentPlannerTask"> | number | null
+    isPersonal?: BoolFilter<"StudentPlannerTask"> | boolean
+    subjectId?: StringFilter<"StudentPlannerTask"> | string
+    userId?: StringFilter<"StudentPlannerTask"> | string
+    templateId?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    createdAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
+    subject?: XOR<SubjectRelationFilter, SubjectWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    template?: XOR<PlannerTemplateNullableRelationFilter, PlannerTemplateWhereInput> | null
+  }, "id">
+
+  export type StudentPlannerTaskOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    dueAt?: SortOrder
+    priority?: SortOrderInput | SortOrder
+    completed?: SortOrder
+    attachmentKind?: SortOrderInput | SortOrder
+    attachmentLabel?: SortOrderInput | SortOrder
+    attachmentFilePath?: SortOrderInput | SortOrder
+    attachmentUrl?: SortOrderInput | SortOrder
+    attachmentMimeType?: SortOrderInput | SortOrder
+    attachmentSizeBytes?: SortOrderInput | SortOrder
+    isPersonal?: SortOrder
+    subjectId?: SortOrder
+    userId?: SortOrder
+    templateId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: StudentPlannerTaskCountOrderByAggregateInput
+    _avg?: StudentPlannerTaskAvgOrderByAggregateInput
+    _max?: StudentPlannerTaskMaxOrderByAggregateInput
+    _min?: StudentPlannerTaskMinOrderByAggregateInput
+    _sum?: StudentPlannerTaskSumOrderByAggregateInput
+  }
+
+  export type StudentPlannerTaskScalarWhereWithAggregatesInput = {
+    AND?: StudentPlannerTaskScalarWhereWithAggregatesInput | StudentPlannerTaskScalarWhereWithAggregatesInput[]
+    OR?: StudentPlannerTaskScalarWhereWithAggregatesInput[]
+    NOT?: StudentPlannerTaskScalarWhereWithAggregatesInput | StudentPlannerTaskScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"StudentPlannerTask"> | string
+    title?: StringWithAggregatesFilter<"StudentPlannerTask"> | string
+    description?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
+    dueAt?: DateTimeWithAggregatesFilter<"StudentPlannerTask"> | Date | string
+    priority?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
+    completed?: BoolWithAggregatesFilter<"StudentPlannerTask"> | boolean
+    attachmentKind?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
+    attachmentLabel?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
+    attachmentFilePath?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
+    attachmentUrl?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
+    attachmentMimeType?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
+    attachmentSizeBytes?: IntNullableWithAggregatesFilter<"StudentPlannerTask"> | number | null
+    isPersonal?: BoolWithAggregatesFilter<"StudentPlannerTask"> | boolean
+    subjectId?: StringWithAggregatesFilter<"StudentPlannerTask"> | string
+    userId?: StringWithAggregatesFilter<"StudentPlannerTask"> | string
+    templateId?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"StudentPlannerTask"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"StudentPlannerTask"> | Date | string
+  }
+
   export type ParascolaireWhereInput = {
     AND?: ParascolaireWhereInput | ParascolaireWhereInput[]
     OR?: ParascolaireWhereInput[]
@@ -21726,6 +24678,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
     studyTasks?: StudyTaskCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutUserInput
     communicationsCreated?: CommunicationCreateNestedManyWithoutCreatedByInput
   }
 
@@ -21749,6 +24703,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutUserInput
     communicationsCreated?: CommunicationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
@@ -21772,6 +24728,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutUserNestedInput
     communicationsCreated?: CommunicationUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -21795,6 +24753,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutUserNestedInput
     communicationsCreated?: CommunicationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -21866,6 +24826,8 @@ export namespace Prisma {
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
   }
 
   export type SubjectUncheckedCreateInput = {
@@ -21882,6 +24844,8 @@ export namespace Prisma {
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
   }
 
   export type SubjectUpdateInput = {
@@ -21898,6 +24862,8 @@ export namespace Prisma {
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
   }
 
   export type SubjectUncheckedUpdateInput = {
@@ -21914,6 +24880,8 @@ export namespace Prisma {
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
   }
 
   export type SubjectCreateManyInput = {
@@ -22739,6 +25707,299 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PlannerTemplateCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    targetAll?: boolean
+    targetBacSections?: PlannerTemplateCreatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subject: SubjectCreateNestedOneWithoutPlannerTemplatesInput
+    createdBy: UserCreateNestedOneWithoutPlannerTemplatesInput
+    tasks?: StudentPlannerTaskCreateNestedManyWithoutTemplateInput
+  }
+
+  export type PlannerTemplateUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    subjectId: string
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    targetAll?: boolean
+    targetBacSections?: PlannerTemplateCreatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: Date | string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type PlannerTemplateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject?: SubjectUpdateOneRequiredWithoutPlannerTemplatesNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutPlannerTemplatesNestedInput
+    tasks?: StudentPlannerTaskUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type PlannerTemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    subjectId?: StringFieldUpdateOperationsInput | string
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tasks?: StudentPlannerTaskUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type PlannerTemplateCreateManyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    subjectId: string
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    targetAll?: boolean
+    targetBacSections?: PlannerTemplateCreatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: Date | string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlannerTemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlannerTemplateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    subjectId?: StringFieldUpdateOperationsInput | string
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentPlannerTaskCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subject: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
+    user: UserCreateNestedOneWithoutStudentPlannerTasksInput
+    template?: PlannerTemplateCreateNestedOneWithoutTasksInput
+  }
+
+  export type StudentPlannerTaskUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    subjectId: string
+    userId: string
+    templateId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentPlannerTaskUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject?: SubjectUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+    user?: UserUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+    template?: PlannerTemplateUpdateOneWithoutTasksNestedInput
+  }
+
+  export type StudentPlannerTaskUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    subjectId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentPlannerTaskCreateManyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    subjectId: string
+    userId: string
+    templateId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentPlannerTaskUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentPlannerTaskUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    subjectId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ParascolaireCreateInput = {
     id?: string
     title: string
@@ -23337,6 +26598,18 @@ export namespace Prisma {
     none?: StudyTaskWhereInput
   }
 
+  export type PlannerTemplateListRelationFilter = {
+    every?: PlannerTemplateWhereInput
+    some?: PlannerTemplateWhereInput
+    none?: PlannerTemplateWhereInput
+  }
+
+  export type StudentPlannerTaskListRelationFilter = {
+    every?: StudentPlannerTaskWhereInput
+    some?: StudentPlannerTaskWhereInput
+    none?: StudentPlannerTaskWhereInput
+  }
+
   export type CommunicationListRelationFilter = {
     every?: CommunicationWhereInput
     some?: CommunicationWhereInput
@@ -23361,6 +26634,14 @@ export namespace Prisma {
   }
 
   export type StudyTaskOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PlannerTemplateOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StudentPlannerTaskOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -24070,6 +27351,186 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type EnumBacSectionNullableListFilter<$PrismaModel = never> = {
+    equals?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
+    has?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel> | null
+    hasEvery?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
+    hasSome?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type PlannerTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    dueAt?: SortOrder
+    priority?: SortOrder
+    subjectId?: SortOrder
+    attachmentKind?: SortOrder
+    attachmentLabel?: SortOrder
+    attachmentFilePath?: SortOrder
+    attachmentUrl?: SortOrder
+    attachmentMimeType?: SortOrder
+    attachmentSizeBytes?: SortOrder
+    targetAll?: SortOrder
+    targetBacSections?: SortOrder
+    publishedAt?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlannerTemplateAvgOrderByAggregateInput = {
+    attachmentSizeBytes?: SortOrder
+  }
+
+  export type PlannerTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    dueAt?: SortOrder
+    priority?: SortOrder
+    subjectId?: SortOrder
+    attachmentKind?: SortOrder
+    attachmentLabel?: SortOrder
+    attachmentFilePath?: SortOrder
+    attachmentUrl?: SortOrder
+    attachmentMimeType?: SortOrder
+    attachmentSizeBytes?: SortOrder
+    targetAll?: SortOrder
+    publishedAt?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlannerTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    dueAt?: SortOrder
+    priority?: SortOrder
+    subjectId?: SortOrder
+    attachmentKind?: SortOrder
+    attachmentLabel?: SortOrder
+    attachmentFilePath?: SortOrder
+    attachmentUrl?: SortOrder
+    attachmentMimeType?: SortOrder
+    attachmentSizeBytes?: SortOrder
+    targetAll?: SortOrder
+    publishedAt?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlannerTemplateSumOrderByAggregateInput = {
+    attachmentSizeBytes?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type PlannerTemplateNullableRelationFilter = {
+    is?: PlannerTemplateWhereInput | null
+    isNot?: PlannerTemplateWhereInput | null
+  }
+
+  export type StudentPlannerTaskCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    dueAt?: SortOrder
+    priority?: SortOrder
+    completed?: SortOrder
+    attachmentKind?: SortOrder
+    attachmentLabel?: SortOrder
+    attachmentFilePath?: SortOrder
+    attachmentUrl?: SortOrder
+    attachmentMimeType?: SortOrder
+    attachmentSizeBytes?: SortOrder
+    isPersonal?: SortOrder
+    subjectId?: SortOrder
+    userId?: SortOrder
+    templateId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StudentPlannerTaskAvgOrderByAggregateInput = {
+    attachmentSizeBytes?: SortOrder
+  }
+
+  export type StudentPlannerTaskMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    dueAt?: SortOrder
+    priority?: SortOrder
+    completed?: SortOrder
+    attachmentKind?: SortOrder
+    attachmentLabel?: SortOrder
+    attachmentFilePath?: SortOrder
+    attachmentUrl?: SortOrder
+    attachmentMimeType?: SortOrder
+    attachmentSizeBytes?: SortOrder
+    isPersonal?: SortOrder
+    subjectId?: SortOrder
+    userId?: SortOrder
+    templateId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StudentPlannerTaskMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    dueAt?: SortOrder
+    priority?: SortOrder
+    completed?: SortOrder
+    attachmentKind?: SortOrder
+    attachmentLabel?: SortOrder
+    attachmentFilePath?: SortOrder
+    attachmentUrl?: SortOrder
+    attachmentMimeType?: SortOrder
+    attachmentSizeBytes?: SortOrder
+    isPersonal?: SortOrder
+    subjectId?: SortOrder
+    userId?: SortOrder
+    templateId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StudentPlannerTaskSumOrderByAggregateInput = {
+    attachmentSizeBytes?: SortOrder
+  }
+
   export type FloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -24369,17 +27830,6 @@ export namespace Prisma {
     _max?: NestedEnumCommunicationAudienceFilter<$PrismaModel>
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type CommunicationRelationFilter = {
     is?: CommunicationWhereInput
     isNot?: CommunicationWhereInput
@@ -24429,22 +27879,6 @@ export namespace Prisma {
     sizeBytes?: SortOrder
   }
 
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
   export type ProgressTrackingCreateNestedManyWithoutUserInput = {
     create?: XOR<ProgressTrackingCreateWithoutUserInput, ProgressTrackingUncheckedCreateWithoutUserInput> | ProgressTrackingCreateWithoutUserInput[] | ProgressTrackingUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ProgressTrackingCreateOrConnectWithoutUserInput | ProgressTrackingCreateOrConnectWithoutUserInput[]
@@ -24471,6 +27905,20 @@ export namespace Prisma {
     connectOrCreate?: StudyTaskCreateOrConnectWithoutUserInput | StudyTaskCreateOrConnectWithoutUserInput[]
     createMany?: StudyTaskCreateManyUserInputEnvelope
     connect?: StudyTaskWhereUniqueInput | StudyTaskWhereUniqueInput[]
+  }
+
+  export type PlannerTemplateCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<PlannerTemplateCreateWithoutCreatedByInput, PlannerTemplateUncheckedCreateWithoutCreatedByInput> | PlannerTemplateCreateWithoutCreatedByInput[] | PlannerTemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlannerTemplateCreateOrConnectWithoutCreatedByInput | PlannerTemplateCreateOrConnectWithoutCreatedByInput[]
+    createMany?: PlannerTemplateCreateManyCreatedByInputEnvelope
+    connect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+  }
+
+  export type StudentPlannerTaskCreateNestedManyWithoutUserInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutUserInput, StudentPlannerTaskUncheckedCreateWithoutUserInput> | StudentPlannerTaskCreateWithoutUserInput[] | StudentPlannerTaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutUserInput | StudentPlannerTaskCreateOrConnectWithoutUserInput[]
+    createMany?: StudentPlannerTaskCreateManyUserInputEnvelope
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
   }
 
   export type CommunicationCreateNestedManyWithoutCreatedByInput = {
@@ -24506,6 +27954,20 @@ export namespace Prisma {
     connectOrCreate?: StudyTaskCreateOrConnectWithoutUserInput | StudyTaskCreateOrConnectWithoutUserInput[]
     createMany?: StudyTaskCreateManyUserInputEnvelope
     connect?: StudyTaskWhereUniqueInput | StudyTaskWhereUniqueInput[]
+  }
+
+  export type PlannerTemplateUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<PlannerTemplateCreateWithoutCreatedByInput, PlannerTemplateUncheckedCreateWithoutCreatedByInput> | PlannerTemplateCreateWithoutCreatedByInput[] | PlannerTemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlannerTemplateCreateOrConnectWithoutCreatedByInput | PlannerTemplateCreateOrConnectWithoutCreatedByInput[]
+    createMany?: PlannerTemplateCreateManyCreatedByInputEnvelope
+    connect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+  }
+
+  export type StudentPlannerTaskUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutUserInput, StudentPlannerTaskUncheckedCreateWithoutUserInput> | StudentPlannerTaskCreateWithoutUserInput[] | StudentPlannerTaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutUserInput | StudentPlannerTaskCreateOrConnectWithoutUserInput[]
+    createMany?: StudentPlannerTaskCreateManyUserInputEnvelope
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
   }
 
   export type CommunicationUncheckedCreateNestedManyWithoutCreatedByInput = {
@@ -24611,6 +28073,34 @@ export namespace Prisma {
     deleteMany?: StudyTaskScalarWhereInput | StudyTaskScalarWhereInput[]
   }
 
+  export type PlannerTemplateUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<PlannerTemplateCreateWithoutCreatedByInput, PlannerTemplateUncheckedCreateWithoutCreatedByInput> | PlannerTemplateCreateWithoutCreatedByInput[] | PlannerTemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlannerTemplateCreateOrConnectWithoutCreatedByInput | PlannerTemplateCreateOrConnectWithoutCreatedByInput[]
+    upsert?: PlannerTemplateUpsertWithWhereUniqueWithoutCreatedByInput | PlannerTemplateUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: PlannerTemplateCreateManyCreatedByInputEnvelope
+    set?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    disconnect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    delete?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    connect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    update?: PlannerTemplateUpdateWithWhereUniqueWithoutCreatedByInput | PlannerTemplateUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: PlannerTemplateUpdateManyWithWhereWithoutCreatedByInput | PlannerTemplateUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: PlannerTemplateScalarWhereInput | PlannerTemplateScalarWhereInput[]
+  }
+
+  export type StudentPlannerTaskUpdateManyWithoutUserNestedInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutUserInput, StudentPlannerTaskUncheckedCreateWithoutUserInput> | StudentPlannerTaskCreateWithoutUserInput[] | StudentPlannerTaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutUserInput | StudentPlannerTaskCreateOrConnectWithoutUserInput[]
+    upsert?: StudentPlannerTaskUpsertWithWhereUniqueWithoutUserInput | StudentPlannerTaskUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: StudentPlannerTaskCreateManyUserInputEnvelope
+    set?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    disconnect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    delete?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    update?: StudentPlannerTaskUpdateWithWhereUniqueWithoutUserInput | StudentPlannerTaskUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: StudentPlannerTaskUpdateManyWithWhereWithoutUserInput | StudentPlannerTaskUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: StudentPlannerTaskScalarWhereInput | StudentPlannerTaskScalarWhereInput[]
+  }
+
   export type CommunicationUpdateManyWithoutCreatedByNestedInput = {
     create?: XOR<CommunicationCreateWithoutCreatedByInput, CommunicationUncheckedCreateWithoutCreatedByInput> | CommunicationCreateWithoutCreatedByInput[] | CommunicationUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: CommunicationCreateOrConnectWithoutCreatedByInput | CommunicationCreateOrConnectWithoutCreatedByInput[]
@@ -24681,6 +28171,34 @@ export namespace Prisma {
     deleteMany?: StudyTaskScalarWhereInput | StudyTaskScalarWhereInput[]
   }
 
+  export type PlannerTemplateUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<PlannerTemplateCreateWithoutCreatedByInput, PlannerTemplateUncheckedCreateWithoutCreatedByInput> | PlannerTemplateCreateWithoutCreatedByInput[] | PlannerTemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlannerTemplateCreateOrConnectWithoutCreatedByInput | PlannerTemplateCreateOrConnectWithoutCreatedByInput[]
+    upsert?: PlannerTemplateUpsertWithWhereUniqueWithoutCreatedByInput | PlannerTemplateUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: PlannerTemplateCreateManyCreatedByInputEnvelope
+    set?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    disconnect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    delete?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    connect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    update?: PlannerTemplateUpdateWithWhereUniqueWithoutCreatedByInput | PlannerTemplateUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: PlannerTemplateUpdateManyWithWhereWithoutCreatedByInput | PlannerTemplateUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: PlannerTemplateScalarWhereInput | PlannerTemplateScalarWhereInput[]
+  }
+
+  export type StudentPlannerTaskUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutUserInput, StudentPlannerTaskUncheckedCreateWithoutUserInput> | StudentPlannerTaskCreateWithoutUserInput[] | StudentPlannerTaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutUserInput | StudentPlannerTaskCreateOrConnectWithoutUserInput[]
+    upsert?: StudentPlannerTaskUpsertWithWhereUniqueWithoutUserInput | StudentPlannerTaskUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: StudentPlannerTaskCreateManyUserInputEnvelope
+    set?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    disconnect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    delete?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    update?: StudentPlannerTaskUpdateWithWhereUniqueWithoutUserInput | StudentPlannerTaskUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: StudentPlannerTaskUpdateManyWithWhereWithoutUserInput | StudentPlannerTaskUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: StudentPlannerTaskScalarWhereInput | StudentPlannerTaskScalarWhereInput[]
+  }
+
   export type CommunicationUncheckedUpdateManyWithoutCreatedByNestedInput = {
     create?: XOR<CommunicationCreateWithoutCreatedByInput, CommunicationUncheckedCreateWithoutCreatedByInput> | CommunicationCreateWithoutCreatedByInput[] | CommunicationUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: CommunicationCreateOrConnectWithoutCreatedByInput | CommunicationCreateOrConnectWithoutCreatedByInput[]
@@ -24716,6 +28234,20 @@ export namespace Prisma {
     connect?: StudyTaskWhereUniqueInput | StudyTaskWhereUniqueInput[]
   }
 
+  export type PlannerTemplateCreateNestedManyWithoutSubjectInput = {
+    create?: XOR<PlannerTemplateCreateWithoutSubjectInput, PlannerTemplateUncheckedCreateWithoutSubjectInput> | PlannerTemplateCreateWithoutSubjectInput[] | PlannerTemplateUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: PlannerTemplateCreateOrConnectWithoutSubjectInput | PlannerTemplateCreateOrConnectWithoutSubjectInput[]
+    createMany?: PlannerTemplateCreateManySubjectInputEnvelope
+    connect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+  }
+
+  export type StudentPlannerTaskCreateNestedManyWithoutSubjectInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutSubjectInput, StudentPlannerTaskUncheckedCreateWithoutSubjectInput> | StudentPlannerTaskCreateWithoutSubjectInput[] | StudentPlannerTaskUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutSubjectInput | StudentPlannerTaskCreateOrConnectWithoutSubjectInput[]
+    createMany?: StudentPlannerTaskCreateManySubjectInputEnvelope
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+  }
+
   export type CourseUncheckedCreateNestedManyWithoutSubjectInput = {
     create?: XOR<CourseCreateWithoutSubjectInput, CourseUncheckedCreateWithoutSubjectInput> | CourseCreateWithoutSubjectInput[] | CourseUncheckedCreateWithoutSubjectInput[]
     connectOrCreate?: CourseCreateOrConnectWithoutSubjectInput | CourseCreateOrConnectWithoutSubjectInput[]
@@ -24735,6 +28267,20 @@ export namespace Prisma {
     connectOrCreate?: StudyTaskCreateOrConnectWithoutSubjectInput | StudyTaskCreateOrConnectWithoutSubjectInput[]
     createMany?: StudyTaskCreateManySubjectInputEnvelope
     connect?: StudyTaskWhereUniqueInput | StudyTaskWhereUniqueInput[]
+  }
+
+  export type PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput = {
+    create?: XOR<PlannerTemplateCreateWithoutSubjectInput, PlannerTemplateUncheckedCreateWithoutSubjectInput> | PlannerTemplateCreateWithoutSubjectInput[] | PlannerTemplateUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: PlannerTemplateCreateOrConnectWithoutSubjectInput | PlannerTemplateCreateOrConnectWithoutSubjectInput[]
+    createMany?: PlannerTemplateCreateManySubjectInputEnvelope
+    connect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+  }
+
+  export type StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutSubjectInput, StudentPlannerTaskUncheckedCreateWithoutSubjectInput> | StudentPlannerTaskCreateWithoutSubjectInput[] | StudentPlannerTaskUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutSubjectInput | StudentPlannerTaskCreateOrConnectWithoutSubjectInput[]
+    createMany?: StudentPlannerTaskCreateManySubjectInputEnvelope
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
   }
 
   export type CourseUpdateManyWithoutSubjectNestedInput = {
@@ -24779,6 +28325,34 @@ export namespace Prisma {
     deleteMany?: StudyTaskScalarWhereInput | StudyTaskScalarWhereInput[]
   }
 
+  export type PlannerTemplateUpdateManyWithoutSubjectNestedInput = {
+    create?: XOR<PlannerTemplateCreateWithoutSubjectInput, PlannerTemplateUncheckedCreateWithoutSubjectInput> | PlannerTemplateCreateWithoutSubjectInput[] | PlannerTemplateUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: PlannerTemplateCreateOrConnectWithoutSubjectInput | PlannerTemplateCreateOrConnectWithoutSubjectInput[]
+    upsert?: PlannerTemplateUpsertWithWhereUniqueWithoutSubjectInput | PlannerTemplateUpsertWithWhereUniqueWithoutSubjectInput[]
+    createMany?: PlannerTemplateCreateManySubjectInputEnvelope
+    set?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    disconnect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    delete?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    connect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    update?: PlannerTemplateUpdateWithWhereUniqueWithoutSubjectInput | PlannerTemplateUpdateWithWhereUniqueWithoutSubjectInput[]
+    updateMany?: PlannerTemplateUpdateManyWithWhereWithoutSubjectInput | PlannerTemplateUpdateManyWithWhereWithoutSubjectInput[]
+    deleteMany?: PlannerTemplateScalarWhereInput | PlannerTemplateScalarWhereInput[]
+  }
+
+  export type StudentPlannerTaskUpdateManyWithoutSubjectNestedInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutSubjectInput, StudentPlannerTaskUncheckedCreateWithoutSubjectInput> | StudentPlannerTaskCreateWithoutSubjectInput[] | StudentPlannerTaskUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutSubjectInput | StudentPlannerTaskCreateOrConnectWithoutSubjectInput[]
+    upsert?: StudentPlannerTaskUpsertWithWhereUniqueWithoutSubjectInput | StudentPlannerTaskUpsertWithWhereUniqueWithoutSubjectInput[]
+    createMany?: StudentPlannerTaskCreateManySubjectInputEnvelope
+    set?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    disconnect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    delete?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    update?: StudentPlannerTaskUpdateWithWhereUniqueWithoutSubjectInput | StudentPlannerTaskUpdateWithWhereUniqueWithoutSubjectInput[]
+    updateMany?: StudentPlannerTaskUpdateManyWithWhereWithoutSubjectInput | StudentPlannerTaskUpdateManyWithWhereWithoutSubjectInput[]
+    deleteMany?: StudentPlannerTaskScalarWhereInput | StudentPlannerTaskScalarWhereInput[]
+  }
+
   export type CourseUncheckedUpdateManyWithoutSubjectNestedInput = {
     create?: XOR<CourseCreateWithoutSubjectInput, CourseUncheckedCreateWithoutSubjectInput> | CourseCreateWithoutSubjectInput[] | CourseUncheckedCreateWithoutSubjectInput[]
     connectOrCreate?: CourseCreateOrConnectWithoutSubjectInput | CourseCreateOrConnectWithoutSubjectInput[]
@@ -24819,6 +28393,34 @@ export namespace Prisma {
     update?: StudyTaskUpdateWithWhereUniqueWithoutSubjectInput | StudyTaskUpdateWithWhereUniqueWithoutSubjectInput[]
     updateMany?: StudyTaskUpdateManyWithWhereWithoutSubjectInput | StudyTaskUpdateManyWithWhereWithoutSubjectInput[]
     deleteMany?: StudyTaskScalarWhereInput | StudyTaskScalarWhereInput[]
+  }
+
+  export type PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput = {
+    create?: XOR<PlannerTemplateCreateWithoutSubjectInput, PlannerTemplateUncheckedCreateWithoutSubjectInput> | PlannerTemplateCreateWithoutSubjectInput[] | PlannerTemplateUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: PlannerTemplateCreateOrConnectWithoutSubjectInput | PlannerTemplateCreateOrConnectWithoutSubjectInput[]
+    upsert?: PlannerTemplateUpsertWithWhereUniqueWithoutSubjectInput | PlannerTemplateUpsertWithWhereUniqueWithoutSubjectInput[]
+    createMany?: PlannerTemplateCreateManySubjectInputEnvelope
+    set?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    disconnect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    delete?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    connect?: PlannerTemplateWhereUniqueInput | PlannerTemplateWhereUniqueInput[]
+    update?: PlannerTemplateUpdateWithWhereUniqueWithoutSubjectInput | PlannerTemplateUpdateWithWhereUniqueWithoutSubjectInput[]
+    updateMany?: PlannerTemplateUpdateManyWithWhereWithoutSubjectInput | PlannerTemplateUpdateManyWithWhereWithoutSubjectInput[]
+    deleteMany?: PlannerTemplateScalarWhereInput | PlannerTemplateScalarWhereInput[]
+  }
+
+  export type StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutSubjectInput, StudentPlannerTaskUncheckedCreateWithoutSubjectInput> | StudentPlannerTaskCreateWithoutSubjectInput[] | StudentPlannerTaskUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutSubjectInput | StudentPlannerTaskCreateOrConnectWithoutSubjectInput[]
+    upsert?: StudentPlannerTaskUpsertWithWhereUniqueWithoutSubjectInput | StudentPlannerTaskUpsertWithWhereUniqueWithoutSubjectInput[]
+    createMany?: StudentPlannerTaskCreateManySubjectInputEnvelope
+    set?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    disconnect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    delete?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    update?: StudentPlannerTaskUpdateWithWhereUniqueWithoutSubjectInput | StudentPlannerTaskUpdateWithWhereUniqueWithoutSubjectInput[]
+    updateMany?: StudentPlannerTaskUpdateManyWithWhereWithoutSubjectInput | StudentPlannerTaskUpdateManyWithWhereWithoutSubjectInput[]
+    deleteMany?: StudentPlannerTaskScalarWhereInput | StudentPlannerTaskScalarWhereInput[]
   }
 
   export type CourseCreatetagsInput = {
@@ -25328,6 +28930,137 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutStudyTasksInput, UserUpdateWithoutStudyTasksInput>, UserUncheckedUpdateWithoutStudyTasksInput>
   }
 
+  export type PlannerTemplateCreatetargetBacSectionsInput = {
+    set: $Enums.BacSection[]
+  }
+
+  export type SubjectCreateNestedOneWithoutPlannerTemplatesInput = {
+    create?: XOR<SubjectCreateWithoutPlannerTemplatesInput, SubjectUncheckedCreateWithoutPlannerTemplatesInput>
+    connectOrCreate?: SubjectCreateOrConnectWithoutPlannerTemplatesInput
+    connect?: SubjectWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPlannerTemplatesInput = {
+    create?: XOR<UserCreateWithoutPlannerTemplatesInput, UserUncheckedCreateWithoutPlannerTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlannerTemplatesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type StudentPlannerTaskCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutTemplateInput, StudentPlannerTaskUncheckedCreateWithoutTemplateInput> | StudentPlannerTaskCreateWithoutTemplateInput[] | StudentPlannerTaskUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutTemplateInput | StudentPlannerTaskCreateOrConnectWithoutTemplateInput[]
+    createMany?: StudentPlannerTaskCreateManyTemplateInputEnvelope
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+  }
+
+  export type StudentPlannerTaskUncheckedCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutTemplateInput, StudentPlannerTaskUncheckedCreateWithoutTemplateInput> | StudentPlannerTaskCreateWithoutTemplateInput[] | StudentPlannerTaskUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutTemplateInput | StudentPlannerTaskCreateOrConnectWithoutTemplateInput[]
+    createMany?: StudentPlannerTaskCreateManyTemplateInputEnvelope
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type PlannerTemplateUpdatetargetBacSectionsInput = {
+    set?: $Enums.BacSection[]
+    push?: $Enums.BacSection | $Enums.BacSection[]
+  }
+
+  export type SubjectUpdateOneRequiredWithoutPlannerTemplatesNestedInput = {
+    create?: XOR<SubjectCreateWithoutPlannerTemplatesInput, SubjectUncheckedCreateWithoutPlannerTemplatesInput>
+    connectOrCreate?: SubjectCreateOrConnectWithoutPlannerTemplatesInput
+    upsert?: SubjectUpsertWithoutPlannerTemplatesInput
+    connect?: SubjectWhereUniqueInput
+    update?: XOR<XOR<SubjectUpdateToOneWithWhereWithoutPlannerTemplatesInput, SubjectUpdateWithoutPlannerTemplatesInput>, SubjectUncheckedUpdateWithoutPlannerTemplatesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutPlannerTemplatesNestedInput = {
+    create?: XOR<UserCreateWithoutPlannerTemplatesInput, UserUncheckedCreateWithoutPlannerTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlannerTemplatesInput
+    upsert?: UserUpsertWithoutPlannerTemplatesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPlannerTemplatesInput, UserUpdateWithoutPlannerTemplatesInput>, UserUncheckedUpdateWithoutPlannerTemplatesInput>
+  }
+
+  export type StudentPlannerTaskUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutTemplateInput, StudentPlannerTaskUncheckedCreateWithoutTemplateInput> | StudentPlannerTaskCreateWithoutTemplateInput[] | StudentPlannerTaskUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutTemplateInput | StudentPlannerTaskCreateOrConnectWithoutTemplateInput[]
+    upsert?: StudentPlannerTaskUpsertWithWhereUniqueWithoutTemplateInput | StudentPlannerTaskUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: StudentPlannerTaskCreateManyTemplateInputEnvelope
+    set?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    disconnect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    delete?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    update?: StudentPlannerTaskUpdateWithWhereUniqueWithoutTemplateInput | StudentPlannerTaskUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: StudentPlannerTaskUpdateManyWithWhereWithoutTemplateInput | StudentPlannerTaskUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: StudentPlannerTaskScalarWhereInput | StudentPlannerTaskScalarWhereInput[]
+  }
+
+  export type StudentPlannerTaskUncheckedUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<StudentPlannerTaskCreateWithoutTemplateInput, StudentPlannerTaskUncheckedCreateWithoutTemplateInput> | StudentPlannerTaskCreateWithoutTemplateInput[] | StudentPlannerTaskUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: StudentPlannerTaskCreateOrConnectWithoutTemplateInput | StudentPlannerTaskCreateOrConnectWithoutTemplateInput[]
+    upsert?: StudentPlannerTaskUpsertWithWhereUniqueWithoutTemplateInput | StudentPlannerTaskUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: StudentPlannerTaskCreateManyTemplateInputEnvelope
+    set?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    disconnect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    delete?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    connect?: StudentPlannerTaskWhereUniqueInput | StudentPlannerTaskWhereUniqueInput[]
+    update?: StudentPlannerTaskUpdateWithWhereUniqueWithoutTemplateInput | StudentPlannerTaskUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: StudentPlannerTaskUpdateManyWithWhereWithoutTemplateInput | StudentPlannerTaskUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: StudentPlannerTaskScalarWhereInput | StudentPlannerTaskScalarWhereInput[]
+  }
+
+  export type SubjectCreateNestedOneWithoutStudentPlannerTasksInput = {
+    create?: XOR<SubjectCreateWithoutStudentPlannerTasksInput, SubjectUncheckedCreateWithoutStudentPlannerTasksInput>
+    connectOrCreate?: SubjectCreateOrConnectWithoutStudentPlannerTasksInput
+    connect?: SubjectWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutStudentPlannerTasksInput = {
+    create?: XOR<UserCreateWithoutStudentPlannerTasksInput, UserUncheckedCreateWithoutStudentPlannerTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStudentPlannerTasksInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PlannerTemplateCreateNestedOneWithoutTasksInput = {
+    create?: XOR<PlannerTemplateCreateWithoutTasksInput, PlannerTemplateUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: PlannerTemplateCreateOrConnectWithoutTasksInput
+    connect?: PlannerTemplateWhereUniqueInput
+  }
+
+  export type SubjectUpdateOneRequiredWithoutStudentPlannerTasksNestedInput = {
+    create?: XOR<SubjectCreateWithoutStudentPlannerTasksInput, SubjectUncheckedCreateWithoutStudentPlannerTasksInput>
+    connectOrCreate?: SubjectCreateOrConnectWithoutStudentPlannerTasksInput
+    upsert?: SubjectUpsertWithoutStudentPlannerTasksInput
+    connect?: SubjectWhereUniqueInput
+    update?: XOR<XOR<SubjectUpdateToOneWithWhereWithoutStudentPlannerTasksInput, SubjectUpdateWithoutStudentPlannerTasksInput>, SubjectUncheckedUpdateWithoutStudentPlannerTasksInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutStudentPlannerTasksNestedInput = {
+    create?: XOR<UserCreateWithoutStudentPlannerTasksInput, UserUncheckedCreateWithoutStudentPlannerTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStudentPlannerTasksInput
+    upsert?: UserUpsertWithoutStudentPlannerTasksInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutStudentPlannerTasksInput, UserUpdateWithoutStudentPlannerTasksInput>, UserUncheckedUpdateWithoutStudentPlannerTasksInput>
+  }
+
+  export type PlannerTemplateUpdateOneWithoutTasksNestedInput = {
+    create?: XOR<PlannerTemplateCreateWithoutTasksInput, PlannerTemplateUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: PlannerTemplateCreateOrConnectWithoutTasksInput
+    upsert?: PlannerTemplateUpsertWithoutTasksInput
+    disconnect?: PlannerTemplateWhereInput | boolean
+    delete?: PlannerTemplateWhereInput | boolean
+    connect?: PlannerTemplateWhereUniqueInput
+    update?: XOR<XOR<PlannerTemplateUpdateToOneWithWhereWithoutTasksInput, PlannerTemplateUpdateWithoutTasksInput>, PlannerTemplateUncheckedUpdateWithoutTasksInput>
+  }
+
   export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -25414,14 +29147,6 @@ export namespace Prisma {
     create?: XOR<CommunicationCreateWithoutAttachmentsInput, CommunicationUncheckedCreateWithoutAttachmentsInput>
     connectOrCreate?: CommunicationCreateOrConnectWithoutAttachmentsInput
     connect?: CommunicationWhereUniqueInput
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type CommunicationUpdateOneRequiredWithoutAttachmentsNestedInput = {
@@ -25674,6 +29399,22 @@ export namespace Prisma {
     _max?: NestedEnumDifficultyFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -25767,22 +29508,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumCommunicationAudienceFilter<$PrismaModel>
     _max?: NestedEnumCommunicationAudienceFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type ProgressTrackingCreateWithoutUserInput = {
@@ -25906,6 +29631,108 @@ export namespace Prisma {
 
   export type StudyTaskCreateManyUserInputEnvelope = {
     data: StudyTaskCreateManyUserInput | StudyTaskCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PlannerTemplateCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    targetAll?: boolean
+    targetBacSections?: PlannerTemplateCreatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subject: SubjectCreateNestedOneWithoutPlannerTemplatesInput
+    tasks?: StudentPlannerTaskCreateNestedManyWithoutTemplateInput
+  }
+
+  export type PlannerTemplateUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    subjectId: string
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    targetAll?: boolean
+    targetBacSections?: PlannerTemplateCreatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type PlannerTemplateCreateOrConnectWithoutCreatedByInput = {
+    where: PlannerTemplateWhereUniqueInput
+    create: XOR<PlannerTemplateCreateWithoutCreatedByInput, PlannerTemplateUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type PlannerTemplateCreateManyCreatedByInputEnvelope = {
+    data: PlannerTemplateCreateManyCreatedByInput | PlannerTemplateCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type StudentPlannerTaskCreateWithoutUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subject: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
+    template?: PlannerTemplateCreateNestedOneWithoutTasksInput
+  }
+
+  export type StudentPlannerTaskUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    subjectId: string
+    templateId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentPlannerTaskCreateOrConnectWithoutUserInput = {
+    where: StudentPlannerTaskWhereUniqueInput
+    create: XOR<StudentPlannerTaskCreateWithoutUserInput, StudentPlannerTaskUncheckedCreateWithoutUserInput>
+  }
+
+  export type StudentPlannerTaskCreateManyUserInputEnvelope = {
+    data: StudentPlannerTaskCreateManyUserInput | StudentPlannerTaskCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -26087,6 +29914,86 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"StudyTask"> | Date | string
   }
 
+  export type PlannerTemplateUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: PlannerTemplateWhereUniqueInput
+    update: XOR<PlannerTemplateUpdateWithoutCreatedByInput, PlannerTemplateUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<PlannerTemplateCreateWithoutCreatedByInput, PlannerTemplateUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type PlannerTemplateUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: PlannerTemplateWhereUniqueInput
+    data: XOR<PlannerTemplateUpdateWithoutCreatedByInput, PlannerTemplateUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type PlannerTemplateUpdateManyWithWhereWithoutCreatedByInput = {
+    where: PlannerTemplateScalarWhereInput
+    data: XOR<PlannerTemplateUpdateManyMutationInput, PlannerTemplateUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type PlannerTemplateScalarWhereInput = {
+    AND?: PlannerTemplateScalarWhereInput | PlannerTemplateScalarWhereInput[]
+    OR?: PlannerTemplateScalarWhereInput[]
+    NOT?: PlannerTemplateScalarWhereInput | PlannerTemplateScalarWhereInput[]
+    id?: StringFilter<"PlannerTemplate"> | string
+    title?: StringFilter<"PlannerTemplate"> | string
+    description?: StringNullableFilter<"PlannerTemplate"> | string | null
+    dueAt?: DateTimeFilter<"PlannerTemplate"> | Date | string
+    priority?: StringNullableFilter<"PlannerTemplate"> | string | null
+    subjectId?: StringFilter<"PlannerTemplate"> | string
+    attachmentKind?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentLabel?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentFilePath?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentUrl?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentMimeType?: StringNullableFilter<"PlannerTemplate"> | string | null
+    attachmentSizeBytes?: IntNullableFilter<"PlannerTemplate"> | number | null
+    targetAll?: BoolFilter<"PlannerTemplate"> | boolean
+    targetBacSections?: EnumBacSectionNullableListFilter<"PlannerTemplate">
+    publishedAt?: DateTimeNullableFilter<"PlannerTemplate"> | Date | string | null
+    createdById?: StringFilter<"PlannerTemplate"> | string
+    createdAt?: DateTimeFilter<"PlannerTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"PlannerTemplate"> | Date | string
+  }
+
+  export type StudentPlannerTaskUpsertWithWhereUniqueWithoutUserInput = {
+    where: StudentPlannerTaskWhereUniqueInput
+    update: XOR<StudentPlannerTaskUpdateWithoutUserInput, StudentPlannerTaskUncheckedUpdateWithoutUserInput>
+    create: XOR<StudentPlannerTaskCreateWithoutUserInput, StudentPlannerTaskUncheckedCreateWithoutUserInput>
+  }
+
+  export type StudentPlannerTaskUpdateWithWhereUniqueWithoutUserInput = {
+    where: StudentPlannerTaskWhereUniqueInput
+    data: XOR<StudentPlannerTaskUpdateWithoutUserInput, StudentPlannerTaskUncheckedUpdateWithoutUserInput>
+  }
+
+  export type StudentPlannerTaskUpdateManyWithWhereWithoutUserInput = {
+    where: StudentPlannerTaskScalarWhereInput
+    data: XOR<StudentPlannerTaskUpdateManyMutationInput, StudentPlannerTaskUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type StudentPlannerTaskScalarWhereInput = {
+    AND?: StudentPlannerTaskScalarWhereInput | StudentPlannerTaskScalarWhereInput[]
+    OR?: StudentPlannerTaskScalarWhereInput[]
+    NOT?: StudentPlannerTaskScalarWhereInput | StudentPlannerTaskScalarWhereInput[]
+    id?: StringFilter<"StudentPlannerTask"> | string
+    title?: StringFilter<"StudentPlannerTask"> | string
+    description?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    dueAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
+    priority?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    completed?: BoolFilter<"StudentPlannerTask"> | boolean
+    attachmentKind?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentLabel?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentFilePath?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentUrl?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentMimeType?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    attachmentSizeBytes?: IntNullableFilter<"StudentPlannerTask"> | number | null
+    isPersonal?: BoolFilter<"StudentPlannerTask"> | boolean
+    subjectId?: StringFilter<"StudentPlannerTask"> | string
+    userId?: StringFilter<"StudentPlannerTask"> | string
+    templateId?: StringNullableFilter<"StudentPlannerTask"> | string | null
+    createdAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
+  }
+
   export type CommunicationUpsertWithWhereUniqueWithoutCreatedByInput = {
     where: CommunicationWhereUniqueInput
     update: XOR<CommunicationUpdateWithoutCreatedByInput, CommunicationUncheckedUpdateWithoutCreatedByInput>
@@ -26247,6 +30154,108 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PlannerTemplateCreateWithoutSubjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    targetAll?: boolean
+    targetBacSections?: PlannerTemplateCreatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutPlannerTemplatesInput
+    tasks?: StudentPlannerTaskCreateNestedManyWithoutTemplateInput
+  }
+
+  export type PlannerTemplateUncheckedCreateWithoutSubjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    targetAll?: boolean
+    targetBacSections?: PlannerTemplateCreatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: Date | string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type PlannerTemplateCreateOrConnectWithoutSubjectInput = {
+    where: PlannerTemplateWhereUniqueInput
+    create: XOR<PlannerTemplateCreateWithoutSubjectInput, PlannerTemplateUncheckedCreateWithoutSubjectInput>
+  }
+
+  export type PlannerTemplateCreateManySubjectInputEnvelope = {
+    data: PlannerTemplateCreateManySubjectInput | PlannerTemplateCreateManySubjectInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type StudentPlannerTaskCreateWithoutSubjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutStudentPlannerTasksInput
+    template?: PlannerTemplateCreateNestedOneWithoutTasksInput
+  }
+
+  export type StudentPlannerTaskUncheckedCreateWithoutSubjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    userId: string
+    templateId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentPlannerTaskCreateOrConnectWithoutSubjectInput = {
+    where: StudentPlannerTaskWhereUniqueInput
+    create: XOR<StudentPlannerTaskCreateWithoutSubjectInput, StudentPlannerTaskUncheckedCreateWithoutSubjectInput>
+  }
+
+  export type StudentPlannerTaskCreateManySubjectInputEnvelope = {
+    data: StudentPlannerTaskCreateManySubjectInput | StudentPlannerTaskCreateManySubjectInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CourseUpsertWithWhereUniqueWithoutSubjectInput = {
     where: CourseWhereUniqueInput
     update: XOR<CourseUpdateWithoutSubjectInput, CourseUncheckedUpdateWithoutSubjectInput>
@@ -26326,6 +30335,38 @@ export namespace Prisma {
     data: XOR<StudyTaskUpdateManyMutationInput, StudyTaskUncheckedUpdateManyWithoutSubjectInput>
   }
 
+  export type PlannerTemplateUpsertWithWhereUniqueWithoutSubjectInput = {
+    where: PlannerTemplateWhereUniqueInput
+    update: XOR<PlannerTemplateUpdateWithoutSubjectInput, PlannerTemplateUncheckedUpdateWithoutSubjectInput>
+    create: XOR<PlannerTemplateCreateWithoutSubjectInput, PlannerTemplateUncheckedCreateWithoutSubjectInput>
+  }
+
+  export type PlannerTemplateUpdateWithWhereUniqueWithoutSubjectInput = {
+    where: PlannerTemplateWhereUniqueInput
+    data: XOR<PlannerTemplateUpdateWithoutSubjectInput, PlannerTemplateUncheckedUpdateWithoutSubjectInput>
+  }
+
+  export type PlannerTemplateUpdateManyWithWhereWithoutSubjectInput = {
+    where: PlannerTemplateScalarWhereInput
+    data: XOR<PlannerTemplateUpdateManyMutationInput, PlannerTemplateUncheckedUpdateManyWithoutSubjectInput>
+  }
+
+  export type StudentPlannerTaskUpsertWithWhereUniqueWithoutSubjectInput = {
+    where: StudentPlannerTaskWhereUniqueInput
+    update: XOR<StudentPlannerTaskUpdateWithoutSubjectInput, StudentPlannerTaskUncheckedUpdateWithoutSubjectInput>
+    create: XOR<StudentPlannerTaskCreateWithoutSubjectInput, StudentPlannerTaskUncheckedCreateWithoutSubjectInput>
+  }
+
+  export type StudentPlannerTaskUpdateWithWhereUniqueWithoutSubjectInput = {
+    where: StudentPlannerTaskWhereUniqueInput
+    data: XOR<StudentPlannerTaskUpdateWithoutSubjectInput, StudentPlannerTaskUncheckedUpdateWithoutSubjectInput>
+  }
+
+  export type StudentPlannerTaskUpdateManyWithWhereWithoutSubjectInput = {
+    where: StudentPlannerTaskScalarWhereInput
+    data: XOR<StudentPlannerTaskUpdateManyMutationInput, StudentPlannerTaskUncheckedUpdateManyWithoutSubjectInput>
+  }
+
   export type SubjectCreateWithoutCoursesInput = {
     id?: string
     name: string
@@ -26339,6 +30380,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
   }
 
   export type SubjectUncheckedCreateWithoutCoursesInput = {
@@ -26354,6 +30397,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
   }
 
   export type SubjectCreateOrConnectWithoutCoursesInput = {
@@ -26495,6 +30540,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
   }
 
   export type SubjectUncheckedUpdateWithoutCoursesInput = {
@@ -26510,6 +30557,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
   }
 
   export type LessonUpsertWithWhereUniqueWithoutCourseInput = {
@@ -26700,6 +30749,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     courses?: CourseCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
   }
 
   export type SubjectUncheckedCreateWithoutExercisesInput = {
@@ -26715,6 +30766,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
   }
 
   export type SubjectCreateOrConnectWithoutExercisesInput = {
@@ -26826,6 +30879,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
   }
 
   export type SubjectUncheckedUpdateWithoutExercisesInput = {
@@ -26841,6 +30896,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
   }
 
   export type CorrectionUpsertWithWhereUniqueWithoutExerciseInput = {
@@ -27002,6 +31059,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
     studyTasks?: StudyTaskCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutUserInput
     communicationsCreated?: CommunicationCreateNestedManyWithoutCreatedByInput
   }
 
@@ -27024,6 +31083,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutUserInput
     communicationsCreated?: CommunicationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
@@ -27132,6 +31193,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutUserNestedInput
     communicationsCreated?: CommunicationUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -27154,6 +31217,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutUserNestedInput
     communicationsCreated?: CommunicationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -27258,6 +31323,8 @@ export namespace Prisma {
     progress?: ProgressTrackingCreateNestedManyWithoutUserInput
     homeworks?: HomeworkSubmissionCreateNestedManyWithoutUserInput
     studyTasks?: StudyTaskCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutUserInput
     communicationsCreated?: CommunicationCreateNestedManyWithoutCreatedByInput
   }
 
@@ -27280,6 +31347,8 @@ export namespace Prisma {
     progress?: ProgressTrackingUncheckedCreateNestedManyWithoutUserInput
     homeworks?: HomeworkSubmissionUncheckedCreateNestedManyWithoutUserInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutUserInput
     communicationsCreated?: CommunicationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
@@ -27357,6 +31426,8 @@ export namespace Prisma {
     progress?: ProgressTrackingUpdateManyWithoutUserNestedInput
     homeworks?: HomeworkSubmissionUpdateManyWithoutUserNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutUserNestedInput
     communicationsCreated?: CommunicationUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -27379,6 +31450,8 @@ export namespace Prisma {
     progress?: ProgressTrackingUncheckedUpdateManyWithoutUserNestedInput
     homeworks?: HomeworkSubmissionUncheckedUpdateManyWithoutUserNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutUserNestedInput
     communicationsCreated?: CommunicationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -27446,6 +31519,8 @@ export namespace Prisma {
     progress?: ProgressTrackingCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
     studyTasks?: StudyTaskCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutUserInput
     communicationsCreated?: CommunicationCreateNestedManyWithoutCreatedByInput
   }
 
@@ -27468,6 +31543,8 @@ export namespace Prisma {
     progress?: ProgressTrackingUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutUserInput
     communicationsCreated?: CommunicationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
@@ -27506,6 +31583,8 @@ export namespace Prisma {
     progress?: ProgressTrackingUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutUserNestedInput
     communicationsCreated?: CommunicationUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -27528,6 +31607,8 @@ export namespace Prisma {
     progress?: ProgressTrackingUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutUserNestedInput
     communicationsCreated?: CommunicationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -27696,6 +31777,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
   }
 
   export type SubjectUncheckedCreateWithoutStudyTasksInput = {
@@ -27711,6 +31794,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
   }
 
   export type SubjectCreateOrConnectWithoutStudyTasksInput = {
@@ -27737,6 +31822,8 @@ export namespace Prisma {
     progress?: ProgressTrackingCreateNestedManyWithoutUserInput
     homeworks?: HomeworkSubmissionCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutUserInput
     communicationsCreated?: CommunicationCreateNestedManyWithoutCreatedByInput
   }
 
@@ -27759,6 +31846,8 @@ export namespace Prisma {
     progress?: ProgressTrackingUncheckedCreateNestedManyWithoutUserInput
     homeworks?: HomeworkSubmissionUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutUserInput
     communicationsCreated?: CommunicationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
@@ -27791,6 +31880,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
   }
 
   export type SubjectUncheckedUpdateWithoutStudyTasksInput = {
@@ -27806,6 +31897,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
   }
 
   export type UserUpsertWithoutStudyTasksInput = {
@@ -27838,6 +31931,8 @@ export namespace Prisma {
     progress?: ProgressTrackingUpdateManyWithoutUserNestedInput
     homeworks?: HomeworkSubmissionUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutUserNestedInput
     communicationsCreated?: CommunicationUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -27860,7 +31955,567 @@ export namespace Prisma {
     progress?: ProgressTrackingUncheckedUpdateManyWithoutUserNestedInput
     homeworks?: HomeworkSubmissionUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutUserNestedInput
     communicationsCreated?: CommunicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type SubjectCreateWithoutPlannerTemplatesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    bacSection?: $Enums.BacSection
+    color?: string
+    icon?: string
+    order?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    courses?: CourseCreateNestedManyWithoutSubjectInput
+    exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
+  }
+
+  export type SubjectUncheckedCreateWithoutPlannerTemplatesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    bacSection?: $Enums.BacSection
+    color?: string
+    icon?: string
+    order?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
+  }
+
+  export type SubjectCreateOrConnectWithoutPlannerTemplatesInput = {
+    where: SubjectWhereUniqueInput
+    create: XOR<SubjectCreateWithoutPlannerTemplatesInput, SubjectUncheckedCreateWithoutPlannerTemplatesInput>
+  }
+
+  export type UserCreateWithoutPlannerTemplatesInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    bacSection?: $Enums.BacSection
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    tokenVersion?: number
+    approvalDate?: Date | string | null
+    lastLogin?: Date | string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    progress?: ProgressTrackingCreateNestedManyWithoutUserInput
+    homeworks?: HomeworkSubmissionCreateNestedManyWithoutUserInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    studyTasks?: StudyTaskCreateNestedManyWithoutUserInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutUserInput
+    communicationsCreated?: CommunicationCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutPlannerTemplatesInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    bacSection?: $Enums.BacSection
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    tokenVersion?: number
+    approvalDate?: Date | string | null
+    lastLogin?: Date | string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    progress?: ProgressTrackingUncheckedCreateNestedManyWithoutUserInput
+    homeworks?: HomeworkSubmissionUncheckedCreateNestedManyWithoutUserInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutUserInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutUserInput
+    communicationsCreated?: CommunicationUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutPlannerTemplatesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPlannerTemplatesInput, UserUncheckedCreateWithoutPlannerTemplatesInput>
+  }
+
+  export type StudentPlannerTaskCreateWithoutTemplateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subject: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
+    user: UserCreateNestedOneWithoutStudentPlannerTasksInput
+  }
+
+  export type StudentPlannerTaskUncheckedCreateWithoutTemplateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    subjectId: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentPlannerTaskCreateOrConnectWithoutTemplateInput = {
+    where: StudentPlannerTaskWhereUniqueInput
+    create: XOR<StudentPlannerTaskCreateWithoutTemplateInput, StudentPlannerTaskUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type StudentPlannerTaskCreateManyTemplateInputEnvelope = {
+    data: StudentPlannerTaskCreateManyTemplateInput | StudentPlannerTaskCreateManyTemplateInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SubjectUpsertWithoutPlannerTemplatesInput = {
+    update: XOR<SubjectUpdateWithoutPlannerTemplatesInput, SubjectUncheckedUpdateWithoutPlannerTemplatesInput>
+    create: XOR<SubjectCreateWithoutPlannerTemplatesInput, SubjectUncheckedCreateWithoutPlannerTemplatesInput>
+    where?: SubjectWhereInput
+  }
+
+  export type SubjectUpdateToOneWithWhereWithoutPlannerTemplatesInput = {
+    where?: SubjectWhereInput
+    data: XOR<SubjectUpdateWithoutPlannerTemplatesInput, SubjectUncheckedUpdateWithoutPlannerTemplatesInput>
+  }
+
+  export type SubjectUpdateWithoutPlannerTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    color?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courses?: CourseUpdateManyWithoutSubjectNestedInput
+    exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
+  }
+
+  export type SubjectUncheckedUpdateWithoutPlannerTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    color?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
+  }
+
+  export type UserUpsertWithoutPlannerTemplatesInput = {
+    update: XOR<UserUpdateWithoutPlannerTemplatesInput, UserUncheckedUpdateWithoutPlannerTemplatesInput>
+    create: XOR<UserCreateWithoutPlannerTemplatesInput, UserUncheckedCreateWithoutPlannerTemplatesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPlannerTemplatesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPlannerTemplatesInput, UserUncheckedUpdateWithoutPlannerTemplatesInput>
+  }
+
+  export type UserUpdateWithoutPlannerTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    tokenVersion?: IntFieldUpdateOperationsInput | number
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: ProgressTrackingUpdateManyWithoutUserNestedInput
+    homeworks?: HomeworkSubmissionUpdateManyWithoutUserNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    studyTasks?: StudyTaskUpdateManyWithoutUserNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutUserNestedInput
+    communicationsCreated?: CommunicationUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPlannerTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    tokenVersion?: IntFieldUpdateOperationsInput | number
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: ProgressTrackingUncheckedUpdateManyWithoutUserNestedInput
+    homeworks?: HomeworkSubmissionUncheckedUpdateManyWithoutUserNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    studyTasks?: StudyTaskUncheckedUpdateManyWithoutUserNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutUserNestedInput
+    communicationsCreated?: CommunicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type StudentPlannerTaskUpsertWithWhereUniqueWithoutTemplateInput = {
+    where: StudentPlannerTaskWhereUniqueInput
+    update: XOR<StudentPlannerTaskUpdateWithoutTemplateInput, StudentPlannerTaskUncheckedUpdateWithoutTemplateInput>
+    create: XOR<StudentPlannerTaskCreateWithoutTemplateInput, StudentPlannerTaskUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type StudentPlannerTaskUpdateWithWhereUniqueWithoutTemplateInput = {
+    where: StudentPlannerTaskWhereUniqueInput
+    data: XOR<StudentPlannerTaskUpdateWithoutTemplateInput, StudentPlannerTaskUncheckedUpdateWithoutTemplateInput>
+  }
+
+  export type StudentPlannerTaskUpdateManyWithWhereWithoutTemplateInput = {
+    where: StudentPlannerTaskScalarWhereInput
+    data: XOR<StudentPlannerTaskUpdateManyMutationInput, StudentPlannerTaskUncheckedUpdateManyWithoutTemplateInput>
+  }
+
+  export type SubjectCreateWithoutStudentPlannerTasksInput = {
+    id?: string
+    name: string
+    description?: string | null
+    bacSection?: $Enums.BacSection
+    color?: string
+    icon?: string
+    order?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    courses?: CourseCreateNestedManyWithoutSubjectInput
+    exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
+  }
+
+  export type SubjectUncheckedCreateWithoutStudentPlannerTasksInput = {
+    id?: string
+    name: string
+    description?: string | null
+    bacSection?: $Enums.BacSection
+    color?: string
+    icon?: string
+    order?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
+  }
+
+  export type SubjectCreateOrConnectWithoutStudentPlannerTasksInput = {
+    where: SubjectWhereUniqueInput
+    create: XOR<SubjectCreateWithoutStudentPlannerTasksInput, SubjectUncheckedCreateWithoutStudentPlannerTasksInput>
+  }
+
+  export type UserCreateWithoutStudentPlannerTasksInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    bacSection?: $Enums.BacSection
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    tokenVersion?: number
+    approvalDate?: Date | string | null
+    lastLogin?: Date | string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    progress?: ProgressTrackingCreateNestedManyWithoutUserInput
+    homeworks?: HomeworkSubmissionCreateNestedManyWithoutUserInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    studyTasks?: StudyTaskCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutCreatedByInput
+    communicationsCreated?: CommunicationCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutStudentPlannerTasksInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    bacSection?: $Enums.BacSection
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    tokenVersion?: number
+    approvalDate?: Date | string | null
+    lastLogin?: Date | string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    progress?: ProgressTrackingUncheckedCreateNestedManyWithoutUserInput
+    homeworks?: HomeworkSubmissionUncheckedCreateNestedManyWithoutUserInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    communicationsCreated?: CommunicationUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutStudentPlannerTasksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutStudentPlannerTasksInput, UserUncheckedCreateWithoutStudentPlannerTasksInput>
+  }
+
+  export type PlannerTemplateCreateWithoutTasksInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    targetAll?: boolean
+    targetBacSections?: PlannerTemplateCreatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subject: SubjectCreateNestedOneWithoutPlannerTemplatesInput
+    createdBy: UserCreateNestedOneWithoutPlannerTemplatesInput
+  }
+
+  export type PlannerTemplateUncheckedCreateWithoutTasksInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    subjectId: string
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    targetAll?: boolean
+    targetBacSections?: PlannerTemplateCreatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: Date | string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlannerTemplateCreateOrConnectWithoutTasksInput = {
+    where: PlannerTemplateWhereUniqueInput
+    create: XOR<PlannerTemplateCreateWithoutTasksInput, PlannerTemplateUncheckedCreateWithoutTasksInput>
+  }
+
+  export type SubjectUpsertWithoutStudentPlannerTasksInput = {
+    update: XOR<SubjectUpdateWithoutStudentPlannerTasksInput, SubjectUncheckedUpdateWithoutStudentPlannerTasksInput>
+    create: XOR<SubjectCreateWithoutStudentPlannerTasksInput, SubjectUncheckedCreateWithoutStudentPlannerTasksInput>
+    where?: SubjectWhereInput
+  }
+
+  export type SubjectUpdateToOneWithWhereWithoutStudentPlannerTasksInput = {
+    where?: SubjectWhereInput
+    data: XOR<SubjectUpdateWithoutStudentPlannerTasksInput, SubjectUncheckedUpdateWithoutStudentPlannerTasksInput>
+  }
+
+  export type SubjectUpdateWithoutStudentPlannerTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    color?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courses?: CourseUpdateManyWithoutSubjectNestedInput
+    exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
+  }
+
+  export type SubjectUncheckedUpdateWithoutStudentPlannerTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    color?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
+  }
+
+  export type UserUpsertWithoutStudentPlannerTasksInput = {
+    update: XOR<UserUpdateWithoutStudentPlannerTasksInput, UserUncheckedUpdateWithoutStudentPlannerTasksInput>
+    create: XOR<UserCreateWithoutStudentPlannerTasksInput, UserUncheckedCreateWithoutStudentPlannerTasksInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutStudentPlannerTasksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutStudentPlannerTasksInput, UserUncheckedUpdateWithoutStudentPlannerTasksInput>
+  }
+
+  export type UserUpdateWithoutStudentPlannerTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    tokenVersion?: IntFieldUpdateOperationsInput | number
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: ProgressTrackingUpdateManyWithoutUserNestedInput
+    homeworks?: HomeworkSubmissionUpdateManyWithoutUserNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    studyTasks?: StudyTaskUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutCreatedByNestedInput
+    communicationsCreated?: CommunicationUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutStudentPlannerTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    tokenVersion?: IntFieldUpdateOperationsInput | number
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: ProgressTrackingUncheckedUpdateManyWithoutUserNestedInput
+    homeworks?: HomeworkSubmissionUncheckedUpdateManyWithoutUserNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    studyTasks?: StudyTaskUncheckedUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    communicationsCreated?: CommunicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type PlannerTemplateUpsertWithoutTasksInput = {
+    update: XOR<PlannerTemplateUpdateWithoutTasksInput, PlannerTemplateUncheckedUpdateWithoutTasksInput>
+    create: XOR<PlannerTemplateCreateWithoutTasksInput, PlannerTemplateUncheckedCreateWithoutTasksInput>
+    where?: PlannerTemplateWhereInput
+  }
+
+  export type PlannerTemplateUpdateToOneWithWhereWithoutTasksInput = {
+    where?: PlannerTemplateWhereInput
+    data: XOR<PlannerTemplateUpdateWithoutTasksInput, PlannerTemplateUncheckedUpdateWithoutTasksInput>
+  }
+
+  export type PlannerTemplateUpdateWithoutTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject?: SubjectUpdateOneRequiredWithoutPlannerTemplatesNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutPlannerTemplatesNestedInput
+  }
+
+  export type PlannerTemplateUncheckedUpdateWithoutTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    subjectId?: StringFieldUpdateOperationsInput | string
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateWithoutCommunicationsCreatedInput = {
@@ -27883,6 +32538,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
     studyTasks?: StudyTaskCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommunicationsCreatedInput = {
@@ -27905,6 +32562,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommunicationsCreatedInput = {
@@ -27975,6 +32634,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommunicationsCreatedInput = {
@@ -27997,6 +32658,8 @@ export namespace Prisma {
     homeworks?: HomeworkSubmissionUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommunicationAttachmentUpsertWithWhereUniqueWithoutCommunicationInput = {
@@ -28180,6 +32843,46 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type PlannerTemplateCreateManyCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    subjectId: string
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    targetAll?: boolean
+    targetBacSections?: PlannerTemplateCreatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentPlannerTaskCreateManyUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    subjectId: string
+    templateId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type CommunicationCreateManyCreatedByInput = {
     id?: string
     type?: $Enums.CommunicationType
@@ -28328,6 +33031,128 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PlannerTemplateUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject?: SubjectUpdateOneRequiredWithoutPlannerTemplatesNestedInput
+    tasks?: StudentPlannerTaskUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type PlannerTemplateUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    subjectId?: StringFieldUpdateOperationsInput | string
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tasks?: StudentPlannerTaskUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type PlannerTemplateUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    subjectId?: StringFieldUpdateOperationsInput | string
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentPlannerTaskUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject?: SubjectUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+    template?: PlannerTemplateUpdateOneWithoutTasksNestedInput
+  }
+
+  export type StudentPlannerTaskUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    subjectId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentPlannerTaskUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    subjectId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CommunicationUpdateWithoutCreatedByInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumCommunicationTypeFieldUpdateOperationsInput | $Enums.CommunicationType
@@ -28429,6 +33254,46 @@ export namespace Prisma {
     priority?: string | null
     completed?: boolean
     userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlannerTemplateCreateManySubjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    targetAll?: boolean
+    targetBacSections?: PlannerTemplateCreatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: Date | string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentPlannerTaskCreateManySubjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    userId: string
+    templateId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28554,6 +33419,128 @@ export namespace Prisma {
     priority?: NullableStringFieldUpdateOperationsInput | string | null
     completed?: BoolFieldUpdateOperationsInput | boolean
     userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlannerTemplateUpdateWithoutSubjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutPlannerTemplatesNestedInput
+    tasks?: StudentPlannerTaskUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type PlannerTemplateUncheckedUpdateWithoutSubjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tasks?: StudentPlannerTaskUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type PlannerTemplateUncheckedUpdateManyWithoutSubjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    targetAll?: BoolFieldUpdateOperationsInput | boolean
+    targetBacSections?: PlannerTemplateUpdatetargetBacSectionsInput | $Enums.BacSection[]
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentPlannerTaskUpdateWithoutSubjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+    template?: PlannerTemplateUpdateOneWithoutTasksNestedInput
+  }
+
+  export type StudentPlannerTaskUncheckedUpdateWithoutSubjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    userId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentPlannerTaskUncheckedUpdateManyWithoutSubjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    userId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28798,6 +33785,86 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type StudentPlannerTaskCreateManyTemplateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    dueAt: Date | string
+    priority?: string | null
+    completed?: boolean
+    attachmentKind?: string | null
+    attachmentLabel?: string | null
+    attachmentFilePath?: string | null
+    attachmentUrl?: string | null
+    attachmentMimeType?: string | null
+    attachmentSizeBytes?: number | null
+    isPersonal?: boolean
+    subjectId: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentPlannerTaskUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject?: SubjectUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+    user?: UserUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+  }
+
+  export type StudentPlannerTaskUncheckedUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    subjectId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentPlannerTaskUncheckedUpdateManyWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dueAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    priority?: NullableStringFieldUpdateOperationsInput | string | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    attachmentKind?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentFilePath?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    isPersonal?: BoolFieldUpdateOperationsInput | boolean
+    subjectId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CommunicationAttachmentCreateManyCommunicationInput = {
     id?: string
     kind: string
@@ -28864,6 +33931,10 @@ export namespace Prisma {
      */
     export type ExerciseCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ExerciseCountOutputTypeDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use PlannerTemplateCountOutputTypeDefaultArgs instead
+     */
+    export type PlannerTemplateCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PlannerTemplateCountOutputTypeDefaultArgs<ExtArgs>
+    /**
      * @deprecated Use CommunicationCountOutputTypeDefaultArgs instead
      */
     export type CommunicationCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = CommunicationCountOutputTypeDefaultArgs<ExtArgs>
@@ -28915,6 +33986,14 @@ export namespace Prisma {
      * @deprecated Use StudyTaskDefaultArgs instead
      */
     export type StudyTaskArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = StudyTaskDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PlannerTemplateDefaultArgs instead
+     */
+    export type PlannerTemplateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PlannerTemplateDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use StudentPlannerTaskDefaultArgs instead
+     */
+    export type StudentPlannerTaskArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = StudentPlannerTaskDefaultArgs<ExtArgs>
     /**
      * @deprecated Use ParascolaireDefaultArgs instead
      */

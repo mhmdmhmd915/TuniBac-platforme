@@ -22,7 +22,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import type { EventInput, EventClickArg, DateSelectArg, EventDropArg } from '@fullcalendar/core';
-import { plannerAPI, subjectsAPI } from '../services/api';
+import { studentPlannerAPI, subjectsAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { logger } from '../lib/logger';
 
@@ -38,12 +38,15 @@ interface Task {
   description?: string;
   subjectId: string;
   subject: Subject;
-  date: string;
-  startTime?: string;
-  endTime?: string;
+  dueAt: string;
   priority?: string;
   completed: boolean;
-  userId: string;
+  isPersonal: boolean;
+  templateId?: string | null;
+  attachmentKind?: string | null;
+  attachmentLabel?: string | null;
+  attachmentUrl?: string | null;
+  attachmentFilePath?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -52,10 +55,10 @@ interface FormData {
   title: string;
   description: string;
   subjectId: string;
-  date: string;
-  startTime: string;
-  endTime: string;
+  dueAt: string;
   priority: string;
+  attachmentUrl: string;
+  attachmentLabel: string;
 }
 
 interface PomodoroSettings {
@@ -80,14 +83,15 @@ const StudyPlanner = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [formData, setFormData] = useState<FormData>({
     title: '',
     description: '',
     subjectId: '',
-    date: new Date().toISOString().split('T')[0],
-    startTime: '',
-    endTime: '',
-    priority: 'MEDIUM'
+    dueAt: new Date().toISOString().split('T')[0],
+    priority: 'MEDIUM',
+    attachmentUrl: '',
+    attachmentLabel: ''
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -135,10 +139,10 @@ const StudyPlanner = () => {
     try {
       setIsLoading(true);
       const [tasksRes, subjectsRes] = await Promise.all([
-        plannerAPI.getTasks(),
+        studentPlannerAPI.getTasks(),
         subjectsAPI.getAll({
           activeOnly: true,
-          bacSection: user?.role === 'ADMIN' ? undefined : user?.bacSection,
+          bacSection: user?.bacSection,
         })
       ]);
       setTasks(tasksRes.data);
@@ -151,7 +155,7 @@ const StudyPlanner = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [user?.bacSection, user?.role]);
+  }, [user?.bacSection]);
 
   useEffect(() => {
     fetchData();
@@ -161,8 +165,8 @@ const StudyPlanner = () => {
     return tasks.map(task => ({
       id: task.id,
       title: task.title,
-      start: task.startTime ? `${task.date.split('T')[0]}T${task.startTime}` : task.date.split('T')[0],
-      end: task.endTime ? `${task.date.split('T')[0]}T${task.endTime}` : undefined,
+      start: task.dueAt,
+      allDay: true,
       backgroundColor: task.completed ? '#6B7280' : task.subject?.color || '#3B82F6',
       borderColor: task.completed ? '#6B7280' : task.subject?.color || '#3B82F6',
       textColor: '#FFFFFF',
@@ -170,7 +174,11 @@ const StudyPlanner = () => {
         description: task.description,
         subjectId: task.subjectId,
         priority: task.priority,
-        completed: task.completed
+        completed: task.completed,
+        isPersonal: task.isPersonal,
+        templateId: task.templateId,
+        attachmentUrl: task.attachmentUrl,
+        attachmentLabel: task.attachmentLabel
       }
     }));
   }, [tasks]);
@@ -208,14 +216,14 @@ const StudyPlanner = () => {
 
   const getTodayTasks = () => {
     const today = new Date().toISOString().split('T')[0];
-    return tasks.filter(t => t.date.split('T')[0] === today);
+    return tasks.filter(t => t.dueAt.split('T')[0] === today);
   };
 
   const getUpcomingTasks = () => {
     const today = new Date().toISOString().split('T')[0];
     return tasks
-      .filter(t => t.date.split('T')[0] >= today)
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .filter(t => t.dueAt.split('T')[0] >= today)
+      .sort((a, b) => new Date(a.dueAt).getTime() - new Date(b.dueAt).getTime())
       .slice(0, 7);
   };
 
@@ -224,29 +232,32 @@ const StudyPlanner = () => {
       title: '',
       description: '',
       subjectId: subjects.length > 0 ? subjects[0].id : '',
-      date: new Date().toISOString().split('T')[0],
-      startTime: '',
-      endTime: '',
-      priority: 'MEDIUM'
+      dueAt: new Date().toISOString().split('T')[0],
+      priority: 'MEDIUM',
+      attachmentUrl: '',
+      attachmentLabel: ''
     });
     setIsEditMode(false);
     setEditingTaskId(null);
+    setEditingTask(null);
     setError(null);
     setIsModalOpen(true);
   };
 
   const handleOpenEditModal = (task: Task) => {
+    setSubjects(prev => (prev.some(subject => subject.id === task.subjectId) ? prev : [...prev, task.subject]));
     setFormData({
       title: task.title,
       description: task.description || '',
       subjectId: task.subjectId,
-      date: task.date.split('T')[0],
-      startTime: task.startTime || '',
-      endTime: task.endTime || '',
-      priority: task.priority || 'MEDIUM'
+      dueAt: task.dueAt.split('T')[0],
+      priority: task.priority || 'MEDIUM',
+      attachmentUrl: task.attachmentUrl || '',
+      attachmentLabel: task.attachmentLabel || ''
     });
     setIsEditMode(true);
     setEditingTaskId(task.id);
+    setEditingTask(task);
     setError(null);
     setIsModalOpen(true);
   };
@@ -260,11 +271,20 @@ const StudyPlanner = () => {
     setError(null);
     setSuccess(null);
     try {
+      const payload = {
+        ...formData,
+        dueAt: new Date(formData.dueAt).toISOString(),
+      };
+
       if (isEditMode && editingTaskId) {
-        await plannerAPI.updateTask(editingTaskId, formData);
+        if (editingTask && !editingTask.isPersonal) {
+          await studentPlannerAPI.updateTask(editingTaskId, { dueAt: payload.dueAt });
+        } else {
+          await studentPlannerAPI.updateTask(editingTaskId, payload);
+        }
         setSuccess('Task updated successfully!');
       } else {
-        await plannerAPI.createTask(formData);
+        await studentPlannerAPI.createTask(payload);
         setSuccess('Task created successfully!');
       }
       await fetchData();
@@ -280,7 +300,7 @@ const StudyPlanner = () => {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this task?')) return;
     try {
-      await plannerAPI.deleteTask(id);
+      await studentPlannerAPI.deleteTask(id);
       await fetchData();
       setSuccess('Task deleted successfully!');
       setTimeout(() => setSuccess(null), 3000);
@@ -291,7 +311,7 @@ const StudyPlanner = () => {
 
   const handleToggleComplete = async (id: string) => {
     try {
-      await plannerAPI.toggleComplete(id);
+      await studentPlannerAPI.toggleComplete(id);
       await fetchData();
     } catch (err) {
       logger.error('Error toggling task complete', err);
@@ -302,11 +322,12 @@ const StudyPlanner = () => {
     const date = selectInfo.startStr.split('T')[0];
     setFormData(prev => ({ 
       ...prev, 
-      date, 
+      dueAt: date, 
       subjectId: subjects.length > 0 ? subjects[0].id : '' 
     }));
     setIsEditMode(false);
     setEditingTaskId(null);
+    setEditingTask(null);
     setIsModalOpen(true);
   };
 
@@ -321,45 +342,12 @@ const StudyPlanner = () => {
     const task = tasks.find(t => t.id === dropInfo.event.id);
     if (task) {
       const newDate = dropInfo.event.startStr.split('T')[0];
-      let newStartTime = task.startTime;
-      let newEndTime = task.endTime;
-      
-      if (dropInfo.event.start && task.startTime) {
-        newStartTime = dropInfo.event.start.toISOString().split('T')[1].substring(0, 5);
-      }
-      
-      if (dropInfo.event.end && task.endTime) {
-        newEndTime = dropInfo.event.end.toISOString().split('T')[1].substring(0, 5);
-      }
-
       try {
-        await plannerAPI.updateTask(task.id, {
-          ...task,
-          date: newDate,
-          startTime: newStartTime,
-          endTime: newEndTime
-        });
+        await studentPlannerAPI.updateTask(task.id, { dueAt: newDate });
         await fetchData();
       } catch (err) {
         logger.error('Error updating task', err);
         dropInfo.revert();
-      }
-    }
-  };
-
-  const handleEventResize = async (resizeInfo: any) => {
-    const task = tasks.find(t => t.id === resizeInfo.event.id);
-    if (task) {
-      const newEndTime = resizeInfo.event.end?.toISOString().split('T')[1].substring(0, 5);
-      try {
-        await plannerAPI.updateTask(task.id, {
-          ...task,
-          endTime: newEndTime
-        });
-        await fetchData();
-      } catch (err) {
-        logger.error('Error resizing task', err);
-        resizeInfo.revert();
       }
     }
   };
@@ -732,7 +720,6 @@ const StudyPlanner = () => {
                           <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: `${(task.completed ? '#6B7280' : task.subject?.color)}20`, color: task.completed ? '#6B7280' : task.subject?.color, border: `1px solid ${(task.completed ? '#6B7280' : task.subject?.color)}30` }}>
                             {task.subject?.name}
                           </span>
-                          {task.startTime && <span className="text-xs text-text-muted-light dark:text-text-muted flex items-center gap-1"><Clock size={10} />{task.startTime}</span>}
                           {task.priority && <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: `${PriorityColors[task.priority]}20`, color: PriorityColors[task.priority] }}>
                             {task.priority}
                           </span>}
@@ -766,7 +753,7 @@ const StudyPlanner = () => {
                         <p className={`text-sm font-semibold ${task.completed ? 'line-through text-text-muted-light dark:text-text-muted' : 'text-text-light dark:text-text'}`}>{task.title}</p>
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-text-muted-light dark:text-text-muted">
-                            {new Date(task.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                            {new Date(task.dueAt).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                           </span>
                           {task.priority && <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: `${PriorityColors[task.priority]}20`, color: PriorityColors[task.priority] }}>
                             {task.priority}
@@ -797,11 +784,10 @@ const StudyPlanner = () => {
               selectable={true}
               editable={true}
               eventStartEditable={true}
-              eventDurationEditable={true}
+              eventDurationEditable={false}
               select={handleDateSelect}
               eventClick={handleEventClick}
               eventDrop={handleEventDrop}
-              eventResize={handleEventResize}
               buttonText={{
                 today: 'Today',
                 month: 'Month',
@@ -829,41 +815,43 @@ const StudyPlanner = () => {
                 )}
                 <div>
                   <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Title</label>
-                  <input type="text" value={formData.title} onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))} required className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" placeholder="Enter task title" />
+                  <input type="text" value={formData.title} onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))} required disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60" placeholder="Enter task title" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Description</label>
-                  <textarea value={formData.description} onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" rows={3} placeholder="Enter task description" />
+                  <textarea value={formData.description} onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))} disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60" rows={3} placeholder="Enter task description" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Subject</label>
-                  <select value={formData.subjectId} onChange={(e) => setFormData(prev => ({ ...prev, subjectId: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50">
+                  <select value={formData.subjectId} onChange={(e) => setFormData(prev => ({ ...prev, subjectId: e.target.value }))} disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60">
                     {subjects.map(subject => (
                       <option key={subject.id} value={subject.id}>{subject.name}</option>
                     ))}
                   </select>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
                   <div>
-                    <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Date</label>
-                    <input type="date" value={formData.date} onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))} required className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Start Time</label>
-                    <input type="time" value={formData.startTime} onChange={(e) => setFormData(prev => ({ ...prev, startTime: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-text-light dark:text-text mb-2">End Time</label>
-                    <input type="time" value={formData.endTime} onChange={(e) => setFormData(prev => ({ ...prev, endTime: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" />
+                    <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Due Date</label>
+                    <input type="date" value={formData.dueAt} onChange={(e) => setFormData(prev => ({ ...prev, dueAt: e.target.value }))} required className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Priority</label>
-                  <select value={formData.priority} onChange={(e) => setFormData(prev => ({ ...prev, priority: e.target.value as any }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50">
+                  <select value={formData.priority} onChange={(e) => setFormData(prev => ({ ...prev, priority: e.target.value as any }))} disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60">
                     <option value="LOW">Low</option>
                     <option value="MEDIUM">Medium</option>
                     <option value="HIGH">High</option>
                   </select>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Attachment URL</label>
+                    <input type="url" value={formData.attachmentUrl} onChange={(e) => setFormData(prev => ({ ...prev, attachmentUrl: e.target.value }))} disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60" placeholder="https://..." />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Attachment Label</label>
+                    <input type="text" value={formData.attachmentLabel} onChange={(e) => setFormData(prev => ({ ...prev, attachmentLabel: e.target.value }))} disabled={!!(isEditMode && editingTask && !editingTask.isPersonal)} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 disabled:opacity-60" placeholder="Optional" />
+                  </div>
                 </div>
                 <div className="flex gap-3 pt-4">
                   <button type="button" onClick={handleCloseModal} className="flex-1 px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text font-semibold hover:bg-secondary-light/70 dark:hover:bg-secondary/70 transition-colors">

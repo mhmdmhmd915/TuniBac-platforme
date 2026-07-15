@@ -67,6 +67,13 @@ const {
   deleteSubject,
   getSubjectUsage,
 } = require('../controllers/subjectController');
+const {
+  listPlannerTemplates,
+  createPlannerTemplate,
+  updatePlannerTemplate,
+  publishPlannerTemplate,
+  deletePlannerTemplate,
+} = require('../controllers/adminPlannerTemplatesController');
 
 
 const uploadCoursePdf = createUploadMiddleware({
@@ -343,6 +350,16 @@ router.get('/subjects/:id/usage', getSubjectUsage);
 router.post('/subjects', createSubject);
 router.put('/subjects/:id', updateSubject);
 router.delete('/subjects/:id', deleteSubject);
+
+// =======================
+// Planner (Admin)
+// =======================
+
+router.get('/planner-templates', listPlannerTemplates);
+router.post('/planner-templates', createPlannerTemplate);
+router.put('/planner-templates/:id', updatePlannerTemplate);
+router.post('/planner-templates/:id/publish', publishPlannerTemplate);
+router.delete('/planner-templates/:id', deletePlannerTemplate);
 
 // =======================
 // Exercise Management
