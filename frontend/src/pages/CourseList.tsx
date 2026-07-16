@@ -6,16 +6,14 @@ import AccessGateModal from '../components/AccessGateModal'
 import { useAuth } from '../context/AuthContext'
 import { useDebouncedValue } from '../hooks/useDebouncedValue'
 import { logger } from '../lib/logger'
-import { coursesAPI, subjectsAPI } from '../services/api'
+import { coursesAPI } from '../services/api'
 
 const CourseList = () => {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [courses, setCourses] = useState([])
-  const [subjects, setSubjects] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null)
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false)
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 300)
 
@@ -41,7 +39,6 @@ const CourseList = () => {
       let shouldUpdateLoading = true
       try {
         const coursesRes = await coursesAPI.getAll({
-          subjectId: selectedSubjectId || undefined,
           search: debouncedSearchTerm,
           bacSection: user?.role === 'ADMIN' ? undefined : user?.bacSection,
         })
@@ -68,31 +65,7 @@ const CourseList = () => {
     return () => {
       isCurrent = false
     }
-  }, [debouncedSearchTerm, selectedSubjectId, user?.bacSection, user?.role])
-
-  useEffect(() => {
-    let isCurrent = true
-
-    const fetchSubjects = async () => {
-      try {
-        const subjectsRes = await subjectsAPI.getAll({
-          activeOnly: true,
-          bacSection: user?.role === 'ADMIN' ? undefined : user?.bacSection,
-        })
-        if (!isCurrent) return
-        setSubjects(subjectsRes.data)
-      } catch (err) {
-        if (!isCurrent) return
-        logger.error('Error fetching course subjects', err)
-      }
-    }
-
-    void fetchSubjects()
-
-    return () => {
-      isCurrent = false
-    }
-  }, [user?.bacSection, user?.role])
+  }, [debouncedSearchTerm, user?.bacSection, user?.role])
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
@@ -100,45 +73,17 @@ const CourseList = () => {
 
       <header className="space-y-6">
         <h1 className="text-4xl font-bold text-text-light dark:text-text">Explore Our Courses</h1>
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="relative flex-grow min-w-0">
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 flex items-center pl-4 text-text-muted-light dark:text-text-muted">
-              <Search size={18} />
-            </div>
-            <input
-              type="text"
-              placeholder="Search courses, tags, or topics..."
-              className="w-full bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-14 pr-4 text-text-light dark:text-text placeholder:text-text-muted-light dark:placeholder:text-text-muted focus:border-accent outline-none"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        <div className="relative flex-grow min-w-0">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 flex items-center pl-4 text-text-muted-light dark:text-text-muted">
+            <Search size={18} />
           </div>
-          <div className="flex gap-2 flex-wrap">
-            <button
-              onClick={() => setSelectedSubjectId(null)}
-              className={`px-6 py-4 rounded-2xl font-bold transition-all ${
-                selectedSubjectId === null
-                  ? 'bg-accent text-primary'
-                  : 'bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
-              }`}
-            >
-              All
-            </button>
-            {subjects.map((subject: any) => (
-              <button
-                key={subject.id}
-                onClick={() => setSelectedSubjectId(subject.id)}
-                className={`px-6 py-4 rounded-2xl font-bold transition-all ${
-                  selectedSubjectId === subject.id
-                    ? 'text-primary'
-                    : 'bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
-                }`}
-                style={{ backgroundColor: selectedSubjectId === subject.id ? subject.color : undefined }}
-              >
-                {subject.name}
-              </button>
-            ))}
-          </div>
+          <input
+            type="text"
+            placeholder="Search courses, tags, or topics..."
+            className="w-full bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-14 pr-4 text-text-light dark:text-text placeholder:text-text-muted-light dark:placeholder:text-text-muted focus:border-accent outline-none"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
       </header>
 

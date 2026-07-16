@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { resolveRequestedBacSection } = require('../utils/bacSection');
 const prisma = require('../lib/prisma');
 const { sendError } = require('../utils/http');
+const { ensurePublishedTemplatesForStudent } = require('../utils/studentPlannerProvisioning');
 
 // Input validation helper
 const validateEmail = (email) => {
@@ -80,6 +81,8 @@ const register = async (req, res) => {
         tokenVersion: true,
       },
     });
+
+    await ensurePublishedTemplatesForStudent(user.id, user.bacSection);
 
     // Generate JWT (7 days expiration)
     const token = signUserToken(user);

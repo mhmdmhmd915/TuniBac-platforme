@@ -97,6 +97,25 @@ describe('smoke: planner regressions', () => {
     subjectId = subjectRes.body.id;
     created.subjectIds.push(subjectId);
 
+    const publishRes = await request(app)
+      .post('/api/admin/planner-templates')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        title: `Admin Planner ${unique}`,
+        description: 'Published from smoke test',
+        dueAt: new Date('2027-01-10T14:30:00.000Z').toISOString(),
+        priority: 'HIGH',
+        subjectId,
+        targetAll: false,
+        targetBacSections: ['MATHEMATIQUES'],
+        publish: true,
+      });
+
+    expect(publishRes.status).toBe(201);
+    expect(publishRes.body.id).toBeTruthy();
+    created.templateIds.push(publishRes.body.id);
+    expect(publishRes.body.publishResult.createdCount).toBeGreaterThanOrEqual(0);
+
     const registerMathRes = await request(app).post('/api/auth/register').send({
       firstName: 'Planner',
       lastName: 'Math',
@@ -116,6 +135,24 @@ describe('smoke: planner regressions', () => {
     expect(registerOtherRes.status).toBe(201);
 
     created.userIds.push(registerMathRes.body.user.id, registerOtherRes.body.user.id);
+
+    const [assignedOnRegistration, otherSectionAssignments] = await Promise.all([
+      prisma.studentPlannerTask.findMany({
+        where: {
+          userId: registerMathRes.body.user.id,
+          templateId: publishRes.body.id,
+        },
+      }),
+      prisma.studentPlannerTask.findMany({
+        where: {
+          userId: registerOtherRes.body.user.id,
+          templateId: publishRes.body.id,
+        },
+      }),
+    ]);
+
+    expect(assignedOnRegistration).toHaveLength(1);
+    expect(otherSectionAssignments).toHaveLength(0);
 
     const approveMathRes = await request(app)
       .put(`/api/admin/users/${registerMathRes.body.user.id}/approve`)
@@ -139,25 +176,6 @@ describe('smoke: planner regressions', () => {
 
     mathStudentToken = loginMathRes.body.token;
     otherStudentToken = loginOtherRes.body.token;
-
-    const publishRes = await request(app)
-      .post('/api/admin/planner-templates')
-      .set('Authorization', `Bearer ${adminToken}`)
-      .send({
-        title: `Admin Planner ${unique}`,
-        description: 'Published from smoke test',
-        dueAt: new Date('2027-01-10T00:00:00.000Z').toISOString(),
-        priority: 'HIGH',
-        subjectId,
-        targetAll: false,
-        targetBacSections: ['MATHEMATIQUES'],
-        publish: true,
-      });
-
-    expect(publishRes.status).toBe(201);
-    expect(publishRes.body.id).toBeTruthy();
-    created.templateIds.push(publishRes.body.id);
-    expect(publishRes.body.publishResult.createdCount).toBeGreaterThanOrEqual(1);
 
     const mathPlannerRes = await request(app)
       .get('/api/student-planner')
@@ -200,14 +218,14 @@ describe('smoke: planner regressions', () => {
     });
     expect(templateAfterStudentEdit.title).toBe(`Admin Planner ${unique}`);
     expect(templateAfterStudentEdit.dueAt.toISOString()).toBe(
-      new Date('2027-01-10T00:00:00.000Z').toISOString()
+      new Date('2027-01-10T14:30:00.000Z').toISOString()
     );
 
     const deleteCopyRes = await request(app)
       .delete(`/api/student-planner/${assignedTask.id}`)
       .set('Authorization', `Bearer ${mathStudentToken}`);
 
-    expect(deleteCopyRes.status).toBe(200);
+    expect(deleteCopyRes.status).toBe(403);
 
     const deletedCopyCheckRes = await request(app)
       .get('/api/student-planner')
@@ -215,10 +233,33 @@ describe('smoke: planner regressions', () => {
 
     expect(
       deletedCopyCheckRes.body.some((task) => task.id === assignedTask.id)
-    ).toBe(false);
+    ).toBe(true);
     expect(
       await prisma.plannerTemplate.findUnique({ where: { id: publishRes.body.id } })
     ).toBeTruthy();
+
+    const personalTaskRes = await request(app)
+      .post('/api/student-planner')
+      .set('Authorization', `Bearer ${mathStudentToken}`)
+      .send({
+        title: `Personal Delete ${unique}`,
+        description: 'Personal planner task',
+        dueAt: new Date('2027-01-11T09:45:00.000Z').toISOString(),
+        priority: 'MEDIUM',
+        subjectId,
+      });
+
+    expect(personalTaskRes.status).toBe(201);
+    created.studentTaskIds.push(personalTaskRes.body.id);
+
+    const deletePersonalRes = await request(app)
+      .delete(`/api/student-planner/${personalTaskRes.body.id}`)
+      .set('Authorization', `Bearer ${mathStudentToken}`);
+
+    expect(deletePersonalRes.status).toBe(200);
+    expect(
+      await prisma.studentPlannerTask.findUnique({ where: { id: personalTaskRes.body.id } })
+    ).toBeNull();
 
     const personalTask = await prisma.studentPlannerTask.create({
       data: {
@@ -258,9 +299,13 @@ describe('smoke: planner regressions', () => {
     const legacyMatches = repeatedPlannerRes.body.filter(
       (task) => task.title === `Legacy Imported ${unique}` && task.isPersonal === true
     );
+    const publishedMatches = repeatedPlannerRes.body.filter(
+      (task) => task.templateId === publishRes.body.id
+    );
     expect(
       migratedPlannerRes.body.some((task) => task.title === `Existing Personal ${unique}`)
     ).toBe(true);
     expect(legacyMatches).toHaveLength(1);
+    expect(publishedMatches).toHaveLength(1);
   }, 20000);
 });

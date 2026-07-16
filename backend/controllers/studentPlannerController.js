@@ -1,90 +1,23 @@
 const prisma = require('../lib/prisma');
 const { pickAttachmentFields } = require('../utils/plannerAttachment');
 const { sendError } = require('../utils/http');
+const {
+  ensurePublishedTemplatesForStudent,
+  migrateLegacyStudyTasks,
+} = require('../utils/studentPlannerProvisioning');
 
 const toDate = (value) => {
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? null : date;
 };
 
-const buildLegacyKey = (task) =>
-  [
-    String(task.title || '').trim(),
-    String(task.description || '').trim(),
-    String(task.subjectId || '').trim(),
-    task.priority ? String(task.priority).trim() : '',
-    Boolean(task.completed) ? '1' : '0',
-    toDate(task.dueAt || task.date)?.toISOString() || '',
-  ].join('::');
-
-async function syncLegacyStudyTasks(userId) {
-  const [legacyTasks, existingTasks] = await Promise.all([
-    prisma.studyTask.findMany({
-      where: { userId },
-      select: {
-        title: true,
-        description: true,
-        date: true,
-        priority: true,
-        completed: true,
-        subjectId: true,
-      },
-      orderBy: [{ date: 'asc' }],
-    }),
-    prisma.studentPlannerTask.findMany({
-      where: { userId, isPersonal: true, templateId: null },
-      select: {
-        title: true,
-        description: true,
-        dueAt: true,
-        priority: true,
-        completed: true,
-        subjectId: true,
-      },
-    }),
-  ]);
-
-  if (legacyTasks.length === 0) {
-    return;
-  }
-
-  const existingCounts = new Map();
-  for (const task of existingTasks) {
-    const key = buildLegacyKey(task);
-    existingCounts.set(key, (existingCounts.get(key) || 0) + 1);
-  }
-
-  const missingTasks = [];
-  for (const task of legacyTasks) {
-    const key = buildLegacyKey(task);
-    const remaining = existingCounts.get(key) || 0;
-    if (remaining > 0) {
-      existingCounts.set(key, remaining - 1);
-      continue;
-    }
-
-    missingTasks.push({
-      title: task.title,
-      description: task.description,
-      dueAt: task.date,
-      priority: task.priority,
-      completed: task.completed,
-      subjectId: task.subjectId,
-      userId,
-      isPersonal: true,
-      templateId: null,
-    });
-  }
-
-  if (missingTasks.length > 0) {
-    await prisma.studentPlannerTask.createMany({ data: missingTasks });
-  }
-}
-
 async function getStudentPlannerTasks(req, res) {
   try {
     const userId = req.user.id;
-    await syncLegacyStudyTasks(userId);
+    await Promise.all([
+      migrateLegacyStudyTasks(userId),
+      ensurePublishedTemplatesForStudent(userId, req.user.bacSection),
+    ]);
 
     const items = await prisma.studentPlannerTask.findMany({
       where: { userId },
@@ -250,14 +183,41 @@ async function deleteStudentPlannerTask(req, res) {
 
     const existing = await prisma.studentPlannerTask.findFirst({
       where: { id: taskId, userId },
-      select: { id: true },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        dueAt: true,
+        priority: true,
+        subjectId: true,
+        isPersonal: true,
+        templateId: true,
+      },
     });
 
     if (!existing) {
       return res.status(404).json({ message: 'Task not found' });
     }
 
-    await prisma.studentPlannerTask.delete({ where: { id: taskId } });
+    if (!existing.isPersonal || existing.templateId) {
+      return res.status(403).json({ message: 'Only personal tasks can be deleted' });
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.studentPlannerTask.delete({ where: { id: taskId } });
+
+      await tx.studyTask.deleteMany({
+        where: {
+          userId,
+          title: existing.title,
+          description: existing.description ?? null,
+          subjectId: existing.subjectId,
+          date: existing.dueAt,
+          priority: existing.priority ?? null,
+        },
+      });
+    });
+
     return res.json({ deleted: true });
   } catch (error) {
     return sendError(res, 500, 'Error deleting student planner task', error);

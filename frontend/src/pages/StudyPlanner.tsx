@@ -55,7 +55,8 @@ interface FormData {
   title: string;
   description: string;
   subjectId: string;
-  dueAt: string;
+  dueDate: string;
+  dueTime: string;
   priority: string;
   attachmentUrl: string;
   attachmentLabel: string;
@@ -75,6 +76,85 @@ const PriorityColors: Record<string, string> = {
 
 const BAC_DATE = new Date("2027-06-09");
 
+const padTwoDigits = (value: number) => String(value).padStart(2, '0');
+
+const getLocalDateInputValue = (date = new Date()) =>
+  `${date.getFullYear()}-${padTwoDigits(date.getMonth() + 1)}-${padTwoDigits(date.getDate())}`;
+
+const getLocalTimeInputValue = (date = new Date()) =>
+  `${padTwoDigits(date.getHours())}:${padTwoDigits(date.getMinutes())}`;
+
+const getLocalDateKey = (value: string | Date) => {
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? '' : getLocalDateInputValue(date);
+};
+
+const getDefaultTime = () => getLocalTimeInputValue();
+
+const formatTaskDateTime = (value: string) => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return '-';
+  }
+
+  return date.toLocaleString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
+const formatTaskTime = (value: string) => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return '-';
+  }
+
+  return date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
+const splitDueAt = (value?: string) => {
+  if (!value) {
+    return {
+      dueDate: getLocalDateInputValue(),
+      dueTime: getDefaultTime(),
+    };
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return {
+      dueDate: getLocalDateInputValue(),
+      dueTime: getDefaultTime(),
+    };
+  }
+
+  return {
+    dueDate: getLocalDateInputValue(date),
+    dueTime: getLocalTimeInputValue(date),
+  };
+};
+
+const combineDueAt = (dueDate: string, dueTime: string) => {
+  const [year, month, day] = dueDate.split('-').map(Number);
+  const [hours, minutes] = (dueTime || '00:00').split(':').map(Number);
+
+  return new Date(
+    year,
+    Math.max((month || 1) - 1, 0),
+    day || 1,
+    hours || 0,
+    minutes || 0,
+    0,
+    0
+  ).toISOString();
+};
+
 const StudyPlanner = () => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -87,7 +167,8 @@ const StudyPlanner = () => {
     title: '',
     description: '',
     subjectId: '',
-    dueAt: new Date().toISOString().split('T')[0],
+    dueDate: getLocalDateInputValue(),
+    dueTime: getDefaultTime(),
     priority: 'MEDIUM',
     attachmentUrl: '',
     attachmentLabel: ''
@@ -116,7 +197,7 @@ const StudyPlanner = () => {
     return saved === 'true';
   });
   const [todaysPomodoros, setTodaysPomodoros] = useState<number>(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getLocalDateInputValue();
     const saved = localStorage.getItem(`todaysPomodoros_${today}`);
     return saved ? parseInt(saved, 10) : 0;
   });
@@ -165,7 +246,7 @@ const StudyPlanner = () => {
       id: task.id,
       title: task.title,
       start: task.dueAt,
-      allDay: true,
+      allDay: false,
       backgroundColor: task.completed ? '#6B7280' : task.subject?.color || '#3B82F6',
       borderColor: task.completed ? '#6B7280' : task.subject?.color || '#3B82F6',
       textColor: '#FFFFFF',
@@ -213,15 +294,17 @@ const StudyPlanner = () => {
     return { total, completed, pending, completionRate, studyTime: formatTime(stopwatchTime), pomodoros: todaysPomodoros };
   };
 
+  const canDeleteTask = (task: Task) => task.isPersonal && !task.templateId;
+
   const getTodayTasks = () => {
-    const today = new Date().toISOString().split('T')[0];
-    return tasks.filter(t => t.dueAt.split('T')[0] === today);
+    const today = getLocalDateInputValue();
+    return tasks.filter((task) => getLocalDateKey(task.dueAt) === today);
   };
 
   const getUpcomingTasks = () => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getLocalDateInputValue();
     return tasks
-      .filter(t => t.dueAt.split('T')[0] >= today)
+      .filter((task) => getLocalDateKey(task.dueAt) >= today)
       .sort((a, b) => new Date(a.dueAt).getTime() - new Date(b.dueAt).getTime())
       .slice(0, 7);
   };
@@ -231,7 +314,8 @@ const StudyPlanner = () => {
       title: '',
       description: '',
       subjectId: subjects.length > 0 ? subjects[0].id : '',
-      dueAt: new Date().toISOString().split('T')[0],
+      dueDate: getLocalDateInputValue(),
+      dueTime: getDefaultTime(),
       priority: 'MEDIUM',
       attachmentUrl: '',
       attachmentLabel: ''
@@ -244,11 +328,13 @@ const StudyPlanner = () => {
 
   const handleOpenEditModal = (task: Task) => {
     setSubjects(prev => (prev.some(subject => subject.id === task.subjectId) ? prev : [...prev, task.subject]));
+    const { dueDate, dueTime } = splitDueAt(task.dueAt);
     setFormData({
       title: task.title,
       description: task.description || '',
       subjectId: task.subjectId,
-      dueAt: task.dueAt.split('T')[0],
+      dueDate,
+      dueTime,
       priority: task.priority || 'MEDIUM',
       attachmentUrl: task.attachmentUrl || '',
       attachmentLabel: task.attachmentLabel || ''
@@ -270,7 +356,7 @@ const StudyPlanner = () => {
     try {
       const payload = {
         ...formData,
-        dueAt: new Date(formData.dueAt).toISOString(),
+        dueAt: combineDueAt(formData.dueDate, formData.dueTime),
       };
 
       if (isEditMode && editingTaskId) {
@@ -290,15 +376,24 @@ const StudyPlanner = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (task: Task) => {
+    if (!canDeleteTask(task)) {
+      setError('Only personal tasks can be deleted.');
+      return;
+    }
+
     if (!confirm('Are you sure you want to delete this task?')) return;
+
     try {
-      await studentPlannerAPI.deleteTask(id);
-      await fetchData();
+      setError(null);
+      await studentPlannerAPI.deleteTask(task.id);
+      setTasks((previous) => previous.filter((item) => item.id !== task.id));
       setSuccess('Task deleted successfully!');
       setTimeout(() => setSuccess(null), 3000);
-    } catch (err) {
+    } catch (err: any) {
       logger.error('Error deleting task', err);
+      const errorMsg = err.response?.data?.message || err.message || 'Unable to delete task';
+      setError(errorMsg);
     }
   };
 
@@ -312,10 +407,11 @@ const StudyPlanner = () => {
   };
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
-    const date = selectInfo.startStr.split('T')[0];
+    const selectedDate = selectInfo.start;
     setFormData(prev => ({ 
       ...prev, 
-      dueAt: date, 
+      dueDate: getLocalDateInputValue(selectedDate),
+      dueTime: getLocalTimeInputValue(selectedDate),
       subjectId: subjects.length > 0 ? subjects[0].id : '' 
     }));
     setIsEditMode(false);
@@ -333,9 +429,9 @@ const StudyPlanner = () => {
   const handleEventDrop = async (dropInfo: EventDropArg) => {
     const task = tasks.find(t => t.id === dropInfo.event.id);
     if (task) {
-      const newDate = dropInfo.event.startStr.split('T')[0];
+      const nextDueAt = dropInfo.event.start ? dropInfo.event.start.toISOString() : task.dueAt;
       try {
-        await studentPlannerAPI.updateTask(task.id, { dueAt: newDate });
+        await studentPlannerAPI.updateTask(task.id, { dueAt: nextDueAt });
         await fetchData();
       } catch (err) {
         logger.error('Error updating task', err);
@@ -447,7 +543,7 @@ const StudyPlanner = () => {
           if (prev <= 1) {
             playNotificationSound();
             if (pomodoroPhase === 'study') {
-              const today = new Date().toISOString().split('T')[0];
+              const today = getLocalDateInputValue();
               const newCount = todaysPomodoros + 1;
               setTodaysPomodoros(newCount);
               localStorage.setItem(`todaysPomodoros_${today}`, newCount.toString());
@@ -712,6 +808,9 @@ const StudyPlanner = () => {
                           <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: `${(task.completed ? '#6B7280' : task.subject?.color)}20`, color: task.completed ? '#6B7280' : task.subject?.color, border: `1px solid ${(task.completed ? '#6B7280' : task.subject?.color)}30` }}>
                             {task.subject?.name}
                           </span>
+                          <span className="text-xs text-text-muted-light dark:text-text-muted">
+                            {formatTaskTime(task.dueAt)}
+                          </span>
                           {task.priority && <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: `${PriorityColors[task.priority]}20`, color: PriorityColors[task.priority] }}>
                             {task.priority}
                           </span>}
@@ -720,7 +819,9 @@ const StudyPlanner = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <button onClick={() => handleOpenEditModal(task)} className="p-1.5 rounded-lg hover:bg-secondary-light/60 dark:hover:bg-secondary/60 transition-colors"><Edit size={16} className="text-text-muted-light dark:text-text-muted" /></button>
-                      <button onClick={() => handleDelete(task.id)} className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors"><Trash2 size={16} className="text-red-400" /></button>
+                      {canDeleteTask(task) && (
+                        <button onClick={() => handleDelete(task)} className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors"><Trash2 size={16} className="text-red-400" /></button>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -740,18 +841,29 @@ const StudyPlanner = () => {
                 {upcomingTasks.map(task => (
                   <div key={task.id} className="flex items-center justify-between p-3 rounded-2xl bg-secondary-light/40 dark:bg-secondary/40">
                     <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: task.completed ? '#6B7280' : task.subject?.color }}></div>
+                      <button onClick={() => handleToggleComplete(task.id)} className="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200" style={{ borderColor: task.completed ? '#6B7280' : task.subject?.color, backgroundColor: task.completed ? '#6B7280' : 'transparent' }}>
+                        {task.completed && <CheckCircle size={14} color="#FFFFFF" />}
+                      </button>
                       <div>
                         <p className={`text-sm font-semibold ${task.completed ? 'line-through text-text-muted-light dark:text-text-muted' : 'text-text-light dark:text-text'}`}>{task.title}</p>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: `${(task.completed ? '#6B7280' : task.subject?.color)}20`, color: task.completed ? '#6B7280' : task.subject?.color, border: `1px solid ${(task.completed ? '#6B7280' : task.subject?.color)}30` }}>
+                            {task.subject?.name}
+                          </span>
                           <span className="text-xs text-text-muted-light dark:text-text-muted">
-                            {new Date(task.dueAt).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                            {formatTaskDateTime(task.dueAt)}
                           </span>
                           {task.priority && <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: `${PriorityColors[task.priority]}20`, color: PriorityColors[task.priority] }}>
                             {task.priority}
                           </span>}
                         </div>
                       </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => handleOpenEditModal(task)} className="p-1.5 rounded-lg hover:bg-secondary-light/60 dark:hover:bg-secondary/60 transition-colors"><Edit size={16} className="text-text-muted-light dark:text-text-muted" /></button>
+                      {canDeleteTask(task) && (
+                        <button onClick={() => handleDelete(task)} className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors"><Trash2 size={16} className="text-red-400" /></button>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -780,6 +892,11 @@ const StudyPlanner = () => {
               select={handleDateSelect}
               eventClick={handleEventClick}
               eventDrop={handleEventDrop}
+              eventTimeFormat={{
+                hour: '2-digit',
+                minute: '2-digit',
+                meridiem: false,
+              }}
               buttonText={{
                 today: 'Today',
                 month: 'Month',
@@ -822,9 +939,10 @@ const StudyPlanner = () => {
                   </select>
                 </div>
                 <div>
-                  <div>
-                    <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Due Date</label>
-                    <input type="date" value={formData.dueAt} onChange={(e) => setFormData(prev => ({ ...prev, dueAt: e.target.value }))} required className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" />
+                  <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Due Date</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input type="date" value={formData.dueDate} onChange={(e) => setFormData(prev => ({ ...prev, dueDate: e.target.value }))} required className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" />
+                    <input type="time" value={formData.dueTime} onChange={(e) => setFormData(prev => ({ ...prev, dueTime: e.target.value }))} required className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" />
                   </div>
                 </div>
                 <div>

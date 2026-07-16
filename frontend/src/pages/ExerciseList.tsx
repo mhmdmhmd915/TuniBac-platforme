@@ -1,27 +1,18 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { BookOpen, ChevronRight, Calendar, FileText, ExternalLink, Play } from 'lucide-react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import AccessGateModal from '../components/AccessGateModal'
 import { useAuth } from '../context/AuthContext'
-import { exercisesAPI, subjectsAPI } from '../services/api'
+import { exercisesAPI } from '../services/api'
 import { toAssetUrl } from '../lib/assets'
 import { logger } from '../lib/logger'
 
-interface Subject {
-  id: string
-  name: string
-  color: string
-}
-
 const ExerciseList = () => {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
   const { user } = useAuth()
   const [exercises, setExercises] = useState<any[]>([])
-  const [subjects, setSubjects] = useState<Subject[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [selectedSubjectId, setSelectedSubjectId] = useState(searchParams.get('subjectId') || 'ALL')
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false)
 
   const withProtectedAccess = (action: () => void) => {
@@ -46,7 +37,6 @@ const ExerciseList = () => {
       let shouldUpdateLoading = true
       try {
         const exercisesRes = await exercisesAPI.getAll({
-          subjectId: selectedSubjectId !== 'ALL' ? selectedSubjectId : undefined,
           bacSection: user?.role === 'ADMIN' ? undefined : user?.bacSection,
         })
         if (!isCurrent) {
@@ -68,30 +58,6 @@ const ExerciseList = () => {
     }
 
     void fetchExercises()
-
-    return () => {
-      isCurrent = false
-    }
-  }, [selectedSubjectId, user?.bacSection, user?.role])
-
-  useEffect(() => {
-    let isCurrent = true
-
-    const fetchSubjects = async () => {
-      try {
-        const subjectsRes = await subjectsAPI.getAll({
-          activeOnly: true,
-          bacSection: user?.role === 'ADMIN' ? undefined : user?.bacSection,
-        })
-        if (!isCurrent) return
-        setSubjects(subjectsRes.data)
-      } catch (err) {
-        if (!isCurrent) return
-        logger.error('Error fetching exercise subjects', err)
-      }
-    }
-
-    void fetchSubjects()
 
     return () => {
       isCurrent = false
@@ -201,11 +167,6 @@ const ExerciseList = () => {
             <div className="h-12 w-96 mx-auto bg-secondary-light/40 dark:bg-secondary/40 rounded-2xl animate-pulse" />
             <div className="h-5 w-80 mx-auto bg-secondary-light/40 dark:bg-secondary/40 rounded-xl animate-pulse" />
           </div>
-          <div className="flex justify-center gap-2 sm:gap-3">
-            {[1,2,3,4].map(n => (
-              <div key={n} className="h-10 w-24 bg-secondary-light/40 dark:bg-secondary/40 rounded-full animate-pulse" />
-            ))}
-          </div>
         </header>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {[1,2,3,4].map(n => (
@@ -238,23 +199,6 @@ const ExerciseList = () => {
               Sharpen your skills with our curated collection of exercises and expert-verified solutions.
             </p>
           </div>
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-            {['ALL', ...subjects.map((subject) => subject.id)].map((subj) => (
-              <motion.button
-                key={subj}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setSelectedSubjectId(subj)}
-                className={`px-4 sm:px-6 py-3 rounded-full text-sm sm:text-base font-semibold transition-all duration-200 ${
-                  selectedSubjectId === subj
-                    ? 'bg-accent text-primary shadow-lg shadow-accent/25'
-                    : 'bg-secondary-light/40 dark:bg-secondary/40 text-text-muted-light dark:text-text-muted hover:bg-secondary-light/60 dark:hover:bg-secondary/60 border border-black/5 dark:border-white/5'
-                }`}
-              >
-                {subj === 'ALL' ? 'All' : subjects.find((subject) => subject.id === subj)?.name}
-              </motion.button>
-            ))}
-          </div>
         </header>
         <div className="flex flex-col items-center justify-center py-20">
           <div className="w-20 h-20 mb-6 rounded-full bg-secondary-light/30 dark:bg-secondary/30 flex items-center justify-center">
@@ -285,24 +229,6 @@ const ExerciseList = () => {
           <p className="text-base sm:text-lg text-text-muted-light dark:text-text-muted max-w-2xl mx-auto leading-relaxed">
             Sharpen your skills with our curated collection of exercises and expert-verified solutions.
           </p>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-          {['ALL', ...subjects.map((subject) => subject.id)].map((subj) => (
-            <motion.button
-              key={subj}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setSelectedSubjectId(subj)}
-              className={`px-4 sm:px-6 py-3 rounded-full text-sm sm:text-base font-semibold transition-all duration-200 ${
-                selectedSubjectId === subj
-                  ? 'bg-accent text-primary shadow-lg shadow-accent/25'
-                  : 'bg-secondary-light/40 dark:bg-secondary/40 text-text-muted-light dark:text-text-muted hover:bg-secondary-light/60 dark:hover:bg-secondary/60 border border-black/5 dark:border-white/5'
-              }`}
-            >
-              {subj === 'ALL' ? 'All' : subjects.find((subject) => subject.id === subj)?.name}
-            </motion.button>
-          ))}
         </div>
       </header>
 

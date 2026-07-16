@@ -295,7 +295,8 @@ interface PlannerFormState {
   title: string;
   description: string;
   subjectId: string;
-  dueAt: string;
+  dueDate: string;
+  dueTime: string;
   priority: string;
   attachmentUrl: string;
   attachmentLabel: string;
@@ -451,11 +452,57 @@ const defaultParascolaireForm = (): ParascolaireFormState => ({
   paperOrderUrl: '',
 });
 
+const padTwoDigits = (value: number) => String(value).padStart(2, '0');
+
+const getLocalDateInputValue = (date = new Date()) =>
+  `${date.getFullYear()}-${padTwoDigits(date.getMonth() + 1)}-${padTwoDigits(date.getDate())}`;
+
+const getLocalTimeInputValue = (date = new Date()) =>
+  `${padTwoDigits(date.getHours())}:${padTwoDigits(date.getMinutes())}`;
+
+const splitDateTimeInput = (value?: string | null) => {
+  if (!value) {
+    return {
+      dueDate: getLocalDateInputValue(),
+      dueTime: getLocalTimeInputValue(),
+    };
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return {
+      dueDate: getLocalDateInputValue(),
+      dueTime: getLocalTimeInputValue(),
+    };
+  }
+
+  return {
+    dueDate: getLocalDateInputValue(date),
+    dueTime: getLocalTimeInputValue(date),
+  };
+};
+
+const combineDateTimeInputToIso = (dueDate: string, dueTime: string) => {
+  const [year, month, day] = dueDate.split('-').map(Number);
+  const [hours, minutes] = (dueTime || '00:00').split(':').map(Number);
+
+  return new Date(
+    year,
+    Math.max((month || 1) - 1, 0),
+    day || 1,
+    hours || 0,
+    minutes || 0,
+    0,
+    0
+  ).toISOString();
+};
+
 const defaultPlannerForm = (subjectId = ''): PlannerFormState => ({
   title: '',
   description: '',
   subjectId,
-  dueAt: new Date().toISOString().slice(0, 10),
+  dueDate: getLocalDateInputValue(),
+  dueTime: getLocalTimeInputValue(),
   priority: 'MEDIUM',
   attachmentUrl: '',
   attachmentLabel: '',
@@ -855,11 +902,13 @@ const AdminWorkspace = () => {
 
     if (section === 'planner') {
       const task = item as PlannerTemplate;
+      const { dueDate, dueTime } = splitDateTimeInput(task.dueAt);
       setPlannerForm({
         title: task.title,
         description: task.description || '',
         subjectId: task.subjectId,
-        dueAt: task.dueAt.slice(0, 10),
+        dueDate,
+        dueTime,
         priority: task.priority || 'MEDIUM',
         attachmentUrl: task.attachmentUrl || '',
         attachmentLabel: task.attachmentLabel || '',
@@ -1038,7 +1087,7 @@ const AdminWorkspace = () => {
           title: plannerForm.title,
           description: plannerForm.description,
           subjectId: plannerForm.subjectId,
-          dueAt: new Date(plannerForm.dueAt).toISOString(),
+          dueAt: combineDateTimeInputToIso(plannerForm.dueDate, plannerForm.dueTime),
           priority: plannerForm.priority,
           attachmentUrl: plannerForm.attachmentUrl,
           attachmentLabel: plannerForm.attachmentLabel,
@@ -1700,7 +1749,7 @@ const AdminWorkspace = () => {
       header: 'Due',
       key: 'dueAt',
       render: (_value, task) => (
-        <div className="text-xs">{formatDate(task.dueAt)}</div>
+        <div className="text-xs">{formatDateTime(task.dueAt)}</div>
       ),
     },
     {
@@ -1839,7 +1888,7 @@ const AdminWorkspace = () => {
   );
 
   const todaysTasks = plannerTemplates.filter(
-    (task) => task.dueAt.slice(0, 10) === new Date().toISOString().slice(0, 10)
+    (task) => splitDateTimeInput(task.dueAt).dueDate === getLocalDateInputValue()
   );
 
   const activeSectionMeta =
@@ -2128,7 +2177,7 @@ const AdminWorkspace = () => {
                       {task.title}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {formatDate(task.dueAt)}
+                      {formatDateTime(task.dueAt)}
                     </div>
                   </div>
                   <span
@@ -3410,11 +3459,27 @@ const AdminWorkspace = () => {
             </span>
             <input
               type="date"
-              value={plannerForm.dueAt}
+              value={plannerForm.dueDate}
               onChange={(event) =>
                 setPlannerForm((previous) => ({
                   ...previous,
-                  dueAt: event.target.value,
+                  dueDate: event.target.value,
+                }))
+              }
+              className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
+            />
+          </label>
+          <label className="space-y-2">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+              Due Time
+            </span>
+            <input
+              type="time"
+              value={plannerForm.dueTime}
+              onChange={(event) =>
+                setPlannerForm((previous) => ({
+                  ...previous,
+                  dueTime: event.target.value,
                 }))
               }
               className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
