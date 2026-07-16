@@ -35,8 +35,12 @@ const PUBLIC_SETTING_KEYS = [
   'platformOfferLogo',
   'platformOfferVideoUrl',
   'platformOfferFeaturesJson',
+  'platformOfferNotesJson',
   'platformOfferCardsJson',
   'platformOfferPromotionsJson',
+  'contactPhone',
+  'contactEmail',
+  'contactAddress',
 ];
 
 router.get('/', async (req, res) => {
