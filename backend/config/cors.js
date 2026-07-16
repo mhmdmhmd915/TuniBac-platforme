@@ -13,6 +13,9 @@ const defaultOrigins = [
   'http://0.0.0.0:5174',
   'http://0.0.0.0:4173',
   'http://0.0.0.0:4174',
+  'https://www.tunibac.com',
+  'https://tunibac.com',
+  'https://tunibac-frontend.onrender.com',
 ];
 
 const configuredOrigins = String(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || '')
