@@ -95,6 +95,19 @@ const getAllExercises = async (req, res) => {
     const resolvedPage = Math.max(1, Number.isFinite(page) ? page : 1);
     const resolvedPageSize = Math.min(100, Math.max(1, Number.isFinite(pageSize) ? pageSize : 20));
 
+    if (!req.user) {
+      if (shouldPaginate) {
+        return res.json({
+          items: [],
+          total: 0,
+          page: resolvedPage,
+          pageSize: resolvedPageSize,
+        });
+      }
+
+      return res.json([]);
+    }
+
     const where = {
       ...withSectionFilter(req, 'subject.bacSection'),
       ...(subjectId && { subjectId }),

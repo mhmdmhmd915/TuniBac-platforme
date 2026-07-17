@@ -58,7 +58,7 @@ const ExerciseDetail = () => {
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
       <Link
-        to="/exercises"
+        to={exercise?.subject?.id ? `/exercises?subject=${exercise.subject.id}` : '/exercises'}
         className="inline-flex items-center space-x-2 text-text-muted-light dark:text-text-muted hover:text-accent transition-colors"
       >
         <ArrowLeft size={20} />
@@ -157,7 +157,7 @@ const ExerciseDetail = () => {
               Continue with more exercises from the same subject.
             </p>
             <Link
-              to={`/exercises?subjectId=${exercise.subject?.id || ''}`}
+              to={`/exercises?subject=${exercise.subject?.id || ''}`}
               className="w-full inline-flex items-center justify-center gap-2 py-4 bg-accent text-primary rounded-2xl font-bold hover:scale-[1.01] transition"
             >
               <BookOpen size={18} />

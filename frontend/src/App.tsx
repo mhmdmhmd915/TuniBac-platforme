@@ -143,7 +143,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/exercises" element={<ExerciseList />} />
+            <Route
+              path="/exercises"
+              element={
+                <ProtectedRoute>
+                  <ExerciseList />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/exercises/:id"
               element={
