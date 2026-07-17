@@ -35,7 +35,10 @@ const CourseDetail = () => {
   const videoSource = course?.videoPath ? toAssetUrl(course.videoPath) : course?.videoUrl
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
-      <Link to="/courses" className="inline-flex items-center space-x-2 text-text-muted-light dark:text-text-muted hover:text-accent transition-colors">
+      <Link
+        to={course?.subject?.id ? `/courses?subject=${course.subject.id}` : '/courses'}
+        className="inline-flex items-center space-x-2 text-text-muted-light dark:text-text-muted hover:text-accent transition-colors"
+      >
         <ArrowLeft size={20} />
         <span>Back to Courses</span>
       </Link>

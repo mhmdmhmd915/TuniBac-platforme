@@ -49,12 +49,23 @@ describe('smoke: bac section filtering', () => {
     }
 
     if (created.userIds.length > 0) {
+      await prisma.studentPlannerTask.deleteMany({
+        where: { userId: { in: created.userIds } },
+      });
+
       await prisma.user.deleteMany({
         where: { id: { in: created.userIds } },
       });
     }
 
     await prisma.$disconnect();
+  });
+
+  it('hides the public course listing from guests', async () => {
+    const res = await request(app).get('/api/courses');
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual([]);
   });
 
   it('isolates subjects, courses, and communications by student bac section', async () => {
@@ -227,6 +238,8 @@ describe('smoke: bac section filtering', () => {
       techSubjectsRes,
       mathCoursesRes,
       techCoursesRes,
+      mathSubjectCoursesRes,
+      techSubjectCoursesRes,
       mathCommunicationsRes,
       techCommunicationsRes,
     ] = await Promise.all([
@@ -234,6 +247,14 @@ describe('smoke: bac section filtering', () => {
       request(app).get('/api/subjects').set('Authorization', `Bearer ${techToken}`),
       request(app).get('/api/courses').set('Authorization', `Bearer ${mathToken}`),
       request(app).get('/api/courses').set('Authorization', `Bearer ${techToken}`),
+      request(app)
+        .get('/api/courses')
+        .query({ subjectId: mathSubjectRes.body.id })
+        .set('Authorization', `Bearer ${mathToken}`),
+      request(app)
+        .get('/api/courses')
+        .query({ subjectId: mathSubjectRes.body.id })
+        .set('Authorization', `Bearer ${techToken}`),
       request(app).get('/api/communications').set('Authorization', `Bearer ${mathToken}`),
       request(app).get('/api/communications').set('Authorization', `Bearer ${techToken}`),
     ]);
@@ -242,6 +263,8 @@ describe('smoke: bac section filtering', () => {
     expect(techSubjectsRes.status).toBe(200);
     expect(mathCoursesRes.status).toBe(200);
     expect(techCoursesRes.status).toBe(200);
+    expect(mathSubjectCoursesRes.status).toBe(200);
+    expect(techSubjectCoursesRes.status).toBe(200);
     expect(mathCommunicationsRes.status).toBe(200);
     expect(techCommunicationsRes.status).toBe(200);
 
@@ -254,6 +277,11 @@ describe('smoke: bac section filtering', () => {
     expect(mathCoursesRes.body.some((item) => item.title === names.techCourse)).toBe(false);
     expect(techCoursesRes.body.some((item) => item.title === names.techCourse)).toBe(true);
     expect(techCoursesRes.body.some((item) => item.title === names.mathCourse)).toBe(false);
+
+    expect(mathSubjectCoursesRes.body).toHaveLength(1);
+    expect(mathSubjectCoursesRes.body[0].title).toBe(names.mathCourse);
+    expect(mathSubjectCoursesRes.body[0].subject.id).toBe(mathSubjectRes.body.id);
+    expect(techSubjectCoursesRes.body).toEqual([]);
 
     expect(
       mathCommunicationsRes.body.items.some((item) => item.title === names.mathCommunication)
