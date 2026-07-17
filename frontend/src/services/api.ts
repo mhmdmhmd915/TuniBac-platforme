@@ -54,6 +54,14 @@ export type VideoUploadOptions = {
   signal?: AbortSignal
 }
 
+const shouldPreferBackendVideoUpload = () => {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  return window.location.hostname === 'www.tunibac.com' || window.location.hostname === 'tunibac.com'
+}
+
 const uploadVideoViaBackend = ({
   endpoint,
   file,
@@ -79,7 +87,7 @@ const uploadVideoViaBackend = ({
     totalParts: 1,
     retryCount: 0,
     status: 'uploading',
-    message: 'Uploading video through backend fallback...',
+    message: 'Uploading video through backend...',
   })
 
   return api.post(endpoint, formData, {
@@ -106,7 +114,7 @@ const uploadVideoViaBackend = ({
         message:
           progress >= 100
             ? 'Finalizing backend upload...'
-            : 'Uploading video through backend fallback...',
+            : 'Uploading video through backend...',
       })
     },
   })
@@ -407,6 +415,31 @@ export const adminAPI = {
     })(),
 
   uploadAdminVideo: async (file: File, options?: VideoUploadOptions) => {
+    if (shouldPreferBackendVideoUpload()) {
+      const backendResponse = await uploadVideoViaBackend({
+        endpoint: '/admin/uploads/video',
+        file,
+        signal: options?.signal,
+        onProgress: options?.onProgress,
+      })
+
+      options?.onProgress?.({
+        progress: 100,
+        uploadedBytes: file.size,
+        totalBytes: file.size,
+        speedMbps: 0,
+        estimatedRemainingSeconds: 0,
+        activeParts: 0,
+        completedParts: 1,
+        totalParts: 1,
+        retryCount: 0,
+        status: 'success',
+        message: 'Upload complete',
+      })
+
+      return backendResponse
+    }
+
     try {
       return await uploadMultipartVideo({
         file,
