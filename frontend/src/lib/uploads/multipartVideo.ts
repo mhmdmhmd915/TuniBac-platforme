@@ -1,5 +1,12 @@
 import axios from 'axios'
 import { api } from '../api/http'
+import {
+  getCurrentUploadOrigin,
+  isAbortError,
+  isLikelyCorsUploadError,
+  isTemporaryUploadError,
+  retryUploadOperation,
+} from './sharedUpload'
 
 export type MultipartVideoUploadState = {
   progress: number
@@ -25,19 +32,6 @@ type UploadMultipartVideoArgs<T> = {
   onProgress?: (state: MultipartVideoUploadState) => void
   signal?: AbortSignal
 }
-
-const wait = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms))
-
-const isAbortError = (error: unknown) =>
-  axios.isCancel(error) ||
-  (error instanceof DOMException && error.name === 'AbortError') ||
-  (typeof error === 'object' &&
-    error !== null &&
-    'code' in error &&
-    String((error as { code?: string }).code || '') === 'ERR_CANCELED')
-
-const isLikelyCorsUploadError = (error: unknown) =>
-  axios.isAxiosError(error) && error.code === 'ERR_NETWORK' && !error.response
 
 export const formatUploadSpeed = (speedMbps: number) => `${speedMbps.toFixed(speedMbps >= 10 ? 0 : 1)} MB/s`
 
@@ -144,11 +138,15 @@ export const uploadMultipartVideo = async <T>({
   try {
     emit('preparing', 'Preparing multipart upload...')
 
-    const initiateResponse = await api.post(initiatePath, {
-      filename: file.name,
-      contentType: file.type,
-      sizeBytes: file.size,
-    })
+    const initiateResponse = await retryUploadOperation(
+      () =>
+        api.post(initiatePath, {
+          filename: file.name,
+          contentType: file.type,
+          sizeBytes: file.size,
+        }),
+      { retries: 2, signal }
+    )
 
     uploadId = String(initiateResponse.data.uploadId || '')
     key = String(initiateResponse.data.key || '')
@@ -186,22 +184,30 @@ export const uploadMultipartVideo = async <T>({
             emit('uploading', `Uploading part ${partNumber}/${totalParts}...`)
           }
 
-          const signedPartResponse = await api.post(signPartPath, {
-            key,
-            uploadId,
-            partNumber,
-          })
+          const signedPartResponse = await retryUploadOperation(
+            () =>
+              api.post(signPartPath, {
+                key,
+                uploadId,
+                partNumber,
+              }),
+            { retries: maxRetries, signal: controller.signal }
+          )
 
-          await axios.put(String(signedPartResponse.data.uploadUrl || ''), chunk, {
-            headers: {
-              'Content-Type': file.type || 'application/octet-stream',
-            },
-            signal: controller.signal,
-            onUploadProgress: (progressEvent) => {
-              loadedByPart.set(partNumber, progressEvent.loaded || 0)
-              emit('uploading', `Uploading part ${partNumber}/${totalParts}...`)
-            },
-          })
+          await retryUploadOperation(
+            () =>
+              axios.put(String(signedPartResponse.data.uploadUrl || ''), chunk, {
+                headers: {
+                  'Content-Type': file.type || 'application/octet-stream',
+                },
+                signal: controller.signal,
+                onUploadProgress: (progressEvent) => {
+                  loadedByPart.set(partNumber, progressEvent.loaded || 0)
+                  emit('uploading', `Uploading part ${partNumber}/${totalParts}...`)
+                },
+              }),
+            { retries: maxRetries, signal: controller.signal }
+          )
 
           completedBytes += chunk.size
           completedParts += 1
@@ -221,20 +227,18 @@ export const uploadMultipartVideo = async <T>({
           }
 
           if (isLikelyCorsUploadError(error)) {
-            const origin = typeof window !== 'undefined' ? window.location.origin : 'your frontend origin'
+            const origin = getCurrentUploadOrigin()
             throw new Error(
               `Direct upload blocked by Cloudflare R2 CORS. Allow PUT, GET, HEAD and headers * from ${origin}.`
             )
           }
 
-          if (attempt >= maxRetries) {
+          if (!isTemporaryUploadError(error) || attempt >= maxRetries) {
             throw error
           }
 
           retryCount += 1
-          const backoffMs = Math.min(5000, 500 * 2 ** attempt)
           emit('retrying', `Network issue on part ${partNumber}/${totalParts}. Retrying...`)
-          await wait(backoffMs)
         }
       }
     }
@@ -255,14 +259,18 @@ export const uploadMultipartVideo = async <T>({
 
     emit('finalizing', 'Finalizing upload...')
 
-    const completeResponse = await api.post(completePath, {
-      key,
-      uploadId,
-      partNumbers: completedPartNumbers.sort((a, b) => a - b),
-      filename: file.name,
-      contentType: file.type,
-      sizeBytes: file.size,
-    })
+    const completeResponse = await retryUploadOperation(
+      () =>
+        api.post(completePath, {
+          key,
+          uploadId,
+          partNumbers: completedPartNumbers.sort((a, b) => a - b),
+          filename: file.name,
+          contentType: file.type,
+          sizeBytes: file.size,
+        }),
+      { retries: 2, signal }
+    )
 
     emit('success', 'Upload complete')
 

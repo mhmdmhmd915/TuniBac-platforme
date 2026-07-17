@@ -1,5 +1,6 @@
 const { Upload } = require('@aws-sdk/lib-storage');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const { getAllowedOrigins } = require('../config/allowedOrigins');
 const {
   S3Client,
   AbortMultipartUploadCommand,
@@ -355,16 +356,9 @@ const listObjects = async ({ prefix = '', continuationToken = null, maxKeys = 10
 };
 
 const getRecommendedCorsRules = () => {
-  const configuredOrigins = String(process.env.R2_CORS_ORIGINS || process.env.CORS_ORIGIN || '')
-    .split(',')
-    .map((value) => value.trim())
-    .filter(Boolean);
-
-  const allowedOrigins = [...new Set(configuredOrigins.length ? configuredOrigins : ['http://localhost:5173', 'http://localhost:5174'])];
-
   return [
     {
-      AllowedOrigins: allowedOrigins,
+      AllowedOrigins: getAllowedOrigins(),
       AllowedMethods: ['GET', 'HEAD', 'PUT'],
       AllowedHeaders: ['*'],
       ExposeHeaders: ['ETag', 'Content-Length', 'Content-Range', 'Accept-Ranges'],

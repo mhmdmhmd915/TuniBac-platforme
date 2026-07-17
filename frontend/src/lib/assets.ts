@@ -1,7 +1,7 @@
 import { isBundledBrandAsset } from './brand'
 
 const DEFAULT_LOCAL_API_BASE_URL = 'http://localhost:5000/api'
-const DEFAULT_PROD_API_BASE_URL = 'https://tunibac-platforme.onrender.com/api'
+const DEFAULT_PROD_API_BASE_URL = 'https://api.tunibac.com/api'
 
 const normalizeApiBaseUrl = (value?: string) => {
   const trimmed = String(value || '').trim()

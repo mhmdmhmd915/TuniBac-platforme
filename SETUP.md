@@ -22,8 +22,30 @@ NODE_ENV=development
 PORT=5000
 DATABASE_URL="postgresql://YOUR_USERNAME:YOUR_PASSWORD@localhost:5432/mouhamed_academy?schema=public"
 JWT_SECRET="your-very-secure-jwt-secret-key-at-least-32-characters-long"
-CORS_ORIGIN="http://localhost:5174"
+CORS_ORIGINS="http://localhost:5173,http://localhost:5174,https://www.tunibac.com,https://tunibac.com,https://tunibac-frontend.onrender.com"
+R2_CORS_ORIGINS="http://localhost:5173,http://localhost:5174,https://www.tunibac.com,https://tunibac.com,https://tunibac-frontend.onrender.com"
 ```
+
+#### Configure Cloudflare R2 CORS
+Direct browser uploads to R2 must allow every live frontend origin that can issue presigned `PUT` requests. The recommended production origins are:
+
+- `https://www.tunibac.com`
+- `https://tunibac.com`
+- `https://tunibac-frontend.onrender.com`
+
+After setting the R2 environment variables, apply the bucket CORS rules from the backend folder:
+
+```bash
+node scripts/configure-r2-cors.js
+```
+
+The generated rule allows:
+
+- methods: `GET`, `HEAD`, `PUT`
+- headers: `*`
+- exposed headers: `ETag`, `Content-Length`, `Content-Range`, `Accept-Ranges`
+
+This keeps direct uploads compatible with images, PDFs, and multipart video parts without changing the upload API later.
 
 #### Install Dependencies and Run Migrations
 ```bash

@@ -196,7 +196,7 @@ export const VideoUploader = ({
             )}
           </div>
           <p className="text-gray-600 dark:text-gray-400">
-            {isUploading ? 'Uploading directly to Cloudflare R2...' : placeholder}
+            {isUploading ? uploadState?.message || 'Uploading video...' : placeholder}
           </p>
           {feedback && (
             <div

@@ -4,7 +4,7 @@ export const OFFICIAL_BRAND = {
   title: 'TuniBac | Premium Bac Learning Platform',
   description:
     'TuniBac is a premium Bac learning platform for Tunisian students, with courses, exercises, planner tools, homework follow-up, and academic communication in one place.',
-  siteUrl: 'https://tunibac-frontend.onrender.com',
+  siteUrl: 'https://www.tunibac.com',
   colors: {
     primaryBlue: '#0B5ED7',
     deepBlue: '#06295B',

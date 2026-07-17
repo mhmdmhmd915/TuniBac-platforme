@@ -1,35 +1,51 @@
-import axios from 'axios';
 import { api } from '../lib/api/http';
 import { uploadMultipartVideo, type MultipartVideoUploadState } from '../lib/uploads/multipartVideo';
+import { uploadFileViaBackend, uploadToSignedUrl } from '../lib/uploads/sharedUpload';
 import type { BacSection } from '../constants/bacSections';
 
-const uploadToSignedUrl = async (
-  uploadUrl: string,
-  file: File,
-  onUploadProgress?: (progress: number) => void
-) => {
-  await axios.put(uploadUrl, file, {
-    headers: { 'Content-Type': file.type },
-    onUploadProgress: (progressEvent) => {
-      if (onUploadProgress && progressEvent.total) {
-        const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-        onUploadProgress(progress)
-      }
-    },
-  })
+const buildSingleFileFormData = (fieldName: string, file: File) => {
+  const formData = new FormData()
+  formData.append(fieldName, file)
+  return formData
 }
+
+const uploadFormDataViaBackend = <T>({
+  endpoint,
+  formData,
+  mapResponse,
+  onUploadProgress,
+  signal,
+  method,
+}: {
+  endpoint: string
+  formData: FormData
+  mapResponse: (data: any) => T
+  onUploadProgress?: (progressEvent: any) => void
+  signal?: AbortSignal
+  method?: 'post' | 'put' | 'patch'
+}) =>
+  uploadFileViaBackend({
+    endpoint,
+    formData,
+    mapResponse,
+    onUploadProgress,
+    signal,
+    method,
+  })
 
 const uploadViaPresignedEndpoint = async <T>({
   file,
   presignPath,
   mapResponse,
   onUploadProgress,
+  signal,
   fallback,
 }: {
   file: File
   presignPath: string
   mapResponse: (data: any) => T
   onUploadProgress?: (progress: number) => void
+  signal?: AbortSignal
   fallback: () => Promise<{ data: T }>
 }) => {
   try {
@@ -39,12 +55,26 @@ const uploadViaPresignedEndpoint = async <T>({
       sizeBytes: file.size,
     })
 
-    await uploadToSignedUrl(presignResponse.data.uploadUrl as string, file, onUploadProgress)
+    await uploadToSignedUrl({
+      uploadUrl: presignResponse.data.uploadUrl as string,
+      body: file,
+      contentType: file.type,
+      signal,
+      onUploadProgress: (progressEvent) => {
+        if (onUploadProgress && progressEvent.total) {
+          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          onUploadProgress(progress)
+        }
+      },
+    })
 
     return {
       data: mapResponse(presignResponse.data),
     }
-  } catch {
+  } catch (error) {
+    if (signal?.aborted) {
+      throw error
+    }
     return fallback()
   }
 }
@@ -54,27 +84,22 @@ export type VideoUploadOptions = {
   signal?: AbortSignal
 }
 
-const shouldPreferBackendVideoUpload = () => {
-  if (typeof window === 'undefined') {
-    return false
-  }
-
-  return window.location.hostname === 'www.tunibac.com' || window.location.hostname === 'tunibac.com'
-}
-
-const uploadVideoViaBackend = ({
+const uploadVideoViaBackend = <T>({
   endpoint,
   file,
   signal,
   onProgress,
+  fieldName = 'video',
+  mapResponse,
 }: {
   endpoint: string
   file: File
   signal?: AbortSignal
   onProgress?: (state: MultipartVideoUploadState) => void
+  fieldName?: string
+  mapResponse: (data: any) => T
 }) => {
-  const formData = new FormData()
-  formData.append('video', file)
+  const formData = buildSingleFileFormData(fieldName, file)
 
   onProgress?.({
     progress: 0,
@@ -90,11 +115,11 @@ const uploadVideoViaBackend = ({
     message: 'Uploading video through backend...',
   })
 
-  return api.post(endpoint, formData, {
+  return uploadFormDataViaBackend({
+    endpoint,
+    formData,
+    mapResponse,
     signal,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
     onUploadProgress: (progressEvent) => {
       const loaded = Number(progressEvent.loaded || 0)
       const total = Number(progressEvent.total || file.size || 0)
@@ -157,10 +182,10 @@ export const coursesAPI = {
   delete: (id: string) =>
     api.delete(`/courses/${id}`),
   uploadVideo: (file: File, onUploadProgress?: (progress: number) => void) => {
-    const formData = new FormData();
-    formData.append('video', file);
-    return api.post('/upload/video', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    return uploadFormDataViaBackend({
+      endpoint: '/upload/video',
+      formData: buildSingleFileFormData('video', file),
+      mapResponse: (data) => data,
       onUploadProgress: (progressEvent) => {
         if (onUploadProgress && progressEvent.total) {
           const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -203,10 +228,10 @@ export const communicationsAPI = {
 // Homework API
 export const homeworkAPI = {
   upload: (file: File, onUploadProgress?: (progress: number) => void) => {
-    const formData = new FormData();
-    formData.append('homework', file);
-    return api.post('/homework/upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    return uploadFormDataViaBackend({
+      endpoint: '/homework/upload',
+      formData: buildSingleFileFormData('homework', file),
+      mapResponse: (data) => data,
       onUploadProgress: (progressEvent) => {
         if (onUploadProgress && progressEvent.total) {
           const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -298,28 +323,63 @@ export const adminAPI = {
     options?: VideoUploadOptions
   ) => {
     if (asset === 'offer-video') {
-      return uploadMultipartVideo({
-        file,
-        initiatePath: '/admin/settings/upload/offer-video/multipart/initiate',
-        signPartPath: '/admin/settings/upload/offer-video/multipart/sign-part',
-        completePath: '/admin/settings/upload/offer-video/multipart/complete',
-        abortPath: '/admin/settings/upload/offer-video/multipart/abort',
-        mapCompleteResponse: (data) => ({
-          fileUrl: data.fileUrl,
-          setting: data.setting,
-          key: data.key,
-        }),
-        onProgress: options?.onProgress,
-        signal: options?.signal,
-      })
+      return (async () => {
+        try {
+          return await uploadMultipartVideo({
+            file,
+            initiatePath: '/admin/settings/upload/offer-video/multipart/initiate',
+            signPartPath: '/admin/settings/upload/offer-video/multipart/sign-part',
+            completePath: '/admin/settings/upload/offer-video/multipart/complete',
+            abortPath: '/admin/settings/upload/offer-video/multipart/abort',
+            mapCompleteResponse: (data) => ({
+              fileUrl: data.fileUrl,
+              setting: data.setting,
+              key: data.key,
+            }),
+            onProgress: options?.onProgress,
+            signal: options?.signal,
+          })
+        } catch (error) {
+          if (options?.signal?.aborted) {
+            throw error
+          }
+
+          const fallbackResponse = await uploadVideoViaBackend({
+            endpoint: '/admin/settings/upload/offer-video',
+            fieldName: 'file',
+            file,
+            signal: options?.signal,
+            onProgress: options?.onProgress,
+            mapResponse: (data) => ({
+              fileUrl: data.fileUrl,
+              setting: data.setting,
+              key: data.key,
+            }),
+          })
+
+          options?.onProgress?.({
+            progress: 100,
+            uploadedBytes: file.size,
+            totalBytes: file.size,
+            speedMbps: 0,
+            estimatedRemainingSeconds: 0,
+            activeParts: 0,
+            completedParts: 1,
+            totalParts: 1,
+            retryCount: 0,
+            status: 'success',
+            message: 'Upload complete',
+          })
+
+          return fallbackResponse
+        }
+      })()
     }
 
-    const formData = new FormData();
-    formData.append('file', file);
-    return api.post(`/admin/settings/upload/${asset}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    return uploadFormDataViaBackend({
+      endpoint: `/admin/settings/upload/${asset}`,
+      formData: buildSingleFileFormData('file', file),
+      mapResponse: (data) => data,
     });
   },
 
@@ -339,20 +399,20 @@ export const adminAPI = {
     api.delete(`/admin/exercise-corrections/${correctionId}`),
 
   uploadExerciseCorrection: (formData: FormData) =>
-    api.post('/admin/exercise-correction', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    uploadFormDataViaBackend({
+      endpoint: '/admin/exercise-correction',
+      formData,
+      mapResponse: (data) => data,
     }),
 
   uploadExercisePdf: (formData: FormData) =>
     (() => {
       const file = formData.get('pdf')
       if (!(file instanceof File)) {
-        return api.post('/admin/exercises/upload-pdf', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+        return uploadFormDataViaBackend({
+          endpoint: '/admin/exercises/upload-pdf',
+          formData,
+          mapResponse: (data) => data,
         })
       }
       return uploadViaPresignedEndpoint({
@@ -360,10 +420,10 @@ export const adminAPI = {
         presignPath: '/admin/exercises/upload-pdf/presign',
         mapResponse: (data) => ({ fileUrl: data.fileUrl }),
         fallback: () =>
-          api.post('/admin/exercises/upload-pdf', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
+          uploadFormDataViaBackend({
+            endpoint: '/admin/exercises/upload-pdf',
+            formData,
+            mapResponse: (data) => data,
           }),
       })
     })(),
@@ -372,10 +432,10 @@ export const adminAPI = {
     (() => {
       const file = formData.get('image')
       if (!(file instanceof File)) {
-        return api.post('/admin/courses/upload-advertisement-image', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+        return uploadFormDataViaBackend({
+          endpoint: '/admin/courses/upload-advertisement-image',
+          formData,
+          mapResponse: (data) => data,
         })
       }
       return uploadViaPresignedEndpoint({
@@ -383,10 +443,10 @@ export const adminAPI = {
         presignPath: '/admin/courses/upload-advertisement-image/presign',
         mapResponse: (data) => ({ fileUrl: data.fileUrl }),
         fallback: () =>
-          api.post('/admin/courses/upload-advertisement-image', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
+          uploadFormDataViaBackend({
+            endpoint: '/admin/courses/upload-advertisement-image',
+            formData,
+            mapResponse: (data) => data,
           }),
       })
     })(),
@@ -395,10 +455,10 @@ export const adminAPI = {
     (() => {
       const file = formData.get('image')
       if (!(file instanceof File)) {
-        return api.post('/admin/exercises/upload-advertisement-image', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+        return uploadFormDataViaBackend({
+          endpoint: '/admin/exercises/upload-advertisement-image',
+          formData,
+          mapResponse: (data) => data,
         })
       }
       return uploadViaPresignedEndpoint({
@@ -406,40 +466,15 @@ export const adminAPI = {
         presignPath: '/admin/exercises/upload-advertisement-image/presign',
         mapResponse: (data) => ({ fileUrl: data.fileUrl }),
         fallback: () =>
-          api.post('/admin/exercises/upload-advertisement-image', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
+          uploadFormDataViaBackend({
+            endpoint: '/admin/exercises/upload-advertisement-image',
+            formData,
+            mapResponse: (data) => data,
           }),
       })
     })(),
 
   uploadAdminVideo: async (file: File, options?: VideoUploadOptions) => {
-    if (shouldPreferBackendVideoUpload()) {
-      const backendResponse = await uploadVideoViaBackend({
-        endpoint: '/admin/uploads/video',
-        file,
-        signal: options?.signal,
-        onProgress: options?.onProgress,
-      })
-
-      options?.onProgress?.({
-        progress: 100,
-        uploadedBytes: file.size,
-        totalBytes: file.size,
-        speedMbps: 0,
-        estimatedRemainingSeconds: 0,
-        activeParts: 0,
-        completedParts: 1,
-        totalParts: 1,
-        retryCount: 0,
-        status: 'success',
-        message: 'Upload complete',
-      })
-
-      return backendResponse
-    }
-
     try {
       return await uploadMultipartVideo({
         file,
@@ -464,6 +499,7 @@ export const adminAPI = {
         file,
         signal: options?.signal,
         onProgress: options?.onProgress,
+        mapResponse: (data) => data,
       })
 
       options?.onProgress?.({
@@ -491,21 +527,22 @@ export const adminAPI = {
     api.delete('/admin/uploads', { data }),
 
   replaceUpload: (targetPath: string, file: File) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('targetPath', targetPath);
-    return api.post('/admin/uploads/replace', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    const formData = buildSingleFileFormData('file', file)
+    formData.append('targetPath', targetPath)
+    return uploadFormDataViaBackend({
+      endpoint: '/admin/uploads/replace',
+      formData,
+      mapResponse: (data) => data,
     });
   },
 
   createExerciseCorrection: (data: any) =>
     api.post('/admin/exercise-correction', data),
   uploadExerciseCorrectionPdf: (formData: FormData) =>
-    api.post('/admin/exercise-correction', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    uploadFormDataViaBackend({
+      endpoint: '/admin/exercise-correction',
+      formData,
+      mapResponse: (data) => data,
     }),
 
   createResource: (data: any) =>
@@ -521,10 +558,10 @@ export const adminAPI = {
     (() => {
       const file = formData.get('pdf')
       if (!(file instanceof File)) {
-        return api.post('/admin/courses/upload-pdf', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+        return uploadFormDataViaBackend({
+          endpoint: '/admin/courses/upload-pdf',
+          formData,
+          mapResponse: (data) => data,
         })
       }
       return uploadViaPresignedEndpoint({
@@ -532,28 +569,21 @@ export const adminAPI = {
         presignPath: '/admin/courses/upload-pdf/presign',
         mapResponse: (data) => ({ fileUrl: data.fileUrl }),
         fallback: () =>
-          api.post('/admin/courses/upload-pdf', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
+          uploadFormDataViaBackend({
+            endpoint: '/admin/courses/upload-pdf',
+            formData,
+            mapResponse: (data) => data,
           }),
       })
     })(),
 
   uploadCorrection: (id: string, file: File) => {
-    const formData = new FormData();
-
-    formData.append('correction', file);
-
-    return api.put(
-      `/admin/submissions/${id}/correction`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
+    return uploadFormDataViaBackend({
+      endpoint: `/admin/submissions/${id}/correction`,
+      formData: buildSingleFileFormData('correction', file),
+      mapResponse: (data) => data,
+      method: 'put',
+    });
   },
 
   getCommunications: (params?: {
@@ -599,51 +629,85 @@ export const adminAPI = {
     api.patch(`/admin/communications/${id}/visibility`, { isVisible }),
 
   uploadCommunicationImage: (file: File) => {
-    const formData = new FormData();
-    formData.append('file', file);
+    const formData = buildSingleFileFormData('file', file)
     return uploadViaPresignedEndpoint({
       file,
       presignPath: '/admin/communications/uploads/image/presign',
       mapResponse: (data) => ({ attachment: data.attachment }),
       fallback: () =>
-        api.post('/admin/communications/uploads/image', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+        uploadFormDataViaBackend({
+          endpoint: '/admin/communications/uploads/image',
+          formData,
+          mapResponse: (data) => data,
         }),
     });
   },
 
   uploadCommunicationPdf: (file: File) => {
-    const formData = new FormData();
-    formData.append('file', file);
+    const formData = buildSingleFileFormData('file', file)
     return uploadViaPresignedEndpoint({
       file,
       presignPath: '/admin/communications/uploads/pdf/presign',
       mapResponse: (data) => ({ attachment: data.attachment }),
       fallback: () =>
-        api.post('/admin/communications/uploads/pdf', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+        uploadFormDataViaBackend({
+          endpoint: '/admin/communications/uploads/pdf',
+          formData,
+          mapResponse: (data) => data,
         }),
     });
   },
 
-  uploadCommunicationVideo: (file: File, options?: VideoUploadOptions) =>
-    uploadMultipartVideo({
-      file,
-      initiatePath: '/admin/communications/uploads/video/multipart/initiate',
-      signPartPath: '/admin/communications/uploads/video/multipart/sign-part',
-      completePath: '/admin/communications/uploads/video/multipart/complete',
-      abortPath: '/admin/communications/uploads/video/multipart/abort',
-      mapCompleteResponse: (data) => ({
-        attachment: {
-          ...(data.attachment || {}),
-          label: file.name,
-          mimeType: file.type,
-          sizeBytes: file.size,
-        },
-      }),
-      onProgress: options?.onProgress,
-      signal: options?.signal,
-    }),
+  uploadCommunicationVideo: async (file: File, options?: VideoUploadOptions) => {
+    try {
+      return await uploadMultipartVideo({
+        file,
+        initiatePath: '/admin/communications/uploads/video/multipart/initiate',
+        signPartPath: '/admin/communications/uploads/video/multipart/sign-part',
+        completePath: '/admin/communications/uploads/video/multipart/complete',
+        abortPath: '/admin/communications/uploads/video/multipart/abort',
+        mapCompleteResponse: (data) => ({
+          attachment: {
+            ...(data.attachment || {}),
+            label: file.name,
+            mimeType: file.type,
+            sizeBytes: file.size,
+          },
+        }),
+        onProgress: options?.onProgress,
+        signal: options?.signal,
+      })
+    } catch (error) {
+      if (options?.signal?.aborted) {
+        throw error
+      }
+
+      const fallbackResponse = await uploadVideoViaBackend({
+        endpoint: '/admin/communications/uploads/video',
+        file,
+        signal: options?.signal,
+        onProgress: options?.onProgress,
+        fieldName: 'file',
+        mapResponse: (data) => data,
+      })
+
+      options?.onProgress?.({
+        progress: 100,
+        uploadedBytes: file.size,
+        totalBytes: file.size,
+        speedMbps: 0,
+        estimatedRemainingSeconds: 0,
+        activeParts: 0,
+        completedParts: 1,
+        totalParts: 1,
+        retryCount: 0,
+        status: 'success',
+        message: 'Upload complete',
+      })
+
+      return fallbackResponse
+    }
+  },
 };
 
 export const plannerAPI = {
@@ -680,8 +744,10 @@ export const parascolairesAPI = {
   uploadCover: (formData: FormData) => {
     const file = formData.get('cover')
     if (!(file instanceof File)) {
-      return api.post('/parascolaires/upload-cover', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      return uploadFormDataViaBackend({
+        endpoint: '/parascolaires/upload-cover',
+        formData,
+        mapResponse: (data) => data,
       })
     }
     return uploadViaPresignedEndpoint({
@@ -689,16 +755,20 @@ export const parascolairesAPI = {
       presignPath: '/parascolaires/upload-cover/presign',
       mapResponse: (data) => ({ fileUrl: data.fileUrl }),
       fallback: () =>
-        api.post('/parascolaires/upload-cover', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+        uploadFormDataViaBackend({
+          endpoint: '/parascolaires/upload-cover',
+          formData,
+          mapResponse: (data) => data,
         }),
     })
   },
   uploadPdf: (formData: FormData) => {
     const file = formData.get('pdf')
     if (!(file instanceof File)) {
-      return api.post('/parascolaires/upload-pdf', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      return uploadFormDataViaBackend({
+        endpoint: '/parascolaires/upload-pdf',
+        formData,
+        mapResponse: (data) => data,
       })
     }
     return uploadViaPresignedEndpoint({
@@ -706,8 +776,10 @@ export const parascolairesAPI = {
       presignPath: '/parascolaires/upload-pdf/presign',
       mapResponse: (data) => ({ fileUrl: data.fileUrl }),
       fallback: () =>
-        api.post('/parascolaires/upload-pdf', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+        uploadFormDataViaBackend({
+          endpoint: '/parascolaires/upload-pdf',
+          formData,
+          mapResponse: (data) => data,
         }),
     })
   },
