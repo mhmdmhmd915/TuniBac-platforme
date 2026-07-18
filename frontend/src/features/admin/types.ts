@@ -11,10 +11,10 @@ export type BacSection =
 
 export interface AdminUserRow {
   id: string;
-  email: string;
+  email?: string | null;
   firstName: string;
   lastName: string;
-  phone?: string;
+  phone?: string | null;
   bacSection: BacSection;
   role: UserRole;
   status: UserStatus;

@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react'
+import { Phone, Lock, ArrowRight, Loader2 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { authAPI } from '../services/api'
 import BrandLogo from '../components/BrandLogo'
+import { normalizeTunisianPhone } from '../lib/phone'
 
 const Login = () => {
-  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
@@ -20,7 +21,14 @@ const Login = () => {
     setIsLoading(true)
     setError('')
     try {
-      const response = await authAPI.login({ email, password })
+      const normalizedPhone = normalizeTunisianPhone(phone)
+      if (!normalizedPhone) {
+        setError('Enter a valid Tunisian mobile number (8 digits).')
+        setIsLoading(false)
+        return
+      }
+
+      const response = await authAPI.login({ phone: normalizedPhone, password })
       const nextUser = response.data.user
       const fromState = location.state as { from?: { pathname?: string; search?: string } } | null
       const fallbackPath = nextUser.role === 'ADMIN' ? '/admin' : '/dashboard'
@@ -69,17 +77,18 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label htmlFor="login-email" className="text-sm font-medium text-text-muted-light dark:text-text-muted ml-1">Email Address</label>
+            <label htmlFor="login-phone" className="text-sm font-medium text-text-muted-light dark:text-text-muted ml-1">Phone Number</label>
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted" size={20} />
+              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted" size={20} />
               <input
-                id="login-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="login-phone"
+                type="tel"
+                inputMode="numeric"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 required
                 className="w-full bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-text-light dark:text-text focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
-                placeholder="mouhamed@example.com"
+                placeholder="20123456 or +21620123456"
               />
             </div>
           </div>

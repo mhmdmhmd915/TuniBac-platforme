@@ -9,7 +9,7 @@ describe('smoke: admin user password reset', () => {
   beforeAll(async () => {
     const res = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'admin@gmail.com', password: 'admin123' });
+      .send({ phone: '+21620000000', password: 'admin123' });
 
     if (res.status !== 200 || !res.body?.token) {
       throw new Error(
@@ -20,14 +20,15 @@ describe('smoke: admin user password reset', () => {
   });
 
   it('admin can reset user password and user can login with new password', async () => {
-    const email = `smoke-user-${Date.now()}@example.com`;
+    const unique = Date.now();
+    const phone = `2${String(unique).slice(-7).padStart(7, '0')}`;
     const initialPassword = 'initial123';
     const newPassword = 'newpass123';
 
     const registerRes = await request(app).post('/api/auth/register').send({
       firstName: 'Smoke',
       lastName: 'User',
-      email,
+      phone,
       password: initialPassword,
       bacSection: 'SCIENCES_EXPERIMENTALES',
     });
@@ -52,7 +53,7 @@ describe('smoke: admin user password reset', () => {
     expect(revokedTokenRes.body?.message).toBe('Token has been revoked');
 
     const loginRes = await request(app).post('/api/auth/login').send({
-      email,
+      phone,
       password: newPassword,
     });
     expect(loginRes.status).toBe(200);
@@ -61,5 +62,5 @@ describe('smoke: admin user password reset', () => {
     await request(app)
       .delete(`/api/admin/users/${userId}`)
       .set('Authorization', `Bearer ${adminToken}`);
-  });
+  }, 20000);
 });

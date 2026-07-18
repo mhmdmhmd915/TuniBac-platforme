@@ -19,7 +19,7 @@ describe('smoke: bac section filtering', () => {
   beforeAll(async () => {
     const res = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'admin@gmail.com', password: 'admin123' });
+      .send({ phone: '+21620000000', password: 'admin123' });
 
     if (res.status !== 200 || !res.body?.token) {
       throw new Error(
@@ -95,8 +95,8 @@ describe('smoke: bac section filtering', () => {
       techExercise: `Smoke Tech Exercise ${unique}`,
       mathCommunication: `Smoke Math Communication ${unique}`,
       techCommunication: `Smoke Tech Communication ${unique}`,
-      mathEmail: `smoke-math-${unique}@example.com`,
-      techEmail: `smoke-tech-${unique}@example.com`,
+      mathPhone: `2${String(unique).slice(-7).padStart(7, '0')}`,
+      techPhone: `5${String(unique + 1).slice(-7).padStart(7, '0')}`,
     };
 
     const mathSubjectRes = await request(app)
@@ -229,7 +229,7 @@ describe('smoke: bac section filtering', () => {
     const mathRegisterRes = await request(app).post('/api/auth/register').send({
       firstName: 'Math',
       lastName: 'Student',
-      email: names.mathEmail,
+      phone: names.mathPhone,
       password,
       bacSection: 'MATHEMATIQUES',
     });
@@ -240,7 +240,7 @@ describe('smoke: bac section filtering', () => {
     const techRegisterRes = await request(app).post('/api/auth/register').send({
       firstName: 'Tech',
       lastName: 'Student',
-      email: names.techEmail,
+      phone: names.techPhone,
       password,
       bacSection: 'TECHNIQUE',
     });
@@ -263,11 +263,11 @@ describe('smoke: bac section filtering', () => {
 
     const mathLoginRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: names.mathEmail, password });
+      .send({ phone: names.mathPhone, password });
 
     const techLoginRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: names.techEmail, password });
+      .send({ phone: names.techPhone, password });
 
     expect(mathLoginRes.status).toBe(200);
     expect(techLoginRes.status).toBe(200);

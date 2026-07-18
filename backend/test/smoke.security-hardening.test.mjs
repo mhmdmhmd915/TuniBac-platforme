@@ -19,7 +19,7 @@ describe('smoke: security hardening', () => {
   beforeAll(async () => {
     const loginRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'admin@gmail.com', password: 'admin123' });
+      .send({ phone: '+21620000000', password: 'admin123' });
 
     expect(loginRes.status).toBe(200);
     adminToken = loginRes.body.token;
@@ -71,12 +71,13 @@ describe('smoke: security hardening', () => {
     expect(settingsRes.body.some((item) => item.key === 'privateAuditOnlyKey')).toBe(false);
 
     const unique = Date.now();
+    const studentPhone = `2${String(unique).slice(-7).padStart(7, '0')}`;
     const registerRes = await request(app)
       .post('/api/auth/register')
       .send({
         firstName: 'Security',
         lastName: 'Audit',
-        email: `security-audit-${unique}@example.com`,
+        phone: studentPhone,
         password: 'student123',
         bacSection: 'MATHEMATIQUES',
       });
@@ -92,7 +93,7 @@ describe('smoke: security hardening', () => {
     const userLoginRes = await request(app)
       .post('/api/auth/login')
       .send({
-        email: `security-audit-${unique}@example.com`,
+        phone: studentPhone,
         password: 'student123',
       });
     expect(userLoginRes.status).toBe(200);

@@ -92,7 +92,12 @@ const Navbar = () => {
                 <div className="w-10 h-10 bg-accent text-primary rounded-full flex items-center justify-center font-bold">
                   {user.firstName[0]}
                 </div>
-                <span className="font-medium text-text-light dark:text-text group-hover:text-accent transition-colors">{user.firstName}</span>
+                <div className="flex flex-col">
+                  <span className="font-medium text-text-light dark:text-text group-hover:text-accent transition-colors">{user.firstName}</span>
+                  {user.phone && (
+                    <span className="text-xs text-text-muted-light dark:text-text-muted">{user.phone}</span>
+                  )}
+                </div>
               </Link>
               <button 
                 onClick={logout}

@@ -1,18 +1,20 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react'
+import { Phone, Lock, User, ArrowRight, Loader2 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { authAPI } from '../services/api'
 import { BAC_SECTION_OPTIONS, DEFAULT_BAC_SECTION } from '../constants/bacSections'
 import BrandLogo from '../components/BrandLogo'
+import { normalizeTunisianPhone } from '../lib/phone'
 
 const Register = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
+    phone: '',
     password: '',
+    confirmPassword: '',
     bacSection: DEFAULT_BAC_SECTION,
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -23,10 +25,28 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const normalizedPhone = normalizeTunisianPhone(formData.phone)
+
+    if (!normalizedPhone) {
+      setError('Enter a valid Tunisian mobile number (8 digits).')
+      return
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Password and confirm password must match.')
+      return
+    }
+
     setIsLoading(true)
     setError('')
     try {
-      const response = await authAPI.register(formData)
+      const response = await authAPI.register({
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        phone: normalizedPhone,
+        password: formData.password,
+        bacSection: formData.bacSection,
+      })
       const nextUser = response.data.user
       const fromState = location.state as { from?: { pathname?: string; search?: string } } | null
       const fromPath = fromState?.from?.pathname
@@ -113,20 +133,24 @@ const Register = () => {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="register-email" className="text-sm font-medium text-text-muted-light dark:text-text-muted ml-1">Email Address</label>
+            <label htmlFor="register-phone" className="text-sm font-medium text-text-muted-light dark:text-text-muted ml-1">Phone Number</label>
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted" size={20} />
+              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted" size={20} />
               <input
-                id="register-email"
-                type="email"
-                name="email"
-                value={formData.email}
+                id="register-phone"
+                type="tel"
+                inputMode="numeric"
+                name="phone"
+                value={formData.phone}
                 onChange={handleChange}
                 required
                 className="w-full bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-text-light dark:text-text focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
-                placeholder="mouhamed@example.com"
+                placeholder="20123456"
               />
             </div>
+            <p className="text-xs text-text-muted-light dark:text-text-muted ml-1">
+              Enter 8 digits. We automatically store it as `+216XXXXXXXX`.
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -160,6 +184,23 @@ const Register = () => {
                 required
                 className="w-full bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-text-light dark:text-text focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
                 placeholder="••••••••"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="register-confirm-password" className="text-sm font-medium text-text-muted-light dark:text-text-muted ml-1">Confirm Password</label>
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted" size={20} />
+              <input
+                id="register-confirm-password"
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+                className="w-full bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-text-light dark:text-text focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
+                placeholder="********"
               />
             </div>
           </div>

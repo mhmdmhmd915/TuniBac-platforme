@@ -4,7 +4,8 @@ import type { BacSection } from '../constants/bacSections';
 
 interface User {
   id: string;
-  email: string;
+  email?: string | null;
+  phone?: string | null;
   firstName: string;
   lastName: string;
   bacSection: BacSection;

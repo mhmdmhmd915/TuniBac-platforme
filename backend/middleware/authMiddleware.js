@@ -13,6 +13,7 @@ const loadAuthenticatedUser = async (decoded) => {
     select: {
       id: true,
       email: true,
+      phone: true,
       role: true,
       firstName: true,
       lastName: true,
@@ -36,6 +37,7 @@ const loadAuthenticatedUser = async (decoded) => {
     user: {
       id: user.id,
       email: user.email,
+      phone: user.phone,
       role: user.role,
       firstName: user.firstName,
       lastName: user.lastName,

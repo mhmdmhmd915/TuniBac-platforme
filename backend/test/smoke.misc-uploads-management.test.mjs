@@ -77,7 +77,7 @@ describe('smoke: misc uploads and upload management', () => {
   beforeAll(async () => {
     const loginRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'admin@gmail.com', password: 'admin123' });
+      .send({ phone: '+21620000000', password: 'admin123' });
 
     if (loginRes.status !== 200 || !loginRes.body?.token) {
       throw new Error(`Admin login failed with status ${loginRes.status}`);

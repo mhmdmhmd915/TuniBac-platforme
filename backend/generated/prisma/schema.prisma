@@ -72,11 +72,11 @@ enum CommunicationAudience {
 
 model User {
   id                    String               @id @default(uuid())
-  email                 String               @unique
+  email                 String?              @unique
   password              String
   firstName             String
   lastName              String
-  phone                 String?
+  phone                 String?              @unique
   bacSection            BacSection           @default(SCIENCES_EXPERIMENTALES)
   role                  Role                 @default(STUDENT)
   status                UserStatus           @default(PENDING)
@@ -122,22 +122,27 @@ model Subject {
 }
 
 model Course {
-  id          String             @id @default(uuid())
-  title       String
-  description String?
-  contentUrl  String?
-  videoUrl    String?
-  videoPath   String?
-  difficulty  Difficulty         @default(BEGINNER)
-  tags        String[]
-  subjectId   String
-  subject     Subject            @relation(fields: [subjectId], references: [id])
-  lessons     Lesson[]
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
-  progress    ProgressTracking[]
-  enrollments Enrollment[]
-  resources   CourseResource[]
+  id                       String             @id @default(uuid())
+  title                    String
+  description              String?
+  contentUrl               String?
+  videoUrl                 String?
+  videoPath                String?
+  advertisementImage       String?
+  advertisementTeacherName String?
+  advertisementSubject     String?
+  advertisementWhatsapp    String?
+  advertisementDescription String?
+  difficulty               Difficulty         @default(BEGINNER)
+  tags                     String[]
+  subjectId                String
+  subject                  Subject            @relation(fields: [subjectId], references: [id])
+  lessons                  Lesson[]
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+  progress                 ProgressTracking[]
+  enrollments              Enrollment[]
+  resources                CourseResource[]
 
   @@index([subjectId, createdAt])
 }
@@ -158,18 +163,23 @@ model Lesson {
 }
 
 model Exercise {
-  id          String             @id @default(uuid())
-  title       String
-  description String?
-  contentUrl  String?
-  difficulty  Difficulty         @default(BEGINNER)
-  subjectId   String
-  subject     Subject            @relation(fields: [subjectId], references: [id])
-  corrections Correction[]
-  resources   ExerciseResource[]
-  progress    ProgressTracking[]
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  id                       String             @id @default(uuid())
+  title                    String
+  description              String?
+  contentUrl               String?
+  advertisementImage       String?
+  advertisementTeacherName String?
+  advertisementSubject     String?
+  advertisementWhatsapp    String?
+  advertisementDescription String?
+  difficulty               Difficulty         @default(BEGINNER)
+  subjectId                String
+  subject                  Subject            @relation(fields: [subjectId], references: [id])
+  corrections              Correction[]
+  resources                ExerciseResource[]
+  progress                 ProgressTracking[]
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
 
   @@index([subjectId, createdAt])
 }

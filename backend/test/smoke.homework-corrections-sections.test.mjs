@@ -55,7 +55,7 @@ describe('smoke: homework uploads and corrections by bac section', () => {
   beforeAll(async () => {
     const adminRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'admin@gmail.com', password: 'admin123' });
+      .send({ phone: '+21620000000', password: 'admin123' });
 
     if (adminRes.status !== 200 || !adminRes.body?.token) {
       throw new Error(
@@ -98,10 +98,14 @@ describe('smoke: homework uploads and corrections by bac section', () => {
     const perSection = new Map();
 
     for (const section of SECTIONS) {
+      const sectionIndex = SECTIONS.indexOf(section);
       const email = `smoke-homework-${section.toLowerCase()}-${unique}@example.com`;
+      const phonePrefix = ['2', '4', '5', '9', '2', '4', '5'][sectionIndex];
+      const phone = `${phonePrefix}${String(unique + sectionIndex).slice(-7).padStart(7, '0')}`;
       const user = await prisma.user.create({
         data: {
           email,
+          phone: `+216${phone}`,
           password: passwordHash,
           firstName: 'Smoke',
           lastName: section,
@@ -116,7 +120,7 @@ describe('smoke: homework uploads and corrections by bac section', () => {
 
       const loginRes = await request(app)
         .post('/api/auth/login')
-        .send({ email, password });
+        .send({ phone, password });
 
       expect(loginRes.status).toBe(200);
       expect(typeof loginRes.body.token).toBe('string');

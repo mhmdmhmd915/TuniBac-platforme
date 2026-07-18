@@ -72,11 +72,11 @@ enum CommunicationAudience {
 
 model User {
   id                    String          @id @default(uuid())
-  email                 String          @unique
+  email                 String?         @unique
   password              String
   firstName             String
   lastName              String
-  phone                 String?
+  phone                 String?         @unique
   bacSection            BacSection      @default(SCIENCES_EXPERIMENTALES)
   role                  Role            @default(STUDENT)
   status                UserStatus      @default(PENDING)

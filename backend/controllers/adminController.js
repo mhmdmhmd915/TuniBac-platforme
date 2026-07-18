@@ -6,6 +6,7 @@ const { deleteObject, normalizeStoredFileValueToKey, toPublicUrlFromStoredValue 
 const { logger } = require('../utils/logger');
 const { validateStoredUpload } = require('../utils/storedUploadSecurity');
 const { PDF_MAX_SIZE_BYTES, PDF_MIME_TYPES, RESOURCE_MAX_SIZE_BYTES, RESOURCE_MIME_TYPES } = require('../utils/uploadPolicies');
+const { normalizeTunisianPhone } = require('../utils/tunisianPhone');
 
 const ADMIN_USER_BASE_SELECT = {
   id: true,
@@ -71,7 +72,8 @@ const getAllUsers = async (req, res) => {
       where.OR = [
         { firstName: { contains: search, mode: 'insensitive' } },
         { lastName: { contains: search, mode: 'insensitive' } },
-        { email: { contains: search, mode: 'insensitive' } }
+        { email: { contains: search, mode: 'insensitive' } },
+        { phone: { contains: search, mode: 'insensitive' } },
       ];
     }
 
@@ -203,15 +205,33 @@ const reactivateUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, phone, role } = req.body;
+    const { firstName, lastName, phone, role } = req.body;
     const bacSection = resolveRequestedBacSection(req.body.bacSection);
+    const normalizedPhone =
+      typeof phone === 'string' && phone.trim() ? normalizeTunisianPhone(phone) : null;
+
+    if (typeof phone === 'string' && phone.trim() && !normalizedPhone) {
+      return res.status(400).json({ message: 'Invalid Tunisian mobile phone number' });
+    }
+
+    const data = {
+      ...(typeof firstName === 'string' ? { firstName: firstName.trim() } : {}),
+      ...(typeof lastName === 'string' ? { lastName: lastName.trim() } : {}),
+      ...(typeof phone === 'string' ? { phone: normalizedPhone } : {}),
+      ...(typeof role === 'string' ? { role } : {}),
+      ...(bacSection ? { bacSection } : {}),
+    };
+
     const user = await prisma.user.update({
       where: { id },
-      data: { firstName, lastName, email, phone, role, ...(bacSection ? { bacSection } : {}) },
+      data,
       select: ADMIN_USER_BASE_SELECT,
     });
     res.json({ message: 'User updated', user });
   } catch (error) {
+    if (error?.code === 'P2002') {
+      return res.status(400).json({ message: 'Phone number already exists' });
+    }
     logger.error('Error updating user', error);
     sendError(res, 500, 'Error updating user', error);
   }
@@ -290,6 +310,7 @@ const bulkDeleteUsers = async (req, res) => {
       userIds.flatMap((id) => [
         prisma.progressTracking.deleteMany({ where: { userId: id } }),
         prisma.enrollment.deleteMany({ where: { userId: id } }),
+        prisma.studentPlannerTask.deleteMany({ where: { userId: id } }),
         prisma.studyTask.deleteMany({ where: { userId: id } }),
         prisma.homeworkSubmission.deleteMany({ where: { userId: id } }),
         prisma.user.delete({ where: { id } }),
@@ -310,6 +331,7 @@ const deleteUser = async (req, res) => {
     await prisma.$transaction([
       prisma.progressTracking.deleteMany({ where: { userId: id } }),
       prisma.enrollment.deleteMany({ where: { userId: id } }),
+      prisma.studentPlannerTask.deleteMany({ where: { userId: id } }),
       prisma.studyTask.deleteMany({ where: { userId: id } }),
       prisma.homeworkSubmission.deleteMany({ where: { userId: id } }),
       prisma.user.delete({ where: { id } }),
@@ -387,14 +409,14 @@ const getDashboardStats = async (req, res) => {
       where: userWhere,
       take: 10,
       orderBy: { createdAt: 'desc' },
-      select: { id: true, firstName: true, lastName: true, email: true, status: true, bacSection: true, createdAt: true }
+      select: { id: true, firstName: true, lastName: true, email: true, phone: true, status: true, bacSection: true, createdAt: true }
     });
 
     const recentApprovals = await prisma.user.findMany({
       where: { ...userWhere, status: 'APPROVED', approvalDate: { not: null } },
       take: 10,
       orderBy: { approvalDate: 'desc' },
-      select: { id: true, firstName: true, lastName: true, email: true, bacSection: true, approvalDate: true }
+      select: { id: true, firstName: true, lastName: true, email: true, phone: true, bacSection: true, approvalDate: true }
     });
 
     const recentSubmissions = await prisma.homeworkSubmission.findMany({

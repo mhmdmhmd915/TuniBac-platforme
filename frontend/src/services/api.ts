@@ -147,9 +147,9 @@ const uploadVideoViaBackend = <T>({
 
 // Auth API
 export const authAPI = {
-  register: (data: { firstName: string; lastName: string; email: string; password: string; bacSection: BacSection }) =>
+  register: (data: { firstName: string; lastName: string; phone: string; password: string; bacSection: BacSection }) =>
     api.post('/auth/register', data),
-  login: (data: { email: string; password: string }) =>
+  login: (data: { phone: string; password: string }) =>
     api.post('/auth/login', data),
   getCurrentUser: () =>
     api.get('/auth/me'),

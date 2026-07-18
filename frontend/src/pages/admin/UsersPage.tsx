@@ -289,7 +289,6 @@ const UsersPage: React.FC = () => {
   const [editForm, setEditForm] = useState<{
     firstName: string;
     lastName: string;
-    email: string;
     phone: string;
     bacSection: BacSection;
     role: UserRole;
@@ -306,13 +305,13 @@ const UsersPage: React.FC = () => {
   const columns: Column<AdminUserRow>[] = [
     {
       header: 'Utilisateur',
-      key: 'email',
+      key: 'phone',
       render: (_value, user) => (
         <div className="space-y-1">
           <div className="font-semibold text-gray-900 dark:text-white">
             {user.firstName} {user.lastName}
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">{user.email}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">{user.phone || 'No phone number'}</div>
         </div>
       ),
     },
@@ -399,7 +398,6 @@ const UsersPage: React.FC = () => {
               setEditForm({
                 firstName: user.firstName,
                 lastName: user.lastName,
-                email: user.email,
                 phone: user.phone || '',
                 bacSection: user.bacSection,
                 role: user.role,
@@ -449,7 +447,6 @@ const UsersPage: React.FC = () => {
       await adminAPI.updateUser(editor.user.id, {
         firstName: editForm.firstName,
         lastName: editForm.lastName,
-        email: editForm.email,
         phone: editForm.phone || null,
         bacSection: editForm.bacSection,
         role: editForm.role,
@@ -525,7 +522,6 @@ const UsersPage: React.FC = () => {
         'id',
         'firstName',
         'lastName',
-        'email',
         'phone',
         'bacSection',
         'role',
@@ -537,7 +533,6 @@ const UsersPage: React.FC = () => {
         escape(u.id),
         escape(u.firstName),
         escape(u.lastName),
-        escape(u.email),
         escape(u.phone || ''),
         escape(BAC_SECTION_LABELS[u.bacSection]),
         escape(u.role),
@@ -837,26 +832,16 @@ const UsersPage: React.FC = () => {
                   </div>
                 </div>
                 <input
-                  value={editForm.email}
+                  value={editForm.phone}
                   onChange={(e) =>
-                    setEditForm((p) => (p ? { ...p, email: e.target.value } : p))
+                    setEditForm((p) => (p ? { ...p, phone: e.target.value } : p))
                   }
                   className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                  placeholder="Email"
-                  type="email"
-                  aria-label="Email"
-                  required
+                  placeholder="20123456 or +21620123456"
+                  type="tel"
+                  aria-label="Phone number"
                 />
-                <div className="grid gap-4 md:grid-cols-2">
-                  <input
-                    value={editForm.phone}
-                    onChange={(e) =>
-                      setEditForm((p) => (p ? { ...p, phone: e.target.value } : p))
-                    }
-                    className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                    placeholder="Téléphone"
-                    aria-label="Phone number"
-                  />
+                <div className="grid gap-4 md:grid-cols-1">
                   <select
                     value={editForm.role}
                     onChange={(e) =>

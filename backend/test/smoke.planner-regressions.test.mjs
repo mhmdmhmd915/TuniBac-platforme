@@ -23,7 +23,7 @@ describe('smoke: planner regressions', () => {
   beforeAll(async () => {
     const res = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'admin@gmail.com', password: 'admin123' });
+      .send({ phone: '+21620000000', password: 'admin123' });
 
     if (res.status !== 200 || !res.body?.token) {
       throw new Error(
@@ -77,8 +77,8 @@ describe('smoke: planner regressions', () => {
   it('publishes planner templates to targeted students only and preserves mixed legacy planner data', async () => {
     const unique = Date.now();
     const password = 'planner123';
-    const mathEmail = `planner-math-${unique}@example.com`;
-    const otherEmail = `planner-other-${unique}@example.com`;
+    const mathPhone = `2${String(unique).slice(-7).padStart(7, '0')}`;
+    const otherPhone = `5${String(unique + 1).slice(-7).padStart(7, '0')}`;
 
     const subjectRes = await request(app)
       .post('/api/admin/subjects')
@@ -119,14 +119,14 @@ describe('smoke: planner regressions', () => {
     const registerMathRes = await request(app).post('/api/auth/register').send({
       firstName: 'Planner',
       lastName: 'Math',
-      email: mathEmail,
+      phone: mathPhone,
       password,
       bacSection: 'MATHEMATIQUES',
     });
     const registerOtherRes = await request(app).post('/api/auth/register').send({
       firstName: 'Planner',
       lastName: 'Other',
-      email: otherEmail,
+      phone: otherPhone,
       password,
       bacSection: 'TECHNIQUE',
     });
@@ -166,10 +166,10 @@ describe('smoke: planner regressions', () => {
 
     const loginMathRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: mathEmail, password });
+      .send({ phone: mathPhone, password });
     const loginOtherRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: otherEmail, password });
+      .send({ phone: otherPhone, password });
 
     expect(loginMathRes.status).toBe(200);
     expect(loginOtherRes.status).toBe(200);

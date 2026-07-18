@@ -58,7 +58,7 @@ describe('smoke: pdf uploads by bac section', () => {
   beforeAll(async () => {
     const res = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'admin@gmail.com', password: 'admin123' });
+      .send({ phone: '+21620000000', password: 'admin123' });
 
     if (res.status !== 200 || !res.body?.token) {
       throw new Error(

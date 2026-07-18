@@ -8,6 +8,7 @@ const getProfile = async (req, res) => {
       select: {
         id: true,
         email: true,
+        phone: true,
         firstName: true,
         lastName: true,
         bacSection: true,
@@ -29,7 +30,7 @@ const updateProfile = async (req, res) => {
     const user = await prisma.user.update({
       where: { id: userId },
       data: { firstName, lastName },
-      select: { id: true, email: true, firstName: true, lastName: true, bacSection: true, role: true },
+      select: { id: true, email: true, phone: true, firstName: true, lastName: true, bacSection: true, role: true },
     });
     res.json(user);
   } catch (error) {
@@ -54,4 +55,3 @@ const getStats = async (req, res) => {
 };
 
 module.exports = { getProfile, updateProfile, getStats };
-

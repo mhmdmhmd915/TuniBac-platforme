@@ -161,6 +161,7 @@ interface Parascolaire {
 interface AdminUser {
   id: string;
   email: string;
+  phone?: string | null;
   firstName: string;
   lastName: string;
   bacSection: BacSection;
@@ -1665,14 +1666,14 @@ const AdminWorkspace = () => {
   const userColumns: Column<AdminUser>[] = [
     {
       header: 'User',
-      key: 'email',
+      key: 'phone',
       render: (_value, user) => (
         <div className="space-y-1">
           <div className="font-semibold text-gray-900 dark:text-white">
             {user.firstName} {user.lastName}
           </div>
           <div className="text-xs text-gray-500 dark:text-gray-400">
-            {user.email}
+            {user.phone || user.email}
           </div>
         </div>
       ),
@@ -2144,7 +2145,7 @@ const AdminWorkspace = () => {
                       {user.firstName} {user.lastName}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {user.email}
+                      {user.phone || user.email}
                     </div>
                   </div>
                   <span

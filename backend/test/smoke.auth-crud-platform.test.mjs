@@ -55,7 +55,7 @@ describe('smoke: auth approval and platform crud', () => {
   beforeAll(async () => {
     const loginRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'admin@gmail.com', password: 'admin123' });
+      .send({ phone: '+21620000000', password: 'admin123' });
 
     if (loginRes.status !== 200 || !loginRes.body?.token) {
       throw new Error(`Admin login failed with status ${loginRes.status}`);
@@ -119,7 +119,7 @@ describe('smoke: auth approval and platform crud', () => {
 
   it('covers auth approval lifecycle and CRUD for core admin modules', async () => {
     const unique = Date.now();
-    const studentEmail = `smoke-auth-${unique}@example.com`;
+    const studentPhone = `2${String(unique).slice(-7).padStart(7, '0')}`;
     const studentPassword = 'student123';
 
     const uploadViaPresign = async (route, filename, contentType, buffer) => {
@@ -164,7 +164,7 @@ describe('smoke: auth approval and platform crud', () => {
       .send({
         firstName: 'Smoke',
         lastName: 'Student',
-        email: studentEmail,
+        phone: studentPhone,
         password: studentPassword,
         bacSection: 'MATHEMATIQUES',
       });
@@ -175,7 +175,7 @@ describe('smoke: auth approval and platform crud', () => {
 
     const pendingLoginRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: studentEmail, password: studentPassword });
+      .send({ phone: studentPhone, password: studentPassword });
 
     expect(pendingLoginRes.status).toBe(200);
     expect(pendingLoginRes.body.user.status).toBe('PENDING');
@@ -190,10 +190,10 @@ describe('smoke: auth approval and platform crud', () => {
     const adminUsersRes = await request(app)
       .get('/api/admin/users')
       .set('Authorization', `Bearer ${adminToken}`)
-      .query({ search: studentEmail, pageSize: 20 });
+      .query({ search: studentPhone, pageSize: 20 });
 
     expect(adminUsersRes.status).toBe(200);
-    expect(adminUsersRes.body.items.some((item) => item.email === studentEmail)).toBe(true);
+    expect(adminUsersRes.body.items.some((item) => item.phone === `+216${studentPhone}`)).toBe(true);
 
     const approveRes = await request(app)
       .put(`/api/admin/users/${created.userId}/approve`)
@@ -204,7 +204,7 @@ describe('smoke: auth approval and platform crud', () => {
 
     const approvedLoginRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: studentEmail, password: studentPassword });
+      .send({ phone: studentPhone, password: studentPassword });
 
     expect(approvedLoginRes.status).toBe(200);
     expect(approvedLoginRes.body.user.status).toBe('APPROVED');

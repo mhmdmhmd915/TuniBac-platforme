@@ -103,6 +103,7 @@ async function seedAdminUser() {
   console.log('Seeding default admin...');
 
   const adminEmail = DEFAULT_ADMIN_EMAIL;
+  const adminPhone = process.env.DEFAULT_ADMIN_PHONE || '+21620000000';
   const adminPassword = DEFAULT_ADMIN_PASSWORD;
   const hashedAdminPassword = await bcrypt.hash(adminPassword, 12);
 
@@ -123,6 +124,7 @@ async function seedAdminUser() {
     where: { email: adminEmail },
     update: {
       password: hashedAdminPassword,
+      phone: adminPhone,
       firstName: 'Admin',
       lastName: 'User',
       role: 'ADMIN',
@@ -132,6 +134,7 @@ async function seedAdminUser() {
     },
     create: {
       email: adminEmail,
+      phone: adminPhone,
       password: hashedAdminPassword,
       firstName: 'Admin',
       lastName: 'User',
@@ -162,12 +165,14 @@ async function seedStudentUser() {
   console.log('Seeding default student...');
 
   const studentEmail = process.env.STUDENT_EMAIL || 'student@gmail.com';
+  const studentPhone = process.env.STUDENT_PHONE || '+21621111111';
   const studentPassword = process.env.STUDENT_PASSWORD || 'student123';
   const hashedStudentPassword = await bcrypt.hash(studentPassword, 12);
 
   await prisma.user.upsert({
     where: { email: studentEmail },
     update: {
+      phone: studentPhone,
       password: hashedStudentPassword,
       firstName: 'Student',
       lastName: 'User',
@@ -178,6 +183,7 @@ async function seedStudentUser() {
     },
     create: {
       email: studentEmail,
+      phone: studentPhone,
       password: hashedStudentPassword,
       firstName: 'Student',
       lastName: 'User',
