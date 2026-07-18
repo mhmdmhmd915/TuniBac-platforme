@@ -268,14 +268,14 @@ const ExerciseList = () => {
   )
 
   useEffect(() => {
-    if (!selectedSubjectId || selectedSubject) {
+    if (isLoading || !selectedSubjectId || selectedSubject) {
       return
     }
 
     const nextParams = new URLSearchParams(searchParams)
     nextParams.delete('subject')
     setSearchParams(nextParams, { replace: true })
-  }, [searchParams, selectedSubject, selectedSubjectId, setSearchParams])
+  }, [isLoading, searchParams, selectedSubject, selectedSubjectId, setSearchParams])
 
   useEffect(() => {
     setSearchTerm('')

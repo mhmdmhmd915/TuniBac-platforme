@@ -5,7 +5,7 @@ import { Phone, Lock, ArrowRight, Loader2 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { authAPI } from '../services/api'
 import BrandLogo from '../components/BrandLogo'
-import { normalizeTunisianPhone } from '../lib/phone'
+import { normalizeTunisianPhone, sanitizeTunisianPhoneInput } from '../lib/phone'
 
 const Login = () => {
   const [phone, setPhone] = useState('')
@@ -51,6 +51,11 @@ const Login = () => {
     }
   }
 
+  const handlePhonePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    setPhone(sanitizeTunisianPhoneInput(e.clipboardData.getData('text')))
+  }
+
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-6 py-20">
       <motion.div
@@ -84,11 +89,13 @@ const Login = () => {
                 id="login-phone"
                 type="tel"
                 inputMode="numeric"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                value={sanitizeTunisianPhoneInput(phone)}
+                onChange={(e) => setPhone(sanitizeTunisianPhoneInput(e.target.value))}
+                onPaste={handlePhonePaste}
+                maxLength={8}
                 required
                 className="w-full bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-text-light dark:text-text focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
-                placeholder="20123456 or +21620123456"
+                placeholder="20123456"
               />
             </div>
           </div>

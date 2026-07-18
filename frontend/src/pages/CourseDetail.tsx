@@ -157,7 +157,7 @@ const CourseDetail = () => {
             </p>
 
             <Link
-              to={`/exercises?subjectId=${course.subject.id}`}
+              to={`/exercises?subject=${course.subject.id}`}
               className="w-full flex items-center justify-center space-x-2 py-4 bg-accent text-primary rounded-2xl font-bold hover:scale-105 transition-all"
             >
               <span>Go to Exercises</span>

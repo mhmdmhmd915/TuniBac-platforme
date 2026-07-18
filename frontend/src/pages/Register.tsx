@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext'
 import { authAPI } from '../services/api'
 import { BAC_SECTION_OPTIONS, DEFAULT_BAC_SECTION } from '../constants/bacSections'
 import BrandLogo from '../components/BrandLogo'
-import { normalizeTunisianPhone } from '../lib/phone'
+import { normalizeTunisianPhone, sanitizeTunisianPhoneInput } from '../lib/phone'
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -69,7 +69,19 @@ const Register = () => {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    const nextValue = e.target.name === 'phone'
+      ? sanitizeTunisianPhoneInput(e.target.value)
+      : e.target.value
+
+    setFormData({ ...formData, [e.target.name]: nextValue })
+  }
+
+  const handlePhonePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    setFormData({
+      ...formData,
+      phone: sanitizeTunisianPhoneInput(e.clipboardData.getData('text')),
+    })
   }
 
   return (
@@ -141,15 +153,17 @@ const Register = () => {
                 type="tel"
                 inputMode="numeric"
                 name="phone"
-                value={formData.phone}
+                value={sanitizeTunisianPhoneInput(formData.phone)}
                 onChange={handleChange}
+                onPaste={handlePhonePaste}
+                maxLength={8}
                 required
                 className="w-full bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-text-light dark:text-text focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
                 placeholder="20123456"
               />
             </div>
             <p className="text-xs text-text-muted-light dark:text-text-muted ml-1">
-              Enter 8 digits. We automatically store it as `+216XXXXXXXX`.
+              Enter your 8-digit Tunisian mobile number.
             </p>
           </div>
 

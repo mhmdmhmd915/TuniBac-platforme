@@ -1,5 +1,23 @@
 const TUNISIAN_MOBILE_REGEX = /^[2459]\d{7}$/
 
+export const sanitizeTunisianPhoneInput = (value: string) => {
+  const digitsOnly = String(value || '').replace(/\D/g, '')
+
+  if (!digitsOnly) {
+    return ''
+  }
+
+  let localDigits = digitsOnly
+
+  if (digitsOnly.startsWith('00216')) {
+    localDigits = digitsOnly.slice(5)
+  } else if (digitsOnly.startsWith('216') && digitsOnly.length > 8) {
+    localDigits = digitsOnly.slice(3)
+  }
+
+  return localDigits.slice(0, 8)
+}
+
 export const normalizeTunisianPhone = (value: string) => {
   const raw = String(value || '').trim()
   if (!raw) {
