@@ -30,6 +30,7 @@ import {
   DEFAULT_BAC_SECTION,
   type BacSection,
 } from '../../constants/bacSections';
+import { sanitizeTunisianPhoneInput, toDisplayTunisianPhone } from '../../lib/phone';
 
 type ToastType = 'success' | 'error' | 'warning';
 
@@ -311,7 +312,9 @@ const UsersPage: React.FC = () => {
           <div className="font-semibold text-gray-900 dark:text-white">
             {user.firstName} {user.lastName}
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">{user.phone || 'No phone number'}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            {user.phone ? toDisplayTunisianPhone(user.phone) : 'No phone number'}
+          </div>
         </div>
       ),
     },
@@ -319,7 +322,9 @@ const UsersPage: React.FC = () => {
       header: 'Téléphone',
       key: 'phone',
       render: (value) => (
-        <span className="text-sm text-gray-600 dark:text-gray-300">{String(value || '-')}</span>
+        <span className="text-sm text-gray-600 dark:text-gray-300">
+          {value ? toDisplayTunisianPhone(String(value)) : '-'}
+        </span>
       ),
     },
     {
@@ -398,7 +403,7 @@ const UsersPage: React.FC = () => {
               setEditForm({
                 firstName: user.firstName,
                 lastName: user.lastName,
-                phone: user.phone || '',
+                phone: sanitizeTunisianPhoneInput(user.phone || ''),
                 bacSection: user.bacSection,
                 role: user.role,
               });
@@ -834,11 +839,13 @@ const UsersPage: React.FC = () => {
                 <input
                   value={editForm.phone}
                   onChange={(e) =>
-                    setEditForm((p) => (p ? { ...p, phone: e.target.value } : p))
+                    setEditForm((p) => (p ? { ...p, phone: sanitizeTunisianPhoneInput(e.target.value) } : p))
                   }
                   className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                  placeholder="20123456 or +21620123456"
+                  placeholder="20123456"
                   type="tel"
+                  inputMode="numeric"
+                  maxLength={8}
                   aria-label="Phone number"
                 />
                 <div className="grid gap-4 md:grid-cols-1">

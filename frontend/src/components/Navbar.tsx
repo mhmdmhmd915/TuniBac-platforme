@@ -6,10 +6,11 @@ import { useAuth } from '../context/AuthContext'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { usePlatformSettings } from '../context/PlatformSettingsContext'
 import BrandLogo from './BrandLogo'
+import { toDisplayTunisianPhone } from '../lib/phone'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { user, logout } = useAuth()
+  const { user, logout, isLoading } = useAuth()
   const { isDark, toggle } = useDarkMode()
   const { settings } = usePlatformSettings()
   const platformName = settings.platformName || 'TuniBac'
@@ -71,7 +72,7 @@ const Navbar = () => {
             </>
           )}
           
-          {!user && <div className="h-6 w-px bg-black/10 dark:bg-white/10" />}
+          {!user && !isLoading && <div className="h-6 w-px bg-black/10 dark:bg-white/10" />}
 
           <button 
             onClick={toggle}
@@ -81,7 +82,9 @@ const Navbar = () => {
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
-          {user ? (
+          {isLoading ? (
+            <div className="h-10 w-24 animate-pulse rounded-full bg-black/5 dark:bg-white/5" />
+          ) : user ? (
             <div className="flex items-center space-x-6">
               {pendingOnly && (
                 <Link to="/pending-approval" className="rounded-full border border-yellow-500/20 bg-yellow-500/10 px-3 py-2 text-sm font-semibold text-yellow-500 transition-colors hover:bg-yellow-500/15">
@@ -95,7 +98,7 @@ const Navbar = () => {
                 <div className="flex flex-col">
                   <span className="font-medium text-text-light dark:text-text group-hover:text-accent transition-colors">{user.firstName}</span>
                   {user.phone && (
-                    <span className="text-xs text-text-muted-light dark:text-text-muted">{user.phone}</span>
+                    <span className="text-xs text-text-muted-light dark:text-text-muted">{toDisplayTunisianPhone(user.phone)}</span>
                   )}
                 </div>
               </Link>
@@ -170,7 +173,9 @@ const Navbar = () => {
                 Pending Approval
               </Link>
             )}
-            {user ? (
+            {isLoading ? (
+              <div className="h-11 rounded-xl bg-black/5 dark:bg-white/5" />
+            ) : user ? (
               <button
                 onClick={logout}
                 className="text-left text-lg text-red-500"

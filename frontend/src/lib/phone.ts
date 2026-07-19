@@ -46,3 +46,13 @@ export const normalizeTunisianPhone = (value: string) => {
 
   return `+216${localDigits}`
 }
+
+export const toDisplayTunisianPhone = (value?: string | null) => {
+  const normalized = normalizeTunisianPhone(String(value || ''))
+
+  if (!normalized) {
+    return sanitizeTunisianPhoneInput(String(value || ''))
+  }
+
+  return normalized.slice(4)
+}

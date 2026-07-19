@@ -51,6 +51,7 @@ import {
   type BacSection,
 } from '../../constants/bacSections';
 import { logger } from '../../lib/logger';
+import { toDisplayTunisianPhone } from '../../lib/phone';
 
 type SectionKey =
   | 'dashboard'
@@ -1673,7 +1674,7 @@ const AdminWorkspace = () => {
             {user.firstName} {user.lastName}
           </div>
           <div className="text-xs text-gray-500 dark:text-gray-400">
-            {user.phone || user.email}
+            {user.phone ? toDisplayTunisianPhone(user.phone) : user.email}
           </div>
         </div>
       ),
@@ -2145,7 +2146,7 @@ const AdminWorkspace = () => {
                       {user.firstName} {user.lastName}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {user.phone || user.email}
+                      {user.phone ? toDisplayTunisianPhone(user.phone) : user.email}
                     </div>
                   </div>
                   <span

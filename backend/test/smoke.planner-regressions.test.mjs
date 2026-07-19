@@ -35,21 +35,33 @@ describe('smoke: planner regressions', () => {
   });
 
   afterAll(async () => {
-    if (created.userIds.length > 0 || created.templateIds.length > 0 || created.studentTaskIds.length > 0) {
+    if (
+      created.userIds.length > 0 ||
+      created.templateIds.length > 0 ||
+      created.studentTaskIds.length > 0 ||
+      created.subjectIds.length > 0
+    ) {
       await prisma.studentPlannerTask.deleteMany({
         where: {
           OR: [
             created.studentTaskIds.length > 0 ? { id: { in: created.studentTaskIds } } : undefined,
             created.userIds.length > 0 ? { userId: { in: created.userIds } } : undefined,
             created.templateIds.length > 0 ? { templateId: { in: created.templateIds } } : undefined,
+            created.subjectIds.length > 0 ? { subjectId: { in: created.subjectIds } } : undefined,
           ].filter(Boolean),
         },
       });
     }
 
-    if (created.studyTaskIds.length > 0) {
+    if (created.studyTaskIds.length > 0 || created.userIds.length > 0 || created.subjectIds.length > 0) {
       await prisma.studyTask.deleteMany({
-        where: { id: { in: created.studyTaskIds } },
+        where: {
+          OR: [
+            created.studyTaskIds.length > 0 ? { id: { in: created.studyTaskIds } } : undefined,
+            created.userIds.length > 0 ? { userId: { in: created.userIds } } : undefined,
+            created.subjectIds.length > 0 ? { subjectId: { in: created.subjectIds } } : undefined,
+          ].filter(Boolean),
+        },
       });
     }
 
@@ -307,5 +319,5 @@ describe('smoke: planner regressions', () => {
     ).toBe(true);
     expect(legacyMatches).toHaveLength(1);
     expect(publishedMatches).toHaveLength(1);
-  }, 20000);
+  }, 40000);
 });

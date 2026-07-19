@@ -2,9 +2,22 @@ import { isBundledBrandAsset } from './brand'
 
 const DEFAULT_LOCAL_API_BASE_URL = 'http://localhost:5000/api'
 const DEFAULT_PROD_API_BASE_URL = 'https://api.tunibac.com/api'
+const DEFAULT_RENDER_API_BASE_URL = 'https://tunibac-platforme.onrender.com/api'
+
+const isRenderFrontendHost = () => {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  return /(^|\.)tunibac-frontend\.onrender\.com$/i.test(window.location.hostname)
+}
 
 const normalizeApiBaseUrl = (value?: string) => {
   const trimmed = String(value || '').trim()
+
+  if (import.meta.env.PROD && isRenderFrontendHost()) {
+    return DEFAULT_RENDER_API_BASE_URL
+  }
 
   if (!trimmed) {
     return import.meta.env.PROD ? DEFAULT_PROD_API_BASE_URL : DEFAULT_LOCAL_API_BASE_URL
@@ -22,7 +35,7 @@ const normalizeApiBaseUrl = (value?: string) => {
   }
 
   if (import.meta.env.PROD && /(^|\.)tunibac-frontend\.onrender\.com$/i.test(url.hostname)) {
-    return DEFAULT_PROD_API_BASE_URL
+    return DEFAULT_RENDER_API_BASE_URL
   }
 
   const normalizedPath = url.pathname.replace(/\/+$/, '')
