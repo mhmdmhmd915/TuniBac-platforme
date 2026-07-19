@@ -171,7 +171,7 @@ if (require.main === module) {
   app.listen(PORT, () => {
     logger.info('Server started', {
       port: PORT,
-      environment: process.env.NODE_ENV || 'development',
+      environment: isProduction ? 'production' : process.env.NODE_ENV || 'development',
       production: isProduction,
     });
   });

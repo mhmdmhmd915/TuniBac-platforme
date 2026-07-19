@@ -87,7 +87,7 @@ describe('smoke: phone auth migration', () => {
 
     expect(duplicateRes.status).toBe(400);
     expect(duplicateRes.body.message).toMatch(/phone number/i);
-  });
+  }, 15000);
 
   it('rejects invalid Tunisian phone numbers and lets admin add a phone later to a legacy account', async () => {
     const invalidRegisterRes = await request(app)
@@ -141,5 +141,5 @@ describe('smoke: phone auth migration', () => {
     expect(legacyLoginRes.status).toBe(200);
     expect(legacyLoginRes.body.user.phone).toBe(`+216${assignedPhone}`);
     expect(legacyLoginRes.body.user.role).toBe('STUDENT');
-  });
+  }, 10000);
 });

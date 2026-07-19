@@ -1,14 +1,17 @@
 const { PrismaClient } = require('../generated/prisma');
 
 const globalForPrisma = globalThis;
+const isProduction =
+  (process.env.NODE_ENV || 'development') === 'production' ||
+  String(process.env.RENDER || '').toLowerCase() === 'true';
 
 const prisma =
   globalForPrisma.__academyPrisma ||
   new PrismaClient({
-    log: process.env.NODE_ENV === 'development' ? ['warn', 'error'] : ['error'],
+    log: isProduction ? ['error'] : ['warn', 'error'],
   });
 
-if (process.env.NODE_ENV !== 'production') {
+if (!isProduction) {
   globalForPrisma.__academyPrisma = prisma;
 }
 

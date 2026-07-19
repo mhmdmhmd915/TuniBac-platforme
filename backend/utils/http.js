@@ -1,4 +1,6 @@
-const isProduction = (process.env.NODE_ENV || 'development') === 'production';
+const isProduction =
+  (process.env.NODE_ENV || 'development') === 'production' ||
+  String(process.env.RENDER || '').toLowerCase() === 'true';
 
 const getErrorMessage = (error, fallbackMessage = 'Internal server error') => {
   if (!error) {
