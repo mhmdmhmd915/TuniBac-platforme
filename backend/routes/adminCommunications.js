@@ -7,6 +7,7 @@ const {
   createMultipartPartUploadUrl,
   createMultipartUpload,
   createPresignedUpload,
+  listMultipartParts,
 } = require('../lib/r2');
 const {
   archiveCommunication,
@@ -22,6 +23,7 @@ const {
 } = require('../controllers/communicationController');
 const { validateRequestedUpload } = require('../utils/fileSecurity');
 const { validateStoredUpload } = require('../utils/storedUploadSecurity');
+const { VIDEO_MAX_SIZE_BYTES } = require('../utils/uploadPolicies');
 
 const router = express.Router();
 
@@ -42,8 +44,6 @@ const uploadVideo = createUploadMiddleware({
   allowedMimeTypes: ['video/mp4', 'video/quicktime'],
   maxSizeBytes: 200 * 1024 * 1024,
 });
-
-const VIDEO_MAX_SIZE_BYTES = 5 * 1024 * 1024 * 1024;
 
 const createSignedUploadHandler = ({ relativeDir, allowedMimeTypes, maxSizeBytes, buildResponse }) =>
   async (req, res) => {
@@ -143,8 +143,21 @@ const createMultipartVideoHandlers = ({
     return res.json(signed);
   };
 
+  const status = async (req, res) => {
+    const { key, uploadId } = req.body || {};
+    const parts = await listMultipartParts({ key, uploadId });
+
+    return res.json({
+      key: String(key || ''),
+      uploadId: String(uploadId || ''),
+      uploadedParts: parts,
+      uploadedPartNumbers: parts.map((part) => part.partNumber),
+      uploadedBytes: parts.reduce((sum, part) => sum + part.size, 0),
+    });
+  };
+
   const complete = async (req, res) => {
-    const { key, uploadId, partNumbers } = req.body || {};
+    const { key, uploadId, partNumbers, filename, contentType, sizeBytes } = req.body || {};
     const completed = await completeMultipartUpload({
       key,
       uploadId,
@@ -159,8 +172,12 @@ const createMultipartVideoHandlers = ({
 
     return res.json(
       buildCompleteResponse({
+        req,
         key: completed.key,
         publicUrl: completed.publicUrl,
+        filename: String(filename || ''),
+        contentType: String(contentType || '').toLowerCase(),
+        sizeBytes: Number(sizeBytes || 0) || null,
       })
     );
   };
@@ -171,21 +188,21 @@ const createMultipartVideoHandlers = ({
     return res.status(200).json({ success: true });
   };
 
-  return { initiate, signPart, complete, abort };
+  return { initiate, signPart, status, complete, abort };
 };
 
 const communicationVideoMultipartHandlers = createMultipartVideoHandlers({
   relativeDir: 'communications/videos',
   allowedMimeTypes: ['video/mp4', 'video/quicktime'],
   maxSizeBytes: VIDEO_MAX_SIZE_BYTES,
-  buildCompleteResponse: ({ key, publicUrl }) => ({
+  buildCompleteResponse: ({ key, publicUrl, filename, contentType, sizeBytes }) => ({
     key,
     attachment: {
       kind: 'VIDEO',
-      label: '',
+      label: filename,
       filePath: publicUrl,
-      mimeType: 'video/mp4',
-      sizeBytes: null,
+      mimeType: contentType || 'video/mp4',
+      sizeBytes,
     },
   }),
 });
@@ -278,6 +295,7 @@ router.post(
 );
 router.post('/uploads/video/multipart/initiate', communicationVideoMultipartHandlers.initiate);
 router.post('/uploads/video/multipart/sign-part', communicationVideoMultipartHandlers.signPart);
+router.post('/uploads/video/multipart/status', communicationVideoMultipartHandlers.status);
 router.post('/uploads/video/multipart/complete', communicationVideoMultipartHandlers.complete);
 router.post('/uploads/video/multipart/abort', communicationVideoMultipartHandlers.abort);
 

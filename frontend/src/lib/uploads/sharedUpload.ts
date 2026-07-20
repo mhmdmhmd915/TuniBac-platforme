@@ -5,6 +5,7 @@ type RetryableUploadOptions = {
   retries?: number
   retryDelayMs?: number
   signal?: AbortSignal
+  onRetry?: (attempt: number, error: unknown) => void
 }
 
 type UploadToSignedUrlArgs = RetryableUploadOptions & {
@@ -56,7 +57,7 @@ export const isLikelyCorsUploadError = (error: unknown) =>
 
 export const retryUploadOperation = async <T>(
   operation: () => Promise<T>,
-  { retries = 2, retryDelayMs = 500, signal }: RetryableUploadOptions = {}
+  { retries = 2, retryDelayMs = 500, signal, onRetry }: RetryableUploadOptions = {}
 ): Promise<T> => {
   for (let attempt = 0; ; attempt += 1) {
     if (signal?.aborted) {
@@ -70,6 +71,7 @@ export const retryUploadOperation = async <T>(
         throw error
       }
 
+      onRetry?.(attempt + 1, error)
       const delayMs = Math.min(5000, retryDelayMs * 2 ** attempt)
       await wait(delayMs)
     }
@@ -89,6 +91,7 @@ export const uploadToSignedUrl = async ({
     () =>
       axios.put(uploadUrl, body, {
         signal,
+        timeout: 0,
         headers: {
           'Content-Type': contentType || (body instanceof File ? body.type : 'application/octet-stream'),
         },
@@ -114,6 +117,7 @@ export const uploadFileViaBackend = async <T>({
         url: endpoint,
         data: formData,
         signal,
+        timeout: 0,
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -25,8 +25,8 @@ export const VideoUploader = ({
   value,
   onChange,
   onUpload,
-  placeholder = 'Click or drag video here (up to 5 GB)',
-  maxSizeBytes = 5 * 1024 * 1024 * 1024,
+  placeholder = 'Click or drag video here (up to 10 GB)',
+  maxSizeBytes = 10 * 1024 * 1024 * 1024,
 }: VideoUploaderProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -50,7 +50,7 @@ export const VideoUploader = ({
       return;
     }
     if (file.size > maxSizeBytes) {
-      setFeedback({ type: 'error', text: 'File size must be 5 GB or less.' });
+      setFeedback({ type: 'error', text: 'File size must be 10 GB or less.' });
       return;
     }
 
@@ -85,10 +85,6 @@ export const VideoUploader = ({
       }
     } finally {
       setIsUploading(false);
-      setUploadState((current) => {
-        if (!current) return null;
-        return current.status === 'success' ? current : null;
-      });
       abortControllerRef.current = null;
     }
   };
@@ -138,7 +134,7 @@ export const VideoUploader = ({
         }}
       />
 
-      {value ? (
+      {value && !isUploading ? (
         <div className="relative">
           <video
             src={value}
@@ -219,4 +215,3 @@ export const VideoUploader = ({
     </div>
   );
 };
-

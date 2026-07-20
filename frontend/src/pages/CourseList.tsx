@@ -134,6 +134,7 @@ const CourseList = () => {
   const [assetFilter, setAssetFilter] = useState<'ALL' | 'VIDEO' | 'PDF' | 'ATTACHMENTS'>('ALL')
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 300)
   const isAdmin = user?.role === 'ADMIN'
+  const currentBacSectionLabel = user?.bacSection ? BAC_SECTION_LABELS[user.bacSection] : 'your Bac section'
   const selectedSubjectId = searchParams.get('subject')
 
   const openCourse = (courseId: string) => {
@@ -403,7 +404,7 @@ const CourseList = () => {
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">Your Learning Space</p>
           <h1 className="text-4xl font-bold text-text-light dark:text-text">Choose Your Subject</h1>
           <p className="max-w-3xl text-base sm:text-lg text-text-muted-light dark:text-text-muted">
-            Courses are organized by your Bac section, {BAC_SECTION_LABELS[user!.bacSection]}. Open a subject to explore only its courses.
+            Courses are organized by your Bac section, {currentBacSectionLabel}. Open a subject to explore only its courses.
           </p>
         </div>
       </header>
@@ -496,7 +497,7 @@ const CourseList = () => {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-2">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">
-              {BAC_SECTION_LABELS[user!.bacSection]}
+              {currentBacSectionLabel}
             </p>
             <h1 className="text-4xl font-bold text-text-light dark:text-text">{selectedSubject?.name}</h1>
             <p className="max-w-3xl text-base sm:text-lg text-text-muted-light dark:text-text-muted">

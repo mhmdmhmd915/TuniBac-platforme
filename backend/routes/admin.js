@@ -8,6 +8,7 @@ const {
   createMultipartPartUploadUrl,
   createMultipartUpload,
   createPresignedUpload,
+  listMultipartParts,
 } = require('../lib/r2');
 const prisma = require('../lib/prisma');
 const {
@@ -234,8 +235,21 @@ const createMultipartVideoHandlers = ({
     return res.json(signed);
   };
 
+  const status = async (req, res) => {
+    const { key, uploadId } = req.body || {};
+    const parts = await listMultipartParts({ key, uploadId });
+
+    return res.json({
+      key: String(key || ''),
+      uploadId: String(uploadId || ''),
+      uploadedParts: parts,
+      uploadedPartNumbers: parts.map((part) => part.partNumber),
+      uploadedBytes: parts.reduce((sum, part) => sum + part.size, 0),
+    });
+  };
+
   const complete = async (req, res) => {
-    const { key, uploadId, partNumbers } = req.body || {};
+    const { key, uploadId, partNumbers, filename, contentType, sizeBytes } = req.body || {};
     const completed = await completeMultipartUpload({
       key,
       uploadId,
@@ -258,8 +272,12 @@ const createMultipartVideoHandlers = ({
 
     return res.json(
       buildCompleteResponse({
+        req,
         key: completed.key,
         publicUrl: completed.publicUrl,
+        filename: String(filename || ''),
+        contentType: String(contentType || '').toLowerCase(),
+        sizeBytes: Number(sizeBytes || 0) || null,
       })
     );
   };
@@ -270,7 +288,7 @@ const createMultipartVideoHandlers = ({
     return res.status(200).json({ success: true });
   };
 
-  return { initiate, signPart, complete, abort };
+  return { initiate, signPart, status, complete, abort };
 };
 
 const adminVideoMultipartHandlers = createMultipartVideoHandlers({
@@ -322,6 +340,7 @@ router.put('/settings', updateSettings);
 router.post('/settings/upload/:asset', uploadSettingFile.single('file'), uploadSettingAsset);
 router.post('/settings/upload/offer-video/multipart/initiate', offerVideoMultipartHandlers.initiate);
 router.post('/settings/upload/offer-video/multipart/sign-part', offerVideoMultipartHandlers.signPart);
+router.post('/settings/upload/offer-video/multipart/status', offerVideoMultipartHandlers.status);
 router.post('/settings/upload/offer-video/multipart/complete', offerVideoMultipartHandlers.complete);
 router.post('/settings/upload/offer-video/multipart/abort', offerVideoMultipartHandlers.abort);
 
@@ -451,6 +470,7 @@ router.post(
 );
 router.post('/uploads/video/multipart/initiate', adminVideoMultipartHandlers.initiate);
 router.post('/uploads/video/multipart/sign-part', adminVideoMultipartHandlers.signPart);
+router.post('/uploads/video/multipart/status', adminVideoMultipartHandlers.status);
 router.post('/uploads/video/multipart/complete', adminVideoMultipartHandlers.complete);
 router.post('/uploads/video/multipart/abort', adminVideoMultipartHandlers.abort);
 

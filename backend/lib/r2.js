@@ -120,16 +120,23 @@ const putObject = async ({ key, body, contentType }) => {
   return { key: Key, url: toPublicUrlFromKey(Key) };
 };
 
+const MIN_MULTIPART_PART_SIZE = 50 * 1024 * 1024;
+const DEFAULT_MULTIPART_PART_SIZE = 64 * 1024 * 1024;
+const MAX_MULTIPART_PART_SIZE = 100 * 1024 * 1024;
+const MAX_MULTIPART_PART_COUNT = 10000;
+
 const getMultipartPartSize = (sizeBytes) => {
-  const minPartSize = 10 * 1024 * 1024;
-  const maxPartCount = 500;
   const requestedSize = Number(sizeBytes || 0);
 
   if (!Number.isFinite(requestedSize) || requestedSize <= 0) {
-    return minPartSize;
+    return DEFAULT_MULTIPART_PART_SIZE;
   }
 
-  return Math.max(minPartSize, Math.ceil(requestedSize / maxPartCount));
+  const minimumRequiredPartSize = Math.ceil(requestedSize / MAX_MULTIPART_PART_COUNT);
+  return Math.min(
+    MAX_MULTIPART_PART_SIZE,
+    Math.max(MIN_MULTIPART_PART_SIZE, DEFAULT_MULTIPART_PART_SIZE, minimumRequiredPartSize)
+  );
 };
 
 const createPresignedUpload = async ({ key, contentType, expiresIn = 900 }) => {
@@ -261,6 +268,20 @@ const listAllMultipartParts = async ({ key, uploadId }) => {
   }
 
   return parts;
+};
+
+const listMultipartParts = async ({ key, uploadId }) => {
+  const parts = await listAllMultipartParts({ key, uploadId });
+
+  return parts
+    .map((part) => ({
+      partNumber: Number(part.PartNumber || 0),
+      size: Number(part.Size || 0),
+      etag: String(part.ETag || ''),
+      lastModified: part.LastModified ? new Date(part.LastModified).toISOString() : null,
+    }))
+    .filter((part) => Number.isInteger(part.partNumber) && part.partNumber > 0 && part.size >= 0)
+    .sort((a, b) => a.partNumber - b.partNumber);
 };
 
 const completeMultipartUpload = async ({ key, uploadId, partNumbers }) => {
@@ -409,6 +430,7 @@ module.exports = {
   inspectObject,
   createMultipartUpload,
   createMultipartPartUploadUrl,
+  listMultipartParts,
   completeMultipartUpload,
   abortMultipartUpload,
   deleteObject,

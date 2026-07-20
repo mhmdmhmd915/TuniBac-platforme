@@ -336,7 +336,7 @@ const CommunicationsPage = () => {
   const [page, setPage] = useState(1)
   const [pageSize] = useState(10)
   const [total, setTotal] = useState(0)
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [message, setMessage] = useState<{ type: 'success' | 'error' | 'info'; text: string } | null>(null)
   const [videoUploadState, setVideoUploadState] = useState<MultipartVideoUploadState | null>(null)
   const [form, setForm] = useState<FormState>(defaultForm())
   const [selectedId, setSelectedId] = useState<string | null>(null)
@@ -554,7 +554,7 @@ const CommunicationsPage = () => {
       setMessage({ type: 'success', text: `${kind} uploaded successfully` })
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
-        setMessage({ type: 'success', text: 'Video upload cancelled' })
+        setMessage({ type: 'info', text: 'Video upload cancelled' })
       } else {
         setMessage({ type: 'error', text: getErrorMessage(error) })
       }
@@ -839,6 +839,8 @@ const CommunicationsPage = () => {
             className={`rounded-2xl border px-4 py-3 text-sm ${
               message.type === 'success'
                 ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200'
+                : message.type === 'info'
+                ? 'border-sky-500/30 bg-sky-500/10 text-sky-200'
                 : 'border-red-500/30 bg-red-500/10 text-red-200'
             }`}
           >

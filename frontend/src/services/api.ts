@@ -84,67 +84,6 @@ export type VideoUploadOptions = {
   signal?: AbortSignal
 }
 
-const uploadVideoViaBackend = <T>({
-  endpoint,
-  file,
-  signal,
-  onProgress,
-  fieldName = 'video',
-  mapResponse,
-}: {
-  endpoint: string
-  file: File
-  signal?: AbortSignal
-  onProgress?: (state: MultipartVideoUploadState) => void
-  fieldName?: string
-  mapResponse: (data: any) => T
-}) => {
-  const formData = buildSingleFileFormData(fieldName, file)
-
-  onProgress?.({
-    progress: 0,
-    uploadedBytes: 0,
-    totalBytes: file.size,
-    speedMbps: 0,
-    estimatedRemainingSeconds: null,
-    activeParts: 1,
-    completedParts: 0,
-    totalParts: 1,
-    retryCount: 0,
-    status: 'uploading',
-    message: 'Uploading video through backend...',
-  })
-
-  return uploadFormDataViaBackend({
-    endpoint,
-    formData,
-    mapResponse,
-    signal,
-    onUploadProgress: (progressEvent) => {
-      const loaded = Number(progressEvent.loaded || 0)
-      const total = Number(progressEvent.total || file.size || 0)
-      const progress = total > 0 ? Math.min(100, Math.round((loaded / total) * 100)) : 0
-
-      onProgress?.({
-        progress,
-        uploadedBytes: loaded,
-        totalBytes: total || file.size,
-        speedMbps: 0,
-        estimatedRemainingSeconds: null,
-        activeParts: progress < 100 ? 1 : 0,
-        completedParts: progress >= 100 ? 1 : 0,
-        totalParts: 1,
-        retryCount: 0,
-        status: progress >= 100 ? 'finalizing' : 'uploading',
-        message:
-          progress >= 100
-            ? 'Finalizing backend upload...'
-            : 'Uploading video through backend...',
-      })
-    },
-  })
-}
-
 // Auth API
 export const authAPI = {
   register: (data: { firstName: string; lastName: string; phone: string; password: string; bacSection: BacSection }) =>
@@ -323,57 +262,21 @@ export const adminAPI = {
     options?: VideoUploadOptions
   ) => {
     if (asset === 'offer-video') {
-      return (async () => {
-        try {
-          return await uploadMultipartVideo({
-            file,
-            initiatePath: '/admin/settings/upload/offer-video/multipart/initiate',
-            signPartPath: '/admin/settings/upload/offer-video/multipart/sign-part',
-            completePath: '/admin/settings/upload/offer-video/multipart/complete',
-            abortPath: '/admin/settings/upload/offer-video/multipart/abort',
-            mapCompleteResponse: (data) => ({
-              fileUrl: data.fileUrl,
-              setting: data.setting,
-              key: data.key,
-            }),
-            onProgress: options?.onProgress,
-            signal: options?.signal,
-          })
-        } catch (error) {
-          if (options?.signal?.aborted) {
-            throw error
-          }
-
-          const fallbackResponse = await uploadVideoViaBackend({
-            endpoint: '/admin/settings/upload/offer-video',
-            fieldName: 'file',
-            file,
-            signal: options?.signal,
-            onProgress: options?.onProgress,
-            mapResponse: (data) => ({
-              fileUrl: data.fileUrl,
-              setting: data.setting,
-              key: data.key,
-            }),
-          })
-
-          options?.onProgress?.({
-            progress: 100,
-            uploadedBytes: file.size,
-            totalBytes: file.size,
-            speedMbps: 0,
-            estimatedRemainingSeconds: 0,
-            activeParts: 0,
-            completedParts: 1,
-            totalParts: 1,
-            retryCount: 0,
-            status: 'success',
-            message: 'Upload complete',
-          })
-
-          return fallbackResponse
-        }
-      })()
+      return uploadMultipartVideo({
+        file,
+        initiatePath: '/admin/settings/upload/offer-video/multipart/initiate',
+        signPartPath: '/admin/settings/upload/offer-video/multipart/sign-part',
+        statusPath: '/admin/settings/upload/offer-video/multipart/status',
+        completePath: '/admin/settings/upload/offer-video/multipart/complete',
+        abortPath: '/admin/settings/upload/offer-video/multipart/abort',
+        mapCompleteResponse: (data) => ({
+          fileUrl: data.fileUrl,
+          setting: data.setting,
+          key: data.key,
+        }),
+        onProgress: options?.onProgress,
+        signal: options?.signal,
+      })
     }
 
     return uploadFormDataViaBackend({
@@ -475,49 +378,20 @@ export const adminAPI = {
     })(),
 
   uploadAdminVideo: async (file: File, options?: VideoUploadOptions) => {
-    try {
-      return await uploadMultipartVideo({
-        file,
-        initiatePath: '/admin/uploads/video/multipart/initiate',
-        signPartPath: '/admin/uploads/video/multipart/sign-part',
-        completePath: '/admin/uploads/video/multipart/complete',
-        abortPath: '/admin/uploads/video/multipart/abort',
-        mapCompleteResponse: (data) => ({
-          videoPath: data.videoPath,
-          key: data.key,
-        }),
-        onProgress: options?.onProgress,
-        signal: options?.signal,
-      })
-    } catch (error) {
-      if (options?.signal?.aborted) {
-        throw error
-      }
-
-      const fallbackResponse = await uploadVideoViaBackend({
-        endpoint: '/admin/uploads/video',
-        file,
-        signal: options?.signal,
-        onProgress: options?.onProgress,
-        mapResponse: (data) => data,
-      })
-
-      options?.onProgress?.({
-        progress: 100,
-        uploadedBytes: file.size,
-        totalBytes: file.size,
-        speedMbps: 0,
-        estimatedRemainingSeconds: 0,
-        activeParts: 0,
-        completedParts: 1,
-        totalParts: 1,
-        retryCount: 0,
-        status: 'success',
-        message: 'Upload complete',
-      })
-
-      return fallbackResponse
-    }
+    return uploadMultipartVideo({
+      file,
+      initiatePath: '/admin/uploads/video/multipart/initiate',
+      signPartPath: '/admin/uploads/video/multipart/sign-part',
+        statusPath: '/admin/uploads/video/multipart/status',
+      completePath: '/admin/uploads/video/multipart/complete',
+      abortPath: '/admin/uploads/video/multipart/abort',
+      mapCompleteResponse: (data) => ({
+        videoPath: data.videoPath,
+        key: data.key,
+      }),
+      onProgress: options?.onProgress,
+      signal: options?.signal,
+    })
   },
 
   listUploads: (params?: { q?: string; kind?: string; prefix?: string; limit?: number }) =>
@@ -659,54 +533,24 @@ export const adminAPI = {
   },
 
   uploadCommunicationVideo: async (file: File, options?: VideoUploadOptions) => {
-    try {
-      return await uploadMultipartVideo({
-        file,
-        initiatePath: '/admin/communications/uploads/video/multipart/initiate',
-        signPartPath: '/admin/communications/uploads/video/multipart/sign-part',
-        completePath: '/admin/communications/uploads/video/multipart/complete',
-        abortPath: '/admin/communications/uploads/video/multipart/abort',
-        mapCompleteResponse: (data) => ({
-          attachment: {
-            ...(data.attachment || {}),
-            label: file.name,
-            mimeType: file.type,
-            sizeBytes: file.size,
-          },
-        }),
-        onProgress: options?.onProgress,
-        signal: options?.signal,
-      })
-    } catch (error) {
-      if (options?.signal?.aborted) {
-        throw error
-      }
-
-      const fallbackResponse = await uploadVideoViaBackend({
-        endpoint: '/admin/communications/uploads/video',
-        file,
-        signal: options?.signal,
-        onProgress: options?.onProgress,
-        fieldName: 'file',
-        mapResponse: (data) => data,
-      })
-
-      options?.onProgress?.({
-        progress: 100,
-        uploadedBytes: file.size,
-        totalBytes: file.size,
-        speedMbps: 0,
-        estimatedRemainingSeconds: 0,
-        activeParts: 0,
-        completedParts: 1,
-        totalParts: 1,
-        retryCount: 0,
-        status: 'success',
-        message: 'Upload complete',
-      })
-
-      return fallbackResponse
-    }
+    return uploadMultipartVideo({
+      file,
+      initiatePath: '/admin/communications/uploads/video/multipart/initiate',
+      signPartPath: '/admin/communications/uploads/video/multipart/sign-part',
+        statusPath: '/admin/communications/uploads/video/multipart/status',
+      completePath: '/admin/communications/uploads/video/multipart/complete',
+      abortPath: '/admin/communications/uploads/video/multipart/abort',
+      mapCompleteResponse: (data) => ({
+        attachment: {
+          ...(data.attachment || {}),
+          label: file.name,
+          mimeType: file.type,
+          sizeBytes: file.size,
+        },
+      }),
+      onProgress: options?.onProgress,
+      signal: options?.signal,
+    })
   },
 };
 
