@@ -615,6 +615,11 @@ const CommunicationsPage = () => {
   }
 
   const saveCommunication = async (mode: 'draft' | 'publish' | 'schedule') => {
+    if (isUploadInProgress) {
+      setMessage({ type: 'info', text: 'Wait for the current upload to finish before saving this communication' })
+      return
+    }
+
     setSaving(true)
 
     try {
@@ -754,6 +759,7 @@ const CommunicationsPage = () => {
   }
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
+  const isUploadInProgress = uploading !== null
 
   return (
     <div className="min-h-screen bg-[#071022] px-4 py-8 text-slate-100 sm:px-6 lg:px-8">
@@ -1534,15 +1540,15 @@ const CommunicationsPage = () => {
                 <div className="flex flex-wrap gap-3">
                   <button
                     type="button"
-                    disabled={saving}
+                    disabled={saving || isUploadInProgress}
                     onClick={() => saveCommunication('draft')}
                     className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold disabled:opacity-50"
                   >
-                    Save Draft
+                    {isUploadInProgress ? 'Uploading...' : 'Save Draft'}
                   </button>
                   <button
                     type="button"
-                    disabled={saving}
+                    disabled={saving || isUploadInProgress}
                     onClick={() => saveCommunication('schedule')}
                     className="rounded-2xl border border-sky-400/25 bg-sky-500/10 px-4 py-3 text-sm font-semibold text-sky-200 disabled:opacity-50"
                   >
@@ -1550,7 +1556,7 @@ const CommunicationsPage = () => {
                   </button>
                   <button
                     type="button"
-                    disabled={saving}
+                    disabled={saving || isUploadInProgress}
                     onClick={() => saveCommunication('publish')}
                     className="rounded-2xl bg-emerald-400 px-4 py-3 text-sm font-semibold text-slate-950 disabled:opacity-50"
                   >
