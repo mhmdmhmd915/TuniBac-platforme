@@ -1,9 +1,7 @@
 import axios from 'axios'
 import { api } from '../api/http'
 import {
-  getCurrentUploadOrigin,
   isAbortError,
-  isLikelyCorsUploadError,
   isTemporaryUploadError,
   retryUploadOperation,
 } from './sharedUpload'
@@ -415,13 +413,6 @@ export const uploadMultipartVideo = async <T>({
 
           if (aborted || isAbortError(error)) {
             throw error
-          }
-
-          if (isLikelyCorsUploadError(error)) {
-            const origin = getCurrentUploadOrigin()
-            throw new Error(
-              `Direct upload blocked by Cloudflare R2 CORS. Allow PUT, GET, HEAD and headers * from ${origin}.`
-            )
           }
 
           if (!isTemporaryUploadError(error) || attempt >= maxRetries) {
