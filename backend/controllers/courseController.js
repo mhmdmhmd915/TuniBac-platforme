@@ -1,4 +1,5 @@
-const { withSectionFilter } = require('../utils/bacSection');
+const { contentVisibilityWhere } = require('../utils/bacSection');
+const { getTeacherScope, teacherCanManageSubject, resolveContentSections, assertTeacherScope } = require('../utils/learningPath');
 const prisma = require('../lib/prisma');
 const { sendError } = require('../utils/http');
 const { deleteObject, normalizeStoredFileValueToKey, toPublicUrlFromStoredValue } = require('../lib/r2');
@@ -19,6 +20,11 @@ const COURSE_LIST_SELECT = {
   contentUrl: true,
   videoUrl: true,
   videoPath: true,
+  contentText: true,
+  externalLink: true,
+  isPublished: true,
+  order: true,
+  teacherId: true,
   advertisementImage: true,
   advertisementTeacherName: true,
   advertisementSubject: true,
@@ -28,6 +34,9 @@ const COURSE_LIST_SELECT = {
   tags: true,
   createdAt: true,
   updatedAt: true,
+  sectionAssignments: {
+    select: { bacSection: true },
+  },
   subject: {
     select: {
       id: true,
@@ -35,7 +44,11 @@ const COURSE_LIST_SELECT = {
       color: true,
       icon: true,
       bacSection: true,
+      subjectSections: { select: { bacSection: true } },
     },
+  },
+  teacher: {
+    select: { id: true, firstName: true, lastName: true },
   },
   resources: {
     select: {
@@ -53,6 +66,8 @@ const mapCourseFiles = (course) => {
   if (!course) return course;
   return {
     ...course,
+    sections: (course.sectionAssignments || []).map((s) => s.bacSection),
+    sectionAssignments: undefined,
     contentUrl: course.contentUrl ? toPublicUrlFromStoredValue(course.contentUrl) : null,
     videoPath: course.videoPath ? toPublicUrlFromStoredValue(course.videoPath) : null,
     advertisementImage: course.advertisementImage
@@ -99,8 +114,10 @@ const getAllCourses = async (req, res) => {
       return res.json([]);
     }
 
+    const visibilityWhere = await contentVisibilityWhere(req);
     const where = {
-      ...withSectionFilter(req, 'subject.bacSection'),
+      ...visibilityWhere,
+      ...(req.user.role === 'TEACHER' ? { isPublished: true } : {}),
       ...(subjectId && { subjectId }),
       ...(search && {
         OR: [
@@ -113,7 +130,7 @@ const getAllCourses = async (req, res) => {
 
     const query = {
       where,
-      orderBy: [{ createdAt: 'desc' }, { title: 'asc' }],
+      orderBy: [{ order: 'asc' }, { createdAt: 'desc' }, { title: 'asc' }],
       select: COURSE_LIST_SELECT,
       ...(shouldPaginate
         ? {
@@ -147,10 +164,11 @@ const getAllCourses = async (req, res) => {
 const getCourseById = async (req, res) => {
   try {
     const { id } = req.params;
+    const visibilityWhere = await contentVisibilityWhere(req);
     const course = await prisma.course.findFirst({
       where: {
         id,
-        ...withSectionFilter(req, 'subject.bacSection'),
+        ...visibilityWhere,
       },
       select: COURSE_LIST_SELECT,
     });
@@ -161,70 +179,184 @@ const getCourseById = async (req, res) => {
   }
 };
 
+const buildCourseData = (req) => {
+  const {
+    title,
+    description,
+    contentUrl,
+    videoUrl,
+    videoPath,
+    contentText,
+    externalLink,
+    difficulty,
+    tags,
+    subjectId,
+    isPublished,
+    order,
+    sections,
+    teacherId,
+    advertisementImage,
+    advertisementTeacherName,
+    advertisementSubject,
+    advertisementWhatsapp,
+    advertisementDescription,
+  } = req.body;
+
+  const normalizedContentUrl = contentUrl ? normalizeStoredFileValueToKey(contentUrl) : null;
+  const normalizedVideoPath = videoPath ? normalizeStoredFileValueToKey(videoPath) : null;
+  const normalizedAdvertisementImage = advertisementImage
+    ? normalizeStoredFileValueToKey(advertisementImage)
+    : null;
+
+  return {
+    title,
+    description,
+    contentUrl: normalizedContentUrl,
+    videoUrl,
+    videoPath: normalizedVideoPath,
+    contentText: normalizeOptionalText(contentText),
+    externalLink: normalizeOptionalText(externalLink),
+    advertisementImage: normalizedAdvertisementImage,
+    advertisementTeacherName: normalizeOptionalText(advertisementTeacherName),
+    advertisementSubject: normalizeOptionalText(advertisementSubject),
+    advertisementWhatsapp: normalizeWhatsapp(advertisementWhatsapp),
+    advertisementDescription: normalizeOptionalText(advertisementDescription),
+    difficulty,
+    tags,
+    subjectId,
+    isPublished: isPublished !== undefined ? Boolean(isPublished) : true,
+    order: Number.isFinite(Number(order)) ? Number(order) : 0,
+    sections: Array.isArray(sections) ? sections.filter(Boolean) : undefined,
+    teacherId: teacherId || null,
+  };
+};
+
+const validateUploads = async ({
+  contentUrl,
+  videoPath,
+  advertisementImage,
+}) => {
+  await Promise.all([
+    contentUrl
+      ? validateStoredUpload({
+          storedValue: contentUrl,
+          allowedMimeTypes: PDF_MIME_TYPES,
+          maxSizeBytes: PDF_MAX_SIZE_BYTES,
+        })
+      : Promise.resolve(),
+    videoPath
+      ? validateStoredUpload({
+          storedValue: videoPath,
+          allowedMimeTypes: VIDEO_MIME_TYPES,
+          maxSizeBytes: VIDEO_MAX_SIZE_BYTES,
+        })
+      : Promise.resolve(),
+    advertisementImage
+      ? validateStoredUpload({
+          storedValue: advertisementImage,
+          allowedMimeTypes: IMAGE_MIME_TYPES,
+          maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
+        })
+      : Promise.resolve(),
+  ]);
+};
+
+const assertCourseWriteAccess = async (req, courseId) => {
+  const isAdmin = req.user.role === 'ADMIN';
+  if (isAdmin) {
+    return {};
+  }
+
+  if (req.user.role !== 'TEACHER') {
+    return { error: 'Forbidden', status: 403 };
+  }
+
+  if (courseId) {
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      select: { id: true, teacherId: true, createdById: true, subjectId: true,
+        sectionAssignments: { select: { bacSection: true } } },
+    });
+    if (!course) {
+      return { error: 'Course not found', status: 404 };
+    }
+    const owns = course.teacherId === req.user.id || course.createdById === req.user.id;
+    if (!owns) {
+      return { error: 'You can only edit your own courses', status: 403 };
+    }
+    // Defense in depth: even for owned content, verify it still lies within the
+    // teacher's current assigned scope (subject + sections) so Admin can revoke access.
+    const existingSections = course.sectionAssignments?.map((s) => s.bacSection) || [];
+    const scopeCheck = await assertTeacherScope(req.user.id, {
+      subjectId: course.subjectId,
+      sections: existingSections,
+    });
+    if (!scopeCheck.ok) {
+      return { error: scopeCheck.message, status: scopeCheck.status };
+    }
+  }
+
+  return {};
+};
+
 const createCourse = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      contentUrl,
-      videoUrl,
-      videoPath,
-      difficulty,
-      tags,
-      subjectId,
-      advertisementImage,
-      advertisementTeacherName,
-      advertisementSubject,
-      advertisementWhatsapp,
-      advertisementDescription,
-    } = req.body;
-    const normalizedContentUrl = contentUrl ? normalizeStoredFileValueToKey(contentUrl) : null;
-    const normalizedVideoPath = videoPath ? normalizeStoredFileValueToKey(videoPath) : null;
-    const normalizedAdvertisementImage = advertisementImage
-      ? normalizeStoredFileValueToKey(advertisementImage)
-      : null;
+    const access = await assertCourseWriteAccess(req, null);
+    if (access.error) {
+      return res.status(access.status).json({ message: access.error });
+    }
 
-    await Promise.all([
-      normalizedContentUrl
-        ? validateStoredUpload({
-            storedValue: normalizedContentUrl,
-            allowedMimeTypes: PDF_MIME_TYPES,
-            maxSizeBytes: PDF_MAX_SIZE_BYTES,
-          })
-        : Promise.resolve(),
-      normalizedVideoPath
-        ? validateStoredUpload({
-            storedValue: normalizedVideoPath,
-            allowedMimeTypes: VIDEO_MIME_TYPES,
-            maxSizeBytes: VIDEO_MAX_SIZE_BYTES,
-          })
-        : Promise.resolve(),
-      normalizedAdvertisementImage
-        ? validateStoredUpload({
-            storedValue: normalizedAdvertisementImage,
-            allowedMimeTypes: IMAGE_MIME_TYPES,
-            maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
-          })
-        : Promise.resolve(),
-    ]);
-    
+    const data = buildCourseData(req);
+
+    if (req.user.role === 'TEACHER') {
+      const scopeCheck = await assertTeacherScope(req.user.id, {
+        subjectId: data.subjectId,
+        sections: data.sections,
+      });
+      if (!scopeCheck.ok) {
+        return res.status(scopeCheck.status).json({ message: scopeCheck.message });
+      }
+      data.isPublished = false; // teacher content ALWAYS awaits admin moderation
+      data.teacherId = req.user.id;
+      data.createdById = req.user.id;
+    } else if (req.user.role === 'ADMIN' && data.teacherId) {
+      data.createdById = data.teacherId;
+    }
+
+    await validateUploads({
+      contentUrl: data.contentUrl,
+      videoPath: data.videoPath,
+      advertisementImage: data.advertisementImage,
+    });
+
+    const resolvedSections = await resolveContentSections(data.subjectId, data.sections);
+
     const course = await prisma.course.create({
       data: {
-        title,
-        description,
-        contentUrl: normalizedContentUrl,
-        videoUrl,
-        videoPath: normalizedVideoPath,
-        advertisementImage: normalizedAdvertisementImage,
-        advertisementTeacherName: normalizeOptionalText(advertisementTeacherName),
-        advertisementSubject: normalizeOptionalText(advertisementSubject),
-        advertisementWhatsapp: normalizeWhatsapp(advertisementWhatsapp),
-        advertisementDescription: normalizeOptionalText(advertisementDescription),
-        difficulty,
-        tags,
-        subjectId,
+        title: data.title,
+        description: data.description,
+        contentUrl: data.contentUrl,
+        videoUrl: data.videoUrl,
+        videoPath: data.videoPath,
+        contentText: data.contentText,
+        externalLink: data.externalLink,
+        advertisementImage: data.advertisementImage,
+        advertisementTeacherName: data.advertisementTeacherName,
+        advertisementSubject: data.advertisementSubject,
+        advertisementWhatsapp: data.advertisementWhatsapp,
+        advertisementDescription: data.advertisementDescription,
+        difficulty: data.difficulty,
+        tags: data.tags,
+        isPublished: data.isPublished,
+        order: data.order,
+        subjectId: data.subjectId,
+        teacherId: data.teacherId,
+        createdById: req.user.role === 'ADMIN' ? data.createdById : req.user.id,
+        sectionAssignments: resolvedSections.length
+          ? { create: resolvedSections.map((s) => ({ bacSection: s })) }
+          : undefined,
       },
-      include: { subject: true },
+      include: { subject: true, sectionAssignments: { select: { bacSection: true } } },
     });
     res.status(201).json(mapCourseFiles(course));
   } catch (error) {
@@ -235,69 +367,66 @@ const createCourse = async (req, res) => {
 const updateCourse = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      title,
-      description,
-      contentUrl,
-      videoUrl,
-      videoPath,
-      difficulty,
-      tags,
-      subjectId,
-      advertisementImage,
-      advertisementTeacherName,
-      advertisementSubject,
-      advertisementWhatsapp,
-      advertisementDescription,
-    } = req.body;
-    const normalizedContentUrl = contentUrl ? normalizeStoredFileValueToKey(contentUrl) : null;
-    const normalizedVideoPath = videoPath ? normalizeStoredFileValueToKey(videoPath) : null;
-    const normalizedAdvertisementImage = advertisementImage
-      ? normalizeStoredFileValueToKey(advertisementImage)
+    const access = await assertCourseWriteAccess(req, id);
+    if (access.error) {
+      return res.status(access.status).json({ message: access.error });
+    }
+
+    const data = buildCourseData(req);
+
+    if (req.user.role === 'TEACHER') {
+      const scopeCheck = await assertTeacherScope(req.user.id, {
+        subjectId: data.subjectId,
+        sections: data.sections,
+      });
+      if (!scopeCheck.ok) {
+        return res.status(scopeCheck.status).json({ message: scopeCheck.message });
+      }
+      data.isPublished = false; // teachers cannot self-publish
+      data.teacherId = req.user.id;
+    }
+
+    await validateUploads({
+      contentUrl: data.contentUrl,
+      videoPath: data.videoPath,
+      advertisementImage: data.advertisementImage,
+    });
+
+    const resolvedSections = data.sections !== undefined
+      ? await resolveContentSections(data.subjectId, data.sections)
       : null;
 
-    await Promise.all([
-      normalizedContentUrl
-        ? validateStoredUpload({
-            storedValue: normalizedContentUrl,
-            allowedMimeTypes: PDF_MIME_TYPES,
-            maxSizeBytes: PDF_MAX_SIZE_BYTES,
-          })
-        : Promise.resolve(),
-      normalizedVideoPath
-        ? validateStoredUpload({
-            storedValue: normalizedVideoPath,
-            allowedMimeTypes: VIDEO_MIME_TYPES,
-            maxSizeBytes: VIDEO_MAX_SIZE_BYTES,
-          })
-        : Promise.resolve(),
-      normalizedAdvertisementImage
-        ? validateStoredUpload({
-            storedValue: normalizedAdvertisementImage,
-            allowedMimeTypes: IMAGE_MIME_TYPES,
-            maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
-          })
-        : Promise.resolve(),
-    ]);
-    
     const course = await prisma.course.update({
       where: { id },
       data: {
-        title,
-        description,
-        contentUrl: normalizedContentUrl,
-        videoUrl,
-        videoPath: normalizedVideoPath,
-        advertisementImage: normalizedAdvertisementImage,
-        advertisementTeacherName: normalizeOptionalText(advertisementTeacherName),
-        advertisementSubject: normalizeOptionalText(advertisementSubject),
-        advertisementWhatsapp: normalizeWhatsapp(advertisementWhatsapp),
-        advertisementDescription: normalizeOptionalText(advertisementDescription),
-        difficulty,
-        tags,
-        subjectId,
+        title: data.title,
+        description: data.description,
+        contentUrl: data.contentUrl,
+        videoUrl: data.videoUrl,
+        videoPath: data.videoPath,
+        contentText: data.contentText,
+        externalLink: data.externalLink,
+        advertisementImage: data.advertisementImage,
+        advertisementTeacherName: data.advertisementTeacherName,
+        advertisementSubject: data.advertisementSubject,
+        advertisementWhatsapp: data.advertisementWhatsapp,
+        advertisementDescription: data.advertisementDescription,
+        difficulty: data.difficulty,
+        tags: data.tags,
+        isPublished: data.isPublished,
+        order: data.order,
+        subjectId: data.subjectId,
+        teacherId: data.teacherId,
+        ...(resolvedSections
+          ? {
+              sectionAssignments: {
+                deleteMany: {},
+                create: resolvedSections.map((s) => ({ bacSection: s })),
+              },
+            }
+          : {}),
       },
-      include: { subject: true },
+      include: { subject: true, sectionAssignments: { select: { bacSection: true } } },
     });
     res.json(mapCourseFiles(course));
   } catch (error) {
@@ -308,9 +437,36 @@ const updateCourse = async (req, res) => {
   }
 };
 
+const publishCourse = async (req, res) => {
+  try {
+    // Publish/unpublish is ADMIN ONLY. Teachers cannot self-publish.
+    if (req.user.role !== 'ADMIN') {
+      return res.status(403).json({ message: 'Only an admin can publish or unpublish courses' });
+    }
+    const { id } = req.params;
+    const isPublished = req.body.isPublished !== undefined ? Boolean(req.body.isPublished) : true;
+    const course = await prisma.course.update({
+      where: { id },
+      data: { isPublished },
+      include: { subject: true, sectionAssignments: { select: { bacSection: true } } },
+    });
+    res.json({ message: isPublished ? 'Course published' : 'Course unpublished', course: mapCourseFiles(course) });
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    sendError(res, 500, 'Error updating course visibility', error);
+  }
+};
+
 const deleteCourse = async (req, res) => {
   try {
     const { id } = req.params;
+    const access = await assertCourseWriteAccess(req, id);
+    if (access.error) {
+      return res.status(access.status).json({ message: access.error });
+    }
+
     const existing = await prisma.course.findUnique({
       where: { id },
       select: {
@@ -340,4 +496,26 @@ const deleteCourse = async (req, res) => {
   }
 };
 
-module.exports = { getAllCourses, getCourseById, createCourse, updateCourse, deleteCourse };
+const reorderCourses = async (req, res) => {
+  try {
+    const orderedItems = Array.isArray(req.body.orderedItems) ? req.body.orderedItems : [];
+    if (orderedItems.length === 0) {
+      return res.status(400).json({ message: 'orderedItems is required' });
+    }
+
+    await prisma.$transaction(
+      orderedItems.map((item) =>
+        prisma.course.update({
+          where: { id: item.id },
+          data: { order: Number(item.order) || 0 },
+        })
+      )
+    );
+
+    res.json({ message: 'Courses reordered successfully' });
+  } catch (error) {
+    sendError(res, 500, 'Error reordering courses', error);
+  }
+};
+
+module.exports = { getAllCourses, getCourseById, createCourse, updateCourse, deleteCourse, publishCourse, reorderCourses };

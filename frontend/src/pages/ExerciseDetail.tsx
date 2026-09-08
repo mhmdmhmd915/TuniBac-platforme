@@ -1,15 +1,22 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, BookOpen, Download, ExternalLink, FileText } from 'lucide-react'
+import { Link, useParams, useLocation, useNavigate } from 'react-router-dom'
+import { ArrowLeft, BookOpen, CheckCircle2, Download, ExternalLink, FileText, FolderOpen, GraduationCap } from 'lucide-react'
 import ProfessorAdvertisementCard from '../components/ProfessorAdvertisementCard'
+import Breadcrumbs from '../components/Breadcrumbs'
 import { toAssetUrl } from '../lib/assets'
+import { sanitizeRichHtml } from '../lib/sanitizeHtml'
 import { logger } from '../lib/logger'
-import { exercisesAPI } from '../services/api'
+import { exercisesAPI, progressAPI } from '../services/api'
 
 const ExerciseDetail = () => {
   const { id } = useParams()
+  const location = useLocation()
+  const navigate = useNavigate()
   const [exercise, setExercise] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [progressCompleted, setProgressCompleted] = useState<boolean | null>(null)
+  const [markingCompleted, setMarkingCompleted] = useState(false)
+  const fromLearningPath = (location.state as any)?.fromLearningPath === true
 
   useEffect(() => {
     const fetchExercise = async () => {
@@ -30,6 +37,39 @@ const ExerciseDetail = () => {
 
     void fetchExercise()
   }, [id])
+
+  // Mark exercise as "viewed" (not completed) when student opens.
+  useEffect(() => {
+    let cancelled = false
+    const markViewed = async () => {
+      if (!id || !exercise) return
+      try {
+        const res = await progressAPI.upsert({ exerciseId: id, lastReadPos: 0 })
+        if (!cancelled && (res.data as any)?.progress?.completed !== undefined) {
+          setProgressCompleted((res.data as any).progress.completed)
+        }
+      } catch (_err) {
+        // Best-effort view tracking; ignore failures.
+      }
+    }
+    void markViewed()
+    return () => { cancelled = true }
+  }, [id, exercise])
+
+  const handleMarkCompleted = async () => {
+    if (!id) return
+    try {
+      setMarkingCompleted(true)
+      const res = await progressAPI.markCompleted({ exerciseId: id })
+      if ((res.data as any)?.progress?.completed) {
+        setProgressCompleted(true)
+      }
+    } catch (err) {
+      logger.error('Error marking exercise completed', err)
+    } finally {
+      setMarkingCompleted(false)
+    }
+  }
 
   const problemUrl = useMemo(() => toAssetUrl(exercise?.contentUrl), [exercise?.contentUrl])
   const correctionUrl = useMemo(
@@ -55,15 +95,35 @@ const ExerciseDetail = () => {
     return <div className="min-h-screen flex items-center justify-center">Exercise not found</div>
   }
 
+  const goBack = () => {
+    if (fromLearningPath) {
+      navigate(-1)
+      return
+    }
+    navigate(exercise?.subject?.id ? `/exercises?subject=${exercise.subject.id}` : '/exercises')
+  }
+
+  const crumbs = [
+    { label: exercise.subject?.name || 'Exercices', to: exercise?.subject?.id ? `/exercises?subject=${exercise.subject.id}` : '/exercises' },
+    ...(exercise.course ? [{ label: exercise.course.title, to: `/courses/${exercise.course.id}` }] : []),
+    { label: exercise.title },
+  ]
+
+  const hasRichContent =
+    (exercise.contentText && String(exercise.contentText).replace(/<[^>]*>/g, '').trim().length > 0) ||
+    Boolean(exercise.externalLink)
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
-      <Link
-        to={exercise?.subject?.id ? `/exercises?subject=${exercise.subject.id}` : '/exercises'}
+      <button
+        onClick={goBack}
         className="inline-flex items-center space-x-2 text-text-muted-light dark:text-text-muted hover:text-accent transition-colors"
       >
         <ArrowLeft size={20} />
-        <span>Back to Exercises</span>
-      </Link>
+        <span>{fromLearningPath ? 'Retour au parcours' : 'Back to Exercises'}</span>
+      </button>
+
+      <Breadcrumbs crumbs={crumbs} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div className="lg:col-span-2 space-y-8">
@@ -75,6 +135,12 @@ const ExerciseDetail = () => {
               <span className="px-4 py-2 bg-black/5 dark:bg-white/5 text-text-muted-light dark:text-text-muted rounded-full text-sm font-bold">
                 {exercise.difficulty}
               </span>
+              {exercise.groupTitle && (
+                <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-500/10 text-indigo-500 rounded-full text-sm font-bold">
+                  <FolderOpen size={14} />
+                  {exercise.groupTitle}
+                </span>
+              )}
             </div>
 
             <div className="space-y-4">
@@ -85,6 +151,21 @@ const ExerciseDetail = () => {
                 {exercise.description || 'Practice this exercise and review the attached resources.'}
               </p>
             </div>
+
+            {exercise.course && (
+              <div className="rounded-2xl border border-accent/20 bg-accent/5 p-4">
+                <div className="text-xs uppercase tracking-[0.18em] text-text-muted-light dark:text-text-muted">
+                  Fait partie du cours
+                </div>
+                <Link
+                  to={`/courses/${exercise.course.id}`}
+                  className="mt-1 inline-flex items-center gap-2 font-semibold text-accent hover:underline"
+                >
+                  <BookOpen size={16} />
+                  {exercise.course.title}
+                </Link>
+              </div>
+            )}
 
             <div className="grid gap-4 sm:grid-cols-2">
               <button
@@ -116,9 +197,88 @@ const ExerciseDetail = () => {
               </button>
             </div>
           </div>
+
+          {hasRichContent && (
+            <div className="glass-morphism rounded-3xl p-8 space-y-6">
+              <h2 className="text-2xl font-bold text-text-light dark:text-text">Énoncé</h2>
+              {exercise.contentText && String(exercise.contentText).replace(/<[^>]*>/g, '').trim().length > 0 && (
+                <div
+                  className="prose max-w-none text-text-light dark:text-text"
+                  dir="auto"
+                  dangerouslySetInnerHTML={{ __html: sanitizeRichHtml(exercise.contentText) }}
+                />
+              )}
+              {exercise.externalLink && (
+                <a
+                  href={exercise.externalLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-2xl bg-accent/10 text-accent px-5 py-3 font-semibold hover:bg-accent/20 transition-colors"
+                >
+                  <ExternalLink size={18} />
+                  <span>Ouvrir le lien externe</span>
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="space-y-8">
+          {exercise.teacher && (
+            <div className="glass-morphism rounded-3xl p-8 space-y-3">
+              <h3 className="flex items-center gap-2 text-xl font-bold text-text-light dark:text-text">
+                <GraduationCap size={20} className="text-accent" />
+                Enseignant
+              </h3>
+              <Link
+                to={`/teachers/${exercise.teacher.id}`}
+                className="text-accent font-semibold hover:underline"
+              >
+                {exercise.teacher.firstName} {exercise.teacher.lastName}
+              </Link>
+            </div>
+          )}
+          <div className="glass-morphism rounded-3xl p-8 space-y-4">
+            <h3 className="text-xl font-bold text-text-light dark:text-text">
+              Ta progression
+            </h3>
+            {progressCompleted === true ? (
+              <div className="flex items-center gap-3 rounded-2xl bg-emerald-500/10 px-4 py-3 text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 size={20} />
+                <span className="font-semibold">Exercice terminé 🟢</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3 rounded-2xl bg-blue-500/10 px-4 py-3 text-blue-600 dark:text-blue-400">
+                <CheckCircle2
+                  size={20}
+                  className={progressCompleted === null ? 'opacity-70' : ''}
+                />
+                <span className="font-semibold">
+                  {progressCompleted === null ? 'En cours de chargement…' : 'Exercice commencé 🔵'}
+                </span>
+              </div>
+            )}
+            <button
+              onClick={handleMarkCompleted}
+              disabled={markingCompleted || progressCompleted === true}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-accent px-5 py-3 font-bold text-primary hover:scale-[1.02] active:scale-100 transition disabled:opacity-60 disabled:hover:scale-100"
+            >
+              {markingCompleted ? (
+                <span>Enregistrement…</span>
+              ) : progressCompleted ? (
+                <>
+                  <CheckCircle2 size={18} /> Déjà terminé
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 size={18} /> J'ai terminé cet exercice
+                </>
+              )}
+            </button>
+            <p className="text-xs text-text-muted-light dark:text-text-muted">
+              Ceci met à jour ton pourcentage de progression dans le Parcours.
+            </p>
+          </div>
           <div className="glass-morphism rounded-3xl p-8 space-y-6">
             <h3 className="text-xl font-bold text-text-light dark:text-text">
               Extra Resources

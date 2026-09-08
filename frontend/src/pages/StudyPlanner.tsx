@@ -22,7 +22,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import type { EventInput, EventClickArg, DateSelectArg, EventDropArg } from '@fullcalendar/core';
-import { studentPlannerAPI, subjectsAPI } from '../services/api';
+import { studentPlannerAPI, subjectsAPI, stepsAPI, coursesAPI, exercisesAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { logger } from '../lib/logger';
 
@@ -55,6 +55,9 @@ interface FormData {
   title: string;
   description: string;
   subjectId: string;
+  stepId?: string;
+  courseId?: string;
+  exerciseId?: string;
   dueDate: string;
   dueTime: string;
   priority: string;
@@ -167,12 +170,18 @@ const StudyPlanner = () => {
     title: '',
     description: '',
     subjectId: '',
+    stepId: '',
+    courseId: '',
+    exerciseId: '',
     dueDate: getLocalDateInputValue(),
     dueTime: getDefaultTime(),
     priority: 'MEDIUM',
     attachmentUrl: '',
     attachmentLabel: ''
   });
+  const [steps, setSteps] = useState<any[]>([]);
+  const [stepCourses, setStepCourses] = useState<any[]>([]);
+  const [stepExercises, setStepExercises] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
@@ -218,15 +227,17 @@ const StudyPlanner = () => {
   const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const [tasksRes, subjectsRes] = await Promise.all([
+      const [tasksRes, subjectsRes, stepsRes] = await Promise.all([
         studentPlannerAPI.getTasks(),
         subjectsAPI.getAll({
           activeOnly: true,
           bacSection: user?.bacSection,
-        })
+        }),
+        stepsAPI.getPublic().catch(() => ({ data: { steps: [] } })),
       ]);
       setTasks(tasksRes.data);
       setSubjects(subjectsRes.data);
+      setSteps((stepsRes.data as any)?.steps || []);
       if (subjectsRes.data.length > 0) {
         setFormData(prev => ({ ...prev, subjectId: subjectsRes.data[0].id }));
       }
@@ -237,9 +248,33 @@ const StudyPlanner = () => {
     }
   }, [user?.bacSection]);
 
+  const loadCoursesForSubject = useCallback(async (subjectId: string) => {
+    if (!subjectId) {
+      setStepCourses([]);
+      setStepExercises([]);
+      return;
+    }
+    try {
+      const [cRes, eRes] = await Promise.all([
+        coursesAPI.getAll({ subjectId }).catch(() => ({ data: [] })),
+        exercisesAPI.getAll({ subjectId }).catch(() => ({ data: [] })),
+      ]);
+      setStepCourses(Array.isArray(cRes.data) ? cRes.data : ((cRes.data as any)?.items || []));
+      setStepExercises(Array.isArray(eRes.data) ? eRes.data : ((eRes.data as any)?.items || []));
+    } catch (err) {
+      logger.error('Error loading subject content', err);
+    }
+  }, []);
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    if (formData.subjectId) {
+      loadCoursesForSubject(formData.subjectId);
+    }
+  }, [formData.subjectId, loadCoursesForSubject]);
 
   const getEvents = useCallback((): EventInput[] => {
     return tasks.map(task => ({
@@ -333,6 +368,9 @@ const StudyPlanner = () => {
       title: task.title,
       description: task.description || '',
       subjectId: task.subjectId,
+      stepId: (task as any).stepId || '',
+      courseId: (task as any).courseId || '',
+      exerciseId: (task as any).exerciseId || '',
       dueDate,
       dueTime,
       priority: task.priority || 'MEDIUM',
@@ -910,65 +948,115 @@ const StudyPlanner = () => {
 
       <AnimatePresence>
         {isModalOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={handleCloseModal}>
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className="glass-morphism w-full max-w-md rounded-3xl border border-black/5 dark:border-white/5 p-6 sm:p-8" onClick={(e) => e.stopPropagation()}>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-text-light dark:text-text">{isEditMode ? 'Edit Task' : 'New Task'}</h2>
-                <button onClick={handleCloseModal} className="p-2 rounded-full hover:bg-secondary-light/40 dark:hover:bg-secondary/40 transition-colors"><X size={24} className="text-text-muted-light dark:text-text-muted" /></button>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start sm:items-center justify-center z-50 p-3 sm:p-4 overflow-y-auto" onClick={handleCloseModal}>
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className="glass-morphism my-auto w-full max-w-xl lg:max-w-3xl rounded-2xl sm:rounded-3xl border border-black/5 dark:border-white/5 flex flex-col max-h-[92vh] shadow-2xl" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center justify-between px-5 py-4 sm:px-8 sm:py-6 border-b border-black/5 dark:border-white/5 shrink-0">
+                <h2 className="text-xl sm:text-2xl font-bold text-text-light dark:text-text">{isEditMode ? 'Edit Task' : 'New Task'}</h2>
+                <button onClick={handleCloseModal} className="p-2 rounded-full hover:bg-secondary-light/40 dark:hover:bg-secondary/40 transition-colors shrink-0"><X size={22} className="text-text-muted-light dark:text-text-muted" /></button>
               </div>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {error && (
-                  <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium">
-                    {error}
+              <form onSubmit={handleSubmit} className="flex flex-col min-h-0 flex-1">
+                <div className="px-5 py-4 sm:px-8 sm:py-6 overflow-y-auto min-h-0 space-y-4">
+                  {error && (
+                    <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-medium">
+                      {error}
+                    </div>
+                  )}
+                  <div className="grid grid-cols-1 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-text-light dark:text-text mb-1.5">Title</label>
+                      <input type="text" value={formData.title} onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))} required className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10" placeholder="Enter task title" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-text-light dark:text-text mb-1.5">Description / Notes</label>
+                      <textarea value={formData.description} onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10" rows={3} placeholder="Enter task description (optional)" />
+                    </div>
                   </div>
-                )}
-                <div>
-                  <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Title</label>
-                  <input type="text" value={formData.title} onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))} required className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" placeholder="Enter task title" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Description</label>
-                  <textarea value={formData.description} onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" rows={3} placeholder="Enter task description" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Subject</label>
-                  <select value={formData.subjectId} onChange={(e) => setFormData(prev => ({ ...prev, subjectId: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50">
-                    {subjects.map(subject => (
-                      <option key={subject.id} value={subject.id}>{subject.name}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Due Date</label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <input type="date" value={formData.dueDate} onChange={(e) => setFormData(prev => ({ ...prev, dueDate: e.target.value }))} required className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" />
-                    <input type="time" value={formData.dueTime} onChange={(e) => setFormData(prev => ({ ...prev, dueTime: e.target.value }))} required className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-text-light dark:text-text mb-1.5">Subject</label>
+                      <select value={formData.subjectId} onChange={(e) => setFormData(prev => ({ ...prev, subjectId: e.target.value, courseId: '', exerciseId: '' }))} className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10">
+                        {subjects.map(subject => (
+                          <option key={subject.id} value={subject.id}>{subject.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    {steps.length > 0 ? (
+                      <div>
+                        <label className="block text-sm font-medium text-text-light dark:text-text mb-1.5">Palier (Learning Path)</label>
+                        <select value={formData.stepId} onChange={(e) => setFormData(prev => ({ ...prev, stepId: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10">
+                          <option value="">— Non rattaché —</option>
+                          {steps.map(step => (
+                            <option key={step.id} value={step.id}>{step.title}</option>
+                          ))}
+                        </select>
+                      </div>
+                    ) : (
+                      <div>
+                        <label className="block text-sm font-medium text-text-light dark:text-text mb-1.5">Priority</label>
+                        <select value={formData.priority} onChange={(e) => setFormData(prev => ({ ...prev, priority: e.target.value as any }))} className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10">
+                          <option value="LOW">Low</option>
+                          <option value="MEDIUM">Medium</option>
+                          <option value="HIGH">High</option>
+                        </select>
+                      </div>
+                    )}
                   </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Priority</label>
-                  <select value={formData.priority} onChange={(e) => setFormData(prev => ({ ...prev, priority: e.target.value as any }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50">
-                    <option value="LOW">Low</option>
-                    <option value="MEDIUM">Medium</option>
-                    <option value="HIGH">High</option>
-                  </select>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-text-light dark:text-text mb-1.5">Cours (optionnel)</label>
+                      <select value={formData.courseId} onChange={(e) => setFormData(prev => ({ ...prev, courseId: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10">
+                        <option value="">— Aucun —</option>
+                        {stepCourses.map((c: any) => (
+                          <option key={c.id} value={c.id}>{c.title}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-text-light dark:text-text mb-1.5">Exercice (optionnel)</label>
+                      <select value={formData.exerciseId} onChange={(e) => setFormData(prev => ({ ...prev, exerciseId: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10">
+                        <option value="">— Aucun —</option>
+                        {stepExercises.map((ex: any) => (
+                          <option key={ex.id} value={ex.id}>{ex.title}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                   <div>
-                    <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Attachment URL</label>
-                    <input type="url" value={formData.attachmentUrl} onChange={(e) => setFormData(prev => ({ ...prev, attachmentUrl: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" placeholder="https://..." />
+                    <label className="block text-sm font-medium text-text-light dark:text-text mb-1.5">Due Date & Time</label>
+                    <div className="grid grid-cols-2 gap-4">
+                      <input type="date" value={formData.dueDate} onChange={(e) => setFormData(prev => ({ ...prev, dueDate: e.target.value }))} required className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10" />
+                      <input type="time" value={formData.dueTime} onChange={(e) => setFormData(prev => ({ ...prev, dueTime: e.target.value }))} required className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10" />
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-text-light dark:text-text mb-2">Attachment Label</label>
-                    <input type="text" value={formData.attachmentLabel} onChange={(e) => setFormData(prev => ({ ...prev, attachmentLabel: e.target.value }))} className="w-full px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50" placeholder="Optional" />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {steps.length > 0 && (
+                      <div className="md:col-span-1">
+                        <label className="block text-sm font-medium text-text-light dark:text-text mb-1.5">Priority</label>
+                        <select value={formData.priority} onChange={(e) => setFormData(prev => ({ ...prev, priority: e.target.value as any }))} className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10">
+                          <option value="LOW">Low</option>
+                          <option value="MEDIUM">Medium</option>
+                          <option value="HIGH">High</option>
+                        </select>
+                      </div>
+                    )}
+                    <div className={steps.length > 0 ? 'md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4' : 'md:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4'}>
+                      <div>
+                        <label className="block text-sm font-medium text-text-light dark:text-text mb-1.5">Attachment URL</label>
+                        <input type="url" value={formData.attachmentUrl} onChange={(e) => setFormData(prev => ({ ...prev, attachmentUrl: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10" placeholder="https://..." />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-text-light dark:text-text mb-1.5">Attachment Label</label>
+                        <input type="text" value={formData.attachmentLabel} onChange={(e) => setFormData(prev => ({ ...prev, attachmentLabel: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text border border-black/5 dark:border-white/5 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10" placeholder="Optional" />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-3 pt-4">
-                  <button type="button" onClick={handleCloseModal} className="flex-1 px-4 py-3 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text font-semibold hover:bg-secondary-light/70 dark:hover:bg-secondary/70 transition-colors">
+                <div className="flex flex-col-reverse sm:flex-row gap-3 px-5 py-4 sm:px-8 sm:py-5 border-t border-black/5 dark:border-white/5 bg-white/60 dark:bg-black/10 backdrop-blur-sm rounded-b-2xl sm:rounded-b-3xl shrink-0">
+                  <button type="button" onClick={handleCloseModal} className="flex-1 px-4 py-2.5 rounded-xl bg-secondary-light/40 dark:bg-secondary/40 text-text-light dark:text-text font-semibold hover:bg-secondary-light/70 dark:hover:bg-secondary/70 transition-colors min-h-[44px]">
                     Cancel
                   </button>
-                  <button type="submit" className="flex-1 px-4 py-3 rounded-xl bg-accent text-primary font-semibold hover:bg-accent/90 transition-colors">
-                    {isEditMode ? 'Update' : 'Create'}
+                  <button type="submit" className="flex-1 px-4 py-2.5 rounded-xl bg-accent text-primary font-semibold hover:bg-accent/90 transition-colors shadow-lg shadow-accent/20 min-h-[44px]">
+                    {isEditMode ? 'Update Task' : 'Create Task'}
                   </button>
                 </div>
               </form>

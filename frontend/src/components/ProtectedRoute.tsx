@@ -4,9 +4,10 @@ import { useAuth } from '../context/AuthContext';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   adminOnly?: boolean;
+  teacherOnly?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = false }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = false, teacherOnly = false }) => {
   const { user, isLoading } = useAuth();
   const location = useLocation();
 
@@ -24,7 +25,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = f
   }
 
   if (adminOnly && user.role !== 'ADMIN') {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={user.role === 'TEACHER' ? '/teacher' : '/learning-path'} replace />;
+  }
+
+  if (teacherOnly && user.role !== 'TEACHER' && user.role !== 'ADMIN') {
+    return <Navigate to="/learning-path" replace />;
   }
 
   return <>{children}</>;

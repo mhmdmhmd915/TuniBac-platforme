@@ -2,19 +2,24 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
+  BadgeCheck,
   BookOpen,
   CalendarRange,
   CheckCircle2,
   Clock3,
   FileText,
+  GitBranch,
+  GraduationCap,
   Layers,
   LayoutDashboard,
+  Lightbulb,
   MessageSquare,
   MoreHorizontal,
   Pencil,
   Plus,
   Settings,
   Shield,
+  ShoppingBag,
   Sparkles,
   Trash2,
   Upload,
@@ -52,6 +57,7 @@ import {
 } from '../../constants/bacSections';
 import { logger } from '../../lib/logger';
 import { toDisplayTunisianPhone } from '../../lib/phone';
+import { isYouTubeUrl } from '../../lib/youtube';
 
 type SectionKey =
   | 'dashboard'
@@ -61,10 +67,10 @@ type SectionKey =
   | 'parascolaires'
   | 'users'
   | 'planner'
-  | 'submissions';
+  | 'tips';
 
 type ToastType = 'success' | 'error' | 'warning';
-type ModalSection = Exclude<SectionKey, 'dashboard' | 'users' | 'submissions'>;
+type ModalSection = Exclude<SectionKey, 'dashboard' | 'users'>;
 type Role = 'ADMIN' | 'STUDENT';
 type Difficulty = 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
 
@@ -171,19 +177,6 @@ interface AdminUser {
   createdAt: string;
 }
 
-interface HomeworkSubmission {
-  id: string;
-  fileUrl: string;
-  correctionUrl?: string | null;
-  submittedAt: string;
-  status: string;
-  user?: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
-}
-
 interface PlannerTemplate {
   id: string;
   title: string;
@@ -212,13 +205,11 @@ interface DashboardStats {
   rejectedUsers: number;
   totalCourses: number;
   totalExercises: number;
-  totalSubmissions: number;
   totalSubjects: number;
   totalParascolaires: number;
   recentCourses: Course[];
   recentExercises: Exercise[];
   recentParascolaires: Parascolaire[];
-  recentSubmissions: HomeworkSubmission[];
   recentRegistrations: any[];
   recentApprovals: any[];
 }
@@ -244,6 +235,7 @@ interface CourseFormState {
   tags: string;
   contentUrl: string;
   videoPath: string;
+  videoUrl: string;
   advertisementImage: string;
   advertisementTeacherName: string;
   advertisementSubject: string;
@@ -389,11 +381,12 @@ const sections: SectionDefinition[] = [
     accent: 'from-slate-500/30 via-slate-500/10 to-transparent',
   },
   {
-    key: 'submissions',
-    label: 'Homework',
-    description: 'Review homework and upload corrections',
-    icon: CheckCircle2,
-    accent: 'from-sky-500/30 via-sky-500/10 to-transparent',
+    key: 'tips',
+    label: 'Study Tips',
+    description: 'Conseils et astuces pour les élèves',
+    icon: Lightbulb,
+    accent: 'from-yellow-500/30 via-yellow-500/10 to-transparent',
+    createAction: 'New Tip',
   },
 ];
 
@@ -405,6 +398,7 @@ const defaultCourseForm = (subjectId = ''): CourseFormState => ({
   tags: '',
   contentUrl: '',
   videoPath: '',
+  videoUrl: '',
   advertisementImage: '',
   advertisementTeacherName: '',
   advertisementSubject: '',
@@ -649,13 +643,11 @@ const AdminWorkspace = () => {
     rejectedUsers: 0,
     totalCourses: 0,
     totalExercises: 0,
-    totalSubmissions: 0,
     totalSubjects: 0,
     totalParascolaires: 0,
     recentCourses: [],
     recentExercises: [],
     recentParascolaires: [],
-    recentSubmissions: [],
     recentRegistrations: [],
     recentApprovals: [],
   });
@@ -664,7 +656,6 @@ const AdminWorkspace = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [parascolaires, setParascolaires] = useState<Parascolaire[]>([]);
   const [users, setUsers] = useState<AdminUser[]>([]);
-  const [submissions, setSubmissions] = useState<HomeworkSubmission[]>([]);
   const [plannerTemplates, setPlannerTemplates] = useState<PlannerTemplate[]>([]);
 
   const [editorSection, setEditorSection] = useState<ModalSection | null>(null);
@@ -705,7 +696,6 @@ const AdminWorkspace = () => {
         ['subjects', subjectsAPI.getAll(scopedParams)],
         ['parascolaires', parascolairesAPI.getAll(scopedParams)],
         ['users', adminAPI.getUsers({ page: 1, pageSize: 50, bacSection: currentBacSection })],
-        ['submissions', adminAPI.getSubmissions({ bacSection: currentBacSection })],
         ['plannerTemplates', adminPlannerTemplatesAPI.getAll()],
       ] as const;
 
@@ -739,12 +729,6 @@ const AdminWorkspace = () => {
 
       if (results.users.status === 'fulfilled') {
         setUsers((results.users.value.data?.items || []) as AdminUser[]);
-      }
-
-      if (results.submissions.status === 'fulfilled') {
-        setSubmissions(
-          ((results.submissions.value.data?.items || results.submissions.value.data?.submissions || []) as HomeworkSubmission[])
-        );
       }
 
       if (results.plannerTemplates.status === 'fulfilled') {
@@ -843,6 +827,7 @@ const AdminWorkspace = () => {
         tags: course.tags.join(', '),
         contentUrl: course.contentUrl || '',
         videoPath: course.videoPath || '',
+        videoUrl: course.videoUrl || '',
         advertisementImage: course.advertisementImage || '',
         advertisementTeacherName: course.advertisementTeacherName || '',
         advertisementSubject: course.advertisementSubject || '',
@@ -969,7 +954,7 @@ const AdminWorkspace = () => {
           tags: courseForm.tags.split(',').map((tag) => tag.trim()).filter(Boolean),
           contentUrl: courseForm.contentUrl,
           videoPath: courseForm.videoPath,
-          videoUrl: '',
+          videoUrl: courseForm.videoUrl || '',
           advertisementImage: courseForm.advertisementImage,
           advertisementTeacherName: courseForm.advertisementTeacherName,
           advertisementSubject: courseForm.advertisementSubject,
@@ -1189,20 +1174,6 @@ const AdminWorkspace = () => {
     }
   };
 
-  const handleSubmissionCorrectionUpload = async (
-    submissionId: string,
-    file: File
-  ) => {
-    try {
-      await adminAPI.uploadCorrection(submissionId, file);
-      await fetchAdminData();
-      showToast('success', 'Correction uploaded successfully');
-    } catch (error) {
-      logger.error('Correction upload failed', error);
-      showToast('error', 'Correction upload failed');
-    }
-  };
-
   const subjectOptions = useMemo(
     () => filteredSubjectRecords.map((subject) => ({ label: subject.name, value: subject.id })),
     [filteredSubjectRecords]
@@ -1221,7 +1192,7 @@ const AdminWorkspace = () => {
   );
 
   const filteredRows = useMemo(() => {
-    if (activeSection === 'dashboard' || activeSection === 'submissions') {
+    if (activeSection === 'dashboard') {
       return [] as Array<
         Course | Exercise | Subject | Parascolaire | AdminUser | PlannerTemplate
       >;
@@ -2011,17 +1982,6 @@ const AdminWorkspace = () => {
               </strong>
             </div>
             <div className="flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5">
-              <span>Pending homework review</span>
-              <strong className="text-gray-900 dark:text-white">
-                {
-                  submissions.filter(
-                    (item) =>
-                      item.status !== 'REVIEWED' && item.status !== 'GRADED'
-                  ).length
-                }
-              </strong>
-            </div>
-            <div className="flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5">
               <span>Active subjects</span>
               <strong className="text-gray-900 dark:text-white">
                 {subjects.filter((subject) => subject.isActive).length}
@@ -2329,92 +2289,6 @@ const AdminWorkspace = () => {
     </AdminCard>
   );
 
-  const renderSubmissions = () => (
-    <AdminCard className="p-6 sm:p-8">
-      <SectionTitle
-        title="Homework Review"
-        subtitle="Upload corrections without leaving the admin workspace"
-      />
-      <div className="mt-6 grid gap-4">
-        {submissions.length === 0 ? (
-          <EmptyState
-            title="No submissions yet"
-            description="Homework submissions will appear here once students upload files."
-          />
-        ) : (
-          submissions.map((submission) => (
-            <div
-              key={submission.id}
-              className="rounded-3xl border border-black/5 bg-gray-50/80 p-5 dark:border-white/5 dark:bg-white/5"
-            >
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                <div className="space-y-1">
-                  <div className="font-semibold text-gray-900 dark:text-white">
-                    {submission.user?.firstName} {submission.user?.lastName}
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    {submission.fileUrl.split('/').pop()}
-                  </div>
-                  <div className="text-xs text-gray-400">
-                    Submitted {formatDateTime(submission.submittedAt)}
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center gap-3">
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                      submission.status === 'GRADED'
-                        ? 'bg-emerald-500/10 text-emerald-500'
-                        : submission.status === 'REVIEWED'
-                        ? 'bg-blue-500/10 text-blue-500'
-                        : 'bg-amber-500/10 text-amber-500'
-                    }`}
-                  >
-                    {submission.status}
-                  </span>
-                  <ActionButton
-                    tone="neutral"
-                    icon={<Upload size={16} />}
-                    onClick={() =>
-                      window.open(
-                        toAssetUrl(submission.fileUrl),
-                        '_blank',
-                        'noopener,noreferrer'
-                      )
-                    }
-                  >
-                    Open Homework
-                  </ActionButton>
-                </div>
-              </div>
-              <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px]">
-                <div className="rounded-2xl border border-dashed border-black/10 px-4 py-3 text-sm text-gray-500 dark:border-white/10 dark:text-gray-400">
-                  {submission.correctionUrl
-                    ? `Correction ready: ${submission.correctionUrl.split('/').pop()}`
-                    : 'No correction uploaded yet'}
-                </div>
-                <label className="flex cursor-pointer items-center justify-center rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-gray-900 ring-1 ring-black/5 transition hover:bg-gray-50 dark:bg-white/5 dark:text-white dark:ring-white/10 dark:hover:bg-white/10">
-                  <input
-                    type="file"
-                    accept="application/pdf"
-                    className="hidden"
-                    aria-label={`Upload correction for ${submission.user?.firstName || 'student'} ${submission.user?.lastName || ''}`.trim()}
-                    onChange={async (event) => {
-                      const file = event.target.files?.[0];
-                      if (file) {
-                        await handleSubmissionCorrectionUpload(submission.id, file);
-                      }
-                    }}
-                  />
-                  Upload Correction
-                </label>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-    </AdminCard>
-  );
-
   const renderEditorContent = () => {
     if (!editorSection) {
       return null;
@@ -2542,13 +2416,23 @@ const AdminWorkspace = () => {
                 Course Video
               </span>
               <VideoUploader
-                value={toAssetUrl(courseForm.videoPath)}
-                onChange={(value) =>
-                  setCourseForm((previous) => ({
-                    ...previous,
-                    videoPath: value.replace(BACKEND_URL, ''),
-                  }))
-                }
+                value={isYouTubeUrl(courseForm.videoUrl || '') ? courseForm.videoUrl : toAssetUrl(courseForm.videoPath)}
+                onChange={(value) => {
+                  const cleaned = value.trim()
+                  if (isYouTubeUrl(cleaned)) {
+                    setCourseForm((previous) => ({
+                      ...previous,
+                      videoUrl: cleaned,
+                      videoPath: '',
+                    }))
+                  } else {
+                    setCourseForm((previous) => ({
+                      ...previous,
+                      videoPath: cleaned.replace(BACKEND_URL, ''),
+                      videoUrl: '',
+                    }))
+                  }
+                }}
                 onUpload={async (file, options) => {
                   const response = await adminAPI.uploadAdminVideo(file, options);
                   return toAssetUrl(response.data.videoPath as string);
@@ -3647,6 +3531,8 @@ const AdminWorkspace = () => {
                   onClick={() => {
                     if (section.key === 'users') {
                       navigate('/admin/users');
+                    } else if (section.key === 'tips') {
+                      navigate('/admin/tips');
                     } else {
                       setActiveSection(section.key);
                     }
@@ -3690,6 +3576,62 @@ const AdminWorkspace = () => {
 
             <button
               type="button"
+              onClick={() => navigate('/admin/content-tree')}
+              className="flex w-full items-start gap-3 rounded-2xl px-4 py-3 text-left transition-all hover:bg-gray-100 dark:hover:bg-white/5"
+            >
+              <GitBranch size={18} className="mt-0.5 shrink-0" />
+              <div>
+                <div className="font-semibold">Learning Path</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  Content tree: steps, subjects, courses, exercises
+                </div>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate('/admin/teachers')}
+              className="flex w-full items-start gap-3 rounded-2xl px-4 py-3 text-left transition-all hover:bg-gray-100 dark:hover:bg-white/5"
+            >
+              <GraduationCap size={18} className="mt-0.5 shrink-0" />
+              <div>
+                <div className="font-semibold">Teachers</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  Assign subjects and sections to teachers
+                </div>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate('/admin/teacher-ads')}
+              className="flex w-full items-start gap-3 rounded-2xl px-4 py-3 text-left transition-all hover:bg-gray-100 dark:hover:bg-white/5"
+            >
+              <BadgeCheck size={18} className="mt-0.5 shrink-0" />
+              <div>
+                <div className="font-semibold">Teacher Ads</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  Advertisements from teachers across the platform
+                </div>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate('/admin/shop')}
+              className="flex w-full items-start gap-3 rounded-2xl px-4 py-3 text-left transition-all hover:bg-gray-100 dark:hover:bg-white/5"
+            >
+              <ShoppingBag size={18} className="mt-0.5 shrink-0" />
+              <div>
+                <div className="font-semibold">Shop</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  Student products sold via WhatsApp
+                </div>
+              </div>
+            </button>
+
+            <button
+              type="button"
               onClick={() => navigate('/admin/settings')}
               className="flex w-full items-start gap-3 rounded-2xl px-4 py-3 text-left transition-all hover:bg-gray-100 dark:hover:bg-white/5"
             >
@@ -3726,6 +3668,20 @@ const AdminWorkspace = () => {
                 <div className="font-semibold">Communications</div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">
                   Announcements, scheduling, and student messaging
+                </div>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate('/admin/live-study')}
+              className="flex w-full items-start gap-3 rounded-2xl px-4 py-3 text-left transition-all hover:bg-gray-100 dark:hover:bg-white/5"
+            >
+              <Users size={18} className="mt-0.5 shrink-0" />
+              <div>
+                <div className="font-semibold">Live Study</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  Global toggle, sessions monitoring, and admin controls
                 </div>
               </div>
             </button>
@@ -3772,8 +3728,7 @@ const AdminWorkspace = () => {
                 </label>
                 {activeSectionMeta.createAction &&
                   activeSection !== 'dashboard' &&
-                  activeSection !== 'users' &&
-                  activeSection !== 'submissions' && (
+                  activeSection !== 'users' && (
                     <PrimaryButton
                       icon={<Plus size={16} />}
                       onClick={() => openCreateModal(activeSection as ModalSection)}
@@ -3800,8 +3755,6 @@ const AdminWorkspace = () => {
             </AdminCard>
           ) : activeSection === 'dashboard' ? (
             renderOverview()
-          ) : activeSection === 'submissions' ? (
-            renderSubmissions()
           ) : (
             renderTableSection()
           )}

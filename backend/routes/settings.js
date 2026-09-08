@@ -34,6 +34,7 @@ const PUBLIC_SETTING_KEYS = [
   'platformOfferBannerImage',
   'platformOfferLogo',
   'platformOfferVideoUrl',
+  'platformOfferYouTubeUrl',
   'platformOfferFeaturesJson',
   'platformOfferNotesJson',
   'platformOfferCardsJson',

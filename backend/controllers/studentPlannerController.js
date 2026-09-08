@@ -11,6 +11,36 @@ const toDate = (value) => {
   return Number.isNaN(date.getTime()) ? null : date;
 };
 
+const cleanString = (value) => (typeof value === 'string' ? value.trim() : '');
+
+const optionalRelationId = (value) => {
+  const normalized = cleanString(value);
+  return normalized || null;
+};
+
+// A student may reference a subject if it belongs to their section (primary OR assigned).
+const assertSubjectAccess = async (req, subjectId) => {
+  const subject = await prisma.subject.findUnique({
+    where: { id: subjectId },
+    select: {
+      bacSection: true,
+      subjectSections: { select: { bacSection: true } },
+    },
+  });
+  if (!subject) {
+    return { error: 'Subject not found' };
+  }
+
+  if (req.user.role !== 'ADMIN') {
+    const allowed = [subject.bacSection, ...subject.subjectSections.map((s) => s.bacSection)];
+    if (!allowed.includes(req.user.bacSection)) {
+      return { error: 'Subject must belong to your BAC section' };
+    }
+  }
+
+  return { subject };
+};
+
 async function getStudentPlannerTasks(req, res) {
   try {
     const userId = req.user.id;
@@ -43,13 +73,9 @@ async function createStudentPlannerTask(req, res) {
       return res.status(400).json({ message: 'Subject is required' });
     }
 
-    const subject = await prisma.subject.findUnique({ where: { id: subjectId }, select: { bacSection: true } });
-    if (!subject) {
-      return res.status(400).json({ message: 'Subject not found' });
-    }
-
-    if (req.user.role !== 'ADMIN' && subject.bacSection !== req.user.bacSection) {
-      return res.status(400).json({ message: 'Subject must belong to your BAC section' });
+    const access = await assertSubjectAccess(req, subjectId);
+    if (access.error) {
+      return res.status(400).json({ message: access.error });
     }
 
     const title = String(req.body?.title || '').trim();
@@ -64,12 +90,15 @@ async function createStudentPlannerTask(req, res) {
         dueAt,
         priority: req.body?.priority ? String(req.body.priority) : null,
         subjectId,
+        stepId: optionalRelationId(req.body?.stepId),
+        courseId: optionalRelationId(req.body?.courseId),
+        exerciseId: optionalRelationId(req.body?.exerciseId),
         userId,
         isPersonal: true,
         templateId: null,
         ...pickAttachmentFields(req.body),
       },
-      include: { subject: true },
+      include: { subject: true, step: true, course: true, exercise: true },
     });
 
     return res.status(201).json(created);
@@ -120,22 +149,22 @@ async function updateStudentPlannerTask(req, res) {
       const subjectId = String(req.body?.subjectId || '').trim();
       if (!subjectId) return res.status(400).json({ message: 'Subject is required' });
 
-      const subject = await prisma.subject.findUnique({ where: { id: subjectId }, select: { bacSection: true } });
-      if (!subject) return res.status(400).json({ message: 'Subject not found' });
-
-      if (req.user.role !== 'ADMIN' && subject.bacSection !== req.user.bacSection) {
-        return res.status(400).json({ message: 'Subject must belong to your BAC section' });
-      }
+      const access = await assertSubjectAccess(req, subjectId);
+      if (access.error) return res.status(400).json({ message: access.error });
 
       data.subjectId = subjectId;
     }
+
+    if (req.body?.stepId !== undefined) data.stepId = optionalRelationId(req.body.stepId);
+    if (req.body?.courseId !== undefined) data.courseId = optionalRelationId(req.body.courseId);
+    if (req.body?.exerciseId !== undefined) data.exerciseId = optionalRelationId(req.body.exerciseId);
 
     Object.assign(data, pickAttachmentFields(req.body));
 
     const updated = await prisma.studentPlannerTask.update({
       where: { id: taskId },
       data,
-      include: { subject: true },
+      include: { subject: true, step: true, course: true, exercise: true },
     });
 
     return res.json(updated);

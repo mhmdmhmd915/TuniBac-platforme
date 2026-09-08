@@ -127,4 +127,5 @@ module.exports = {
   optionalAuthUserMiddleware,
   adminMiddleware,
   roleMiddleware,
+  loadAuthenticatedUser,
 };

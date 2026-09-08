@@ -11,10 +11,6 @@ const localEnv = dotenv.config({ path: path.join(__dirname, '.env.local') });
 
 if (localEnv.parsed) {
   for (const [key, value] of Object.entries(localEnv.parsed)) {
-    if (typeof process.env[key] === 'string' && process.env[key].trim()) {
-      continue;
-    }
-
     process.env[key] = value;
   }
 }
@@ -126,6 +122,17 @@ const subjectRoutes = require('./routes/subjects');
 const contactRoutes = require('./routes/contact');
 const communicationRoutes = require('./routes/communications');
 const settingsRoutes = require('./routes/settings');
+const stepRoutes = require('./routes/steps');
+const learningPathRoutes = require('./routes/learningPath');
+const teacherRoutes = require('./routes/teachers');
+const teacherAdRoutes = require('./routes/teacherAds');
+const shopRoutes = require('./routes/shop');
+const progressRoutes = require('./routes/progress');
+const objectiveRoutes = require('./routes/objectives');
+const tipRoutes = require('./routes/tips');
+const liveStudyRoutes = require('./routes/liveStudy');
+const adminLiveStudyRoutes = require('./routes/adminLiveStudy');
+const studySquadRoutes = require('./routes/studySquad');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
@@ -134,6 +141,7 @@ app.use('/api/exercises', exerciseRoutes);
 app.use('/api/homework', homeworkRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/communications', adminCommunicationRoutes);
+app.use('/api/admin/live-study', adminLiveStudyRoutes);
 app.use('/api/planner', plannerRoutes);
 app.use('/api/student-planner', studentPlannerRoutes);
 app.use('/api/parascolaires', parascolairesRoutes);
@@ -141,6 +149,16 @@ app.use('/api/subjects', subjectRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/communications', communicationRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/steps', stepRoutes);
+app.use('/api/learning-path', learningPathRoutes);
+app.use('/api/teachers', teacherRoutes);
+app.use('/api/teacher-ads', teacherAdRoutes);
+app.use('/api/shop', shopRoutes);
+app.use('/api/progress', progressRoutes);
+app.use('/api/objectives', objectiveRoutes);
+app.use('/api/tips', tipRoutes);
+app.use('/api/live-study', liveStudyRoutes);
+app.use('/api/study-squads', studySquadRoutes);
 
 app.use((err, _req, res, _next) => {
   logger.error('Unhandled server error', err);
@@ -168,7 +186,11 @@ app.use('*', (_req, res) => {
 });
 
 if (require.main === module) {
-  app.listen(PORT, () => {
+  const http = require('http');
+  const server = http.createServer(app);
+  const attachSocketServer = require('./config/socketServer');
+  attachSocketServer(server);
+  server.listen(PORT, () => {
     logger.info('Server started', {
       port: PORT,
       environment: isProduction ? 'production' : process.env.NODE_ENV || 'development',

@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, BadgePercent, CheckCircle2, Mail, MapPin, Phone, Sparkles, Star } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Play } from 'lucide-react'
 import type { PlatformOfferData } from '../../constants/platformOffer'
+import { ResponsiveVideoPlayer, isVideoAvailable } from '../ui/ResponsiveVideoPlayer'
 
 interface PlatformOfferViewProps {
   offer: PlatformOfferData
@@ -16,216 +17,183 @@ export const PlatformOfferView = ({
   ctaState,
   previewMode = false,
 }: PlatformOfferViewProps) => {
-  const activePromotion =
-    offer.promotions.find((promotion) => promotion.isActive) || offer.promotions[0] || null
-
+  const howToSrc = offer.youtubeUrl && isVideoAvailable(offer.youtubeUrl)
+    ? offer.youtubeUrl
+    : offer.videoUrl && isVideoAvailable(offer.videoUrl)
+    ? offer.videoUrl
+    : null
   return (
-    <div
-      className="relative overflow-hidden"
-      style={
-        {
-          '--offer-primary': offer.primaryColor,
-          '--offer-secondary': offer.secondaryColor,
-          '--offer-accent': offer.accentColor,
-        } as React.CSSProperties
-      }
-    >
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(37,99,235,0.18),_transparent_48%),radial-gradient(circle_at_bottom_right,_rgba(124,58,237,0.18),_transparent_40%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(15,23,42,0.96))]" />
-      {offer.backgroundImage && (
-        <div
-          className="absolute inset-0 -z-20 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: `url(${offer.backgroundImage})` }}
+    <div className="relative overflow-hidden bg-white dark:bg-[#0f172f]">
+      <svg
+        className="pointer-events-none absolute -top-32 -right-24 h-[480px] w-[480px] opacity-[0.08] dark:opacity-[0.12]"
+        viewBox="0 0 200 200"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#2563eb" />
+            <stop offset="100%" stopColor="#1d4ed8" />
+          </linearGradient>
+        </defs>
+        <path
+          fill="url(#waveGrad)"
+          d="M45.2,-58.1C58.7,-49.4,70.4,-38.2,75.8,-24.4C81.2,-10.6,80.3,5.8,74.7,20.1C69.1,34.4,58.7,46.5,45.6,55.7C32.5,64.9,16.3,71.2,0.1,71.1C-16.1,71,-32.1,64.5,-45.4,55.6C-58.7,46.7,-69.4,35.4,-75.1,21.9C-80.8,8.4,-81.5,-7.2,-76.6,-20.6C-71.7,-33.9,-61.1,-44.9,-48.1,-53.8C-35.1,-62.7,-19.7,-69.5,-3.6,-74.3C12.5,-79.1,31.7,-66.8,45.2,-58.1Z"
+          transform="translate(100 100)"
         />
-      )}
+      </svg>
+      <svg
+        className="pointer-events-none absolute -bottom-40 -left-20 h-[520px] w-[520px] opacity-[0.06] dark:opacity-[0.09]"
+        viewBox="0 0 200 200"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path
+          fill="#3b82f6"
+          d="M52.3,-64.4C67.3,-54.5,78.9,-40.4,82.7,-24.6C86.5,-8.8,82.5,8.8,76.4,24.7C70.3,40.6,62.1,54.7,49.6,64.9C37.1,75.1,20.3,81.4,3.1,80.5C-14.1,79.6,-29.5,71.5,-43,61.7C-56.5,51.9,-68.1,40.4,-74.1,26.6C-80.1,12.8,-80.5,-3.2,-76.9,-17.8C-73.3,-32.3,-65.7,-45.3,-53.8,-55.7C-41.9,-66.1,-25.7,-73.9,-9.1,-79.5C7.4,-85.1,23.7,-88.4,37.3,-74.4C42.9,-69.5,48.2,-68.1,52.3,-64.4Z"
+          transform="translate(100 100)"
+        />
+      </svg>
 
-      <div className="mx-auto max-w-7xl px-6 py-12 sm:py-16 lg:px-8 lg:py-20">
-        <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+      <div className="relative mx-auto max-w-7xl px-6 py-16 sm:py-20 lg:px-8 lg:py-24">
+        {previewMode && (
+          <div className="mb-6 inline-flex items-center rounded-full border border-blue-300/40 bg-blue-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700 dark:text-blue-200">
+            Preview
+          </div>
+        )}
+
+        <div className="flex flex-col gap-10 sm:flex-row sm:items-center sm:gap-12 lg:gap-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-8"
+            transition={{ duration: 0.5 }}
+            className="flex-1 space-y-6"
           >
-            <div className="flex flex-wrap items-center gap-3">
-              {activePromotion && (
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
-                  <BadgePercent size={16} className="text-[var(--offer-accent)]" />
-                  <span>{activePromotion.badge || activePromotion.title}</span>
-                </div>
-              )}
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-slate-200">
-                <Sparkles size={16} className="text-[var(--offer-accent)]" />
-                <span>Premium Bac Experience</span>
-              </div>
-              {previewMode && (
-                <div className="inline-flex items-center rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">
-                  Preview
-                </div>
-              )}
-            </div>
+            <h1 className="text-5xl font-black leading-[1.05] tracking-tight text-blue-700 dark:text-white md:text-7xl">
+              حضّر للباك بطريقة أسهل 🚀
+            </h1>
+            <h2 className="text-2xl font-bold leading-snug text-slate-800 dark:text-slate-200 md:text-3xl">
+              كل ما تحتاجو للمراجعة في بلاصة وحدة.
+            </h2>
 
-            <div className="space-y-5">
-              {offer.logo && (
-                <img src={offer.logo} alt="Platform offer logo" className="h-14 w-auto rounded-2xl object-contain" />
-              )}
-              <div className="max-w-3xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-300">
-                  {offer.subtitle}
-                </p>
-                <h1 className="mt-4 text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
-                  {offer.title}
-                </h1>
-                <p className="mt-5 text-lg leading-8 text-slate-200 sm:text-xl">{offer.description}</p>
-              </div>
-            </div>
+            <ul className="mt-8 space-y-4">
+              <li className="flex items-center gap-3 text-xl font-semibold text-slate-700 dark:text-slate-300">
+                <span className="text-2xl">📘🏋️</span>
+                <span>Cours + Exercices corrigés</span>
+              </li>
+              <li className="flex items-center gap-3 text-xl font-semibold text-slate-700 dark:text-slate-300">
+                <span className="text-2xl">📅</span>
+                <span>Planning intelligent لمراجعة يومية</span>
+              </li>
+              <li className="flex items-center gap-3 text-xl font-semibold text-slate-700 dark:text-slate-300">
+                <span className="text-2xl">📱</span>
+                <span>يخدم فالكمبيوتر والموبايل</span>
+              </li>
+            </ul>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="pt-6">
               <Link
                 to={ctaHref}
                 state={ctaState}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-4 text-base font-bold text-slate-950 transition-transform hover:scale-[1.01]"
-                style={{ backgroundColor: offer.accentColor }}
+                className="block rounded-2xl bg-blue-600 px-10 py-5 text-center text-xl font-bold text-white shadow-lg shadow-blue-600/25 transition-all hover:scale-[1.01] hover:bg-blue-700"
               >
-                <span>{offer.buttonText}</span>
-                <ArrowRight size={18} />
+                ابدأ توا وخلي مراجعتك منظمة.
               </Link>
-              <a
-                href="#offer-features"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10"
-              >
-                Explore Features
-              </a>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-3">
-              {offer.cards.map((card) => (
-                <div key={card.id} className="rounded-[28px] border border-white/10 bg-white/8 p-5 backdrop-blur">
-                  <div
-                    className="inline-flex h-12 w-12 items-center justify-center rounded-2xl text-lg font-bold text-white"
-                    style={{ backgroundColor: `${offer.primaryColor}66` }}
-                  >
-                    {card.icon || 'Feature'}
-                  </div>
-                  <h2 className="mt-4 text-xl font-bold text-white">{card.title}</h2>
-                  <p className="mt-2 text-sm leading-6 text-slate-300">{card.description}</p>
-                </div>
-              ))}
             </div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.08 }}
-            className="space-y-6"
+            transition={{ duration: 0.5, delay: 0.08 }}
+            className="w-full flex-1 sm:max-w-md"
           >
-            <div className="rounded-[32px] border border-white/10 bg-slate-950/70 p-6 shadow-2xl shadow-black/20 backdrop-blur">
-              {offer.bannerImage && (
-                <img
-                  src={offer.bannerImage}
-                  alt="Platform offer banner"
-                  className="h-56 w-full rounded-[24px] object-cover"
-                />
-              )}
+            <div className="rounded-3xl border border-blue-100 bg-blue-50 p-6 dark:border-white/10 dark:bg-white/5">
+              <h3 className="text-2xl font-black text-blue-700 dark:text-white">
+                Pourquoi TuniBac ?
+              </h3>
 
-              <div className={`${offer.bannerImage ? 'mt-6' : ''}`}>
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">
-                      Subscription
-                    </p>
-                    <div className="mt-3 flex items-end gap-3">
-                      <div className="text-4xl font-black text-white">{offer.price}</div>
-                      {offer.oldPrice && (
-                        <div className="pb-1 text-lg text-slate-400 line-through">{offer.oldPrice}</div>
-                      )}
-                    </div>
-                  </div>
-                  {offer.promotionBadge && (
-                    <div
-                      className="rounded-2xl px-4 py-2 text-sm font-bold text-slate-950"
-                      style={{ backgroundColor: offer.accentColor }}
-                    >
-                      {offer.promotionBadge}
-                    </div>
-                  )}
-                </div>
+              <ul className="mt-6 space-y-5">
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
+                    1
+                  </span>
+                  <span className="text-lg font-semibold leading-snug text-slate-700 dark:text-slate-200">
+                    Matières + sections multiples
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
+                    2
+                  </span>
+                  <span className="text-lg font-semibold leading-snug text-slate-700 dark:text-slate-200">
+                    Progression en temps réel
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
+                    3
+                  </span>
+                  <span className="text-lg font-semibold leading-snug text-slate-700 dark:text-slate-200">
+                    Accès 24h/24 & hors ligne
+                  </span>
+                </li>
+              </ul>
 
-                {offer.discountPercentage && (
-                  <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-sm font-semibold text-emerald-200">
-                    <Star size={14} className="fill-current" />
-                    <span>{offer.discountPercentage}% savings available</span>
-                  </div>
-                )}
-
-                <div id="offer-features" className="mt-8 rounded-[24px] border border-white/10 bg-white/5 p-5">
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                    Included Features
-                  </p>
-                  <div className="mt-4 grid gap-3">
-                    {offer.features.map((feature, index) => (
-                      <div key={`${feature}-${index}`} className="flex items-start gap-3 text-slate-100">
-                        <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-emerald-300" />
-                        <span className="leading-6">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {offer.notes.length > 0 && (
-                  <div className="mt-6 rounded-[24px] border border-amber-300/15 bg-amber-300/10 p-5">
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-100">
-                      Important Notes
-                    </p>
-                    <div className="mt-4 grid gap-3 text-sm leading-6 text-amber-50">
-                      {offer.notes.map((note, index) => (
-                        <div key={`${note}-${index}`}>{note}</div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+              <div className="mt-8 rounded-2xl border border-blue-200/60 bg-white/70 p-4 dark:border-white/10 dark:bg-white/5">
+                <p className="text-center text-base font-bold text-blue-700 dark:text-blue-200">
+                  🇹🇳 Fait en Tunisie pour les bacheliers tunisiens.
+                </p>
               </div>
             </div>
+          </motion.div>
+        </div>
 
-            {(offer.contactPhone || offer.contactEmail || offer.contactAddress || offer.videoUrl) && (
-              <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 backdrop-blur">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                  Need Help?
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.16 }}
+          className="mt-16 md:mt-20"
+          dir="rtl"
+        >
+          <div className="text-center mb-8 space-y-3">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tight text-[#071840] dark:text-white">
+              كيفاش تستعمل TuniBac؟
+            </h2>
+            <p className="text-base md:text-xl font-semibold text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+              دليل فيديو سريع على أقسام المنصة وكيفاش تستفيد منه أكتر ما يمكن في مراجعتك.
+            </p>
+          </div>
+
+          <div className="max-w-5xl mx-auto">
+            {howToSrc ? (
+              <ResponsiveVideoPlayer
+                src={howToSrc}
+                title="كيفاش تستعمل TuniBac - فيديو شرح"
+              />
+            ) : (
+              <div className="w-full aspect-video rounded-3xl border-2 border-dashed border-blue-200 bg-blue-50/50 flex flex-col items-center justify-center p-6 md:p-10 text-center shadow-[0_18px_40px_-20px_rgba(7,24,64,0.15)]">
+                <Play size={56} className="text-blue-700/40 mb-4" strokeWidth={1.5} />
+                <h3 className="text-2xl md:text-3xl font-black text-[#071840] mb-2 leading-tight">
+                  فيديو شرح المنصة قادم قريباً 🚀
+                </h3>
+                <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 max-w-xl leading-relaxed">
+                  الإدارة تضيف حالياً فيديو تعليمي يشرح كيفاش تستعمل TuniBac خطوة بخطوة.
+                  عد لاحقاً أو سجل داباً لتبدأ مراجعتك!
                 </p>
-                <div className="mt-4 grid gap-4 text-sm text-slate-200">
-                  {offer.contactPhone && (
-                    <div className="flex items-center gap-3">
-                      <Phone size={18} className="text-[var(--offer-accent)]" />
-                      <span>{offer.contactPhone}</span>
-                    </div>
-                  )}
-                  {offer.contactEmail && (
-                    <div className="flex items-center gap-3">
-                      <Mail size={18} className="text-[var(--offer-accent)]" />
-                      <span>{offer.contactEmail}</span>
-                    </div>
-                  )}
-                  {offer.contactAddress && (
-                    <div className="flex items-start gap-3">
-                      <MapPin size={18} className="mt-0.5 text-[var(--offer-accent)]" />
-                      <span>{offer.contactAddress}</span>
-                    </div>
-                  )}
-                  {offer.videoUrl && (
-                    <a
-                      href={offer.videoUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 font-semibold text-white underline decoration-white/30 underline-offset-4"
-                    >
-                      <ArrowRight size={16} />
-                      <span>Watch the presentation video</span>
-                    </a>
-                  )}
+                <div className="mt-6 flex flex-wrap gap-3 justify-center">
+                  <Link
+                    to={ctaHref}
+                    state={ctaState}
+                    className="inline-flex items-center gap-2 rounded-full bg-[#071840] px-7 py-3 text-base font-extrabold text-white shadow-[0_18px_40px_-14px_rgba(7,24,64,0.75)] transition-all hover:-translate-y-0.5 hover:shadow-[0_22px_46px_-14px_rgba(7,24,64,0.9)]"
+                  >
+                    إبدأ توا
+                  </Link>
                 </div>
               </div>
             )}
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   )

@@ -29,6 +29,7 @@ export type PlatformOfferData = {
   backgroundImage: string
   bannerImage: string
   videoUrl: string
+  youtubeUrl: string
   logo: string
   primaryColor: string
   secondaryColor: string
@@ -56,6 +57,7 @@ export const PLATFORM_OFFER_SETTING_KEYS = [
   'platformOfferBackgroundImage',
   'platformOfferBannerImage',
   'platformOfferVideoUrl',
+  'platformOfferYouTubeUrl',
   'platformOfferLogo',
   'platformOfferPrimaryColor',
   'platformOfferSecondaryColor',
@@ -135,6 +137,7 @@ export const buildPlatformOffer = (settings: Record<string, string>): PlatformOf
   backgroundImage: settings.platformOfferBackgroundImage || '',
   bannerImage: settings.platformOfferBannerImage || '',
   videoUrl: settings.platformOfferVideoUrl || '',
+  youtubeUrl: settings.platformOfferYouTubeUrl || '',
   logo: OFFICIAL_BRAND.assets.logoHorizontal,
   primaryColor: settings.platformOfferPrimaryColor || OFFICIAL_BRAND.colors.primaryBlue,
   secondaryColor: settings.platformOfferSecondaryColor || OFFICIAL_BRAND.colors.deepBlue,

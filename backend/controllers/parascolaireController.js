@@ -83,8 +83,9 @@ const mapParascolaireFiles = (item) => {
 // Get all parascolaires (public)
 const getAllParascolaires = async (req, res) => {
   try {
+    const sectionWhere = await withSectionFilter(req);
     const parascolaires = await prisma.parascolaire.findMany({
-      where: withSectionFilter(req),
+      where: sectionWhere,
       orderBy: { createdAt: 'desc' },
     });
     res.json(parascolaires.map(mapParascolaireFiles));
@@ -97,10 +98,11 @@ const getAllParascolaires = async (req, res) => {
 const getParascolaireById = async (req, res) => {
   try {
     const { id } = req.params;
+    const sectionWhere = await withSectionFilter(req);
     const parascolaire = await prisma.parascolaire.findFirst({
       where: {
         id,
-        ...withSectionFilter(req),
+        ...sectionWhere,
       },
     });
     if (!parascolaire) {

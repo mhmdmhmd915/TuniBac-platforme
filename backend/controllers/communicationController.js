@@ -281,6 +281,8 @@ const buildPayload = (body, createdById) => {
       priorityRank: PRIORITY_RANK[priority],
       status,
       isVisible: parseBoolean(body.isVisible, true),
+      isPinned: parseBoolean(body.isPinned, false),
+      pinOrder: Number.isFinite(Number(body.pinOrder)) ? Number(body.pinOrder) : 0,
       audience,
       bacSection,
       title,
@@ -385,7 +387,13 @@ const getStudentCommunications = async (req, res) => {
         AND: [{ OR: [{ expireAt: null }, { expireAt: { gt: now } }] }],
       },
       include: ADMIN_INCLUDE,
-      orderBy: [{ priorityRank: 'desc' }, { publishAt: 'desc' }, { createdAt: 'desc' }],
+      orderBy: [
+        { isPinned: 'desc' },
+        { pinOrder: 'asc' },
+        { priorityRank: 'desc' },
+        { publishAt: 'desc' },
+        { createdAt: 'desc' },
+      ],
       take: limit,
     });
 

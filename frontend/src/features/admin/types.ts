@@ -1,4 +1,4 @@
-export type UserRole = 'STUDENT' | 'ADMIN';
+export type UserRole = 'STUDENT' | 'TEACHER' | 'ADMIN';
 export type UserStatus = 'PENDING' | 'APPROVED' | 'SUSPENDED' | 'REJECTED';
 export type BacSection =
   | 'MATHEMATIQUES'
@@ -24,7 +24,6 @@ export interface AdminUserRow {
   createdAt: string;
   _count: {
     enrollments: number;
-    homeworks: number;
     studyTasks: number;
   };
 }

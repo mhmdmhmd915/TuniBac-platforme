@@ -106,6 +106,170 @@ export const subjectsAPI = {
     api.put(`/subjects/${id}`, data),
   delete: (id: string) =>
     api.delete(`/subjects/${id}`),
+  reorder: (orderedItems: Array<{ id: string; order: number }>) =>
+    api.put('/subjects/reorder', { orderedItems }),
+  setActive: (id: string, isActive: boolean) =>
+    api.put(`/subjects/${id}`, { isActive }),
+};
+
+// Learning Steps API
+export const stepsAPI = {
+  getPublic: () => api.get('/steps'),
+  getById: (id: string) => api.get(`/steps/${id}`),
+  getAllAdmin: () => api.get('/steps/admin/all'),
+  create: (data: any) => api.post('/steps/admin', data),
+  update: (id: string, data: any) => api.put(`/steps/admin/${id}`, data),
+  delete: (id: string) => api.delete(`/steps/admin/${id}`),
+  reorder: (orderedIds: string[]) => api.put('/steps/admin/reorder', { orderedIds }),
+  setPublish: (id: string, isPublished: boolean) => api.put(`/steps/admin/${id}/publish`, { isPublished }),
+};
+
+// Learning Path API (student)
+export const learningPathAPI = {
+  getTree: () => api.get('/learning-path'),
+};
+
+// Teacher API
+export const teacherAPI = {
+  getMe: () => api.get('/teachers/me'),
+  updateProfile: (data: any) => api.put('/teachers/profile', data),
+  getContent: () => api.get('/teachers/content'),
+  getScope: () => api.get('/teachers/scope'),
+  listPublic: (params?: { limit?: number }) => api.get('/teachers/public', { params }),
+  getPublicProfile: (id: string) => api.get(`/teachers/${id}/public`),
+  uploadPhoto: (file: File) => {
+    const formData = buildSingleFileFormData('photo', file);
+    return uploadViaPresignedEndpoint({
+      file,
+      presignPath: '/teachers/photo/presign',
+      mapResponse: (data) => ({ fileUrl: data.fileUrl }),
+      fallback: () =>
+        uploadFormDataViaBackend({
+          endpoint: '/teachers/photo',
+          formData,
+          mapResponse: (data) => data,
+        }),
+    });
+  },
+};
+
+// Teacher Ads API
+export const teacherAdsAPI = {
+  getPublic: () => api.get('/teacher-ads'),
+  getAllAdmin: () => api.get('/teacher-ads/all'),
+  create: (data: any) => api.post('/teacher-ads', data),
+  update: (id: string, data: any) => api.put(`/teacher-ads/${id}`, data),
+  delete: (id: string) => api.delete(`/teacher-ads/${id}`),
+  reorder: (orderedItems: Array<{ id: string; order: number }>) => api.put('/teacher-ads/reorder', { orderedItems }),
+  uploadImage: (file: File) => {
+    const formData = buildSingleFileFormData('image', file);
+    return uploadViaPresignedEndpoint({
+      file,
+      presignPath: '/admin/media/upload/teacher-ads/presign',
+      mapResponse: (data) => ({ fileUrl: data.fileUrl }),
+      fallback: () =>
+        uploadFormDataViaBackend({
+          endpoint: '/admin/media/upload/teacher-ads',
+          formData,
+          mapResponse: (data) => data,
+        }),
+    });
+  },
+};
+
+// Shop API
+export const shopAPI = {
+  getPublic: () => api.get('/shop'),
+  listAll: () => api.get('/shop').then((res) => (res.data as any)?.products || (res.data as any)?.items || res.data),
+  getDetail: (id: string) => api.get(`/shop/${id}`).then((res) => (res.data as any)?.product || res.data),
+  getAllAdmin: () => api.get('/shop/all'),
+  create: (data: any) => api.post('/shop', data),
+  update: (id: string, data: any) => api.put(`/shop/${id}`, data),
+  delete: (id: string) => api.delete(`/shop/${id}`),
+  reorder: (orderedItems: Array<{ id: string; order: number }>) => api.put('/shop/reorder', { orderedItems }),
+  uploadImage: (file: File) => {
+    const formData = buildSingleFileFormData('image', file);
+    return uploadViaPresignedEndpoint({
+      file,
+      presignPath: '/admin/media/upload/shop/presign',
+      mapResponse: (data) => ({ fileUrl: data.fileUrl }),
+      fallback: () =>
+        uploadFormDataViaBackend({
+          endpoint: '/admin/media/upload/shop',
+          formData,
+          mapResponse: (data) => data,
+        }),
+    });
+  },
+};
+
+export const progressAPI = {
+  getMyProgress: () => api.get('/progress/me'),
+  getAggregate: () => api.get('/progress/me/aggregate'),
+  upsert: (data: { courseId?: string; exerciseId?: string; completed?: boolean; lastReadPos?: number }) =>
+    api.post('/progress/upsert', data),
+  markCompleted: (data: { courseId?: string; exerciseId?: string }) =>
+    api.post('/progress/mark-completed', data),
+};
+
+export const objectivesAPI = {
+  listMy: () => api.get('/objectives/me').then((res) => (res.data as any)?.objectives || res.data),
+  create: (payload: {
+    title: string
+    description?: string
+    stepId?: string
+    subjectId?: string
+    courseId?: string
+    exerciseId?: string
+    targetDate?: string
+    progress?: number
+  }) => api.post('/objectives', payload).then((res) => (res.data as any)?.objective || res.data),
+  get: (id: string) => api.get(`/objectives/${id}`),
+  update: (id: string, payload: any) => api.put(`/objectives/${id}`, payload),
+  delete: (id: string) => api.delete(`/objectives/${id}`),
+  complete: (id: string) => api.post(`/objectives/${id}/complete`).then((res) => (res.data as any)?.objective || res.data),
+};
+
+export const tipsAPI = {
+  listPublic: (params?: { stepId?: string; subjectId?: string; bacSection?: BacSection }) =>
+    api.get('/tips/public', { params }).then((res) => (res.data as any)?.tips || res.data),
+  listAll: () => api.get('/tips/all').then((res) => (res.data as any)?.tips || res.data),
+  create: (payload: {
+    title?: string
+    content: string
+    stepId?: string
+    subjectId?: string
+    courseId?: string
+    bacSection?: BacSection
+    order?: number
+    isPublished?: boolean
+  }) => api.post('/tips', payload),
+  update: (id: string, payload: any) => api.put(`/tips/${id}`, payload),
+  delete: (id: string) => api.delete(`/tips/${id}`),
+  setPublish: (id: string, isPublished: boolean) => api.put(`/tips/${id}/publish`, { isPublished }),
+};
+
+// Admin teacher management API
+export const adminTeachersAPI = {
+  getAll: (params?: { search?: string }) => api.get('/admin/teachers', { params }),
+  getById: (id: string) => api.get(`/admin/teachers/${id}`),
+  createTeacher: (data: any) => api.post('/admin/teachers', data),
+  setAssignments: (id: string, assignments: Array<{ subjectId?: string | null; bacSection?: string | null }>) =>
+    api.put(`/admin/teachers/${id}/assign`, { assignments }),
+  uploadImage: (file: File) => {
+    const formData = buildSingleFileFormData('image', file);
+    return uploadViaPresignedEndpoint({
+      file,
+      presignPath: '/admin/media/upload/teacher-profiles/presign',
+      mapResponse: (data) => ({ fileUrl: data.fileUrl }),
+      fallback: () =>
+        uploadFormDataViaBackend({
+          endpoint: '/admin/media/upload/teacher-profiles',
+          formData,
+          mapResponse: (data) => data,
+        }),
+    });
+  },
 };
 
 // Courses API
@@ -118,8 +282,12 @@ export const coursesAPI = {
     api.post('/courses', data),
   update: (id: string, data: any) =>
     api.put(`/courses/${id}`, data),
+  setPublish: (id: string, isPublished: boolean) =>
+    api.put(`/courses/${id}/publish`, { isPublished }),
   delete: (id: string) =>
     api.delete(`/courses/${id}`),
+  reorder: (orderedItems: Array<{ id: string; order: number }>) =>
+    api.put('/courses/reorder', { orderedItems }),
   uploadVideo: (file: File, onUploadProgress?: (progress: number) => void) => {
     return uploadFormDataViaBackend({
       endpoint: '/upload/video',
@@ -137,7 +305,7 @@ export const coursesAPI = {
 
 // Exercises API
 export const exercisesAPI = {
-  getAll: (params?: { subjectId?: string; difficulty?: string; bacSection?: BacSection }) =>
+  getAll: (params?: { subjectId?: string; courseId?: string; difficulty?: string; bacSection?: BacSection }) =>
     api.get('/exercises', { params }),
   getById: (id: string) =>
     api.get(`/exercises/${id}`),
@@ -145,8 +313,12 @@ export const exercisesAPI = {
     api.post('/exercises', data),
   update: (id: string, data: any) =>
     api.put(`/exercises/${id}`, data),
+  setPublish: (id: string, isPublished: boolean) =>
+    api.put(`/exercises/${id}/publish`, { isPublished }),
   delete: (id: string) =>
     api.delete(`/exercises/${id}`),
+  reorder: (orderedItems: Array<{ id: string; order: number }>) =>
+    api.put('/exercises/reorder', { orderedItems }),
 };
 
 // Users API
@@ -162,25 +334,6 @@ export const usersAPI = {
 export const communicationsAPI = {
   getStudentFeed: (params?: { limit?: number; bacSection?: BacSection }) =>
     api.get('/communications', { params }),
-};
-
-// Homework API
-export const homeworkAPI = {
-  upload: (file: File, onUploadProgress?: (progress: number) => void) => {
-    return uploadFormDataViaBackend({
-      endpoint: '/homework/upload',
-      formData: buildSingleFileFormData('homework', file),
-      mapResponse: (data) => data,
-      onUploadProgress: (progressEvent) => {
-        if (onUploadProgress && progressEvent.total) {
-          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          onUploadProgress(progress);
-        }
-      },
-    });
-  },
-  getMySubmissions: () =>
-    api.get('/homework/my-submissions'),
 };
 
 // Admin API
@@ -627,6 +780,73 @@ export const parascolairesAPI = {
         }),
     })
   },
+};
+
+export const studySquadAPI = {
+  listMySquads: () => api.get('/study-squads/mine').then((res) => (res.data as any)?.squads || res.data),
+  listMyInvitations: () => api.get('/study-squads/invitations').then((res) => (res.data as any)?.invitations || res.data),
+  createSquad: (payload: { name: string }) => api.post('/study-squads', payload).then((res) => (res.data as any)?.squad || res.data),
+  joinByCode: (payload: { code: string }) => api.post('/study-squads/join-by-code', payload).then((res) => (res.data as any)?.squad || res.data),
+  getSquad: (id: string) => api.get(`/study-squads/${id}`).then((res) => (res.data as any)?.squad || res.data),
+  renameSquad: (id: string, payload: { name: string }) => api.patch(`/study-squads/${id}/rename`, payload).then((res) => (res.data as any)?.squad || res.data),
+  leaveSquad: (id: string) => api.post(`/study-squads/${id}/leave`).then((res) => (res.data as any) || {}),
+  disbandSquad: (id: string) => api.post(`/study-squads/${id}/disband`).then((res) => (res.data as any) || {}),
+  inviteByPhone: (id: string, payload: { phone: string }) => api.post(`/study-squads/${id}/invite`, payload).then((res) => (res.data as any)?.invitation || res.data),
+  cancelInvitation: (id: string, invitationId: string) => api.delete(`/study-squads/${id}/invitations/${invitationId}`).then((res) => (res.data as any) || {}),
+  acceptInvitation: (invitationId: string) => api.post(`/study-squads/invitations/${invitationId}/accept`).then((res) => (res.data as any)?.squad || res.data),
+  declineInvitation: (invitationId: string) => api.post(`/study-squads/invitations/${invitationId}/decline`).then((res) => (res.data as any) || {}),
+  removeMember: (id: string, userId: string) => api.post(`/study-squads/${id}/members/${userId}/remove`).then((res) => (res.data as any) || {}),
+  upsertGoal: (id: string, payload: { title: string; description?: string; targetDate?: string; progress?: number; completed?: boolean }) =>
+    api.post(`/study-squads/${id}/goal`, payload).then((res) => (res.data as any)?.goal || res.data),
+  listChat: (id: string) => api.get(`/study-squads/${id}/chat`).then((res) => (res.data as any)?.messages || res.data),
+  sendChatMessage: (id: string, payload: { content: string }) =>
+    api.post(`/study-squads/${id}/chat`, payload).then((res) => (res.data as any)?.message || res.data),
+};
+
+export const liveStudyAPI = {
+  listSessions: () => api.get('/live-study/sessions').then((res) => (res.data as any)?.sessions || res.data),
+  createSession: (payload: { subject?: string; topic?: string; title?: string; subjectId?: string; studySquadId?: string }) =>
+    api.post('/live-study/sessions', payload).then((res) => (res.data as any)?.session || res.data),
+  getSession: (id: string) =>
+    api.get(`/live-study/sessions/${id}`).then((res) => (res.data as any)?.session || res.data),
+  joinSession: (id: string) =>
+    api.post(`/live-study/sessions/${id}/join`).then((res) => (res.data as any)?.session || res.data),
+  leaveSession: (id: string) =>
+    api.post(`/live-study/sessions/${id}/leave`).then((res) => (res.data as any)?.session || res.data),
+  finishSession: (id: string) =>
+    api.post(`/live-study/sessions/${id}/finish`).then((res) => (res.data as any)?.session || res.data),
+  heartbeat: (id: string) =>
+    api.post(`/live-study/sessions/${id}/heartbeat`).then((res) => (res.data as any) || {}),
+  updateMediaState: (id: string, payload: { mic?: boolean; camera?: boolean; micEnabled?: boolean; camEnabled?: boolean }) =>
+    api.put(`/live-study/sessions/${id}/media`, payload),
+  sendChat: (id: string, payload: { content: string }) =>
+    api.post(`/live-study/sessions/${id}/chat`, payload).then((res) => (res.data as any)?.message || res.data),
+  sendChatMessage: (id: string, content: string) =>
+    api.post(`/live-study/sessions/${id}/chat`, { content }).then((res) => (res.data as any)?.message || res.data),
+  getChatHistory: (id: string) =>
+    api.get(`/live-study/sessions/${id}/chat`).then((res) => (res.data as any)?.messages || res.data),
+  getParticipants: (id: string) =>
+    api.get(`/live-study/sessions/${id}/participants`).then((res) => (res.data as any)?.participants || res.data),
+  getRanking: (period: 'daily' | 'weekly' | 'monthly') =>
+    api.get(`/live-study/ranking`, { params: { period } }).then((res) => (res.data as any)?.ranking || res.data),
+  getBadges: () =>
+    api.get('/live-study/badges').then((res) => (res.data as any)?.badges || res.data),
+  postHeartbeat: (sessionId?: string) =>
+    api.post('/live-study/heartbeat', { sessionId }).then((res) => (res.data as any) || {}),
+  listAdminSessions: () => api.get('/admin/live-study/sessions').then((res) => (res.data as any)?.sessions || res.data),
+  adminListAllSessions: (params?: {
+    bacSection?: string;
+    subject?: string;
+    status?: string;
+    creatorSearch?: string;
+  }) =>
+    api.get('/admin/live-study/sessions', { params }).then((res) => (res.data as any)?.sessions || (res.data as any)?.items || res.data),
+  adminToggleGlobal: (enabled: boolean) =>
+    api.post('/admin/live-study/toggle-global', { enabled }).then((res) => (res.data as any) || {}),
+  adminCloseSession: (id: string, payload?: { reason?: string }) =>
+    api.post(`/admin/live-study/sessions/${id}/close`, payload || {}).then((res) => (res.data as any) || {}),
+  adminDeleteSession: (id: string) =>
+    api.delete(`/admin/live-study/sessions/${id}`).then((res) => (res.data as any) || {}),
 };
 
 export default api;

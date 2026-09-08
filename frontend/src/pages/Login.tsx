@@ -31,7 +31,8 @@ const Login = () => {
       const response = await authAPI.login({ phone: normalizedPhone, password })
       const nextUser = response.data.user
       const fromState = location.state as { from?: { pathname?: string; search?: string } } | null
-      const fallbackPath = nextUser.role === 'ADMIN' ? '/admin' : '/dashboard'
+      const fallbackPath =
+        nextUser.role === 'ADMIN' ? '/admin' : nextUser.role === 'TEACHER' ? '/teacher' : '/learning-path'
       const fromPath = fromState?.from?.pathname
         ? `${fromState.from.pathname}${fromState.from.search || ''}`
         : fallbackPath

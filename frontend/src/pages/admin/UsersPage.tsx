@@ -73,7 +73,11 @@ const StatusBadge = ({ status }: { status: UserStatus }) => {
 const RoleBadge = ({ role }: { role: UserRole }) => (
   <span
     className={`rounded-full px-3 py-1 text-xs font-semibold ${
-      role === 'ADMIN'
+      role === 'STUDENT'
+        ? 'bg-amber-500/10 text-amber-500'
+        : role === 'TEACHER'
+        ? 'bg-sky-500/10 text-sky-500'
+        : role === 'ADMIN'
         ? 'bg-violet-500/10 text-violet-500'
         : 'bg-slate-500/10 text-slate-400'
     }`}
@@ -637,6 +641,7 @@ const UsersPage: React.FC = () => {
           >
             <option value="">Tous rôles</option>
             <option value="STUDENT">STUDENT</option>
+            <option value="TEACHER">TEACHER</option>
             <option value="ADMIN">ADMIN</option>
           </select>
           <select
@@ -860,6 +865,7 @@ const UsersPage: React.FC = () => {
                     aria-label="User role"
                   >
                     <option value="STUDENT">STUDENT</option>
+                    <option value="TEACHER">TEACHER</option>
                     <option value="ADMIN">ADMIN</option>
                   </select>
                 </div>

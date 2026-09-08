@@ -9,7 +9,7 @@ interface User {
   firstName: string;
   lastName: string;
   bacSection: BacSection;
-  role: 'STUDENT' | 'ADMIN';
+  role: 'STUDENT' | 'TEACHER' | 'ADMIN';
   status: 'PENDING' | 'APPROVED' | 'SUSPENDED' | 'REJECTED';
   createdAt?: string;
 }

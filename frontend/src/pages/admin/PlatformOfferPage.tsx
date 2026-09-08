@@ -160,7 +160,7 @@ const PlatformOfferPage = () => {
   }
 
   return (
-    <div className="mx-auto max-w-[1600px] px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-[1600px] px-4 py-8 pb-28 sm:px-6 lg:px-8">
       <SuccessToast
         isVisible={toast.open}
         type={toast.type}
@@ -227,73 +227,111 @@ const PlatformOfferPage = () => {
                   </button>
                 </div>
 
-                <input
-                  value={values.platformOfferTitle || ''}
-                  onChange={(e) => setValue('platformOfferTitle', e.target.value)}
-                  className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                  placeholder="Main Title"
-                  aria-label="Main title"
-                />
-                <input
-                  value={values.platformOfferSubtitle || ''}
-                  onChange={(e) => setValue('platformOfferSubtitle', e.target.value)}
-                  className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                  placeholder="Subtitle"
-                  aria-label="Subtitle"
-                />
-                <textarea
-                  rows={4}
-                  value={values.platformOfferDescription || ''}
-                  onChange={(e) => setValue('platformOfferDescription', e.target.value)}
-                  className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                  placeholder="Description"
-                  aria-label="Description"
-                />
+                <div className="space-y-4 pt-2">
+                  <div className="border-b border-black/5 pb-4 dark:border-white/5">
+                    <div className="mb-3 flex items-baseline justify-between">
+                      <div>
+                        <div className="font-semibold text-gray-900 dark:text-white">Offer Content</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">Main headline and description shown on the landing page</div>
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Main Title</span>
+                        <input
+                          value={values.platformOfferTitle || ''}
+                          onChange={(e) => setValue('platformOfferTitle', e.target.value)}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder="e.g. Prépa Bac 2025 — TuniBac Premium"
+                        />
+                      </label>
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Subtitle</span>
+                        <input
+                          value={values.platformOfferSubtitle || ''}
+                          onChange={(e) => setValue('platformOfferSubtitle', e.target.value)}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder="Supporting line under the main title"
+                        />
+                      </label>
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Description</span>
+                        <textarea
+                          rows={4}
+                          value={values.platformOfferDescription || ''}
+                          onChange={(e) => setValue('platformOfferDescription', e.target.value)}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder="Longer paragraph describing what's included in the offer"
+                        />
+                      </label>
+                    </div>
+                  </div>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                  <input
-                    value={values.platformOfferPrice || ''}
-                    onChange={(e) => setValue('platformOfferPrice', e.target.value)}
-                    className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                    placeholder="Price"
-                    aria-label="Price"
-                  />
-                  <input
-                    value={values.platformOfferOldPrice || ''}
-                    onChange={(e) => setValue('platformOfferOldPrice', e.target.value)}
-                    className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                    placeholder="Old Price"
-                    aria-label="Old price"
-                  />
-                  <input
-                    value={values.platformOfferDiscountPercentage || ''}
-                    onChange={(e) => setValue('platformOfferDiscountPercentage', e.target.value)}
-                    className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                    placeholder="Discount Percentage"
-                    aria-label="Discount percentage"
-                  />
-                  <input
-                    value={values.platformOfferPromotionBadge || ''}
-                    onChange={(e) => setValue('platformOfferPromotionBadge', e.target.value)}
-                    className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                    placeholder="Promotion Badge"
-                    aria-label="Promotion badge"
-                  />
-                  <input
-                    value={values.platformOfferButtonText || ''}
-                    onChange={(e) => setValue('platformOfferButtonText', e.target.value)}
-                    className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                    placeholder="CTA Button Text"
-                    aria-label="Call to action button text"
-                  />
-                  <input
-                    type="number"
-                    value={values.platformOfferDisplayOrder || '1'}
-                    onChange={(e) => setValue('platformOfferDisplayOrder', e.target.value)}
-                    className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                    placeholder="Display Order"
-                    aria-label="Display order"
-                  />
+                  <div className="pt-2">
+                    <div className="mb-3 flex items-baseline justify-between">
+                      <div>
+                        <div className="font-semibold text-gray-900 dark:text-white">Pricing & CTA</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">Price point, discount badge, and call-to-action button</div>
+                      </div>
+                    </div>
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Price</span>
+                        <input
+                          value={values.platformOfferPrice || ''}
+                          onChange={(e) => setValue('platformOfferPrice', e.target.value)}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder="e.g. 120 DT"
+                        />
+                      </label>
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Old Price (strikethrough)</span>
+                        <input
+                          value={values.platformOfferOldPrice || ''}
+                          onChange={(e) => setValue('platformOfferOldPrice', e.target.value)}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder="e.g. 180 DT"
+                        />
+                      </label>
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Discount Percentage</span>
+                        <input
+                          value={values.platformOfferDiscountPercentage || ''}
+                          onChange={(e) => setValue('platformOfferDiscountPercentage', e.target.value)}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder="e.g. 33"
+                        />
+                      </label>
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Promotion Badge</span>
+                        <input
+                          value={values.platformOfferPromotionBadge || ''}
+                          onChange={(e) => setValue('platformOfferPromotionBadge', e.target.value)}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder="e.g. OFFRE LIMITÉE"
+                        />
+                      </label>
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">CTA Button Text</span>
+                        <input
+                          value={values.platformOfferButtonText || ''}
+                          onChange={(e) => setValue('platformOfferButtonText', e.target.value)}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder="e.g. Réserver ma place"
+                        />
+                      </label>
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Display Order</span>
+                        <input
+                          type="number"
+                          value={values.platformOfferDisplayOrder || '1'}
+                          onChange={(e) => setValue('platformOfferDisplayOrder', e.target.value)}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder="e.g. 1"
+                        />
+                      </label>
+                    </div>
+                  </div>
                 </div>
               </div>
             </AdminCard>
@@ -301,92 +339,169 @@ const PlatformOfferPage = () => {
             <AdminCard className="p-6 sm:p-8">
               <SectionTitle title="Media & Theme" subtitle="Upload offer assets and adjust colors" />
               <div className="mt-6 grid gap-6">
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Background Image</span>
-                    <ImageUploader
-                      value={toAssetUrl(values.platformOfferBackgroundImage)}
-                      onChange={(url) => setValue('platformOfferBackgroundImage', toRelativeAsset(url))}
-                      onUpload={async (file) => {
-                        const response = await adminAPI.uploadSettingAsset('offer-background', file)
-                        return toAssetUrl(String(response.data.fileUrl || ''))
-                      }}
-                    />
+                <div className="border-b border-black/5 pb-5 dark:border-white/5">
+                  <div className="mb-4">
+                    <div className="font-semibold text-gray-900 dark:text-white">Images & Video</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">Upload visual assets for the offer page hero area</div>
                   </div>
-                  <div className="space-y-2">
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Banner Image</span>
-                    <ImageUploader
-                      value={toAssetUrl(values.platformOfferBannerImage)}
-                      onChange={(url) => setValue('platformOfferBannerImage', toRelativeAsset(url))}
-                      onUpload={async (file) => {
-                        const response = await adminAPI.uploadSettingAsset('offer-banner', file)
-                        return toAssetUrl(String(response.data.fileUrl || ''))
-                      }}
-                    />
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Background Image</span>
+                      <ImageUploader
+                        value={toAssetUrl(values.platformOfferBackgroundImage)}
+                        onChange={(url) => setValue('platformOfferBackgroundImage', toRelativeAsset(url))}
+                        onUpload={async (file) => {
+                          const response = await adminAPI.uploadSettingAsset('offer-background', file)
+                          return toAssetUrl(String(response.data.fileUrl || ''))
+                        }}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Banner Image</span>
+                      <ImageUploader
+                        value={toAssetUrl(values.platformOfferBannerImage)}
+                        onChange={(url) => setValue('platformOfferBannerImage', toRelativeAsset(url))}
+                        onUpload={async (file) => {
+                          const response = await adminAPI.uploadSettingAsset('offer-banner', file)
+                          return toAssetUrl(String(response.data.fileUrl || ''))
+                        }}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Offer Logo</span>
+                      <ImageUploader
+                        value={toAssetUrl(values.platformOfferLogo)}
+                        onChange={(url) => setValue('platformOfferLogo', toRelativeAsset(url))}
+                        onUpload={async (file) => {
+                          const response = await adminAPI.uploadSettingAsset('offer-logo', file)
+                          return toAssetUrl(String(response.data.fileUrl || ''))
+                        }}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Offer Video</span>
+                      <VideoUploader
+                        value={toAssetUrl(values.platformOfferVideoUrl)}
+                        onChange={(url) => setValue('platformOfferVideoUrl', toRelativeAsset(url))}
+                        onUpload={async (file, options) => {
+                          const response = await adminAPI.uploadSettingAsset('offer-video', file, options)
+                          return toAssetUrl(String(response.data.fileUrl || ''))
+                        }}
+                        placeholder="Upload optional offer video directly to Cloudflare R2"
+                      />
+                      <label className="block space-y-1.5 pt-1">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Video URL (or paste path)</span>
+                        <input
+                          value={values.platformOfferVideoUrl || ''}
+                          onChange={(e) => setValue('platformOfferVideoUrl', e.target.value)}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder="e.g. /uploads/offer-video.mp4 or https://..."
+                        />
+                      </label>
+                    </div>
+                    <div className="space-y-2 md:col-span-2">
+                      <div className="mb-1">
+                        <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                          فيديو كيفاش تستعمل TuniBac؟
+                        </span>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                          فيديو تعليمي على YouTube يظهر في صفحة العرض كيفاش يستفيد الطالب من المنصة
+                        </p>
+                      </div>
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          YouTube Video URL
+                        </span>
+                        <input
+                          value={values.platformOfferYouTubeUrl || ''}
+                          onChange={(e) => setValue('platformOfferYouTubeUrl', e.target.value.trim())}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5 focus:outline-none focus:ring-2 focus:ring-[#0B5ED7]/40"
+                          placeholder="https://www.youtube.com/watch?v=..."
+                        />
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          Supports: youtube.com/watch?v=, youtu.be/, /shorts/, /embed/ liens
+                        </p>
+                      </label>
+                      {values.platformOfferYouTubeUrl && (
+                        <div className="mt-2 rounded-2xl overflow-hidden border border-blue-100 bg-blue-50/40">
+                          <div className="px-4 py-2 flex items-center justify-between border-b border-blue-100">
+                            <span className="text-xs font-semibold text-[#071840]">Aperçu vidéo</span>
+                            <button
+                              type="button"
+                              onClick={() => setValue('platformOfferYouTubeUrl', '')}
+                              className="text-xs font-medium text-rose-600 hover:text-rose-700"
+                            >
+                              Supprimer
+                            </button>
+                          </div>
+                          <div className="aspect-video bg-black">
+                            {(() => {
+                              const src = values.platformOfferYouTubeUrl || ''
+                              const isYt = /youtube|youtu\.be/.test(src)
+                              if (!isYt) return (
+                                <div className="w-full h-full flex items-center justify-center text-xs text-gray-400 p-4 text-center">
+                                  Collez un lien YouTube valide pour afficher l'aperçu
+                                </div>
+                              )
+                              const idMatch = src.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([A-Za-z0-9_-]{11})/)
+                              const id = idMatch?.[1]
+                              if (!id) return (
+                                <div className="w-full h-full flex items-center justify-center text-xs text-gray-400 p-4 text-center">
+                                  ID vidéo introuvable dans ce lien
+                                </div>
+                              )
+                              return (
+                                <iframe
+                                  src={`https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1`}
+                                  title="How-To preview"
+                                  className="w-full h-full"
+                                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                  allowFullScreen
+                                  loading="lazy"
+                                />
+                              )
+                            })()}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Offer Logo</span>
-                    <ImageUploader
-                      value={toAssetUrl(values.platformOfferLogo)}
-                      onChange={(url) => setValue('platformOfferLogo', toRelativeAsset(url))}
-                      onUpload={async (file) => {
-                        const response = await adminAPI.uploadSettingAsset('offer-logo', file)
-                        return toAssetUrl(String(response.data.fileUrl || ''))
-                      }}
-                    />
+                <div className="pt-1">
+                  <div className="mb-4">
+                    <div className="font-semibold text-gray-900 dark:text-white">Theme Colors</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">Match the offer page to your brand palette</div>
                   </div>
-                  <div className="space-y-3">
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Offer Video</span>
-                    <VideoUploader
-                      value={toAssetUrl(values.platformOfferVideoUrl)}
-                      onChange={(url) => setValue('platformOfferVideoUrl', toRelativeAsset(url))}
-                      onUpload={async (file, options) => {
-                        const response = await adminAPI.uploadSettingAsset('offer-video', file, options)
-                        return toAssetUrl(String(response.data.fileUrl || ''))
-                      }}
-                      placeholder="Upload optional offer video directly to Cloudflare R2"
-                    />
-                    <input
-                      value={values.platformOfferVideoUrl || ''}
-                      onChange={(e) => setValue('platformOfferVideoUrl', e.target.value)}
-                      className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                      placeholder="Video URL or uploaded file path"
-                      aria-label="Video URL or uploaded file path"
-                    />
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <label className="space-y-2">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Primary Color</span>
+                      <input
+                        type="color"
+                        value={values.platformOfferPrimaryColor || '#0B5ED7'}
+                        onChange={(e) => setValue('platformOfferPrimaryColor', e.target.value)}
+                        className="h-14 w-full rounded-2xl bg-gray-50 px-3 py-2 dark:bg-white/5"
+                      />
+                    </label>
+                    <label className="space-y-2">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Secondary Color</span>
+                      <input
+                        type="color"
+                        value={values.platformOfferSecondaryColor || '#06295B'}
+                        onChange={(e) => setValue('platformOfferSecondaryColor', e.target.value)}
+                        className="h-14 w-full rounded-2xl bg-gray-50 px-3 py-2 dark:bg-white/5"
+                      />
+                    </label>
+                    <label className="space-y-2">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Accent Color</span>
+                      <input
+                        type="color"
+                        value={values.platformOfferAccentColor || '#E70013'}
+                        onChange={(e) => setValue('platformOfferAccentColor', e.target.value)}
+                        className="h-14 w-full rounded-2xl bg-gray-50 px-3 py-2 dark:bg-white/5"
+                      />
+                    </label>
                   </div>
-                </div>
-
-                <div className="grid gap-4 md:grid-cols-3">
-                  <label className="space-y-2">
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Primary Color</span>
-                    <input
-                      type="color"
-                      value={values.platformOfferPrimaryColor || '#0B5ED7'}
-                      onChange={(e) => setValue('platformOfferPrimaryColor', e.target.value)}
-                      className="h-14 w-full rounded-2xl bg-gray-50 px-3 py-2 dark:bg-white/5"
-                    />
-                  </label>
-                  <label className="space-y-2">
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Secondary Color</span>
-                    <input
-                      type="color"
-                      value={values.platformOfferSecondaryColor || '#06295B'}
-                      onChange={(e) => setValue('platformOfferSecondaryColor', e.target.value)}
-                      className="h-14 w-full rounded-2xl bg-gray-50 px-3 py-2 dark:bg-white/5"
-                    />
-                  </label>
-                  <label className="space-y-2">
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Accent Color</span>
-                    <input
-                      type="color"
-                      value={values.platformOfferAccentColor || '#E70013'}
-                      onChange={(e) => setValue('platformOfferAccentColor', e.target.value)}
-                      className="h-14 w-full rounded-2xl bg-gray-50 px-3 py-2 dark:bg-white/5"
-                    />
-                  </label>
                 </div>
               </div>
             </AdminCard>
@@ -396,14 +511,20 @@ const PlatformOfferPage = () => {
               <div className="mt-6 space-y-6">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <div className="font-semibold text-gray-900 dark:text-white">Features List</div>
+                    <div>
+                      <div className="font-semibold text-gray-900 dark:text-white">Features List</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Bullet-point benefits shown under the pricing card</div>
+                    </div>
                     <ActionButton tone="neutral" onClick={() => setFeatures((previous) => [...previous, ''])} icon={<Plus size={16} />}>
                       Add Feature
                     </ActionButton>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     {features.map((feature, index) => (
-                      <div key={`feature-${index}`} className="flex gap-3">
+                      <div key={`feature-${index}`} className="flex gap-3 items-start pt-1">
+                        <label className="pt-2.5 shrink-0 text-xs font-semibold text-gray-400 dark:text-gray-500 w-8 text-center">
+                          #{index + 1}
+                        </label>
                         <input
                           value={feature}
                           onChange={(e) =>
@@ -411,32 +532,43 @@ const PlatformOfferPage = () => {
                               previous.map((item, itemIndex) => (itemIndex === index ? e.target.value : item))
                             )
                           }
-                          className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                          placeholder="Feature"
-                          aria-label={`Feature ${index + 1}`}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder={`e.g. Accès illimité à tous les cours Bac ${index + 1}`}
                         />
                         <ActionButton
                           tone="danger"
                           onClick={() => setFeatures((previous) => previous.filter((_, itemIndex) => itemIndex !== index))}
                           icon={<Trash2 size={16} />}
+                          className="shrink-0 mt-0.5"
                         >
                           Remove
                         </ActionButton>
                       </div>
                     ))}
+                    {features.length === 0 && (
+                      <div className="rounded-2xl border border-dashed border-black/10 px-4 py-5 text-center text-sm text-gray-500 dark:border-white/10 dark:text-gray-400">
+                        No features added yet — click "Add Feature" above to start.
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-3 pt-2">
                   <div className="flex items-center justify-between">
-                    <div className="font-semibold text-gray-900 dark:text-white">Important Notes</div>
+                    <div>
+                      <div className="font-semibold text-gray-900 dark:text-white">Important Notes</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Fine print / caveats shown under a dedicated notes section</div>
+                    </div>
                     <ActionButton tone="neutral" onClick={() => setNotes((previous) => [...previous, ''])} icon={<Plus size={16} />}>
                       Add Note
                     </ActionButton>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     {notes.map((note, index) => (
-                      <div key={`note-${index}`} className="flex gap-3">
+                      <div key={`note-${index}`} className="flex gap-3 items-start pt-1">
+                        <label className="pt-2.5 shrink-0 text-xs font-semibold text-gray-400 dark:text-gray-500 w-8 text-center">
+                          #{index + 1}
+                        </label>
                         <input
                           value={note}
                           onChange={(e) =>
@@ -444,66 +576,58 @@ const PlatformOfferPage = () => {
                               previous.map((item, itemIndex) => (itemIndex === index ? e.target.value : item))
                             )
                           }
-                          className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                          placeholder="Important note"
-                          aria-label={`Important note ${index + 1}`}
+                          className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                          placeholder={`e.g. Offre valable jusqu'au 31 décembre ${index + 1}`}
                         />
                         <ActionButton
                           tone="danger"
                           onClick={() => setNotes((previous) => previous.filter((_, itemIndex) => itemIndex !== index))}
                           icon={<Trash2 size={16} />}
+                          className="shrink-0 mt-0.5"
                         >
                           Remove
                         </ActionButton>
                       </div>
                     ))}
+                    {notes.length === 0 && (
+                      <div className="rounded-2xl border border-dashed border-black/10 px-4 py-5 text-center text-sm text-gray-500 dark:border-white/10 dark:text-gray-400">
+                        No notes added yet — click "Add Note" to include fine print.
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </AdminCard>
 
             <AdminCard className="p-6 sm:p-8">
-              <SectionTitle title="Feature Cards" subtitle="Add or remove unlimited marketing cards" />
+              <div className="flex items-start justify-between flex-col sm:flex-row sm:items-center gap-3">
+                <SectionTitle title="Feature Cards" subtitle="Add or remove unlimited marketing cards displayed on the offer page" />
+                <ActionButton tone="neutral" onClick={() => setCards((previous) => [...previous, createCard(previous.length + 1)])} icon={<Plus size={16} />}>
+                  Add Feature Card
+                </ActionButton>
+              </div>
               <div className="mt-6 space-y-4">
                 {cards.map((card, index) => (
-                  <div key={card.id} className="rounded-3xl bg-gray-50 p-4 dark:bg-white/5">
-                    <div className="grid gap-4 md:grid-cols-[100px_1fr_1fr_auto]">
-                      <input
-                        value={card.icon}
-                        onChange={(e) =>
-                          setCards((previous) =>
-                            previous.map((item) => (item.id === card.id ? { ...item, icon: e.target.value } : item))
-                          )
-                        }
-                        className="rounded-2xl bg-white px-4 py-3 dark:bg-[#111]"
-                        placeholder="Icon"
-                        aria-label={`Card ${index + 1} icon`}
-                      />
-                      <input
-                        value={card.title}
-                        onChange={(e) =>
-                          setCards((previous) =>
-                            previous.map((item) => (item.id === card.id ? { ...item, title: e.target.value } : item))
-                          )
-                        }
-                        className="rounded-2xl bg-white px-4 py-3 dark:bg-[#111]"
-                        placeholder="Card title"
-                        aria-label={`Card ${index + 1} title`}
-                      />
-                      <input
-                        value={card.description}
-                        onChange={(e) =>
-                          setCards((previous) =>
-                            previous.map((item) =>
-                              item.id === card.id ? { ...item, description: e.target.value } : item
+                  <div key={card.id} className="rounded-3xl bg-gray-50 p-4 sm:p-5 dark:bg-white/5">
+                    <div className="mb-3 flex items-center justify-between">
+                      <div className="text-sm font-semibold text-gray-900 dark:text-white">Card #{index + 1}</div>
+                    </div>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Icon (Lucide name)</span>
+                        <input
+                          value={card.icon}
+                          onChange={(e) =>
+                            setCards((previous) =>
+                              previous.map((item) => (item.id === card.id ? { ...item, icon: e.target.value } : item))
                             )
-                          )
-                        }
-                        className="rounded-2xl bg-white px-4 py-3 dark:bg-[#111]"
-                        placeholder="Card description"
-                        aria-label={`Card ${index + 1} description`}
-                      />
-                      <div className="flex gap-3">
+                          }
+                          className="w-full rounded-2xl bg-white px-4 py-2.5 dark:bg-[#111]"
+                          placeholder="e.g. Book, Target, Video"
+                        />
+                      </label>
+                      <label className="block space-y-1.5">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Display Order</span>
                         <input
                           type="number"
                           value={card.order}
@@ -514,127 +638,194 @@ const PlatformOfferPage = () => {
                               )
                             )
                           }
-                          className="w-24 rounded-2xl bg-white px-4 py-3 dark:bg-[#111]"
-                          placeholder="Order"
-                          aria-label={`Card ${index + 1} order`}
+                          className="w-full rounded-2xl bg-white px-4 py-2.5 dark:bg-[#111]"
+                          placeholder="e.g. 1"
                         />
-                        <ActionButton
-                          tone="danger"
-                          onClick={() => setCards((previous) => previous.filter((item) => item.id !== card.id))}
-                          icon={<Trash2 size={16} />}
-                        >
-                          Remove
-                        </ActionButton>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                <ActionButton tone="neutral" onClick={() => setCards((previous) => [...previous, createCard(previous.length + 1)])} icon={<Plus size={16} />}>
-                  Add Feature Card
-                </ActionButton>
-              </div>
-            </AdminCard>
-
-            <AdminCard className="p-6 sm:p-8">
-              <SectionTitle title="Promotions & Contact" subtitle="Manage active campaigns and support contacts" />
-              <div className="mt-6 space-y-4">
-                {promotions.map((promotion) => (
-                  <div key={promotion.id} className="rounded-3xl bg-gray-50 p-4 dark:bg-white/5">
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <input
-                        value={promotion.title}
-                        onChange={(e) =>
-                          setPromotions((previous) =>
-                            previous.map((item) => (item.id === promotion.id ? { ...item, title: e.target.value } : item))
-                          )
-                        }
-                        className="rounded-2xl bg-white px-4 py-3 dark:bg-[#111]"
-                        placeholder="Promotion title"
-                        aria-label="Promotion title"
-                      />
-                      <input
-                        value={promotion.badge}
-                        onChange={(e) =>
-                          setPromotions((previous) =>
-                            previous.map((item) => (item.id === promotion.id ? { ...item, badge: e.target.value } : item))
-                          )
-                        }
-                        className="rounded-2xl bg-white px-4 py-3 dark:bg-[#111]"
-                        placeholder="Promotion badge"
-                        aria-label="Promotion badge"
-                      />
-                      <textarea
-                        rows={3}
-                        value={promotion.description}
-                        onChange={(e) =>
-                          setPromotions((previous) =>
-                            previous.map((item) =>
-                              item.id === promotion.id ? { ...item, description: e.target.value } : item
-                            )
-                          )
-                        }
-                        className="rounded-2xl bg-white px-4 py-3 dark:bg-[#111] md:col-span-2"
-                        placeholder="Promotion description"
-                        aria-label="Promotion description"
-                      />
-                    </div>
-                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                      <label className="inline-flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                      </label>
+                      <label className="block space-y-1.5 md:col-span-2">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Card Title</span>
                         <input
-                          type="checkbox"
-                          checked={promotion.isActive}
+                          value={card.title}
                           onChange={(e) =>
-                            setPromotions((previous) =>
+                            setCards((previous) =>
+                              previous.map((item) => (item.id === card.id ? { ...item, title: e.target.value } : item))
+                            )
+                          }
+                          className="w-full rounded-2xl bg-white px-4 py-2.5 dark:bg-[#111]"
+                          placeholder="e.g. Cours vidéo complets"
+                        />
+                      </label>
+                      <label className="block space-y-1.5 md:col-span-2">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Card Description</span>
+                        <input
+                          value={card.description}
+                          onChange={(e) =>
+                            setCards((previous) =>
                               previous.map((item) =>
-                                item.id === promotion.id
-                                  ? { ...item, isActive: e.target.checked }
-                                  : e.target.checked
-                                  ? { ...item, isActive: false }
-                                  : item
+                                item.id === card.id ? { ...item, description: e.target.value } : item
                               )
                             )
                           }
+                          className="w-full rounded-2xl bg-white px-4 py-2.5 dark:bg-[#111]"
+                          placeholder="Short description shown under the title"
                         />
-                        <span>Active promotion</span>
                       </label>
+                    </div>
+                    <div className="mt-4 flex justify-end">
                       <ActionButton
                         tone="danger"
-                        onClick={() =>
-                          setPromotions((previous) => previous.filter((item) => item.id !== promotion.id))
-                        }
+                        onClick={() => setCards((previous) => previous.filter((item) => item.id !== card.id))}
                         icon={<Trash2 size={16} />}
                       >
-                        Remove
+                        Remove Card
                       </ActionButton>
                     </div>
                   </div>
                 ))}
-                <ActionButton tone="neutral" onClick={() => setPromotions((previous) => [...previous, createPromotion()])} icon={<Plus size={16} />}>
-                  Add Promotion
-                </ActionButton>
+                {cards.length === 0 && (
+                  <div className="rounded-3xl border border-dashed border-black/10 px-4 py-10 text-center text-sm text-gray-500 dark:border-white/10 dark:text-gray-400">
+                    No feature cards yet — click "Add Feature Card" above to build the marketing grid.
+                  </div>
+                )}
+              </div>
+            </AdminCard>
 
-                <div className="grid gap-4 md:grid-cols-3">
-                  <input
-                    value={values.contactPhone || ''}
-                    onChange={(e) => setValue('contactPhone', e.target.value)}
-                    className="rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                    placeholder="Contact phone"
-                    aria-label="Contact phone"
-                  />
-                  <input
-                    value={values.contactEmail || ''}
-                    onChange={(e) => setValue('contactEmail', e.target.value)}
-                    className="rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                    placeholder="Contact email"
-                    aria-label="Contact email"
-                  />
-                  <input
-                    value={values.contactAddress || ''}
-                    onChange={(e) => setValue('contactAddress', e.target.value)}
-                    className="rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"
-                    placeholder="Contact address"
-                    aria-label="Contact address"
-                  />
+            <AdminCard className="p-6 sm:p-8">
+              <SectionTitle title="Promotions & Contact" subtitle="Manage active campaigns and support contact information" />
+              <div className="mt-6 space-y-6">
+                <div className="space-y-3 border-b border-black/5 pb-6 dark:border-white/5">
+                  <div className="flex items-start justify-between flex-col sm:flex-row sm:items-center gap-3">
+                    <div>
+                      <div className="font-semibold text-gray-900 dark:text-white">Active Promotions</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Optional time-sensitive banners (only one can be active at a time)</div>
+                    </div>
+                    <ActionButton tone="neutral" onClick={() => setPromotions((previous) => [...previous, createPromotion()])} icon={<Plus size={16} />}>
+                      Add Promotion
+                    </ActionButton>
+                  </div>
+                  <div className="space-y-4">
+                    {promotions.map((promotion, index) => (
+                      <div key={promotion.id} className="rounded-3xl bg-gray-50 p-4 sm:p-5 dark:bg-white/5">
+                        <div className="mb-3 flex items-center justify-between">
+                          <div className="text-sm font-semibold text-gray-900 dark:text-white">Promotion #{index + 1}</div>
+                        </div>
+                        <div className="grid gap-3 md:grid-cols-2">
+                          <label className="block space-y-1.5">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Promotion Title</span>
+                            <input
+                              value={promotion.title}
+                              onChange={(e) =>
+                                setPromotions((previous) =>
+                                  previous.map((item) => (item.id === promotion.id ? { ...item, title: e.target.value } : item))
+                                )
+                              }
+                              className="w-full rounded-2xl bg-white px-4 py-2.5 dark:bg-[#111]"
+                              placeholder="e.g. Rentrée 2025 — -33%"
+                            />
+                          </label>
+                          <label className="block space-y-1.5">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Promotion Badge</span>
+                            <input
+                              value={promotion.badge}
+                              onChange={(e) =>
+                                setPromotions((previous) =>
+                                  previous.map((item) => (item.id === promotion.id ? { ...item, badge: e.target.value } : item))
+                                )
+                              }
+                              className="w-full rounded-2xl bg-white px-4 py-2.5 dark:bg-[#111]"
+                              placeholder="e.g. Nouveau"
+                            />
+                          </label>
+                          <label className="block space-y-1.5 md:col-span-2">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Promotion Description</span>
+                            <textarea
+                              rows={3}
+                              value={promotion.description}
+                              onChange={(e) =>
+                                setPromotions((previous) =>
+                                  previous.map((item) =>
+                                    item.id === promotion.id ? { ...item, description: e.target.value } : item
+                                  )
+                                )
+                              }
+                              className="w-full rounded-2xl bg-white px-4 py-2.5 dark:bg-[#111]"
+                              placeholder="Short text explaining the promotion terms"
+                            />
+                          </label>
+                        </div>
+                        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                          <label className="inline-flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <input
+                              type="checkbox"
+                              checked={promotion.isActive}
+                              onChange={(e) =>
+                                setPromotions((previous) =>
+                                  previous.map((item) =>
+                                    item.id === promotion.id
+                                      ? { ...item, isActive: e.target.checked }
+                                      : e.target.checked
+                                      ? { ...item, isActive: false }
+                                      : item
+                                  )
+                                )
+                              }
+                            />
+                            <span>Active promotion (others will be disabled)</span>
+                          </label>
+                          <ActionButton
+                            tone="danger"
+                            onClick={() =>
+                              setPromotions((previous) => previous.filter((item) => item.id !== promotion.id))
+                            }
+                            icon={<Trash2 size={16} />}
+                          >
+                            Remove Promotion
+                          </ActionButton>
+                        </div>
+                      </div>
+                    ))}
+                    {promotions.length === 0 && (
+                      <div className="rounded-3xl border border-dashed border-black/10 px-4 py-10 text-center text-sm text-gray-500 dark:border-white/10 dark:text-gray-400">
+                        No promotions configured — optional.
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="pt-1">
+                  <div className="mb-3">
+                    <div className="font-semibold text-gray-900 dark:text-white">Support Contacts</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">Shown on the offer page footer so students can reach you</div>
+                  </div>
+                  <div className="grid gap-3 md:grid-cols-3">
+                    <label className="block space-y-1.5">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Phone / WhatsApp</span>
+                      <input
+                        value={values.contactPhone || ''}
+                        onChange={(e) => setValue('contactPhone', e.target.value)}
+                        className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                        placeholder="+216 ..."
+                      />
+                    </label>
+                    <label className="block space-y-1.5">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</span>
+                      <input
+                        value={values.contactEmail || ''}
+                        onChange={(e) => setValue('contactEmail', e.target.value)}
+                        className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                        placeholder="contact@tunibac.tn"
+                      />
+                    </label>
+                    <label className="block space-y-1.5">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Address (optional)</span>
+                      <input
+                        value={values.contactAddress || ''}
+                        onChange={(e) => setValue('contactAddress', e.target.value)}
+                        className="w-full rounded-2xl bg-gray-50 px-4 py-2.5 dark:bg-white/5"
+                        placeholder="Tunis, Tunisie"
+                      />
+                    </label>
+                  </div>
                 </div>
               </div>
             </AdminCard>
@@ -657,6 +848,28 @@ const PlatformOfferPage = () => {
                 previewMode
               />
             </AdminCard>
+          </div>
+        </div>
+      )}
+
+      {!loading && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-black/5 bg-white/90 px-4 py-3 backdrop-blur-md dark:border-white/5 dark:bg-[#0B0F17]/90 sm:px-6 lg:px-8">
+          <div className="mx-auto flex max-w-[1600px] flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="hidden sm:block">
+              <div className="text-sm font-semibold text-gray-900 dark:text-white">Platform Offer Settings</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Changes are saved locally — click Save to persist.</div>
+            </div>
+            <div className="flex flex-col-reverse gap-2 sm:flex-row sm:gap-3">
+              <ActionButton tone="neutral" onClick={() => navigate('/admin')} icon={<ArrowLeft size={16} />}>
+                Back to Admin
+              </ActionButton>
+              <ActionButton tone="neutral" onClick={() => window.open('/register', '_blank')} icon={<Eye size={16} />}>
+                Preview Page
+              </ActionButton>
+              <PrimaryButton onClick={saveAll} disabled={saving} icon={<Save size={16} />}>
+                {saving ? 'Saving...' : 'Save Offer'}
+              </PrimaryButton>
+            </div>
           </div>
         </div>
       )}

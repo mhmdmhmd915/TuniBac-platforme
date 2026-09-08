@@ -49,7 +49,6 @@ const Footer = () => {
               <>
                 <li><Link to="/dashboard" className="hover:text-accent">Dashboard</Link></li>
                 <li><Link to="/parascolaires" className="hover:text-accent">Parascolaires</Link></li>
-                <li><Link to="/homework" className="hover:text-accent">Homework</Link></li>
               </>
             )}
             {isAdmin && <li><Link to="/admin" className="hover:text-accent">Admin Workspace</Link></li>}

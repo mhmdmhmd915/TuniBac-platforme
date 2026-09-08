@@ -75,6 +75,12 @@ const {
   publishPlannerTemplate,
   deletePlannerTemplate,
 } = require('../controllers/adminPlannerTemplatesController');
+const {
+  listTeachers,
+  getTeacherDetail,
+  setTeacherAssignments,
+  createTeacher,
+} = require('../controllers/adminTeacherController');
 
 
 const uploadCoursePdf = createUploadMiddleware({
@@ -366,6 +372,15 @@ router.post('/users/bulk-approve', bulkApproveUsers);
 router.post('/users/bulk-suspend', bulkSuspendUsers);
 router.post('/users/bulk-delete', bulkDeleteUsers);
 
+// =======================
+// Teacher Management
+// =======================
+
+router.get('/teachers', listTeachers);
+router.post('/teachers', createTeacher);
+router.get('/teachers/:id', getTeacherDetail);
+router.put('/teachers/:id/assign', setTeacherAssignments);
+
 // Course resources
 router.post('/resources', createCourseResource);
 router.post('/courses/:id/resources', addCourseResource);
@@ -553,6 +568,47 @@ router.put(
   '/submissions/:id/correction',
   uploadCorrection.single('correction'),
   uploadSubmissionCorrection
+);
+
+// =======================
+// Generic Admin Media Upload (images)
+// =======================
+
+const ALLOWED_MEDIA_DIRS = new Set(['steps', 'teacher-ads', 'shop', 'teacher-profiles', 'teachers']);
+
+const uploadAdminMedia = createUploadMiddleware({
+  relativeDir: 'tmp',
+  allowedMimeTypes: IMAGE_MIME_TYPES,
+  maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
+});
+
+router.post('/media/upload/:dir', uploadAdminMedia.single('image'), (req, res) => {
+  const dir = sanitizeRelativeDir(req.params.dir);
+  if (!ALLOWED_MEDIA_DIRS.has(dir)) {
+    return res.status(400).json({ message: 'Invalid upload directory' });
+  }
+  if (!req.file) {
+    return res.status(400).json({ message: 'No image file uploaded' });
+  }
+  res.json({
+    fileUrl: toPublicUploadPath(dir, req.file.filename),
+    filename: req.file.filename,
+  });
+});
+
+router.post(
+  '/media/upload/:dir/presign',
+  createSignedUploadHandler({
+    relativeDir: 'tmp',
+    allowedMimeTypes: IMAGE_MIME_TYPES,
+    maxSizeBytes: IMAGE_MAX_SIZE_BYTES,
+    buildResponse: ({ uploadUrl, publicUrl, key, filename }) => ({
+      uploadUrl,
+      fileUrl: publicUrl,
+      key,
+      filename,
+    }),
+  })
 );
 
 // =======================

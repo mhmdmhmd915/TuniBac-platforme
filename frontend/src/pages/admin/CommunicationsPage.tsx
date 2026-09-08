@@ -14,6 +14,7 @@ import {
   ImageIcon,
   Link2,
   Megaphone,
+  Pin,
   Plus,
   Search,
   Send,
@@ -84,6 +85,8 @@ interface CommunicationItem {
   status: CommunicationStatus
   lifecycleStatus: LifecycleStatus
   isVisible: boolean
+  isPinned: boolean
+  pinOrder: number
   audience: CommunicationAudience
   title: string
   description?: string | null
@@ -107,6 +110,8 @@ interface FormState {
   priority: CommunicationPriority
   status: CommunicationStatus
   isVisible: boolean
+  isPinned: boolean
+  pinOrder: number
   audience: CommunicationAudience
   title: string
   description: string
@@ -176,6 +181,8 @@ const defaultForm = (): FormState => ({
   priority: 'MEDIUM',
   status: 'DRAFT',
   isVisible: true,
+  isPinned: false,
+  pinOrder: 0,
   audience: 'ALL_STUDENTS',
   title: '',
   description: '',
@@ -195,6 +202,8 @@ const toFormState = (item: CommunicationItem): FormState => ({
   priority: item.priority,
   status: item.status,
   isVisible: item.isVisible,
+  isPinned: item.isPinned || false,
+  pinOrder: typeof item.pinOrder === 'number' ? item.pinOrder : 0,
   audience: item.audience,
   title: item.title,
   description: item.description || '',
@@ -1030,6 +1039,12 @@ const CommunicationsPage = () => {
                             <span className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusTone(item.lifecycleStatus)}`}>
                               {item.lifecycleStatus}
                             </span>
+                            {item.isPinned && (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-3 py-1 text-xs font-semibold text-amber-300">
+                                <Pin size={12} />
+                                Pinned
+                              </span>
+                            )}
                             {item.isVisible ? (
                               <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-300">
                                 Visible
@@ -1216,6 +1231,35 @@ const CommunicationsPage = () => {
                       {form.isVisible ? 'Visible' : 'Hidden'}
                     </button>
                   </label>
+
+                  <label className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <div>
+                      <div className="text-xs uppercase tracking-[0.18em] text-slate-400">Pinned announcement</div>
+                      <div className="mt-1 text-sm">{form.isPinned ? 'Shown first for students' : 'Regular position'}</div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => updateForm('isPinned', !form.isPinned)}
+                      className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold ${
+                        form.isPinned ? 'bg-amber-500/15 text-amber-300' : 'bg-slate-500/15 text-slate-300'
+                      }`}
+                    >
+                      <Pin size={12} />
+                      {form.isPinned ? 'Pinned' : 'Pin'}
+                    </button>
+                  </label>
+
+                  {form.isPinned && (
+                    <label className="block rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                      <div className="mb-2 text-xs uppercase tracking-[0.18em] text-slate-400">Pin order (smaller = higher)</div>
+                      <input
+                        type="number"
+                        value={form.pinOrder}
+                        onChange={(event) => updateForm('pinOrder', Number(event.target.value) || 0)}
+                        className="w-full bg-transparent text-base outline-none placeholder:text-slate-500"
+                      />
+                    </label>
+                  )}
                 </div>
 
                 <label className="block rounded-2xl border border-white/10 bg-white/5 px-4 py-3">

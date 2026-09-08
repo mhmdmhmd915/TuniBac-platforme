@@ -140,15 +140,92 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.LearningStepScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  icon: 'icon',
+  image: 'image',
+  color: 'color',
+  order: 'order',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SubjectScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
   bacSection: 'bacSection',
+  stepId: 'stepId',
   color: 'color',
   icon: 'icon',
   order: 'order',
   isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SubjectSectionScalarFieldEnum = {
+  id: 'id',
+  subjectId: 'subjectId',
+  bacSection: 'bacSection',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.TeacherProfileScalarFieldEnum = {
+  id: 'id',
+  teacherId: 'teacherId',
+  photo: 'photo',
+  bio: 'bio',
+  whatsapp: 'whatsapp',
+  externalLink: 'externalLink',
+  isPublic: 'isPublic',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TeacherAssignmentScalarFieldEnum = {
+  id: 'id',
+  teacherId: 'teacherId',
+  subjectId: 'subjectId',
+  bacSection: 'bacSection',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.TeacherAdvertisementScalarFieldEnum = {
+  id: 'id',
+  image: 'image',
+  teacherName: 'teacherName',
+  subject: 'subject',
+  description: 'description',
+  whatsapp: 'whatsapp',
+  externalLink: 'externalLink',
+  bacSection: 'bacSection',
+  subjectId: 'subjectId',
+  isActive: 'isActive',
+  isApproved: 'isApproved',
+  order: 'order',
+  teachingMethod: 'teachingMethod',
+  videoUrl: 'videoUrl',
+  videoType: 'videoType',
+  resources: 'resources',
+  teacherId: 'teacherId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ShopProductScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  image: 'image',
+  price: 'price',
+  whatsapp: 'whatsapp',
+  externalLink: 'externalLink',
+  isActive: 'isActive',
+  order: 'order',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -160,6 +237,8 @@ exports.Prisma.CourseScalarFieldEnum = {
   contentUrl: 'contentUrl',
   videoUrl: 'videoUrl',
   videoPath: 'videoPath',
+  contentText: 'contentText',
+  externalLink: 'externalLink',
   advertisementImage: 'advertisementImage',
   advertisementTeacherName: 'advertisementTeacherName',
   advertisementSubject: 'advertisementSubject',
@@ -167,9 +246,20 @@ exports.Prisma.CourseScalarFieldEnum = {
   advertisementDescription: 'advertisementDescription',
   difficulty: 'difficulty',
   tags: 'tags',
+  isPublished: 'isPublished',
+  order: 'order',
   subjectId: 'subjectId',
+  teacherId: 'teacherId',
+  createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CourseSectionAssignmentScalarFieldEnum = {
+  id: 'id',
+  courseId: 'courseId',
+  bacSection: 'bacSection',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.LessonScalarFieldEnum = {
@@ -189,15 +279,28 @@ exports.Prisma.ExerciseScalarFieldEnum = {
   title: 'title',
   description: 'description',
   contentUrl: 'contentUrl',
+  groupTitle: 'groupTitle',
   advertisementImage: 'advertisementImage',
   advertisementTeacherName: 'advertisementTeacherName',
   advertisementSubject: 'advertisementSubject',
   advertisementWhatsapp: 'advertisementWhatsapp',
   advertisementDescription: 'advertisementDescription',
   difficulty: 'difficulty',
+  isPublished: 'isPublished',
+  order: 'order',
   subjectId: 'subjectId',
+  courseId: 'courseId',
+  teacherId: 'teacherId',
+  createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ExerciseSectionAssignmentScalarFieldEnum = {
+  id: 'id',
+  exerciseId: 'exerciseId',
+  bacSection: 'bacSection',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.CorrectionScalarFieldEnum = {
@@ -263,6 +366,9 @@ exports.Prisma.StudyTaskScalarFieldEnum = {
   title: 'title',
   description: 'description',
   subjectId: 'subjectId',
+  stepId: 'stepId',
+  courseId: 'courseId',
+  exerciseId: 'exerciseId',
   date: 'date',
   startTime: 'startTime',
   endTime: 'endTime',
@@ -309,6 +415,9 @@ exports.Prisma.StudentPlannerTaskScalarFieldEnum = {
   attachmentSizeBytes: 'attachmentSizeBytes',
   isPersonal: 'isPersonal',
   subjectId: 'subjectId',
+  stepId: 'stepId',
+  courseId: 'courseId',
+  exerciseId: 'exerciseId',
   userId: 'userId',
   templateId: 'templateId',
   createdAt: 'createdAt',
@@ -349,6 +458,38 @@ exports.Prisma.AppSettingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.LearningObjectiveScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  description: 'description',
+  stepId: 'stepId',
+  subjectId: 'subjectId',
+  courseId: 'courseId',
+  exerciseId: 'exerciseId',
+  targetDate: 'targetDate',
+  progress: 'progress',
+  status: 'status',
+  completed: 'completed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StudyTipScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  content: 'content',
+  stepId: 'stepId',
+  subjectId: 'subjectId',
+  courseId: 'courseId',
+  bacSection: 'bacSection',
+  order: 'order',
+  isPublished: 'isPublished',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.CommunicationScalarFieldEnum = {
   id: 'id',
   type: 'type',
@@ -356,6 +497,8 @@ exports.Prisma.CommunicationScalarFieldEnum = {
   priorityRank: 'priorityRank',
   status: 'status',
   isVisible: 'isVisible',
+  isPinned: 'isPinned',
+  pinOrder: 'pinOrder',
   audience: 'audience',
   bacSection: 'bacSection',
   title: 'title',
@@ -384,9 +527,131 @@ exports.Prisma.CommunicationAttachmentScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.StudySessionScalarFieldEnum = {
+  id: 'id',
+  bacSection: 'bacSection',
+  subjectId: 'subjectId',
+  topic: 'topic',
+  title: 'title',
+  createdById: 'createdById',
+  studySquadId: 'studySquadId',
+  status: 'status',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt'
+};
+
+exports.Prisma.StudySquadScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  bacSection: 'bacSection',
+  ownerId: 'ownerId',
+  invitationCode: 'invitationCode',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StudySquadMemberScalarFieldEnum = {
+  id: 'id',
+  squadId: 'squadId',
+  userId: 'userId',
+  role: 'role',
+  joinedAt: 'joinedAt'
+};
+
+exports.Prisma.StudySquadInvitationScalarFieldEnum = {
+  id: 'id',
+  squadId: 'squadId',
+  inviterId: 'inviterId',
+  inviteeId: 'inviteeId',
+  status: 'status',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt'
+};
+
+exports.Prisma.StudySquadGoalScalarFieldEnum = {
+  id: 'id',
+  squadId: 'squadId',
+  createdById: 'createdById',
+  title: 'title',
+  description: 'description',
+  targetDate: 'targetDate',
+  progress: 'progress',
+  completed: 'completed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StudySquadChatMessageScalarFieldEnum = {
+  id: 'id',
+  squadId: 'squadId',
+  userId: 'userId',
+  content: 'content',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.SessionParticipantScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  userId: 'userId',
+  bacSection: 'bacSection',
+  joinedAt: 'joinedAt',
+  leftAt: 'leftAt',
+  isActive: 'isActive',
+  micEnabled: 'micEnabled',
+  camEnabled: 'camEnabled',
+  lastSeenAt: 'lastSeenAt'
+};
+
+exports.Prisma.SessionChatMessageScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  userId: 'userId',
+  bacSection: 'bacSection',
+  content: 'content',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.StudyHeartbeatScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  sessionId: 'sessionId',
+  bacSection: 'bacSection',
+  minuteKey: 'minuteKey',
+  minutes: 'minutes',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.StudyBadgeScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  description: 'description',
+  icon: 'icon',
+  colorHex: 'colorHex',
+  thresholdUnit: 'thresholdUnit',
+  thresholdMinutes: 'thresholdMinutes',
+  order: 'order',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserStudyBadgeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  badgeId: 'badgeId',
+  bacSection: 'bacSection',
+  awardedAt: 'awardedAt',
+  evidenceRef: 'evidenceRef'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -397,6 +662,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.BacSection = exports.$Enums.BacSection = {
   MATHEMATIQUES: 'MATHEMATIQUES',
@@ -410,6 +681,7 @@ exports.BacSection = exports.$Enums.BacSection = {
 
 exports.Role = exports.$Enums.Role = {
   STUDENT: 'STUDENT',
+  TEACHER: 'TEACHER',
   ADMIN: 'ADMIN'
 };
 
@@ -424,6 +696,12 @@ exports.Difficulty = exports.$Enums.Difficulty = {
   BEGINNER: 'BEGINNER',
   INTERMEDIATE: 'INTERMEDIATE',
   ADVANCED: 'ADVANCED'
+};
+
+exports.ObjectiveStatus = exports.$Enums.ObjectiveStatus = {
+  NOT_STARTED: 'NOT_STARTED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED'
 };
 
 exports.CommunicationType = exports.$Enums.CommunicationType = {
@@ -459,12 +737,50 @@ exports.CommunicationAudience = exports.$Enums.CommunicationAudience = {
   ALL_STUDENTS: 'ALL_STUDENTS'
 };
 
+exports.StudySessionStatus = exports.$Enums.StudySessionStatus = {
+  ACTIVE: 'ACTIVE',
+  CLOSED: 'CLOSED',
+  ENDED: 'ENDED'
+};
+
+exports.StudySquadStatus = exports.$Enums.StudySquadStatus = {
+  ACTIVE: 'ACTIVE',
+  DISBANDED: 'DISBANDED'
+};
+
+exports.StudySquadMemberRole = exports.$Enums.StudySquadMemberRole = {
+  OWNER: 'OWNER',
+  MEMBER: 'MEMBER'
+};
+
+exports.StudySquadInvitationStatus = exports.$Enums.StudySquadInvitationStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+};
+
+exports.StudyBadgeThresholdUnit = exports.$Enums.StudyBadgeThresholdUnit = {
+  SINGLE_SESSION_MINUTES: 'SINGLE_SESSION_MINUTES',
+  WEEKLY_TOTAL_MINUTES: 'WEEKLY_TOTAL_MINUTES',
+  TOTAL_MINUTES: 'TOTAL_MINUTES'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
+  LearningStep: 'LearningStep',
   Subject: 'Subject',
+  SubjectSection: 'SubjectSection',
+  TeacherProfile: 'TeacherProfile',
+  TeacherAssignment: 'TeacherAssignment',
+  TeacherAdvertisement: 'TeacherAdvertisement',
+  ShopProduct: 'ShopProduct',
   Course: 'Course',
+  CourseSectionAssignment: 'CourseSectionAssignment',
   Lesson: 'Lesson',
   Exercise: 'Exercise',
+  ExerciseSectionAssignment: 'ExerciseSectionAssignment',
   Correction: 'Correction',
   ProgressTracking: 'ProgressTracking',
   Enrollment: 'Enrollment',
@@ -477,8 +793,21 @@ exports.Prisma.ModelName = {
   Parascolaire: 'Parascolaire',
   Contact: 'Contact',
   AppSetting: 'AppSetting',
+  LearningObjective: 'LearningObjective',
+  StudyTip: 'StudyTip',
   Communication: 'Communication',
-  CommunicationAttachment: 'CommunicationAttachment'
+  CommunicationAttachment: 'CommunicationAttachment',
+  StudySession: 'StudySession',
+  StudySquad: 'StudySquad',
+  StudySquadMember: 'StudySquadMember',
+  StudySquadInvitation: 'StudySquadInvitation',
+  StudySquadGoal: 'StudySquadGoal',
+  StudySquadChatMessage: 'StudySquadChatMessage',
+  SessionParticipant: 'SessionParticipant',
+  SessionChatMessage: 'SessionChatMessage',
+  StudyHeartbeat: 'StudyHeartbeat',
+  StudyBadge: 'StudyBadge',
+  UserStudyBadge: 'UserStudyBadge'
 };
 
 /**

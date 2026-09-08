@@ -11,6 +11,7 @@ datasource db {
 
 enum Role {
   STUDENT
+  TEACHER
   ADMIN
 }
 
@@ -93,10 +94,51 @@ model User {
   plannerTemplates      PlannerTemplate[]
   studentPlannerTasks   StudentPlannerTask[]
   communicationsCreated Communication[] @relation("UserToCommunicationsCreated")
+  teacherProfile        TeacherProfile?
+  teacherAssignments    TeacherAssignment[]
+  ownedCourses          Course[]          @relation("UserToCourses")
+  createdCourses        Course[]          @relation("UserToCreatedCourses")
+  ownedExercises        Exercise[]        @relation("UserToExercises")
+  createdExercises      Exercise[]        @relation("UserToCreatedExercises")
+  learningObjectives    LearningObjective[]
+  createdStudyTips      StudyTip[]        @relation("StudyTipCreator")
+  createdStudySessions  StudySession[]         @relation("StudySessionCreator")
+  sessionParticipations SessionParticipant[]   @relation("SessionParticipantUser")
+  chatMessages          SessionChatMessage[]   @relation("SessionChatUser")
+  studyHeartbeats       StudyHeartbeat[]       @relation("StudyHeartbeatUser")
+  badgesAwarded         UserStudyBadge[]       @relation("UserBadgeOwner")
+  teacherAdvertisements TeacherAdvertisement[]
+  ownedSquads           StudySquad[]           @relation("StudySquadOwner")
+  squadMemberships      StudySquadMember[]
+  sentSquadInvitations  StudySquadInvitation[] @relation("SquadInviteFrom")
+  receivedSquadInvitations StudySquadInvitation[] @relation("SquadInviteTo")
+  squadChatMessages     StudySquadChatMessage[]
+  createdSquadGoals     StudySquadGoal[]       @relation("StudySquadGoalCreator")
 
   @@index([approvalDate])
   @@index([role, status, createdAt])
   @@index([bacSection, status, createdAt])
+}
+
+model LearningStep {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  icon        String    @default("milestone")
+  image       String?
+  color       String    @default("#0B5ED7")
+  order       Int       @default(0)
+  isPublished Boolean   @default(true)
+  subjects    Subject[]
+  studyTasks  StudyTask[]
+  studentPlannerTasks StudentPlannerTask[]
+  learningObjectives LearningObjective[]
+  studyTips   StudyTip[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([order])
+  @@index([isPublished, order])
 }
 
 model Subject {
@@ -104,21 +146,111 @@ model Subject {
   name        String
   description String?
   bacSection  BacSection  @default(SCIENCES_EXPERIMENTALES)
+  stepId      String?
+  step        LearningStep? @relation(fields: [stepId], references: [id], onDelete: SetNull)
   color       String      @default("#3b82f6")
   icon        String      @default("book")
   order       Int         @default(0)
   isActive    Boolean     @default(true)
+  subjectSections SubjectSection[]
+  teacherAssignments TeacherAssignment[]
   courses     Course[]
   exercises   Exercise[]
   studyTasks  StudyTask[]
   plannerTemplates    PlannerTemplate[]
   studentPlannerTasks StudentPlannerTask[]
+  learningObjectives LearningObjective[]
+  studyTips   StudyTip[]
+  studySessions StudySession[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
   @@index([createdAt])
   @@unique([name, bacSection])
   @@index([bacSection, isActive, order])
+  @@index([stepId, order])
+}
+
+model SubjectSection {
+  id        String    @id @default(uuid())
+  subjectId String
+  subject   Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  bacSection BacSection
+  createdAt DateTime  @default(now())
+
+  @@unique([subjectId, bacSection])
+  @@index([bacSection])
+}
+
+model TeacherProfile {
+  id           String   @id @default(uuid())
+  teacherId    String   @unique
+  teacher      User     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  photo        String?
+  bio          String?
+  whatsapp     String?
+  externalLink String?
+  isPublic     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isPublic])
+}
+
+model TeacherAssignment {
+  id        String    @id @default(uuid())
+  teacherId String
+  teacher   User      @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  subjectId String?
+  subject   Subject?  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  bacSection BacSection?
+  createdAt DateTime  @default(now())
+
+  @@index([teacherId])
+  @@index([subjectId])
+  @@index([bacSection])
+}
+
+model TeacherAdvertisement {
+  id              String       @id @default(uuid())
+  image           String?
+  teacherName     String
+  subject         String?
+  description     String?
+  whatsapp        String?
+  externalLink    String?
+  bacSection      BacSection?
+  subjectId       String?
+  isActive        Boolean      @default(true)
+  isApproved      Boolean      @default(false)
+  order           Int          @default(0)
+  teachingMethod  String?
+  videoUrl        String?
+  videoType       String?
+  resources       Json?
+  teacherId       String?
+  teacher         User?        @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([isActive, isApproved, order])
+  @@index([teacherId])
+}
+
+model ShopProduct {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  image       String?
+  price       Float?
+  whatsapp    String?
+  externalLink String?
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive, order])
 }
 
 model Course {
@@ -128,6 +260,8 @@ model Course {
   contentUrl  String?
   videoUrl    String?
   videoPath   String?
+  contentText String?
+  externalLink String?
   advertisementImage           String?
   advertisementTeacherName     String?
   advertisementSubject         String?
@@ -135,16 +269,42 @@ model Course {
   advertisementDescription     String?
   difficulty  Difficulty         @default(BEGINNER)
   tags        String[]
+  isPublished Boolean            @default(true)
+  order       Int                @default(0)
   subjectId   String
   subject     Subject            @relation(fields: [subjectId], references: [id])
+  teacherId   String?
+  teacher     User?              @relation("UserToCourses", fields: [teacherId], references: [id], onDelete: SetNull)
+  createdById String?
+  createdBy   User?              @relation("UserToCreatedCourses", fields: [createdById], references: [id], onDelete: SetNull)
+  sectionAssignments CourseSectionAssignment[]
   lessons     Lesson[]
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
   progress    ProgressTracking[]
   enrollments Enrollment[]
   resources   CourseResource[]
+  exercises   Exercise[]
+  studyTasks  StudyTask[]
+  studentPlannerTasks StudentPlannerTask[]
+  learningObjectives LearningObjective[]
+  studyTips   StudyTip[]
 
   @@index([subjectId, createdAt])
+  @@index([isPublished, order])
+  @@index([teacherId])
+  @@index([createdById])
+}
+
+model CourseSectionAssignment {
+  id         String     @id @default(uuid())
+  courseId   String
+  course     Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  bacSection BacSection
+  createdAt  DateTime   @default(now())
+
+  @@unique([courseId, bacSection])
+  @@index([bacSection])
 }
 
 model Lesson {
@@ -167,21 +327,49 @@ model Exercise {
   title       String
   description String?
   contentUrl  String?
+  groupTitle  String?
   advertisementImage           String?
   advertisementTeacherName     String?
   advertisementSubject         String?
   advertisementWhatsapp        String?
   advertisementDescription     String?
   difficulty  Difficulty   @default(BEGINNER)
+  isPublished Boolean      @default(true)
+  order       Int          @default(0)
   subjectId   String
   subject     Subject      @relation(fields: [subjectId], references: [id])
+  courseId    String?
+  course      Course?      @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  teacherId   String?
+  teacher     User?        @relation("UserToExercises", fields: [teacherId], references: [id], onDelete: SetNull)
+  createdById String?
+  createdBy   User?        @relation("UserToCreatedExercises", fields: [createdById], references: [id], onDelete: SetNull)
+  sectionAssignments ExerciseSectionAssignment[]
   corrections Correction[]
   resources   ExerciseResource[]
   progress    ProgressTracking[]
+  studyTasks  StudyTask[]
+  studentPlannerTasks StudentPlannerTask[]
+  learningObjectives LearningObjective[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
   @@index([subjectId, createdAt])
+  @@index([isPublished, order])
+  @@index([courseId])
+  @@index([teacherId])
+  @@index([createdById])
+}
+
+model ExerciseSectionAssignment {
+  id         String     @id @default(uuid())
+  exerciseId String
+  exercise   Exercise   @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  bacSection BacSection
+  createdAt  DateTime   @default(now())
+
+  @@unique([exerciseId, bacSection])
+  @@index([bacSection])
 }
 
 model Correction {
@@ -273,6 +461,12 @@ model StudyTask {
   description String?
   subjectId   String
   subject     Subject  @relation(fields: [subjectId], references: [id])
+  stepId      String?
+  step        LearningStep? @relation(fields: [stepId], references: [id], onDelete: SetNull)
+  courseId    String?
+  course      Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  exerciseId  String?
+  exercise    Exercise? @relation(fields: [exerciseId], references: [id], onDelete: SetNull)
   date        DateTime
   startTime   String?
   endTime     String?
@@ -285,6 +479,9 @@ model StudyTask {
 
   @@index([userId, date])
   @@index([subjectId, date])
+  @@index([stepId])
+  @@index([courseId])
+  @@index([exerciseId])
 }
 
 model PlannerTemplate {
@@ -332,6 +529,12 @@ model StudentPlannerTask {
   isPersonal         Boolean         @default(false)
   subjectId          String
   subject            Subject         @relation(fields: [subjectId], references: [id])
+  stepId             String?
+  step               LearningStep?   @relation(fields: [stepId], references: [id], onDelete: SetNull)
+  courseId           String?
+  course             Course?         @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  exerciseId         String?
+  exercise           Exercise?       @relation(fields: [exerciseId], references: [id], onDelete: SetNull)
   userId             String
   user               User            @relation(fields: [userId], references: [id])
   templateId         String?
@@ -342,6 +545,9 @@ model StudentPlannerTask {
   @@index([userId, dueAt])
   @@index([templateId])
   @@index([subjectId, dueAt])
+  @@index([stepId])
+  @@index([courseId])
+  @@index([exerciseId])
 }
 
 model Parascolaire {
@@ -382,6 +588,63 @@ model AppSetting {
   updatedAt DateTime @updatedAt
 }
 
+enum ObjectiveStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model LearningObjective {
+  id          String          @id @default(uuid())
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  stepId      String?
+  step        LearningStep?   @relation(fields: [stepId], references: [id], onDelete: SetNull)
+  subjectId   String?
+  subject     Subject?        @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  courseId    String?
+  course      Course?         @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  exerciseId  String?
+  exercise    Exercise?       @relation(fields: [exerciseId], references: [id], onDelete: SetNull)
+  targetDate  DateTime?
+  progress    Int             @default(0)
+  status      ObjectiveStatus @default(NOT_STARTED)
+  completed   Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([userId, status])
+  @@index([stepId])
+  @@index([subjectId])
+  @@index([targetDate])
+}
+
+model StudyTip {
+  id          String   @id @default(uuid())
+  title       String?
+  content     String
+  stepId      String?
+  step        LearningStep?    @relation(fields: [stepId], references: [id], onDelete: SetNull)
+  subjectId   String?
+  subject     Subject?         @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  courseId    String?
+  course      Course?          @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  bacSection  BacSection?
+  order       Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdById String?
+  createdBy   User?    @relation("StudyTipCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, order])
+  @@index([stepId])
+  @@index([subjectId])
+  @@index([bacSection])
+}
+
 model Communication {
   id           String                @id @default(uuid())
   type         CommunicationType     @default(GENERAL_INFORMATION)
@@ -389,6 +652,8 @@ model Communication {
   priorityRank Int                   @default(1)
   status       CommunicationStatus   @default(DRAFT)
   isVisible    Boolean               @default(true)
+  isPinned     Boolean               @default(false)
+  pinOrder     Int                   @default(0)
   audience     CommunicationAudience @default(ALL_STUDENTS)
   bacSection   BacSection            @default(SCIENCES_EXPERIMENTALES)
   title        String
@@ -409,6 +674,7 @@ model Communication {
   @@index([status, isVisible, publishAt])
   @@index([priorityRank])
   @@index([type])
+  @@index([isPinned, pinOrder])
   @@index([bacSection, status, isVisible, publishAt])
 }
 
@@ -425,4 +691,214 @@ model CommunicationAttachment {
   createdAt       DateTime      @default(now())
 
   @@index([communicationId])
+}
+
+enum StudySessionStatus {
+  ACTIVE
+  CLOSED
+  ENDED
+}
+
+enum StudyBadgeThresholdUnit {
+  SINGLE_SESSION_MINUTES
+  WEEKLY_TOTAL_MINUTES
+  TOTAL_MINUTES
+}
+
+model StudySession {
+  id             String                  @id @default(uuid())
+  bacSection     BacSection
+  subjectId      String?
+  subject        Subject?                @relation(fields: [subjectId], references: [id])
+  topic          String?
+  title          String
+  createdById    String
+  createdBy      User                  @relation("StudySessionCreator", fields: [createdById], references: [id])
+  studySquadId   String?
+  studySquad     StudySquad?           @relation(fields: [studySquadId], references: [id], onDelete: SetNull)
+  status         StudySessionStatus  @default(ACTIVE)
+  startedAt      DateTime              @default(now())
+  endedAt        DateTime?
+  participants   SessionParticipant[]
+  chatMessages   SessionChatMessage[]
+  heartbeats     StudyHeartbeat[]
+
+  @@index([bacSection, status, startedAt])
+  @@index([status, startedAt])
+  @@index([createdById])
+  @@index([studySquadId])
+}
+
+enum StudySquadStatus {
+  ACTIVE
+  DISBANDED
+}
+
+enum StudySquadMemberRole {
+  OWNER
+  MEMBER
+}
+
+enum StudySquadInvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  CANCELLED
+  EXPIRED
+}
+
+model StudySquad {
+  id              String                @id @default(uuid())
+  name            String
+  bacSection      BacSection
+  ownerId         String
+  owner           User                  @relation("StudySquadOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  invitationCode  String                @unique(map: "StudySquad_invitationCode_unique")
+  status          StudySquadStatus      @default(ACTIVE)
+  members         StudySquadMember[]
+  invitations     StudySquadInvitation[]
+  chatMessages    StudySquadChatMessage[]
+  goal            StudySquadGoal?
+  studySessions   StudySession[]
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  @@index([bacSection, status])
+  @@index([ownerId])
+}
+
+model StudySquadMember {
+  id        String                @id @default(uuid())
+  squadId   String
+  squad     StudySquad            @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      StudySquadMemberRole  @default(MEMBER)
+  joinedAt  DateTime              @default(now())
+
+  @@unique([squadId, userId])
+  @@index([userId])
+  @@index([squadId, role])
+}
+
+model StudySquadInvitation {
+  id          String                       @id @default(uuid())
+  squadId     String
+  squad       StudySquad                   @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  inviterId   String
+  inviter     User                         @relation("SquadInviteFrom", fields: [inviterId], references: [id], onDelete: Cascade)
+  inviteeId   String
+  invitee     User                         @relation("SquadInviteTo", fields: [inviteeId], references: [id], onDelete: Cascade)
+  status      StudySquadInvitationStatus   @default(PENDING)
+  createdAt   DateTime                     @default(now())
+  expiresAt   DateTime?
+
+  @@index([squadId, status])
+  @@index([inviteeId, status])
+  @@unique([squadId, inviteeId, status])
+}
+
+model StudySquadGoal {
+  id          String    @id @default(uuid())
+  squadId     String    @unique
+  squad       StudySquad @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  createdById String?
+  createdBy   User?     @relation("StudySquadGoalCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  title       String
+  description String?
+  targetDate  DateTime?
+  progress    Int       @default(0)
+  completed   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model StudySquadChatMessage {
+  id        String    @id @default(uuid())
+  squadId   String
+  squad     StudySquad @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String    @db.VarChar(1000)
+  createdAt DateTime  @default(now())
+
+  @@index([squadId, createdAt])
+  @@index([userId])
+}
+
+model SessionParticipant {
+  id          String        @id @default(uuid())
+  sessionId   String
+  session     StudySession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User          @relation("SessionParticipantUser", fields: [userId], references: [id])
+  bacSection  BacSection
+  joinedAt    DateTime      @default(now())
+  leftAt      DateTime?
+  isActive    Boolean       @default(true)
+  micEnabled  Boolean       @default(false)
+  camEnabled  Boolean       @default(false)
+  lastSeenAt  DateTime      @default(now())
+  @@unique([sessionId, userId])
+  @@index([sessionId, isActive])
+  @@index([userId, joinedAt])
+  @@index([bacSection, isActive])
+}
+
+model SessionChatMessage {
+  id         String        @id @default(uuid())
+  sessionId  String
+  session    StudySession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User          @relation("SessionChatUser", fields: [userId], references: [id])
+  bacSection BacSection
+  content    String        @db.VarChar(1000)
+  createdAt  DateTime      @default(now())
+
+  @@index([sessionId, createdAt])
+  @@index([bacSection, createdAt])
+}
+
+model StudyHeartbeat {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation("StudyHeartbeatUser", fields: [userId], references: [id])
+  sessionId  String?
+  session    StudySession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  bacSection BacSection
+  minuteKey  DateTime @db.Timestamptz(0)
+  minutes    Int      @default(1)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, minuteKey])
+  @@index([userId, minuteKey])
+  @@index([bacSection, minuteKey])
+}
+
+model StudyBadge {
+  id               String                    @id @default(uuid())
+  slug             String                    @unique
+  title            String
+  description      String
+  icon             String                    @default("award")
+  colorHex           String                    @default("#0B5ED7")
+  thresholdUnit    StudyBadgeThresholdUnit
+  thresholdMinutes Int
+  order            Int                       @default(0)
+  recipients       UserStudyBadge[]
+  createdAt        DateTime                  @default(now())
+}
+
+model UserStudyBadge {
+  id           String      @id @default(uuid())
+  userId       String
+  user         User        @relation("UserBadgeOwner", fields: [userId], references: [id])
+  badgeId      String
+  badge        StudyBadge  @relation(fields: [badgeId], references: [id])
+  bacSection   BacSection
+  awardedAt    DateTime    @default(now())
+  evidenceRef  String?
+  @@unique([userId, badgeId])
+  @@index([userId, awardedAt])
+  @@index([bacSection, awardedAt])
 }
