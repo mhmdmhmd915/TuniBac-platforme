@@ -32,7 +32,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden lg:flex items-center space-x-8">
           {!isAdmin && (
             <>
               <Link to="/courses" className="text-text-light dark:text-text hover:text-accent transition-colors">Courses</Link>
@@ -137,7 +137,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <div className="flex items-center space-x-4 md:hidden">
+        <div className="flex items-center space-x-4 lg:hidden">
           <button
             onClick={toggle}
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -163,7 +163,7 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden absolute top-full left-0 w-full bg-primary-light dark:bg-primary border-t border-black/10 dark:border-white/10 p-6 flex flex-col space-y-4"
+            className="lg:hidden absolute top-full left-0 w-full bg-primary-light dark:bg-primary border-t border-black/10 dark:border-white/10 p-6 flex flex-col space-y-4"
           >
             {!isAdmin && (
               <>
