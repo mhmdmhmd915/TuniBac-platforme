@@ -19,20 +19,10 @@ import {
   type PlatformOfferPromotion,
 } from '../../constants/platformOffer'
 import { PlatformOfferView } from '../../components/platform-offer/PlatformOfferView'
+import { BACKEND_URL, toAssetUrl } from '../../lib/assets'
 
 type ToastType = 'success' | 'error' | 'warning'
 type AppSetting = { key: string; value: string }
-
-const BACKEND_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(
-  /\/api$/,
-  ''
-)
-
-const toAssetUrl = (value?: string | null) => {
-  if (!value) return ''
-  if (value.startsWith('http')) return value
-  return `${BACKEND_URL}/${value.replace(/^\/+/, '')}`
-}
 
 const toRelativeAsset = (value: string) => value.replace(BACKEND_URL, '')
 

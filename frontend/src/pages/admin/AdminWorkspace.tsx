@@ -58,6 +58,7 @@ import {
 import { logger } from '../../lib/logger';
 import { toDisplayTunisianPhone } from '../../lib/phone';
 import { isYouTubeUrl } from '../../lib/youtube';
+import { BACKEND_URL } from '../../lib/assets';
 
 type SectionKey =
   | 'dashboard'
@@ -315,7 +316,6 @@ interface SectionDefinition {
   createAction?: string;
 }
 
-const BACKEND_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/api$/, '');
 const PAGE_SIZE = 8;
 const ADMIN_SECTION_STORAGE_KEY = 'adminWorkspaceBacSection';
 const EMPTY_FILTERS: FiltersState = {

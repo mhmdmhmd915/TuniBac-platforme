@@ -25,6 +25,7 @@ import {
 } from 'lucide-react'
 import { adminAPI } from '../../services/api'
 import { sanitizeRichHtml } from '../../lib/sanitizeHtml'
+import { BACKEND_URL } from '../../lib/assets'
 import {
   BAC_SECTION_LABELS,
   BAC_SECTION_OPTIONS,
@@ -125,7 +126,6 @@ interface FormState {
   attachments: Attachment[]
 }
 
-const BACKEND_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/api$/, '')
 const ADMIN_SECTION_STORAGE_KEY = 'adminWorkspaceBacSection'
 
 const TYPE_META: Record<

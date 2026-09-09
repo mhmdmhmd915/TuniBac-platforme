@@ -7,6 +7,7 @@ import { PrimaryButton } from '../../components/admin/PrimaryButton';
 import { ActionButton } from '../../components/admin/ActionButton';
 import { ImageUploader } from '../../components/admin/ImageUploader';
 import { useNavigate } from 'react-router-dom';
+import { BACKEND_URL, toAssetUrl } from '../../lib/assets';
 
 type ToastType = 'success' | 'error' | 'warning';
 
@@ -36,17 +37,6 @@ interface AppSetting {
   updatedBy?: string | null;
   updatedAt: string;
 }
-
-const BACKEND_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(
-  /\/api$/,
-  ''
-);
-
-const toAssetUrl = (value?: string | null) => {
-  if (!value) return '';
-  if (value.startsWith('http')) return value;
-  return `${BACKEND_URL}/${value.replace(/^\/+/, '')}`;
-};
 
 const getErrorMessage = (error: unknown) => {
   if (typeof error === 'object' && error && 'response' in error) {

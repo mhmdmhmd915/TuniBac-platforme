@@ -5,15 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { logger } from '../lib/logger'
 import { parascolairesAPI } from '../services/api'
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
-const BACKEND_URL = API_BASE_URL.replace(/\/api$/, '')
-
-const getFileUrl = (path: string | null | undefined): string => {
-  if (!path) return ''
-  if (path.startsWith('http')) return path
-  return `${BACKEND_URL}/${path.replace(/^\/+/, '')}`
-}
+import { toAssetUrl } from '../lib/assets'
 
 const getMinPrice = (parascolaire: any) => {
   const prices: number[] = []
@@ -110,7 +102,7 @@ const ParascolairesList = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {freeParascolaires.map((p: any) => (
-              <ParascolaireCard key={p.id} parascolaire={p} navigate={navigate} getFileUrl={getFileUrl} />
+              <ParascolaireCard key={p.id} parascolaire={p} navigate={navigate} />
             ))}
           </div>
         </section>
@@ -125,7 +117,7 @@ const ParascolairesList = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {premiumParascolaires.map((p: any) => (
-              <ParascolaireCard key={p.id} parascolaire={p} navigate={navigate} getFileUrl={getFileUrl} />
+              <ParascolaireCard key={p.id} parascolaire={p} navigate={navigate} />
             ))}
           </div>
         </section>
@@ -146,7 +138,7 @@ const ParascolairesList = () => {
   )
 }
 
-const ParascolaireCard = ({ parascolaire, navigate, getFileUrl }: any) => {
+const ParascolaireCard = ({ parascolaire, navigate }: any) => {
   const minPrice = getMinPrice(parascolaire)
 
   return (
@@ -163,7 +155,7 @@ const ParascolaireCard = ({ parascolaire, navigate, getFileUrl }: any) => {
       <div className="mb-4 sm:mb-5 rounded-2xl overflow-hidden bg-secondary-light/30 dark:bg-secondary/30 aspect-video flex items-center justify-center">
         {parascolaire.coverImage ? (
           <img
-            src={getFileUrl(parascolaire.coverImage)}
+            src={toAssetUrl(parascolaire.coverImage)}
             alt={parascolaire.title}
             className="w-full h-full object-cover"
             onError={(e) => {

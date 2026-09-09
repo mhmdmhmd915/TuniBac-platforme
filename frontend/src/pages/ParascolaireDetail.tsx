@@ -6,15 +6,7 @@ import AccessGateModal from '../components/AccessGateModal'
 import { useAuth } from '../context/AuthContext'
 import { logger } from '../lib/logger'
 import { parascolairesAPI } from '../services/api'
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
-const BACKEND_URL = API_BASE_URL.replace(/\/api$/, '')
-
-const getFileUrl = (path: string | null | undefined): string => {
-  if (!path) return ''
-  if (path.startsWith('http')) return path
-  return `${BACKEND_URL}/${path.replace(/^\/+/, '')}`
-}
+import { toAssetUrl } from '../lib/assets'
 
 const ParascolaireDetail = () => {
   const { id } = useParams<{ id: string }>()
@@ -66,7 +58,7 @@ const ParascolaireDetail = () => {
 
   const handleDownloadPdf = () => {
     if (!parascolaire?.pdfUrl) return
-    withProtectedPurchaseAccess(() => window.open(getFileUrl(parascolaire.pdfUrl), '_blank', 'noopener,noreferrer'))
+    withProtectedPurchaseAccess(() => window.open(toAssetUrl(parascolaire.pdfUrl), '_blank', 'noopener,noreferrer'))
   }
 
   const handleBuyPdf = () => {
@@ -154,7 +146,7 @@ const ParascolaireDetail = () => {
             <div className="rounded-2xl overflow-hidden bg-secondary-light/30 dark:bg-secondary/30 aspect-[3/4] flex items-center justify-center">
               {parascolaire.coverImage ? (
                 <img
-                  src={getFileUrl(parascolaire.coverImage)}
+                  src={toAssetUrl(parascolaire.coverImage)}
                   alt={parascolaire.title}
                   className="w-full h-full object-cover"
                 />
