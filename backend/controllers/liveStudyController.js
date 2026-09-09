@@ -79,6 +79,19 @@ const getLiveStudyEnabled = async () => {
   }
 };
 
+const shapeSessionWithCreator = (session) => {
+  if (!session) return session;
+  const firstName = session.createdBy?.firstName || '';
+  const lastName = session.createdBy?.lastName || '';
+  const creatorName = `${firstName} ${lastName}`.trim() || (session.creatorName || 'Anonymous');
+  return {
+    ...session,
+    creatorId: session.creatorId || session.createdById || null,
+    ownerId: session.ownerId || session.createdById || null,
+    creatorName,
+  };
+};
+
 const createSession = async (req, res) => {
   try {
     if (req.user.role !== 'STUDENT') {
@@ -153,7 +166,7 @@ const createSession = async (req, res) => {
     logger.info('[DBG-SQSS-CREATE] post-tx session returned', { sessionId: session?.id, status: session?.status, studySquadId: session?.studySquadId, startedAt: session?.startedAt, responseKeys: Object.keys(session || {}) });
     // #endregion
 
-    res.json(session);
+    res.json(shapeSessionWithCreator(session));
     try {
       const socket = socketEm();
       if (socket && socket.emitParticipantJoined) {
@@ -312,7 +325,7 @@ const getSessionById = async (req, res) => {
     });
 
     res.json({
-      ...session,
+      ...shapeSessionWithCreator(session),
       participants: enrichedParticipants,
       chatMessages,
     });
@@ -335,6 +348,11 @@ const joinSession = async (req, res) => {
 
     const session = await prisma.studySession.findUnique({
       where: { id },
+      include: {
+        createdBy: {
+          select: { firstName: true, lastName: true },
+        },
+      },
     });
 
     if (!session) {
@@ -418,7 +436,7 @@ const joinSession = async (req, res) => {
       }
     }
 
-    res.json({ participant, session });
+    res.json({ participant, session: shapeSessionWithCreator(session) });
     try {
       const socket = socketEm();
       if (socket && socket.emitParticipantJoined) socket.emitParticipantJoined(id, req.user.id);
@@ -485,7 +503,14 @@ const finishSession = async (req, res) => {
       return res.status(403).json({ message: 'Only students can finish sessions' });
     }
     const { id } = req.params;
-    const session = await prisma.studySession.findUnique({ where: { id } });
+    const session = await prisma.studySession.findUnique({
+      where: { id },
+      include: {
+        createdBy: {
+          select: { firstName: true, lastName: true },
+        },
+      },
+    });
     if (!session) return res.status(404).json({ message: 'Session not found' });
     if (session.status !== 'ACTIVE') return res.status(400).json({ message: 'Session already closed' });
     if (session.createdById !== req.user.id) return res.status(403).json({ message: 'Only the session owner can finish this session' });
@@ -501,7 +526,7 @@ const finishSession = async (req, res) => {
       const socket = socketEm();
       if (socket && socket.emitSessionEnded) socket.emitSessionEnded(id, 'Session finished by host');
     } catch (_e) { /* ignore */ }
-    res.json({ ok: true, session: updated });
+    res.json({ ok: true, session: shapeSessionWithCreator(updated) });
   } catch (error) {
     logger.error('Error finishing study session', error);
     sendError(res, 500, 'Error finishing study session', error);
