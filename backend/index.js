@@ -34,17 +34,67 @@ app.use(corsMiddleware);
 app.use(express.json({ limit: process.env.JSON_BODY_LIMIT || '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: process.env.JSON_BODY_LIMIT || '2mb' }));
 
+const crypto = require('crypto');
+
 const rateLimit = new Map();
 const RATE_LIMIT_WINDOW = Number(process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000);
-const MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS || 250);
-const AUTH_RATE_LIMIT_MAX = Number(process.env.AUTH_RATE_LIMIT_MAX_REQUESTS || 30);
-const CONTACT_RATE_LIMIT_MAX = Number(process.env.CONTACT_RATE_LIMIT_MAX_REQUESTS || 20);
+const MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS || 1500);
+const AUTH_RATE_LIMIT_MAX = Number(process.env.AUTH_RATE_LIMIT_MAX_REQUESTS || 40);
+const CONTACT_RATE_LIMIT_MAX = Number(process.env.CONTACT_RATE_LIMIT_MAX_REQUESTS || 25);
+
+const BUCKET_ID = {
+  AUTH_LOGIN: 'auth:login',
+  AUTH_REGISTER: 'auth:register',
+  CONTACT: 'contact',
+  API: 'api',
+};
 
 const RATE_LIMIT_RULES = [
-  { test: (req) => req.path.startsWith('/api/auth/login'), maxRequests: AUTH_RATE_LIMIT_MAX },
-  { test: (req) => req.path.startsWith('/api/auth/register'), maxRequests: AUTH_RATE_LIMIT_MAX },
-  { test: (req) => req.path.startsWith('/api/contact'), maxRequests: CONTACT_RATE_LIMIT_MAX },
+  {
+    bucket: BUCKET_ID.AUTH_LOGIN,
+    maxRequests: AUTH_RATE_LIMIT_MAX,
+    test: (req) => req.method === 'POST' && req.path.startsWith('/api/auth/login'),
+    keySuffix: (req) => {
+      const phone = typeof req.body?.phone === 'string' ? req.body.phone.trim() : '';
+      const dim = phone
+        ? crypto.createHash('sha256').update(phone).digest('base64url').slice(0, 12)
+        : 'nophone';
+      return dim;
+    },
+    resetOnSuccess: true,
+  },
+  {
+    bucket: BUCKET_ID.AUTH_REGISTER,
+    maxRequests: AUTH_RATE_LIMIT_MAX,
+    test: (req) => req.method === 'POST' && req.path.startsWith('/api/auth/register'),
+    keySuffix: (req) => {
+      const phone = typeof req.body?.phone === 'string' ? req.body.phone.trim() : '';
+      const dim = phone
+        ? crypto.createHash('sha256').update(phone).digest('base64url').slice(0, 12)
+        : 'nophone';
+      return dim;
+    },
+    resetOnSuccess: false,
+  },
+  {
+    bucket: BUCKET_ID.CONTACT,
+    maxRequests: CONTACT_RATE_LIMIT_MAX,
+    test: (req) => req.path.startsWith('/api/contact'),
+    resetOnSuccess: false,
+  },
 ];
+
+const resolveRateLimitRule = (req) => {
+  return RATE_LIMIT_RULES.find((rule) => rule.test(req)) || {
+    bucket: BUCKET_ID.API,
+    maxRequests: MAX_REQUESTS,
+  };
+};
+
+const buildBucketKey = (clientIp, rule, req) => {
+  const suffix = typeof rule.keySuffix === 'function' ? rule.keySuffix(req) : '';
+  return suffix ? `${clientIp}:${rule.bucket}:${suffix}` : `${clientIp}:${rule.bucket}`;
+};
 
 const shouldSkipRateLimit = (req) => {
   if (!isProduction) {
@@ -70,32 +120,52 @@ const cleanupExpiredRateLimits = () => {
 
 setInterval(cleanupExpiredRateLimits, RATE_LIMIT_WINDOW).unref?.();
 
-const getRateLimitMaxRequests = (req) => {
-  const matchedRule = RATE_LIMIT_RULES.find((rule) => rule.test(req));
-  return matchedRule?.maxRequests || MAX_REQUESTS;
-};
-
 app.use((req, res, next) => {
   if (shouldSkipRateLimit(req)) {
     return next();
   }
 
   const clientIp = req.ip || req.connection.remoteAddress || 'unknown';
+  const rule = resolveRateLimitRule(req);
+  const bucketKey = buildBucketKey(clientIp, rule, req);
   const now = Date.now();
-  const maxRequests = getRateLimitMaxRequests(req);
-  const existing = rateLimit.get(clientIp);
+  const maxRequests = rule.maxRequests;
+  const existing = rateLimit.get(bucketKey);
 
+  let entry;
   if (!existing || now - existing.startTime > RATE_LIMIT_WINDOW) {
-    rateLimit.set(clientIp, { count: 1, startTime: now });
-    return next();
+    entry = { count: 1, startTime: now };
+    rateLimit.set(bucketKey, entry);
+  } else {
+    existing.count += 1;
+    entry = existing;
   }
 
-  existing.count += 1;
-  rateLimit.set(clientIp, existing);
+  if (rule.resetOnSuccess) {
+    res.on('finish', () => {
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        rateLimit.delete(bucketKey);
+      }
+    });
+  }
 
-  if (existing.count > maxRequests) {
+  if (entry.count > maxRequests) {
+    const retryAfter = Math.ceil(
+      Math.max(0, RATE_LIMIT_WINDOW - (now - entry.startTime)) / 1000,
+    );
+    res.setHeader('Retry-After', String(retryAfter));
+    res.setHeader('X-RateLimit-Limit', String(maxRequests));
+    res.setHeader('X-RateLimit-Remaining', '0');
+    res.setHeader('X-RateLimit-Reset', String(Math.ceil((now + retryAfter * 1000) / 1000)));
     return res.status(429).json({ message: 'Too many requests, please try again later' });
   }
+
+  res.setHeader('X-RateLimit-Limit', String(maxRequests));
+  res.setHeader('X-RateLimit-Remaining', String(Math.max(0, maxRequests - entry.count)));
+  res.setHeader(
+    'X-RateLimit-Reset',
+    String(Math.ceil((entry.startTime + RATE_LIMIT_WINDOW) / 1000)),
+  );
 
   return next();
 });
