@@ -20,6 +20,19 @@ export interface PathCourseNode {
   completed: boolean
 }
 
+export interface PathDevoirNode {
+  id: string
+  title: string
+  description?: string | null
+  difficulty: string
+  isPublished: boolean
+  order: number
+  hasVideo: boolean
+  hasPdf: boolean
+  hasText: boolean
+  hasLink: boolean
+}
+
 export interface PathExerciseNode {
   id: string
   title: string
@@ -43,8 +56,10 @@ export interface PathSubjectNode {
   sections: BacSection[]
   courses: PathCourseNode[]
   exercises: PathExerciseNode[]
+  devoirs: PathDevoirNode[]
   courseCount: number
   exerciseCount: number
+  devoirCount: number
   progress: PathProgress
 }
 
@@ -61,6 +76,7 @@ export interface PathStepNode {
   subjectCount: number
   courseCount: number
   exerciseCount: number
+  devoirCount: number
   progress: PathProgress
 }
 
@@ -80,4 +96,5 @@ export interface StepSummary {
   subjectCount: number
   courseCount: number
   exerciseCount: number
+  devoirCount: number
 }

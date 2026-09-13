@@ -142,6 +142,12 @@ const uploadCorrection = createUploadMiddleware({
   maxSizeBytes: PDF_MAX_SIZE_BYTES,
 });
 
+const uploadDevoirPdf = createUploadMiddleware({
+  relativeDir: 'devoirs',
+  allowedMimeTypes: PDF_MIME_TYPES,
+  maxSizeBytes: PDF_MAX_SIZE_BYTES,
+});
+
 const createSignedUploadHandler = ({ relativeDir, allowedMimeTypes, maxSizeBytes, buildResponse }) =>
   async (req, res) => {
     const { filename, contentType, sizeBytes } = req.body || {};
@@ -439,6 +445,33 @@ router.post(
 );
 
 router.post(
+  '/devoirs/upload-pdf',
+  uploadDevoirPdf.single('pdf'),
+  (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No PDF file uploaded' });
+    }
+    res.json({
+      fileUrl: toPublicUploadPath('devoirs', req.file.filename),
+    });
+  }
+);
+router.post(
+  '/devoirs/upload-pdf/presign',
+  createSignedUploadHandler({
+    relativeDir: 'devoirs',
+    allowedMimeTypes: PDF_MIME_TYPES,
+    maxSizeBytes: PDF_MAX_SIZE_BYTES,
+    buildResponse: ({ uploadUrl, publicUrl, key, filename }) => ({
+      uploadUrl,
+      fileUrl: publicUrl,
+      key,
+      filename,
+    }),
+  })
+);
+
+router.post(
   '/courses/upload-advertisement-image',
   uploadCourseAdvertisementImage.single('image'),
   (req, res) => {
@@ -554,6 +587,24 @@ router.post(
 
 router.delete('/exercise-resources/:id', deleteExerciseResource);
 router.delete('/exercise-corrections/:id', deleteExerciseCorrection);
+
+router.post('/devoir-resources', async (req, res) => {
+  const { title, url, type, devoirId } = req.body || {};
+  if (!title || !url || !devoirId) {
+    return res.status(400).json({ message: 'title, url, and devoirId are required' });
+  }
+  const created = await prisma.devoirResource.create({
+    data: { title, url, type, devoirId },
+  });
+  res.json(created);
+});
+
+router.delete('/devoir-resources/:id', async (req, res) => {
+  await prisma.devoirResource.delete({
+    where: { id: req.params.id },
+  });
+  res.json({ success: true });
+});
 
 // =======================
 // Homework Management

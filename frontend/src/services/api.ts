@@ -303,6 +303,24 @@ export const coursesAPI = {
   },
 };
 
+// Devoirs API
+export const devoirsAPI = {
+  getAll: (params?: { subjectId?: string; search?: string; bacSection?: BacSection }) =>
+    api.get('/devoirs', { params }),
+  getById: (id: string) =>
+    api.get(`/devoirs/${id}`),
+  create: (data: any) =>
+    api.post('/devoirs', data),
+  update: (id: string, data: any) =>
+    api.put(`/devoirs/${id}`, data),
+  setPublish: (id: string, isPublished: boolean) =>
+    api.put(`/devoirs/${id}/publish`, { isPublished }),
+  delete: (id: string) =>
+    api.delete(`/devoirs/${id}`),
+  reorder: (orderedItems: Array<{ id: string; order: number }>) =>
+    api.put('/devoirs/reorder', { orderedItems }),
+};
+
 // Exercises API
 export const exercisesAPI = {
   getAll: (params?: { subjectId?: string; courseId?: string; difficulty?: string; bacSection?: BacSection }) =>
@@ -319,6 +337,12 @@ export const exercisesAPI = {
     api.delete(`/exercises/${id}`),
   reorder: (orderedItems: Array<{ id: string; order: number }>) =>
     api.put('/exercises/reorder', { orderedItems }),
+  getCorrection: (exerciseId: string) =>
+    api.get(`/exercises/${exerciseId}/corrections`),
+  upsertCorrection: (exerciseId: string, correctionId: string, payload: any) =>
+    api.put(`/exercises/${exerciseId}/corrections/${correctionId}`, payload),
+  deleteCorrection: (exerciseId: string, correctionId: string) =>
+    api.delete(`/exercises/${exerciseId}/corrections/${correctionId}`),
 };
 
 // Users API
@@ -598,6 +622,29 @@ export const adminAPI = {
         fallback: () =>
           uploadFormDataViaBackend({
             endpoint: '/admin/courses/upload-pdf',
+            formData,
+            mapResponse: (data) => data,
+          }),
+      })
+    })(),
+
+  uploadDevoirPdf: (formData: FormData) =>
+    (() => {
+      const file = formData.get('pdf')
+      if (!(file instanceof File)) {
+        return uploadFormDataViaBackend({
+          endpoint: '/admin/devoirs/upload-pdf',
+          formData,
+          mapResponse: (data) => data,
+        })
+      }
+      return uploadViaPresignedEndpoint({
+        file,
+        presignPath: '/admin/devoirs/upload-pdf/presign',
+        mapResponse: (data) => ({ fileUrl: data.fileUrl }),
+        fallback: () =>
+          uploadFormDataViaBackend({
+            endpoint: '/admin/devoirs/upload-pdf',
             formData,
             mapResponse: (data) => data,
           }),

@@ -16,7 +16,7 @@ import {
   Trash2,
   X,
 } from 'lucide-react'
-import { stepsAPI, subjectsAPI, coursesAPI, exercisesAPI } from '../../services/api'
+import { stepsAPI, subjectsAPI, coursesAPI, exercisesAPI, devoirsAPI } from '../../services/api'
 import { BAC_SECTION_OPTIONS } from '../../constants/bacSections'
 import { AdminCard } from '../../components/admin/AdminCard'
 import { PrimaryButton } from '../../components/admin/PrimaryButton'
@@ -44,7 +44,7 @@ interface Subject {
   bacSection: string
   sections?: string[]
   stepId?: string | null
-  _count?: { courses: number; exercises: number }
+  _count?: { courses: number; exercises: number; devoirs: number }
 }
 
 interface Course {
@@ -61,6 +61,16 @@ interface Exercise {
   id: string
   title: string
   groupTitle?: string | null
+  difficulty: string
+  isPublished: boolean
+  order: number
+  sections?: string[]
+}
+
+interface Devoir {
+  id: string
+  title: string
+  description?: string | null
   difficulty: string
   isPublished: boolean
   order: number
@@ -292,6 +302,7 @@ const ContentTreePage: React.FC = () => {
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null)
   const [courses, setCourses] = useState<Course[]>([])
   const [exercises, setExercises] = useState<Exercise[]>([])
+  const [devoirs, setDevoirs] = useState<Devoir[]>([])
   const [loading, setLoading] = useState(true)
   const [stepModal, setStepModal] = useState<{ open: boolean; initial: Step | null }>({ open: false, initial: null })
   const [subjectModal, setSubjectModal] = useState<{ open: boolean; initial: Subject | null }>({ open: false, initial: null })
@@ -325,12 +336,14 @@ const ContentTreePage: React.FC = () => {
   }, [selectedStepId, loadSubjects])
 
   const loadContent = useCallback(async (subjectId: string) => {
-    const [cRes, eRes] = await Promise.all([
+    const [cRes, eRes, dRes] = await Promise.all([
       coursesAPI.getAll({ subjectId }),
       exercisesAPI.getAll({ subjectId }),
+      devoirsAPI.getAll({ subjectId }),
     ])
     setCourses(cRes.data)
     setExercises(eRes.data)
+    setDevoirs(dRes.data)
   }, [])
 
   useEffect(() => {
@@ -339,6 +352,7 @@ const ContentTreePage: React.FC = () => {
     } else {
       setCourses([])
       setExercises([])
+      setDevoirs([])
     }
   }, [selectedSubjectId, loadContent])
 
@@ -490,6 +504,36 @@ const ContentTreePage: React.FC = () => {
   const handleToggleExercisePublish = async (exercise: Exercise) => {
     await exercisesAPI.setPublish(exercise.id, !exercise.isPublished)
     showNotice(exercise.isPublished ? 'Exercice masqué' : 'Exercice publié')
+    if (selectedSubjectId) await loadContent(selectedSubjectId)
+  }
+
+  const handleDeleteDevoir = async (id: string) => {
+    if (!window.confirm('Supprimer ce devoir ?')) return
+    try {
+      await devoirsAPI.delete(id)
+      showNotice('Devoir supprimé')
+      if (selectedSubjectId) await loadContent(selectedSubjectId)
+    } catch (err: any) {
+      showNotice(err?.response?.data?.message || 'Impossible de supprimer ce devoir')
+    }
+  }
+
+  const handleMoveDevoir = async (id: string, direction: 'up' | 'down') => {
+    const index = devoirs.findIndex((d) => d.id === id)
+    const target = direction === 'up' ? index - 1 : index + 1
+    if (target < 0 || target >= devoirs.length) return
+    const reordered = [...devoirs]
+    const [item] = reordered.splice(index, 1)
+    reordered.splice(target, 0, item)
+    const orderedItems = reordered.map((d, i) => ({ id: d.id, order: i }))
+    setDevoirs(reordered)
+    await devoirsAPI.reorder(orderedItems)
+    showNotice('Ordre mis à jour')
+  }
+
+  const handleToggleDevoirPublish = async (devoir: Devoir) => {
+    await devoirsAPI.setPublish(devoir.id, !devoir.isPublished)
+    showNotice(devoir.isPublished ? 'Devoir masqué' : 'Devoir publié')
     if (selectedSubjectId) await loadContent(selectedSubjectId)
   }
 
@@ -648,7 +692,7 @@ const ContentTreePage: React.FC = () => {
                           <span className="min-w-0">
                             <span className="block truncate font-semibold text-gray-800 dark:text-gray-100">{subject.name}</span>
                             <span className="block text-xs text-gray-400">
-                              {subject._count?.courses || 0} cours · {subject._count?.exercises || 0} exercices
+                              {subject._count?.courses || 0} cours · {subject._count?.exercises || 0} exercices · {subject._count?.devoirs || 0} devoirs
                             </span>
                           </span>
                           {expanded ? <ChevronDown size={16} className="shrink-0 text-gray-400" /> : <ChevronRight size={16} className="shrink-0 text-gray-400" />}
@@ -716,7 +760,7 @@ const ContentTreePage: React.FC = () => {
                     <h2 className="flex items-center gap-2 font-bold text-gray-900 dark:text-white">
                       <FileText size={18} className="text-blue-600" /> Contenu de « {selectedSubject.name} »
                     </h2>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <button
                         onClick={() => navigate(`/admin/content-tree/course/new?subjectId=${selectedSubject.id}`)}
                         className="rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700"
@@ -729,9 +773,15 @@ const ContentTreePage: React.FC = () => {
                       >
                         + Exercice
                       </button>
+                      <button
+                        onClick={() => navigate(`/admin/content-tree/devoir/new?subjectId=${selectedSubject.id}`)}
+                        className="rounded-xl bg-amber-600 px-3 py-2 text-sm font-semibold text-white hover:bg-amber-700"
+                      >
+                        + Devoir
+                      </button>
                     </div>
                   </div>
-                  <div className="grid gap-4 p-5 lg:grid-cols-2">
+                  <div className="grid gap-4 p-5 lg:grid-cols-3">
                     <div>
                       <h3 className="mb-2 text-sm font-semibold text-gray-500 dark:text-gray-400">Cours</h3>
                       {courses.length === 0 && <p className="text-sm text-gray-400">Aucun cours.</p>}
@@ -829,6 +879,59 @@ const ContentTreePage: React.FC = () => {
                               <button
                                 title="Supprimer"
                                 onClick={() => handleDeleteExercise(exercise.id)}
+                                className="rounded-lg p-1 text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10"
+                              >
+                                <Trash2 size={15} />
+                              </button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="mb-2 text-sm font-semibold text-gray-500 dark:text-gray-400">Devoirs</h3>
+                      {devoirs.length === 0 && <p className="text-sm text-gray-400">Aucun devoir.</p>}
+                      <ul className="space-y-2">
+                        {devoirs.map((devoir, dIndex) => (
+                          <li key={devoir.id} className="flex items-center justify-between gap-2 rounded-xl border border-gray-200 px-3 py-2 dark:border-white/10">
+                            <div className="min-w-0">
+                              <p className="truncate text-sm font-medium text-gray-800 dark:text-gray-100">{devoir.title}</p>
+                              <SectionBadges sections={devoir.sections} />
+                            </div>
+                            <div className="flex shrink-0 items-center gap-1">
+                              <button
+                                title="Monter"
+                                onClick={() => handleMoveDevoir(devoir.id, 'up')}
+                                disabled={dIndex === 0}
+                                className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 disabled:opacity-30 dark:hover:bg-white/5"
+                              >
+                                <ChevronRight size={16} className="rotate-[-90deg]" />
+                              </button>
+                              <button
+                                title="Descendre"
+                                onClick={() => handleMoveDevoir(devoir.id, 'down')}
+                                disabled={dIndex === devoirs.length - 1}
+                                className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 disabled:opacity-30 dark:hover:bg-white/5"
+                              >
+                                <ChevronDown size={16} />
+                              </button>
+                              <button
+                                title={devoir.isPublished ? 'Masquer' : 'Publier'}
+                                onClick={() => handleToggleDevoirPublish(devoir)}
+                                className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5"
+                              >
+                                {devoir.isPublished ? <Eye size={15} className="text-emerald-500" /> : <EyeOff size={15} className="text-gray-400" />}
+                              </button>
+                              <button
+                                title="Modifier"
+                                onClick={() => navigate(`/admin/content-tree/devoir/${devoir.id}`)}
+                                className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5"
+                              >
+                                <Pencil size={15} />
+                              </button>
+                              <button
+                                title="Supprimer"
+                                onClick={() => handleDeleteDevoir(devoir.id)}
                                 className="rounded-lg p-1 text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10"
                               >
                                 <Trash2 size={15} />

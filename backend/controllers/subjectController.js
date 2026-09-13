@@ -40,6 +40,7 @@ const getAllSubjects = async (req, res) => {
           select: {
             courses: true,
             exercises: true,
+            devoirs: true,
           },
         },
       },
@@ -77,6 +78,7 @@ const getSubjectById = async (req, res) => {
           select: {
             courses: true,
             exercises: true,
+            devoirs: true,
             studyTasks: true,
           },
         },
@@ -165,18 +167,20 @@ const deleteSubject = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const [relatedCourses, relatedExercises, relatedStudyTasks] = await Promise.all([
+    const [relatedCourses, relatedExercises, relatedDevoirs, relatedStudyTasks] = await Promise.all([
       prisma.course.count({ where: { subjectId: id } }),
       prisma.exercise.count({ where: { subjectId: id } }),
+      prisma.devoir.count({ where: { subjectId: id } }),
       prisma.studyTask.count({ where: { subjectId: id } }),
     ]);
 
-    if (relatedCourses > 0 || relatedExercises > 0 || relatedStudyTasks > 0) {
+    if (relatedCourses > 0 || relatedExercises > 0 || relatedDevoirs > 0 || relatedStudyTasks > 0) {
       return res.status(409).json({
         message: 'Cannot delete subject: it is used by other data',
         usage: {
           courses: relatedCourses,
           exercises: relatedExercises,
+          devoirs: relatedDevoirs,
           studyTasks: relatedStudyTasks,
         },
       });
@@ -217,12 +221,13 @@ const reorderSubjects = async (req, res) => {
 const getSubjectUsage = async (req, res) => {
   try {
     const { id } = req.params;
-    const [courses, exercises, studyTasks] = await Promise.all([
+    const [courses, exercises, devoirs, studyTasks] = await Promise.all([
       prisma.course.count({ where: { subjectId: id } }),
       prisma.exercise.count({ where: { subjectId: id } }),
+      prisma.devoir.count({ where: { subjectId: id } }),
       prisma.studyTask.count({ where: { subjectId: id } }),
     ]);
-    res.json({ courses, exercises, studyTasks });
+    res.json({ courses, exercises, devoirs, studyTasks });
   } catch (error) {
     sendError(res, 500, 'Error fetching subject usage', error);
   }

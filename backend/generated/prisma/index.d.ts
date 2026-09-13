@@ -79,6 +79,21 @@ export type Exercise = $Result.DefaultSelection<Prisma.$ExercisePayload>
  */
 export type ExerciseSectionAssignment = $Result.DefaultSelection<Prisma.$ExerciseSectionAssignmentPayload>
 /**
+ * Model Devoir
+ * 
+ */
+export type Devoir = $Result.DefaultSelection<Prisma.$DevoirPayload>
+/**
+ * Model DevoirSectionAssignment
+ * 
+ */
+export type DevoirSectionAssignment = $Result.DefaultSelection<Prisma.$DevoirSectionAssignmentPayload>
+/**
+ * Model DevoirResource
+ * 
+ */
+export type DevoirResource = $Result.DefaultSelection<Prisma.$DevoirResourcePayload>
+/**
  * Model Correction
  * 
  */
@@ -667,6 +682,36 @@ export class PrismaClient<
     * ```
     */
   get exerciseSectionAssignment(): Prisma.ExerciseSectionAssignmentDelegate<ExtArgs>;
+
+  /**
+   * `prisma.devoir`: Exposes CRUD operations for the **Devoir** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Devoirs
+    * const devoirs = await prisma.devoir.findMany()
+    * ```
+    */
+  get devoir(): Prisma.DevoirDelegate<ExtArgs>;
+
+  /**
+   * `prisma.devoirSectionAssignment`: Exposes CRUD operations for the **DevoirSectionAssignment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DevoirSectionAssignments
+    * const devoirSectionAssignments = await prisma.devoirSectionAssignment.findMany()
+    * ```
+    */
+  get devoirSectionAssignment(): Prisma.DevoirSectionAssignmentDelegate<ExtArgs>;
+
+  /**
+   * `prisma.devoirResource`: Exposes CRUD operations for the **DevoirResource** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DevoirResources
+    * const devoirResources = await prisma.devoirResource.findMany()
+    * ```
+    */
+  get devoirResource(): Prisma.DevoirResourceDelegate<ExtArgs>;
 
   /**
    * `prisma.correction`: Exposes CRUD operations for the **Correction** model.
@@ -1391,6 +1436,9 @@ export namespace Prisma {
     Lesson: 'Lesson',
     Exercise: 'Exercise',
     ExerciseSectionAssignment: 'ExerciseSectionAssignment',
+    Devoir: 'Devoir',
+    DevoirSectionAssignment: 'DevoirSectionAssignment',
+    DevoirResource: 'DevoirResource',
     Correction: 'Correction',
     ProgressTracking: 'ProgressTracking',
     Enrollment: 'Enrollment',
@@ -1433,7 +1481,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "learningStep" | "subject" | "subjectSection" | "teacherProfile" | "teacherAssignment" | "teacherAdvertisement" | "shopProduct" | "course" | "courseSectionAssignment" | "lesson" | "exercise" | "exerciseSectionAssignment" | "correction" | "progressTracking" | "enrollment" | "homeworkSubmission" | "courseResource" | "exerciseResource" | "studyTask" | "plannerTemplate" | "studentPlannerTask" | "parascolaire" | "contact" | "appSetting" | "learningObjective" | "studyTip" | "communication" | "communicationAttachment" | "studySession" | "studySquad" | "studySquadMember" | "studySquadInvitation" | "studySquadGoal" | "studySquadChatMessage" | "sessionParticipant" | "sessionChatMessage" | "studyHeartbeat" | "studyBadge" | "userStudyBadge"
+      modelProps: "user" | "learningStep" | "subject" | "subjectSection" | "teacherProfile" | "teacherAssignment" | "teacherAdvertisement" | "shopProduct" | "course" | "courseSectionAssignment" | "lesson" | "exercise" | "exerciseSectionAssignment" | "devoir" | "devoirSectionAssignment" | "devoirResource" | "correction" | "progressTracking" | "enrollment" | "homeworkSubmission" | "courseResource" | "exerciseResource" | "studyTask" | "plannerTemplate" | "studentPlannerTask" | "parascolaire" | "contact" | "appSetting" | "learningObjective" | "studyTip" | "communication" | "communicationAttachment" | "studySession" | "studySquad" | "studySquadMember" | "studySquadInvitation" | "studySquadGoal" | "studySquadChatMessage" | "sessionParticipant" | "sessionChatMessage" | "studyHeartbeat" | "studyBadge" | "userStudyBadge"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2344,6 +2392,216 @@ export namespace Prisma {
           count: {
             args: Prisma.ExerciseSectionAssignmentCountArgs<ExtArgs>
             result: $Utils.Optional<ExerciseSectionAssignmentCountAggregateOutputType> | number
+          }
+        }
+      }
+      Devoir: {
+        payload: Prisma.$DevoirPayload<ExtArgs>
+        fields: Prisma.DevoirFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DevoirFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DevoirFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirPayload>
+          }
+          findFirst: {
+            args: Prisma.DevoirFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DevoirFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirPayload>
+          }
+          findMany: {
+            args: Prisma.DevoirFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirPayload>[]
+          }
+          create: {
+            args: Prisma.DevoirCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirPayload>
+          }
+          createMany: {
+            args: Prisma.DevoirCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DevoirCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirPayload>[]
+          }
+          delete: {
+            args: Prisma.DevoirDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirPayload>
+          }
+          update: {
+            args: Prisma.DevoirUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirPayload>
+          }
+          deleteMany: {
+            args: Prisma.DevoirDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DevoirUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.DevoirUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirPayload>
+          }
+          aggregate: {
+            args: Prisma.DevoirAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDevoir>
+          }
+          groupBy: {
+            args: Prisma.DevoirGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DevoirGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DevoirCountArgs<ExtArgs>
+            result: $Utils.Optional<DevoirCountAggregateOutputType> | number
+          }
+        }
+      }
+      DevoirSectionAssignment: {
+        payload: Prisma.$DevoirSectionAssignmentPayload<ExtArgs>
+        fields: Prisma.DevoirSectionAssignmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DevoirSectionAssignmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirSectionAssignmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DevoirSectionAssignmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirSectionAssignmentPayload>
+          }
+          findFirst: {
+            args: Prisma.DevoirSectionAssignmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirSectionAssignmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DevoirSectionAssignmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirSectionAssignmentPayload>
+          }
+          findMany: {
+            args: Prisma.DevoirSectionAssignmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirSectionAssignmentPayload>[]
+          }
+          create: {
+            args: Prisma.DevoirSectionAssignmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirSectionAssignmentPayload>
+          }
+          createMany: {
+            args: Prisma.DevoirSectionAssignmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DevoirSectionAssignmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirSectionAssignmentPayload>[]
+          }
+          delete: {
+            args: Prisma.DevoirSectionAssignmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirSectionAssignmentPayload>
+          }
+          update: {
+            args: Prisma.DevoirSectionAssignmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirSectionAssignmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.DevoirSectionAssignmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DevoirSectionAssignmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.DevoirSectionAssignmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirSectionAssignmentPayload>
+          }
+          aggregate: {
+            args: Prisma.DevoirSectionAssignmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDevoirSectionAssignment>
+          }
+          groupBy: {
+            args: Prisma.DevoirSectionAssignmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DevoirSectionAssignmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DevoirSectionAssignmentCountArgs<ExtArgs>
+            result: $Utils.Optional<DevoirSectionAssignmentCountAggregateOutputType> | number
+          }
+        }
+      }
+      DevoirResource: {
+        payload: Prisma.$DevoirResourcePayload<ExtArgs>
+        fields: Prisma.DevoirResourceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DevoirResourceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirResourcePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DevoirResourceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirResourcePayload>
+          }
+          findFirst: {
+            args: Prisma.DevoirResourceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirResourcePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DevoirResourceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirResourcePayload>
+          }
+          findMany: {
+            args: Prisma.DevoirResourceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirResourcePayload>[]
+          }
+          create: {
+            args: Prisma.DevoirResourceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirResourcePayload>
+          }
+          createMany: {
+            args: Prisma.DevoirResourceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DevoirResourceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirResourcePayload>[]
+          }
+          delete: {
+            args: Prisma.DevoirResourceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirResourcePayload>
+          }
+          update: {
+            args: Prisma.DevoirResourceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirResourcePayload>
+          }
+          deleteMany: {
+            args: Prisma.DevoirResourceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DevoirResourceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.DevoirResourceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevoirResourcePayload>
+          }
+          aggregate: {
+            args: Prisma.DevoirResourceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDevoirResource>
+          }
+          groupBy: {
+            args: Prisma.DevoirResourceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DevoirResourceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DevoirResourceCountArgs<ExtArgs>
+            result: $Utils.Optional<DevoirResourceCountAggregateOutputType> | number
           }
         }
       }
@@ -4410,6 +4668,8 @@ export namespace Prisma {
     createdCourses: number
     ownedExercises: number
     createdExercises: number
+    ownedDevoirs: number
+    createdDevoirs: number
     learningObjectives: number
     createdStudyTips: number
     createdStudySessions: number
@@ -4439,6 +4699,8 @@ export namespace Prisma {
     createdCourses?: boolean | UserCountOutputTypeCountCreatedCoursesArgs
     ownedExercises?: boolean | UserCountOutputTypeCountOwnedExercisesArgs
     createdExercises?: boolean | UserCountOutputTypeCountCreatedExercisesArgs
+    ownedDevoirs?: boolean | UserCountOutputTypeCountOwnedDevoirsArgs
+    createdDevoirs?: boolean | UserCountOutputTypeCountCreatedDevoirsArgs
     learningObjectives?: boolean | UserCountOutputTypeCountLearningObjectivesArgs
     createdStudyTips?: boolean | UserCountOutputTypeCountCreatedStudyTipsArgs
     createdStudySessions?: boolean | UserCountOutputTypeCountCreatedStudySessionsArgs
@@ -4548,6 +4810,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountCreatedExercisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ExerciseWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountOwnedDevoirsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DevoirWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedDevoirsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DevoirWhereInput
   }
 
   /**
@@ -4725,6 +5001,7 @@ export namespace Prisma {
     teacherAssignments: number
     courses: number
     exercises: number
+    devoirs: number
     studyTasks: number
     plannerTemplates: number
     studentPlannerTasks: number
@@ -4738,6 +5015,7 @@ export namespace Prisma {
     teacherAssignments?: boolean | SubjectCountOutputTypeCountTeacherAssignmentsArgs
     courses?: boolean | SubjectCountOutputTypeCountCoursesArgs
     exercises?: boolean | SubjectCountOutputTypeCountExercisesArgs
+    devoirs?: boolean | SubjectCountOutputTypeCountDevoirsArgs
     studyTasks?: boolean | SubjectCountOutputTypeCountStudyTasksArgs
     plannerTemplates?: boolean | SubjectCountOutputTypeCountPlannerTemplatesArgs
     studentPlannerTasks?: boolean | SubjectCountOutputTypeCountStudentPlannerTasksArgs
@@ -4783,6 +5061,13 @@ export namespace Prisma {
    */
   export type SubjectCountOutputTypeCountExercisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ExerciseWhereInput
+  }
+
+  /**
+   * SubjectCountOutputType without action
+   */
+  export type SubjectCountOutputTypeCountDevoirsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DevoirWhereInput
   }
 
   /**
@@ -5022,6 +5307,46 @@ export namespace Prisma {
    */
   export type ExerciseCountOutputTypeCountLearningObjectivesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LearningObjectiveWhereInput
+  }
+
+
+  /**
+   * Count Type DevoirCountOutputType
+   */
+
+  export type DevoirCountOutputType = {
+    sectionAssignments: number
+    resources: number
+  }
+
+  export type DevoirCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sectionAssignments?: boolean | DevoirCountOutputTypeCountSectionAssignmentsArgs
+    resources?: boolean | DevoirCountOutputTypeCountResourcesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DevoirCountOutputType without action
+   */
+  export type DevoirCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirCountOutputType
+     */
+    select?: DevoirCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DevoirCountOutputType without action
+   */
+  export type DevoirCountOutputTypeCountSectionAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DevoirSectionAssignmentWhereInput
+  }
+
+  /**
+   * DevoirCountOutputType without action
+   */
+  export type DevoirCountOutputTypeCountResourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DevoirResourceWhereInput
   }
 
 
@@ -5520,6 +5845,8 @@ export namespace Prisma {
     createdCourses?: boolean | User$createdCoursesArgs<ExtArgs>
     ownedExercises?: boolean | User$ownedExercisesArgs<ExtArgs>
     createdExercises?: boolean | User$createdExercisesArgs<ExtArgs>
+    ownedDevoirs?: boolean | User$ownedDevoirsArgs<ExtArgs>
+    createdDevoirs?: boolean | User$createdDevoirsArgs<ExtArgs>
     learningObjectives?: boolean | User$learningObjectivesArgs<ExtArgs>
     createdStudyTips?: boolean | User$createdStudyTipsArgs<ExtArgs>
     createdStudySessions?: boolean | User$createdStudySessionsArgs<ExtArgs>
@@ -5587,6 +5914,8 @@ export namespace Prisma {
     createdCourses?: boolean | User$createdCoursesArgs<ExtArgs>
     ownedExercises?: boolean | User$ownedExercisesArgs<ExtArgs>
     createdExercises?: boolean | User$createdExercisesArgs<ExtArgs>
+    ownedDevoirs?: boolean | User$ownedDevoirsArgs<ExtArgs>
+    createdDevoirs?: boolean | User$createdDevoirsArgs<ExtArgs>
     learningObjectives?: boolean | User$learningObjectivesArgs<ExtArgs>
     createdStudyTips?: boolean | User$createdStudyTipsArgs<ExtArgs>
     createdStudySessions?: boolean | User$createdStudySessionsArgs<ExtArgs>
@@ -5621,6 +5950,8 @@ export namespace Prisma {
       createdCourses: Prisma.$CoursePayload<ExtArgs>[]
       ownedExercises: Prisma.$ExercisePayload<ExtArgs>[]
       createdExercises: Prisma.$ExercisePayload<ExtArgs>[]
+      ownedDevoirs: Prisma.$DevoirPayload<ExtArgs>[]
+      createdDevoirs: Prisma.$DevoirPayload<ExtArgs>[]
       learningObjectives: Prisma.$LearningObjectivePayload<ExtArgs>[]
       createdStudyTips: Prisma.$StudyTipPayload<ExtArgs>[]
       createdStudySessions: Prisma.$StudySessionPayload<ExtArgs>[]
@@ -6029,6 +6360,8 @@ export namespace Prisma {
     createdCourses<T extends User$createdCoursesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdCoursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany"> | Null>
     ownedExercises<T extends User$ownedExercisesArgs<ExtArgs> = {}>(args?: Subset<T, User$ownedExercisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findMany"> | Null>
     createdExercises<T extends User$createdExercisesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdExercisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findMany"> | Null>
+    ownedDevoirs<T extends User$ownedDevoirsArgs<ExtArgs> = {}>(args?: Subset<T, User$ownedDevoirsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "findMany"> | Null>
+    createdDevoirs<T extends User$createdDevoirsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdDevoirsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "findMany"> | Null>
     learningObjectives<T extends User$learningObjectivesArgs<ExtArgs> = {}>(args?: Subset<T, User$learningObjectivesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LearningObjectivePayload<ExtArgs>, T, "findMany"> | Null>
     createdStudyTips<T extends User$createdStudyTipsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdStudyTipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudyTipPayload<ExtArgs>, T, "findMany"> | Null>
     createdStudySessions<T extends User$createdStudySessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdStudySessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudySessionPayload<ExtArgs>, T, "findMany"> | Null>
@@ -6653,6 +6986,46 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ExerciseScalarFieldEnum | ExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * User.ownedDevoirs
+   */
+  export type User$ownedDevoirsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    where?: DevoirWhereInput
+    orderBy?: DevoirOrderByWithRelationInput | DevoirOrderByWithRelationInput[]
+    cursor?: DevoirWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DevoirScalarFieldEnum | DevoirScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdDevoirs
+   */
+  export type User$createdDevoirsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    where?: DevoirWhereInput
+    orderBy?: DevoirOrderByWithRelationInput | DevoirOrderByWithRelationInput[]
+    cursor?: DevoirWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DevoirScalarFieldEnum | DevoirScalarFieldEnum[]
   }
 
   /**
@@ -8339,6 +8712,7 @@ export namespace Prisma {
     teacherAssignments?: boolean | Subject$teacherAssignmentsArgs<ExtArgs>
     courses?: boolean | Subject$coursesArgs<ExtArgs>
     exercises?: boolean | Subject$exercisesArgs<ExtArgs>
+    devoirs?: boolean | Subject$devoirsArgs<ExtArgs>
     studyTasks?: boolean | Subject$studyTasksArgs<ExtArgs>
     plannerTemplates?: boolean | Subject$plannerTemplatesArgs<ExtArgs>
     studentPlannerTasks?: boolean | Subject$studentPlannerTasksArgs<ExtArgs>
@@ -8383,6 +8757,7 @@ export namespace Prisma {
     teacherAssignments?: boolean | Subject$teacherAssignmentsArgs<ExtArgs>
     courses?: boolean | Subject$coursesArgs<ExtArgs>
     exercises?: boolean | Subject$exercisesArgs<ExtArgs>
+    devoirs?: boolean | Subject$devoirsArgs<ExtArgs>
     studyTasks?: boolean | Subject$studyTasksArgs<ExtArgs>
     plannerTemplates?: boolean | Subject$plannerTemplatesArgs<ExtArgs>
     studentPlannerTasks?: boolean | Subject$studentPlannerTasksArgs<ExtArgs>
@@ -8403,6 +8778,7 @@ export namespace Prisma {
       teacherAssignments: Prisma.$TeacherAssignmentPayload<ExtArgs>[]
       courses: Prisma.$CoursePayload<ExtArgs>[]
       exercises: Prisma.$ExercisePayload<ExtArgs>[]
+      devoirs: Prisma.$DevoirPayload<ExtArgs>[]
       studyTasks: Prisma.$StudyTaskPayload<ExtArgs>[]
       plannerTemplates: Prisma.$PlannerTemplatePayload<ExtArgs>[]
       studentPlannerTasks: Prisma.$StudentPlannerTaskPayload<ExtArgs>[]
@@ -8791,6 +9167,7 @@ export namespace Prisma {
     teacherAssignments<T extends Subject$teacherAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Subject$teacherAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeacherAssignmentPayload<ExtArgs>, T, "findMany"> | Null>
     courses<T extends Subject$coursesArgs<ExtArgs> = {}>(args?: Subset<T, Subject$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany"> | Null>
     exercises<T extends Subject$exercisesArgs<ExtArgs> = {}>(args?: Subset<T, Subject$exercisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findMany"> | Null>
+    devoirs<T extends Subject$devoirsArgs<ExtArgs> = {}>(args?: Subset<T, Subject$devoirsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "findMany"> | Null>
     studyTasks<T extends Subject$studyTasksArgs<ExtArgs> = {}>(args?: Subset<T, Subject$studyTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudyTaskPayload<ExtArgs>, T, "findMany"> | Null>
     plannerTemplates<T extends Subject$plannerTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Subject$plannerTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlannerTemplatePayload<ExtArgs>, T, "findMany"> | Null>
     studentPlannerTasks<T extends Subject$studentPlannerTasksArgs<ExtArgs> = {}>(args?: Subset<T, Subject$studentPlannerTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPlannerTaskPayload<ExtArgs>, T, "findMany"> | Null>
@@ -9247,6 +9624,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ExerciseScalarFieldEnum | ExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * Subject.devoirs
+   */
+  export type Subject$devoirsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    where?: DevoirWhereInput
+    orderBy?: DevoirOrderByWithRelationInput | DevoirOrderByWithRelationInput[]
+    cursor?: DevoirWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DevoirScalarFieldEnum | DevoirScalarFieldEnum[]
   }
 
   /**
@@ -17786,6 +18183,10 @@ export namespace Prisma {
     title: string | null
     description: string | null
     contentUrl: string | null
+    videoUrl: string | null
+    videoPath: string | null
+    contentText: string | null
+    externalLink: string | null
     groupTitle: string | null
     advertisementImage: string | null
     advertisementTeacherName: string | null
@@ -17808,6 +18209,10 @@ export namespace Prisma {
     title: string | null
     description: string | null
     contentUrl: string | null
+    videoUrl: string | null
+    videoPath: string | null
+    contentText: string | null
+    externalLink: string | null
     groupTitle: string | null
     advertisementImage: string | null
     advertisementTeacherName: string | null
@@ -17830,6 +18235,10 @@ export namespace Prisma {
     title: number
     description: number
     contentUrl: number
+    videoUrl: number
+    videoPath: number
+    contentText: number
+    externalLink: number
     groupTitle: number
     advertisementImage: number
     advertisementTeacherName: number
@@ -17837,6 +18246,7 @@ export namespace Prisma {
     advertisementWhatsapp: number
     advertisementDescription: number
     difficulty: number
+    tags: number
     isPublished: number
     order: number
     subjectId: number
@@ -17862,6 +18272,10 @@ export namespace Prisma {
     title?: true
     description?: true
     contentUrl?: true
+    videoUrl?: true
+    videoPath?: true
+    contentText?: true
+    externalLink?: true
     groupTitle?: true
     advertisementImage?: true
     advertisementTeacherName?: true
@@ -17884,6 +18298,10 @@ export namespace Prisma {
     title?: true
     description?: true
     contentUrl?: true
+    videoUrl?: true
+    videoPath?: true
+    contentText?: true
+    externalLink?: true
     groupTitle?: true
     advertisementImage?: true
     advertisementTeacherName?: true
@@ -17906,6 +18324,10 @@ export namespace Prisma {
     title?: true
     description?: true
     contentUrl?: true
+    videoUrl?: true
+    videoPath?: true
+    contentText?: true
+    externalLink?: true
     groupTitle?: true
     advertisementImage?: true
     advertisementTeacherName?: true
@@ -17913,6 +18335,7 @@ export namespace Prisma {
     advertisementWhatsapp?: true
     advertisementDescription?: true
     difficulty?: true
+    tags?: true
     isPublished?: true
     order?: true
     subjectId?: true
@@ -18015,6 +18438,10 @@ export namespace Prisma {
     title: string
     description: string | null
     contentUrl: string | null
+    videoUrl: string | null
+    videoPath: string | null
+    contentText: string | null
+    externalLink: string | null
     groupTitle: string | null
     advertisementImage: string | null
     advertisementTeacherName: string | null
@@ -18022,6 +18449,7 @@ export namespace Prisma {
     advertisementWhatsapp: string | null
     advertisementDescription: string | null
     difficulty: $Enums.Difficulty
+    tags: string[]
     isPublished: boolean
     order: number
     subjectId: string
@@ -18056,6 +18484,10 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     contentUrl?: boolean
+    videoUrl?: boolean
+    videoPath?: boolean
+    contentText?: boolean
+    externalLink?: boolean
     groupTitle?: boolean
     advertisementImage?: boolean
     advertisementTeacherName?: boolean
@@ -18063,6 +18495,7 @@ export namespace Prisma {
     advertisementWhatsapp?: boolean
     advertisementDescription?: boolean
     difficulty?: boolean
+    tags?: boolean
     isPublished?: boolean
     order?: boolean
     subjectId?: boolean
@@ -18090,6 +18523,10 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     contentUrl?: boolean
+    videoUrl?: boolean
+    videoPath?: boolean
+    contentText?: boolean
+    externalLink?: boolean
     groupTitle?: boolean
     advertisementImage?: boolean
     advertisementTeacherName?: boolean
@@ -18097,6 +18534,7 @@ export namespace Prisma {
     advertisementWhatsapp?: boolean
     advertisementDescription?: boolean
     difficulty?: boolean
+    tags?: boolean
     isPublished?: boolean
     order?: boolean
     subjectId?: boolean
@@ -18116,6 +18554,10 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     contentUrl?: boolean
+    videoUrl?: boolean
+    videoPath?: boolean
+    contentText?: boolean
+    externalLink?: boolean
     groupTitle?: boolean
     advertisementImage?: boolean
     advertisementTeacherName?: boolean
@@ -18123,6 +18565,7 @@ export namespace Prisma {
     advertisementWhatsapp?: boolean
     advertisementDescription?: boolean
     difficulty?: boolean
+    tags?: boolean
     isPublished?: boolean
     order?: boolean
     subjectId?: boolean
@@ -18174,6 +18617,10 @@ export namespace Prisma {
       title: string
       description: string | null
       contentUrl: string | null
+      videoUrl: string | null
+      videoPath: string | null
+      contentText: string | null
+      externalLink: string | null
       groupTitle: string | null
       advertisementImage: string | null
       advertisementTeacherName: string | null
@@ -18181,6 +18628,7 @@ export namespace Prisma {
       advertisementWhatsapp: string | null
       advertisementDescription: string | null
       difficulty: $Enums.Difficulty
+      tags: string[]
       isPublished: boolean
       order: number
       subjectId: string
@@ -18597,6 +19045,10 @@ export namespace Prisma {
     readonly title: FieldRef<"Exercise", 'String'>
     readonly description: FieldRef<"Exercise", 'String'>
     readonly contentUrl: FieldRef<"Exercise", 'String'>
+    readonly videoUrl: FieldRef<"Exercise", 'String'>
+    readonly videoPath: FieldRef<"Exercise", 'String'>
+    readonly contentText: FieldRef<"Exercise", 'String'>
+    readonly externalLink: FieldRef<"Exercise", 'String'>
     readonly groupTitle: FieldRef<"Exercise", 'String'>
     readonly advertisementImage: FieldRef<"Exercise", 'String'>
     readonly advertisementTeacherName: FieldRef<"Exercise", 'String'>
@@ -18604,6 +19056,7 @@ export namespace Prisma {
     readonly advertisementWhatsapp: FieldRef<"Exercise", 'String'>
     readonly advertisementDescription: FieldRef<"Exercise", 'String'>
     readonly difficulty: FieldRef<"Exercise", 'Difficulty'>
+    readonly tags: FieldRef<"Exercise", 'String[]'>
     readonly isPublished: FieldRef<"Exercise", 'Boolean'>
     readonly order: FieldRef<"Exercise", 'Int'>
     readonly subjectId: FieldRef<"Exercise", 'String'>
@@ -20051,18 +20504,3103 @@ export namespace Prisma {
 
 
   /**
+   * Model Devoir
+   */
+
+  export type AggregateDevoir = {
+    _count: DevoirCountAggregateOutputType | null
+    _avg: DevoirAvgAggregateOutputType | null
+    _sum: DevoirSumAggregateOutputType | null
+    _min: DevoirMinAggregateOutputType | null
+    _max: DevoirMaxAggregateOutputType | null
+  }
+
+  export type DevoirAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type DevoirSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type DevoirMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    contentUrl: string | null
+    videoUrl: string | null
+    videoPath: string | null
+    contentText: string | null
+    externalLink: string | null
+    difficulty: $Enums.Difficulty | null
+    isPublished: boolean | null
+    order: number | null
+    subjectId: string | null
+    teacherId: string | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DevoirMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    contentUrl: string | null
+    videoUrl: string | null
+    videoPath: string | null
+    contentText: string | null
+    externalLink: string | null
+    difficulty: $Enums.Difficulty | null
+    isPublished: boolean | null
+    order: number | null
+    subjectId: string | null
+    teacherId: string | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DevoirCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    contentUrl: number
+    videoUrl: number
+    videoPath: number
+    contentText: number
+    externalLink: number
+    difficulty: number
+    tags: number
+    isPublished: number
+    order: number
+    subjectId: number
+    teacherId: number
+    createdById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DevoirAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type DevoirSumAggregateInputType = {
+    order?: true
+  }
+
+  export type DevoirMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    contentUrl?: true
+    videoUrl?: true
+    videoPath?: true
+    contentText?: true
+    externalLink?: true
+    difficulty?: true
+    isPublished?: true
+    order?: true
+    subjectId?: true
+    teacherId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DevoirMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    contentUrl?: true
+    videoUrl?: true
+    videoPath?: true
+    contentText?: true
+    externalLink?: true
+    difficulty?: true
+    isPublished?: true
+    order?: true
+    subjectId?: true
+    teacherId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DevoirCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    contentUrl?: true
+    videoUrl?: true
+    videoPath?: true
+    contentText?: true
+    externalLink?: true
+    difficulty?: true
+    tags?: true
+    isPublished?: true
+    order?: true
+    subjectId?: true
+    teacherId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DevoirAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Devoir to aggregate.
+     */
+    where?: DevoirWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Devoirs to fetch.
+     */
+    orderBy?: DevoirOrderByWithRelationInput | DevoirOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DevoirWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Devoirs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Devoirs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Devoirs
+    **/
+    _count?: true | DevoirCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DevoirAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DevoirSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DevoirMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DevoirMaxAggregateInputType
+  }
+
+  export type GetDevoirAggregateType<T extends DevoirAggregateArgs> = {
+        [P in keyof T & keyof AggregateDevoir]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDevoir[P]>
+      : GetScalarType<T[P], AggregateDevoir[P]>
+  }
+
+
+
+
+  export type DevoirGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DevoirWhereInput
+    orderBy?: DevoirOrderByWithAggregationInput | DevoirOrderByWithAggregationInput[]
+    by: DevoirScalarFieldEnum[] | DevoirScalarFieldEnum
+    having?: DevoirScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DevoirCountAggregateInputType | true
+    _avg?: DevoirAvgAggregateInputType
+    _sum?: DevoirSumAggregateInputType
+    _min?: DevoirMinAggregateInputType
+    _max?: DevoirMaxAggregateInputType
+  }
+
+  export type DevoirGroupByOutputType = {
+    id: string
+    title: string
+    description: string | null
+    contentUrl: string | null
+    videoUrl: string | null
+    videoPath: string | null
+    contentText: string | null
+    externalLink: string | null
+    difficulty: $Enums.Difficulty
+    tags: string[]
+    isPublished: boolean
+    order: number
+    subjectId: string
+    teacherId: string | null
+    createdById: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: DevoirCountAggregateOutputType | null
+    _avg: DevoirAvgAggregateOutputType | null
+    _sum: DevoirSumAggregateOutputType | null
+    _min: DevoirMinAggregateOutputType | null
+    _max: DevoirMaxAggregateOutputType | null
+  }
+
+  type GetDevoirGroupByPayload<T extends DevoirGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DevoirGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DevoirGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DevoirGroupByOutputType[P]>
+            : GetScalarType<T[P], DevoirGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DevoirSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    contentUrl?: boolean
+    videoUrl?: boolean
+    videoPath?: boolean
+    contentText?: boolean
+    externalLink?: boolean
+    difficulty?: boolean
+    tags?: boolean
+    isPublished?: boolean
+    order?: boolean
+    subjectId?: boolean
+    teacherId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    teacher?: boolean | Devoir$teacherArgs<ExtArgs>
+    createdBy?: boolean | Devoir$createdByArgs<ExtArgs>
+    sectionAssignments?: boolean | Devoir$sectionAssignmentsArgs<ExtArgs>
+    resources?: boolean | Devoir$resourcesArgs<ExtArgs>
+    _count?: boolean | DevoirCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["devoir"]>
+
+  export type DevoirSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    contentUrl?: boolean
+    videoUrl?: boolean
+    videoPath?: boolean
+    contentText?: boolean
+    externalLink?: boolean
+    difficulty?: boolean
+    tags?: boolean
+    isPublished?: boolean
+    order?: boolean
+    subjectId?: boolean
+    teacherId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    teacher?: boolean | Devoir$teacherArgs<ExtArgs>
+    createdBy?: boolean | Devoir$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["devoir"]>
+
+  export type DevoirSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    contentUrl?: boolean
+    videoUrl?: boolean
+    videoPath?: boolean
+    contentText?: boolean
+    externalLink?: boolean
+    difficulty?: boolean
+    tags?: boolean
+    isPublished?: boolean
+    order?: boolean
+    subjectId?: boolean
+    teacherId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DevoirInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    teacher?: boolean | Devoir$teacherArgs<ExtArgs>
+    createdBy?: boolean | Devoir$createdByArgs<ExtArgs>
+    sectionAssignments?: boolean | Devoir$sectionAssignmentsArgs<ExtArgs>
+    resources?: boolean | Devoir$resourcesArgs<ExtArgs>
+    _count?: boolean | DevoirCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DevoirIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    teacher?: boolean | Devoir$teacherArgs<ExtArgs>
+    createdBy?: boolean | Devoir$createdByArgs<ExtArgs>
+  }
+
+  export type $DevoirPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Devoir"
+    objects: {
+      subject: Prisma.$SubjectPayload<ExtArgs>
+      teacher: Prisma.$UserPayload<ExtArgs> | null
+      createdBy: Prisma.$UserPayload<ExtArgs> | null
+      sectionAssignments: Prisma.$DevoirSectionAssignmentPayload<ExtArgs>[]
+      resources: Prisma.$DevoirResourcePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string | null
+      contentUrl: string | null
+      videoUrl: string | null
+      videoPath: string | null
+      contentText: string | null
+      externalLink: string | null
+      difficulty: $Enums.Difficulty
+      tags: string[]
+      isPublished: boolean
+      order: number
+      subjectId: string
+      teacherId: string | null
+      createdById: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["devoir"]>
+    composites: {}
+  }
+
+  type DevoirGetPayload<S extends boolean | null | undefined | DevoirDefaultArgs> = $Result.GetResult<Prisma.$DevoirPayload, S>
+
+  type DevoirCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<DevoirFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: DevoirCountAggregateInputType | true
+    }
+
+  export interface DevoirDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Devoir'], meta: { name: 'Devoir' } }
+    /**
+     * Find zero or one Devoir that matches the filter.
+     * @param {DevoirFindUniqueArgs} args - Arguments to find a Devoir
+     * @example
+     * // Get one Devoir
+     * const devoir = await prisma.devoir.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DevoirFindUniqueArgs>(args: SelectSubset<T, DevoirFindUniqueArgs<ExtArgs>>): Prisma__DevoirClient<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Devoir that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {DevoirFindUniqueOrThrowArgs} args - Arguments to find a Devoir
+     * @example
+     * // Get one Devoir
+     * const devoir = await prisma.devoir.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DevoirFindUniqueOrThrowArgs>(args: SelectSubset<T, DevoirFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DevoirClient<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Devoir that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirFindFirstArgs} args - Arguments to find a Devoir
+     * @example
+     * // Get one Devoir
+     * const devoir = await prisma.devoir.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DevoirFindFirstArgs>(args?: SelectSubset<T, DevoirFindFirstArgs<ExtArgs>>): Prisma__DevoirClient<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Devoir that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirFindFirstOrThrowArgs} args - Arguments to find a Devoir
+     * @example
+     * // Get one Devoir
+     * const devoir = await prisma.devoir.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DevoirFindFirstOrThrowArgs>(args?: SelectSubset<T, DevoirFindFirstOrThrowArgs<ExtArgs>>): Prisma__DevoirClient<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Devoirs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Devoirs
+     * const devoirs = await prisma.devoir.findMany()
+     * 
+     * // Get first 10 Devoirs
+     * const devoirs = await prisma.devoir.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const devoirWithIdOnly = await prisma.devoir.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DevoirFindManyArgs>(args?: SelectSubset<T, DevoirFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Devoir.
+     * @param {DevoirCreateArgs} args - Arguments to create a Devoir.
+     * @example
+     * // Create one Devoir
+     * const Devoir = await prisma.devoir.create({
+     *   data: {
+     *     // ... data to create a Devoir
+     *   }
+     * })
+     * 
+     */
+    create<T extends DevoirCreateArgs>(args: SelectSubset<T, DevoirCreateArgs<ExtArgs>>): Prisma__DevoirClient<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Devoirs.
+     * @param {DevoirCreateManyArgs} args - Arguments to create many Devoirs.
+     * @example
+     * // Create many Devoirs
+     * const devoir = await prisma.devoir.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DevoirCreateManyArgs>(args?: SelectSubset<T, DevoirCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Devoirs and returns the data saved in the database.
+     * @param {DevoirCreateManyAndReturnArgs} args - Arguments to create many Devoirs.
+     * @example
+     * // Create many Devoirs
+     * const devoir = await prisma.devoir.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Devoirs and only return the `id`
+     * const devoirWithIdOnly = await prisma.devoir.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DevoirCreateManyAndReturnArgs>(args?: SelectSubset<T, DevoirCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a Devoir.
+     * @param {DevoirDeleteArgs} args - Arguments to delete one Devoir.
+     * @example
+     * // Delete one Devoir
+     * const Devoir = await prisma.devoir.delete({
+     *   where: {
+     *     // ... filter to delete one Devoir
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DevoirDeleteArgs>(args: SelectSubset<T, DevoirDeleteArgs<ExtArgs>>): Prisma__DevoirClient<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Devoir.
+     * @param {DevoirUpdateArgs} args - Arguments to update one Devoir.
+     * @example
+     * // Update one Devoir
+     * const devoir = await prisma.devoir.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DevoirUpdateArgs>(args: SelectSubset<T, DevoirUpdateArgs<ExtArgs>>): Prisma__DevoirClient<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Devoirs.
+     * @param {DevoirDeleteManyArgs} args - Arguments to filter Devoirs to delete.
+     * @example
+     * // Delete a few Devoirs
+     * const { count } = await prisma.devoir.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DevoirDeleteManyArgs>(args?: SelectSubset<T, DevoirDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Devoirs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Devoirs
+     * const devoir = await prisma.devoir.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DevoirUpdateManyArgs>(args: SelectSubset<T, DevoirUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Devoir.
+     * @param {DevoirUpsertArgs} args - Arguments to update or create a Devoir.
+     * @example
+     * // Update or create a Devoir
+     * const devoir = await prisma.devoir.upsert({
+     *   create: {
+     *     // ... data to create a Devoir
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Devoir we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DevoirUpsertArgs>(args: SelectSubset<T, DevoirUpsertArgs<ExtArgs>>): Prisma__DevoirClient<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Devoirs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirCountArgs} args - Arguments to filter Devoirs to count.
+     * @example
+     * // Count the number of Devoirs
+     * const count = await prisma.devoir.count({
+     *   where: {
+     *     // ... the filter for the Devoirs we want to count
+     *   }
+     * })
+    **/
+    count<T extends DevoirCountArgs>(
+      args?: Subset<T, DevoirCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DevoirCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Devoir.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DevoirAggregateArgs>(args: Subset<T, DevoirAggregateArgs>): Prisma.PrismaPromise<GetDevoirAggregateType<T>>
+
+    /**
+     * Group by Devoir.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DevoirGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DevoirGroupByArgs['orderBy'] }
+        : { orderBy?: DevoirGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DevoirGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDevoirGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Devoir model
+   */
+  readonly fields: DevoirFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Devoir.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DevoirClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    subject<T extends SubjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SubjectDefaultArgs<ExtArgs>>): Prisma__SubjectClient<$Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    teacher<T extends Devoir$teacherArgs<ExtArgs> = {}>(args?: Subset<T, Devoir$teacherArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    createdBy<T extends Devoir$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Devoir$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    sectionAssignments<T extends Devoir$sectionAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Devoir$sectionAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevoirSectionAssignmentPayload<ExtArgs>, T, "findMany"> | Null>
+    resources<T extends Devoir$resourcesArgs<ExtArgs> = {}>(args?: Subset<T, Devoir$resourcesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevoirResourcePayload<ExtArgs>, T, "findMany"> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Devoir model
+   */ 
+  interface DevoirFieldRefs {
+    readonly id: FieldRef<"Devoir", 'String'>
+    readonly title: FieldRef<"Devoir", 'String'>
+    readonly description: FieldRef<"Devoir", 'String'>
+    readonly contentUrl: FieldRef<"Devoir", 'String'>
+    readonly videoUrl: FieldRef<"Devoir", 'String'>
+    readonly videoPath: FieldRef<"Devoir", 'String'>
+    readonly contentText: FieldRef<"Devoir", 'String'>
+    readonly externalLink: FieldRef<"Devoir", 'String'>
+    readonly difficulty: FieldRef<"Devoir", 'Difficulty'>
+    readonly tags: FieldRef<"Devoir", 'String[]'>
+    readonly isPublished: FieldRef<"Devoir", 'Boolean'>
+    readonly order: FieldRef<"Devoir", 'Int'>
+    readonly subjectId: FieldRef<"Devoir", 'String'>
+    readonly teacherId: FieldRef<"Devoir", 'String'>
+    readonly createdById: FieldRef<"Devoir", 'String'>
+    readonly createdAt: FieldRef<"Devoir", 'DateTime'>
+    readonly updatedAt: FieldRef<"Devoir", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Devoir findUnique
+   */
+  export type DevoirFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    /**
+     * Filter, which Devoir to fetch.
+     */
+    where: DevoirWhereUniqueInput
+  }
+
+  /**
+   * Devoir findUniqueOrThrow
+   */
+  export type DevoirFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    /**
+     * Filter, which Devoir to fetch.
+     */
+    where: DevoirWhereUniqueInput
+  }
+
+  /**
+   * Devoir findFirst
+   */
+  export type DevoirFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    /**
+     * Filter, which Devoir to fetch.
+     */
+    where?: DevoirWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Devoirs to fetch.
+     */
+    orderBy?: DevoirOrderByWithRelationInput | DevoirOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Devoirs.
+     */
+    cursor?: DevoirWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Devoirs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Devoirs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Devoirs.
+     */
+    distinct?: DevoirScalarFieldEnum | DevoirScalarFieldEnum[]
+  }
+
+  /**
+   * Devoir findFirstOrThrow
+   */
+  export type DevoirFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    /**
+     * Filter, which Devoir to fetch.
+     */
+    where?: DevoirWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Devoirs to fetch.
+     */
+    orderBy?: DevoirOrderByWithRelationInput | DevoirOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Devoirs.
+     */
+    cursor?: DevoirWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Devoirs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Devoirs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Devoirs.
+     */
+    distinct?: DevoirScalarFieldEnum | DevoirScalarFieldEnum[]
+  }
+
+  /**
+   * Devoir findMany
+   */
+  export type DevoirFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    /**
+     * Filter, which Devoirs to fetch.
+     */
+    where?: DevoirWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Devoirs to fetch.
+     */
+    orderBy?: DevoirOrderByWithRelationInput | DevoirOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Devoirs.
+     */
+    cursor?: DevoirWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Devoirs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Devoirs.
+     */
+    skip?: number
+    distinct?: DevoirScalarFieldEnum | DevoirScalarFieldEnum[]
+  }
+
+  /**
+   * Devoir create
+   */
+  export type DevoirCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Devoir.
+     */
+    data: XOR<DevoirCreateInput, DevoirUncheckedCreateInput>
+  }
+
+  /**
+   * Devoir createMany
+   */
+  export type DevoirCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Devoirs.
+     */
+    data: DevoirCreateManyInput | DevoirCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Devoir createManyAndReturn
+   */
+  export type DevoirCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many Devoirs.
+     */
+    data: DevoirCreateManyInput | DevoirCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Devoir update
+   */
+  export type DevoirUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Devoir.
+     */
+    data: XOR<DevoirUpdateInput, DevoirUncheckedUpdateInput>
+    /**
+     * Choose, which Devoir to update.
+     */
+    where: DevoirWhereUniqueInput
+  }
+
+  /**
+   * Devoir updateMany
+   */
+  export type DevoirUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Devoirs.
+     */
+    data: XOR<DevoirUpdateManyMutationInput, DevoirUncheckedUpdateManyInput>
+    /**
+     * Filter which Devoirs to update
+     */
+    where?: DevoirWhereInput
+  }
+
+  /**
+   * Devoir upsert
+   */
+  export type DevoirUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Devoir to update in case it exists.
+     */
+    where: DevoirWhereUniqueInput
+    /**
+     * In case the Devoir found by the `where` argument doesn't exist, create a new Devoir with this data.
+     */
+    create: XOR<DevoirCreateInput, DevoirUncheckedCreateInput>
+    /**
+     * In case the Devoir was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DevoirUpdateInput, DevoirUncheckedUpdateInput>
+  }
+
+  /**
+   * Devoir delete
+   */
+  export type DevoirDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+    /**
+     * Filter which Devoir to delete.
+     */
+    where: DevoirWhereUniqueInput
+  }
+
+  /**
+   * Devoir deleteMany
+   */
+  export type DevoirDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Devoirs to delete
+     */
+    where?: DevoirWhereInput
+  }
+
+  /**
+   * Devoir.teacher
+   */
+  export type Devoir$teacherArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Devoir.createdBy
+   */
+  export type Devoir$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Devoir.sectionAssignments
+   */
+  export type Devoir$sectionAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentInclude<ExtArgs> | null
+    where?: DevoirSectionAssignmentWhereInput
+    orderBy?: DevoirSectionAssignmentOrderByWithRelationInput | DevoirSectionAssignmentOrderByWithRelationInput[]
+    cursor?: DevoirSectionAssignmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DevoirSectionAssignmentScalarFieldEnum | DevoirSectionAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * Devoir.resources
+   */
+  export type Devoir$resourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceInclude<ExtArgs> | null
+    where?: DevoirResourceWhereInput
+    orderBy?: DevoirResourceOrderByWithRelationInput | DevoirResourceOrderByWithRelationInput[]
+    cursor?: DevoirResourceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DevoirResourceScalarFieldEnum | DevoirResourceScalarFieldEnum[]
+  }
+
+  /**
+   * Devoir without action
+   */
+  export type DevoirDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Devoir
+     */
+    select?: DevoirSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DevoirSectionAssignment
+   */
+
+  export type AggregateDevoirSectionAssignment = {
+    _count: DevoirSectionAssignmentCountAggregateOutputType | null
+    _min: DevoirSectionAssignmentMinAggregateOutputType | null
+    _max: DevoirSectionAssignmentMaxAggregateOutputType | null
+  }
+
+  export type DevoirSectionAssignmentMinAggregateOutputType = {
+    id: string | null
+    devoirId: string | null
+    bacSection: $Enums.BacSection | null
+    createdAt: Date | null
+  }
+
+  export type DevoirSectionAssignmentMaxAggregateOutputType = {
+    id: string | null
+    devoirId: string | null
+    bacSection: $Enums.BacSection | null
+    createdAt: Date | null
+  }
+
+  export type DevoirSectionAssignmentCountAggregateOutputType = {
+    id: number
+    devoirId: number
+    bacSection: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type DevoirSectionAssignmentMinAggregateInputType = {
+    id?: true
+    devoirId?: true
+    bacSection?: true
+    createdAt?: true
+  }
+
+  export type DevoirSectionAssignmentMaxAggregateInputType = {
+    id?: true
+    devoirId?: true
+    bacSection?: true
+    createdAt?: true
+  }
+
+  export type DevoirSectionAssignmentCountAggregateInputType = {
+    id?: true
+    devoirId?: true
+    bacSection?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type DevoirSectionAssignmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DevoirSectionAssignment to aggregate.
+     */
+    where?: DevoirSectionAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevoirSectionAssignments to fetch.
+     */
+    orderBy?: DevoirSectionAssignmentOrderByWithRelationInput | DevoirSectionAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DevoirSectionAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevoirSectionAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevoirSectionAssignments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DevoirSectionAssignments
+    **/
+    _count?: true | DevoirSectionAssignmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DevoirSectionAssignmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DevoirSectionAssignmentMaxAggregateInputType
+  }
+
+  export type GetDevoirSectionAssignmentAggregateType<T extends DevoirSectionAssignmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateDevoirSectionAssignment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDevoirSectionAssignment[P]>
+      : GetScalarType<T[P], AggregateDevoirSectionAssignment[P]>
+  }
+
+
+
+
+  export type DevoirSectionAssignmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DevoirSectionAssignmentWhereInput
+    orderBy?: DevoirSectionAssignmentOrderByWithAggregationInput | DevoirSectionAssignmentOrderByWithAggregationInput[]
+    by: DevoirSectionAssignmentScalarFieldEnum[] | DevoirSectionAssignmentScalarFieldEnum
+    having?: DevoirSectionAssignmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DevoirSectionAssignmentCountAggregateInputType | true
+    _min?: DevoirSectionAssignmentMinAggregateInputType
+    _max?: DevoirSectionAssignmentMaxAggregateInputType
+  }
+
+  export type DevoirSectionAssignmentGroupByOutputType = {
+    id: string
+    devoirId: string
+    bacSection: $Enums.BacSection
+    createdAt: Date
+    _count: DevoirSectionAssignmentCountAggregateOutputType | null
+    _min: DevoirSectionAssignmentMinAggregateOutputType | null
+    _max: DevoirSectionAssignmentMaxAggregateOutputType | null
+  }
+
+  type GetDevoirSectionAssignmentGroupByPayload<T extends DevoirSectionAssignmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DevoirSectionAssignmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DevoirSectionAssignmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DevoirSectionAssignmentGroupByOutputType[P]>
+            : GetScalarType<T[P], DevoirSectionAssignmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DevoirSectionAssignmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    devoirId?: boolean
+    bacSection?: boolean
+    createdAt?: boolean
+    devoir?: boolean | DevoirDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["devoirSectionAssignment"]>
+
+  export type DevoirSectionAssignmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    devoirId?: boolean
+    bacSection?: boolean
+    createdAt?: boolean
+    devoir?: boolean | DevoirDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["devoirSectionAssignment"]>
+
+  export type DevoirSectionAssignmentSelectScalar = {
+    id?: boolean
+    devoirId?: boolean
+    bacSection?: boolean
+    createdAt?: boolean
+  }
+
+  export type DevoirSectionAssignmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    devoir?: boolean | DevoirDefaultArgs<ExtArgs>
+  }
+  export type DevoirSectionAssignmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    devoir?: boolean | DevoirDefaultArgs<ExtArgs>
+  }
+
+  export type $DevoirSectionAssignmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DevoirSectionAssignment"
+    objects: {
+      devoir: Prisma.$DevoirPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      devoirId: string
+      bacSection: $Enums.BacSection
+      createdAt: Date
+    }, ExtArgs["result"]["devoirSectionAssignment"]>
+    composites: {}
+  }
+
+  type DevoirSectionAssignmentGetPayload<S extends boolean | null | undefined | DevoirSectionAssignmentDefaultArgs> = $Result.GetResult<Prisma.$DevoirSectionAssignmentPayload, S>
+
+  type DevoirSectionAssignmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<DevoirSectionAssignmentFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: DevoirSectionAssignmentCountAggregateInputType | true
+    }
+
+  export interface DevoirSectionAssignmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DevoirSectionAssignment'], meta: { name: 'DevoirSectionAssignment' } }
+    /**
+     * Find zero or one DevoirSectionAssignment that matches the filter.
+     * @param {DevoirSectionAssignmentFindUniqueArgs} args - Arguments to find a DevoirSectionAssignment
+     * @example
+     * // Get one DevoirSectionAssignment
+     * const devoirSectionAssignment = await prisma.devoirSectionAssignment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DevoirSectionAssignmentFindUniqueArgs>(args: SelectSubset<T, DevoirSectionAssignmentFindUniqueArgs<ExtArgs>>): Prisma__DevoirSectionAssignmentClient<$Result.GetResult<Prisma.$DevoirSectionAssignmentPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one DevoirSectionAssignment that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {DevoirSectionAssignmentFindUniqueOrThrowArgs} args - Arguments to find a DevoirSectionAssignment
+     * @example
+     * // Get one DevoirSectionAssignment
+     * const devoirSectionAssignment = await prisma.devoirSectionAssignment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DevoirSectionAssignmentFindUniqueOrThrowArgs>(args: SelectSubset<T, DevoirSectionAssignmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DevoirSectionAssignmentClient<$Result.GetResult<Prisma.$DevoirSectionAssignmentPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first DevoirSectionAssignment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirSectionAssignmentFindFirstArgs} args - Arguments to find a DevoirSectionAssignment
+     * @example
+     * // Get one DevoirSectionAssignment
+     * const devoirSectionAssignment = await prisma.devoirSectionAssignment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DevoirSectionAssignmentFindFirstArgs>(args?: SelectSubset<T, DevoirSectionAssignmentFindFirstArgs<ExtArgs>>): Prisma__DevoirSectionAssignmentClient<$Result.GetResult<Prisma.$DevoirSectionAssignmentPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first DevoirSectionAssignment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirSectionAssignmentFindFirstOrThrowArgs} args - Arguments to find a DevoirSectionAssignment
+     * @example
+     * // Get one DevoirSectionAssignment
+     * const devoirSectionAssignment = await prisma.devoirSectionAssignment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DevoirSectionAssignmentFindFirstOrThrowArgs>(args?: SelectSubset<T, DevoirSectionAssignmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__DevoirSectionAssignmentClient<$Result.GetResult<Prisma.$DevoirSectionAssignmentPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more DevoirSectionAssignments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirSectionAssignmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DevoirSectionAssignments
+     * const devoirSectionAssignments = await prisma.devoirSectionAssignment.findMany()
+     * 
+     * // Get first 10 DevoirSectionAssignments
+     * const devoirSectionAssignments = await prisma.devoirSectionAssignment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const devoirSectionAssignmentWithIdOnly = await prisma.devoirSectionAssignment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DevoirSectionAssignmentFindManyArgs>(args?: SelectSubset<T, DevoirSectionAssignmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevoirSectionAssignmentPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a DevoirSectionAssignment.
+     * @param {DevoirSectionAssignmentCreateArgs} args - Arguments to create a DevoirSectionAssignment.
+     * @example
+     * // Create one DevoirSectionAssignment
+     * const DevoirSectionAssignment = await prisma.devoirSectionAssignment.create({
+     *   data: {
+     *     // ... data to create a DevoirSectionAssignment
+     *   }
+     * })
+     * 
+     */
+    create<T extends DevoirSectionAssignmentCreateArgs>(args: SelectSubset<T, DevoirSectionAssignmentCreateArgs<ExtArgs>>): Prisma__DevoirSectionAssignmentClient<$Result.GetResult<Prisma.$DevoirSectionAssignmentPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many DevoirSectionAssignments.
+     * @param {DevoirSectionAssignmentCreateManyArgs} args - Arguments to create many DevoirSectionAssignments.
+     * @example
+     * // Create many DevoirSectionAssignments
+     * const devoirSectionAssignment = await prisma.devoirSectionAssignment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DevoirSectionAssignmentCreateManyArgs>(args?: SelectSubset<T, DevoirSectionAssignmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DevoirSectionAssignments and returns the data saved in the database.
+     * @param {DevoirSectionAssignmentCreateManyAndReturnArgs} args - Arguments to create many DevoirSectionAssignments.
+     * @example
+     * // Create many DevoirSectionAssignments
+     * const devoirSectionAssignment = await prisma.devoirSectionAssignment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DevoirSectionAssignments and only return the `id`
+     * const devoirSectionAssignmentWithIdOnly = await prisma.devoirSectionAssignment.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DevoirSectionAssignmentCreateManyAndReturnArgs>(args?: SelectSubset<T, DevoirSectionAssignmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevoirSectionAssignmentPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a DevoirSectionAssignment.
+     * @param {DevoirSectionAssignmentDeleteArgs} args - Arguments to delete one DevoirSectionAssignment.
+     * @example
+     * // Delete one DevoirSectionAssignment
+     * const DevoirSectionAssignment = await prisma.devoirSectionAssignment.delete({
+     *   where: {
+     *     // ... filter to delete one DevoirSectionAssignment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DevoirSectionAssignmentDeleteArgs>(args: SelectSubset<T, DevoirSectionAssignmentDeleteArgs<ExtArgs>>): Prisma__DevoirSectionAssignmentClient<$Result.GetResult<Prisma.$DevoirSectionAssignmentPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one DevoirSectionAssignment.
+     * @param {DevoirSectionAssignmentUpdateArgs} args - Arguments to update one DevoirSectionAssignment.
+     * @example
+     * // Update one DevoirSectionAssignment
+     * const devoirSectionAssignment = await prisma.devoirSectionAssignment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DevoirSectionAssignmentUpdateArgs>(args: SelectSubset<T, DevoirSectionAssignmentUpdateArgs<ExtArgs>>): Prisma__DevoirSectionAssignmentClient<$Result.GetResult<Prisma.$DevoirSectionAssignmentPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more DevoirSectionAssignments.
+     * @param {DevoirSectionAssignmentDeleteManyArgs} args - Arguments to filter DevoirSectionAssignments to delete.
+     * @example
+     * // Delete a few DevoirSectionAssignments
+     * const { count } = await prisma.devoirSectionAssignment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DevoirSectionAssignmentDeleteManyArgs>(args?: SelectSubset<T, DevoirSectionAssignmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DevoirSectionAssignments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirSectionAssignmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DevoirSectionAssignments
+     * const devoirSectionAssignment = await prisma.devoirSectionAssignment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DevoirSectionAssignmentUpdateManyArgs>(args: SelectSubset<T, DevoirSectionAssignmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one DevoirSectionAssignment.
+     * @param {DevoirSectionAssignmentUpsertArgs} args - Arguments to update or create a DevoirSectionAssignment.
+     * @example
+     * // Update or create a DevoirSectionAssignment
+     * const devoirSectionAssignment = await prisma.devoirSectionAssignment.upsert({
+     *   create: {
+     *     // ... data to create a DevoirSectionAssignment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DevoirSectionAssignment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DevoirSectionAssignmentUpsertArgs>(args: SelectSubset<T, DevoirSectionAssignmentUpsertArgs<ExtArgs>>): Prisma__DevoirSectionAssignmentClient<$Result.GetResult<Prisma.$DevoirSectionAssignmentPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of DevoirSectionAssignments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirSectionAssignmentCountArgs} args - Arguments to filter DevoirSectionAssignments to count.
+     * @example
+     * // Count the number of DevoirSectionAssignments
+     * const count = await prisma.devoirSectionAssignment.count({
+     *   where: {
+     *     // ... the filter for the DevoirSectionAssignments we want to count
+     *   }
+     * })
+    **/
+    count<T extends DevoirSectionAssignmentCountArgs>(
+      args?: Subset<T, DevoirSectionAssignmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DevoirSectionAssignmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DevoirSectionAssignment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirSectionAssignmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DevoirSectionAssignmentAggregateArgs>(args: Subset<T, DevoirSectionAssignmentAggregateArgs>): Prisma.PrismaPromise<GetDevoirSectionAssignmentAggregateType<T>>
+
+    /**
+     * Group by DevoirSectionAssignment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirSectionAssignmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DevoirSectionAssignmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DevoirSectionAssignmentGroupByArgs['orderBy'] }
+        : { orderBy?: DevoirSectionAssignmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DevoirSectionAssignmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDevoirSectionAssignmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DevoirSectionAssignment model
+   */
+  readonly fields: DevoirSectionAssignmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DevoirSectionAssignment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DevoirSectionAssignmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    devoir<T extends DevoirDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DevoirDefaultArgs<ExtArgs>>): Prisma__DevoirClient<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DevoirSectionAssignment model
+   */ 
+  interface DevoirSectionAssignmentFieldRefs {
+    readonly id: FieldRef<"DevoirSectionAssignment", 'String'>
+    readonly devoirId: FieldRef<"DevoirSectionAssignment", 'String'>
+    readonly bacSection: FieldRef<"DevoirSectionAssignment", 'BacSection'>
+    readonly createdAt: FieldRef<"DevoirSectionAssignment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DevoirSectionAssignment findUnique
+   */
+  export type DevoirSectionAssignmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which DevoirSectionAssignment to fetch.
+     */
+    where: DevoirSectionAssignmentWhereUniqueInput
+  }
+
+  /**
+   * DevoirSectionAssignment findUniqueOrThrow
+   */
+  export type DevoirSectionAssignmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which DevoirSectionAssignment to fetch.
+     */
+    where: DevoirSectionAssignmentWhereUniqueInput
+  }
+
+  /**
+   * DevoirSectionAssignment findFirst
+   */
+  export type DevoirSectionAssignmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which DevoirSectionAssignment to fetch.
+     */
+    where?: DevoirSectionAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevoirSectionAssignments to fetch.
+     */
+    orderBy?: DevoirSectionAssignmentOrderByWithRelationInput | DevoirSectionAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DevoirSectionAssignments.
+     */
+    cursor?: DevoirSectionAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevoirSectionAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevoirSectionAssignments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DevoirSectionAssignments.
+     */
+    distinct?: DevoirSectionAssignmentScalarFieldEnum | DevoirSectionAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * DevoirSectionAssignment findFirstOrThrow
+   */
+  export type DevoirSectionAssignmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which DevoirSectionAssignment to fetch.
+     */
+    where?: DevoirSectionAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevoirSectionAssignments to fetch.
+     */
+    orderBy?: DevoirSectionAssignmentOrderByWithRelationInput | DevoirSectionAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DevoirSectionAssignments.
+     */
+    cursor?: DevoirSectionAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevoirSectionAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevoirSectionAssignments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DevoirSectionAssignments.
+     */
+    distinct?: DevoirSectionAssignmentScalarFieldEnum | DevoirSectionAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * DevoirSectionAssignment findMany
+   */
+  export type DevoirSectionAssignmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which DevoirSectionAssignments to fetch.
+     */
+    where?: DevoirSectionAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevoirSectionAssignments to fetch.
+     */
+    orderBy?: DevoirSectionAssignmentOrderByWithRelationInput | DevoirSectionAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DevoirSectionAssignments.
+     */
+    cursor?: DevoirSectionAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevoirSectionAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevoirSectionAssignments.
+     */
+    skip?: number
+    distinct?: DevoirSectionAssignmentScalarFieldEnum | DevoirSectionAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * DevoirSectionAssignment create
+   */
+  export type DevoirSectionAssignmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DevoirSectionAssignment.
+     */
+    data: XOR<DevoirSectionAssignmentCreateInput, DevoirSectionAssignmentUncheckedCreateInput>
+  }
+
+  /**
+   * DevoirSectionAssignment createMany
+   */
+  export type DevoirSectionAssignmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DevoirSectionAssignments.
+     */
+    data: DevoirSectionAssignmentCreateManyInput | DevoirSectionAssignmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DevoirSectionAssignment createManyAndReturn
+   */
+  export type DevoirSectionAssignmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many DevoirSectionAssignments.
+     */
+    data: DevoirSectionAssignmentCreateManyInput | DevoirSectionAssignmentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DevoirSectionAssignment update
+   */
+  export type DevoirSectionAssignmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DevoirSectionAssignment.
+     */
+    data: XOR<DevoirSectionAssignmentUpdateInput, DevoirSectionAssignmentUncheckedUpdateInput>
+    /**
+     * Choose, which DevoirSectionAssignment to update.
+     */
+    where: DevoirSectionAssignmentWhereUniqueInput
+  }
+
+  /**
+   * DevoirSectionAssignment updateMany
+   */
+  export type DevoirSectionAssignmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DevoirSectionAssignments.
+     */
+    data: XOR<DevoirSectionAssignmentUpdateManyMutationInput, DevoirSectionAssignmentUncheckedUpdateManyInput>
+    /**
+     * Filter which DevoirSectionAssignments to update
+     */
+    where?: DevoirSectionAssignmentWhereInput
+  }
+
+  /**
+   * DevoirSectionAssignment upsert
+   */
+  export type DevoirSectionAssignmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DevoirSectionAssignment to update in case it exists.
+     */
+    where: DevoirSectionAssignmentWhereUniqueInput
+    /**
+     * In case the DevoirSectionAssignment found by the `where` argument doesn't exist, create a new DevoirSectionAssignment with this data.
+     */
+    create: XOR<DevoirSectionAssignmentCreateInput, DevoirSectionAssignmentUncheckedCreateInput>
+    /**
+     * In case the DevoirSectionAssignment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DevoirSectionAssignmentUpdateInput, DevoirSectionAssignmentUncheckedUpdateInput>
+  }
+
+  /**
+   * DevoirSectionAssignment delete
+   */
+  export type DevoirSectionAssignmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter which DevoirSectionAssignment to delete.
+     */
+    where: DevoirSectionAssignmentWhereUniqueInput
+  }
+
+  /**
+   * DevoirSectionAssignment deleteMany
+   */
+  export type DevoirSectionAssignmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DevoirSectionAssignments to delete
+     */
+    where?: DevoirSectionAssignmentWhereInput
+  }
+
+  /**
+   * DevoirSectionAssignment without action
+   */
+  export type DevoirSectionAssignmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirSectionAssignment
+     */
+    select?: DevoirSectionAssignmentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirSectionAssignmentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DevoirResource
+   */
+
+  export type AggregateDevoirResource = {
+    _count: DevoirResourceCountAggregateOutputType | null
+    _min: DevoirResourceMinAggregateOutputType | null
+    _max: DevoirResourceMaxAggregateOutputType | null
+  }
+
+  export type DevoirResourceMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    url: string | null
+    type: string | null
+    devoirId: string | null
+    createdAt: Date | null
+  }
+
+  export type DevoirResourceMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    url: string | null
+    type: string | null
+    devoirId: string | null
+    createdAt: Date | null
+  }
+
+  export type DevoirResourceCountAggregateOutputType = {
+    id: number
+    title: number
+    url: number
+    type: number
+    devoirId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type DevoirResourceMinAggregateInputType = {
+    id?: true
+    title?: true
+    url?: true
+    type?: true
+    devoirId?: true
+    createdAt?: true
+  }
+
+  export type DevoirResourceMaxAggregateInputType = {
+    id?: true
+    title?: true
+    url?: true
+    type?: true
+    devoirId?: true
+    createdAt?: true
+  }
+
+  export type DevoirResourceCountAggregateInputType = {
+    id?: true
+    title?: true
+    url?: true
+    type?: true
+    devoirId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type DevoirResourceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DevoirResource to aggregate.
+     */
+    where?: DevoirResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevoirResources to fetch.
+     */
+    orderBy?: DevoirResourceOrderByWithRelationInput | DevoirResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DevoirResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevoirResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevoirResources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DevoirResources
+    **/
+    _count?: true | DevoirResourceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DevoirResourceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DevoirResourceMaxAggregateInputType
+  }
+
+  export type GetDevoirResourceAggregateType<T extends DevoirResourceAggregateArgs> = {
+        [P in keyof T & keyof AggregateDevoirResource]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDevoirResource[P]>
+      : GetScalarType<T[P], AggregateDevoirResource[P]>
+  }
+
+
+
+
+  export type DevoirResourceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DevoirResourceWhereInput
+    orderBy?: DevoirResourceOrderByWithAggregationInput | DevoirResourceOrderByWithAggregationInput[]
+    by: DevoirResourceScalarFieldEnum[] | DevoirResourceScalarFieldEnum
+    having?: DevoirResourceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DevoirResourceCountAggregateInputType | true
+    _min?: DevoirResourceMinAggregateInputType
+    _max?: DevoirResourceMaxAggregateInputType
+  }
+
+  export type DevoirResourceGroupByOutputType = {
+    id: string
+    title: string
+    url: string
+    type: string
+    devoirId: string
+    createdAt: Date
+    _count: DevoirResourceCountAggregateOutputType | null
+    _min: DevoirResourceMinAggregateOutputType | null
+    _max: DevoirResourceMaxAggregateOutputType | null
+  }
+
+  type GetDevoirResourceGroupByPayload<T extends DevoirResourceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DevoirResourceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DevoirResourceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DevoirResourceGroupByOutputType[P]>
+            : GetScalarType<T[P], DevoirResourceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DevoirResourceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    url?: boolean
+    type?: boolean
+    devoirId?: boolean
+    createdAt?: boolean
+    devoir?: boolean | DevoirDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["devoirResource"]>
+
+  export type DevoirResourceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    url?: boolean
+    type?: boolean
+    devoirId?: boolean
+    createdAt?: boolean
+    devoir?: boolean | DevoirDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["devoirResource"]>
+
+  export type DevoirResourceSelectScalar = {
+    id?: boolean
+    title?: boolean
+    url?: boolean
+    type?: boolean
+    devoirId?: boolean
+    createdAt?: boolean
+  }
+
+  export type DevoirResourceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    devoir?: boolean | DevoirDefaultArgs<ExtArgs>
+  }
+  export type DevoirResourceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    devoir?: boolean | DevoirDefaultArgs<ExtArgs>
+  }
+
+  export type $DevoirResourcePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DevoirResource"
+    objects: {
+      devoir: Prisma.$DevoirPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      url: string
+      type: string
+      devoirId: string
+      createdAt: Date
+    }, ExtArgs["result"]["devoirResource"]>
+    composites: {}
+  }
+
+  type DevoirResourceGetPayload<S extends boolean | null | undefined | DevoirResourceDefaultArgs> = $Result.GetResult<Prisma.$DevoirResourcePayload, S>
+
+  type DevoirResourceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<DevoirResourceFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: DevoirResourceCountAggregateInputType | true
+    }
+
+  export interface DevoirResourceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DevoirResource'], meta: { name: 'DevoirResource' } }
+    /**
+     * Find zero or one DevoirResource that matches the filter.
+     * @param {DevoirResourceFindUniqueArgs} args - Arguments to find a DevoirResource
+     * @example
+     * // Get one DevoirResource
+     * const devoirResource = await prisma.devoirResource.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DevoirResourceFindUniqueArgs>(args: SelectSubset<T, DevoirResourceFindUniqueArgs<ExtArgs>>): Prisma__DevoirResourceClient<$Result.GetResult<Prisma.$DevoirResourcePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one DevoirResource that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {DevoirResourceFindUniqueOrThrowArgs} args - Arguments to find a DevoirResource
+     * @example
+     * // Get one DevoirResource
+     * const devoirResource = await prisma.devoirResource.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DevoirResourceFindUniqueOrThrowArgs>(args: SelectSubset<T, DevoirResourceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DevoirResourceClient<$Result.GetResult<Prisma.$DevoirResourcePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first DevoirResource that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirResourceFindFirstArgs} args - Arguments to find a DevoirResource
+     * @example
+     * // Get one DevoirResource
+     * const devoirResource = await prisma.devoirResource.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DevoirResourceFindFirstArgs>(args?: SelectSubset<T, DevoirResourceFindFirstArgs<ExtArgs>>): Prisma__DevoirResourceClient<$Result.GetResult<Prisma.$DevoirResourcePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first DevoirResource that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirResourceFindFirstOrThrowArgs} args - Arguments to find a DevoirResource
+     * @example
+     * // Get one DevoirResource
+     * const devoirResource = await prisma.devoirResource.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DevoirResourceFindFirstOrThrowArgs>(args?: SelectSubset<T, DevoirResourceFindFirstOrThrowArgs<ExtArgs>>): Prisma__DevoirResourceClient<$Result.GetResult<Prisma.$DevoirResourcePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more DevoirResources that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirResourceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DevoirResources
+     * const devoirResources = await prisma.devoirResource.findMany()
+     * 
+     * // Get first 10 DevoirResources
+     * const devoirResources = await prisma.devoirResource.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const devoirResourceWithIdOnly = await prisma.devoirResource.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DevoirResourceFindManyArgs>(args?: SelectSubset<T, DevoirResourceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevoirResourcePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a DevoirResource.
+     * @param {DevoirResourceCreateArgs} args - Arguments to create a DevoirResource.
+     * @example
+     * // Create one DevoirResource
+     * const DevoirResource = await prisma.devoirResource.create({
+     *   data: {
+     *     // ... data to create a DevoirResource
+     *   }
+     * })
+     * 
+     */
+    create<T extends DevoirResourceCreateArgs>(args: SelectSubset<T, DevoirResourceCreateArgs<ExtArgs>>): Prisma__DevoirResourceClient<$Result.GetResult<Prisma.$DevoirResourcePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many DevoirResources.
+     * @param {DevoirResourceCreateManyArgs} args - Arguments to create many DevoirResources.
+     * @example
+     * // Create many DevoirResources
+     * const devoirResource = await prisma.devoirResource.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DevoirResourceCreateManyArgs>(args?: SelectSubset<T, DevoirResourceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DevoirResources and returns the data saved in the database.
+     * @param {DevoirResourceCreateManyAndReturnArgs} args - Arguments to create many DevoirResources.
+     * @example
+     * // Create many DevoirResources
+     * const devoirResource = await prisma.devoirResource.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DevoirResources and only return the `id`
+     * const devoirResourceWithIdOnly = await prisma.devoirResource.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DevoirResourceCreateManyAndReturnArgs>(args?: SelectSubset<T, DevoirResourceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevoirResourcePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a DevoirResource.
+     * @param {DevoirResourceDeleteArgs} args - Arguments to delete one DevoirResource.
+     * @example
+     * // Delete one DevoirResource
+     * const DevoirResource = await prisma.devoirResource.delete({
+     *   where: {
+     *     // ... filter to delete one DevoirResource
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DevoirResourceDeleteArgs>(args: SelectSubset<T, DevoirResourceDeleteArgs<ExtArgs>>): Prisma__DevoirResourceClient<$Result.GetResult<Prisma.$DevoirResourcePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one DevoirResource.
+     * @param {DevoirResourceUpdateArgs} args - Arguments to update one DevoirResource.
+     * @example
+     * // Update one DevoirResource
+     * const devoirResource = await prisma.devoirResource.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DevoirResourceUpdateArgs>(args: SelectSubset<T, DevoirResourceUpdateArgs<ExtArgs>>): Prisma__DevoirResourceClient<$Result.GetResult<Prisma.$DevoirResourcePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more DevoirResources.
+     * @param {DevoirResourceDeleteManyArgs} args - Arguments to filter DevoirResources to delete.
+     * @example
+     * // Delete a few DevoirResources
+     * const { count } = await prisma.devoirResource.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DevoirResourceDeleteManyArgs>(args?: SelectSubset<T, DevoirResourceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DevoirResources.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirResourceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DevoirResources
+     * const devoirResource = await prisma.devoirResource.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DevoirResourceUpdateManyArgs>(args: SelectSubset<T, DevoirResourceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one DevoirResource.
+     * @param {DevoirResourceUpsertArgs} args - Arguments to update or create a DevoirResource.
+     * @example
+     * // Update or create a DevoirResource
+     * const devoirResource = await prisma.devoirResource.upsert({
+     *   create: {
+     *     // ... data to create a DevoirResource
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DevoirResource we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DevoirResourceUpsertArgs>(args: SelectSubset<T, DevoirResourceUpsertArgs<ExtArgs>>): Prisma__DevoirResourceClient<$Result.GetResult<Prisma.$DevoirResourcePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of DevoirResources.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirResourceCountArgs} args - Arguments to filter DevoirResources to count.
+     * @example
+     * // Count the number of DevoirResources
+     * const count = await prisma.devoirResource.count({
+     *   where: {
+     *     // ... the filter for the DevoirResources we want to count
+     *   }
+     * })
+    **/
+    count<T extends DevoirResourceCountArgs>(
+      args?: Subset<T, DevoirResourceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DevoirResourceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DevoirResource.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirResourceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DevoirResourceAggregateArgs>(args: Subset<T, DevoirResourceAggregateArgs>): Prisma.PrismaPromise<GetDevoirResourceAggregateType<T>>
+
+    /**
+     * Group by DevoirResource.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevoirResourceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DevoirResourceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DevoirResourceGroupByArgs['orderBy'] }
+        : { orderBy?: DevoirResourceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DevoirResourceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDevoirResourceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DevoirResource model
+   */
+  readonly fields: DevoirResourceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DevoirResource.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DevoirResourceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    devoir<T extends DevoirDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DevoirDefaultArgs<ExtArgs>>): Prisma__DevoirClient<$Result.GetResult<Prisma.$DevoirPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DevoirResource model
+   */ 
+  interface DevoirResourceFieldRefs {
+    readonly id: FieldRef<"DevoirResource", 'String'>
+    readonly title: FieldRef<"DevoirResource", 'String'>
+    readonly url: FieldRef<"DevoirResource", 'String'>
+    readonly type: FieldRef<"DevoirResource", 'String'>
+    readonly devoirId: FieldRef<"DevoirResource", 'String'>
+    readonly createdAt: FieldRef<"DevoirResource", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DevoirResource findUnique
+   */
+  export type DevoirResourceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which DevoirResource to fetch.
+     */
+    where: DevoirResourceWhereUniqueInput
+  }
+
+  /**
+   * DevoirResource findUniqueOrThrow
+   */
+  export type DevoirResourceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which DevoirResource to fetch.
+     */
+    where: DevoirResourceWhereUniqueInput
+  }
+
+  /**
+   * DevoirResource findFirst
+   */
+  export type DevoirResourceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which DevoirResource to fetch.
+     */
+    where?: DevoirResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevoirResources to fetch.
+     */
+    orderBy?: DevoirResourceOrderByWithRelationInput | DevoirResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DevoirResources.
+     */
+    cursor?: DevoirResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevoirResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevoirResources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DevoirResources.
+     */
+    distinct?: DevoirResourceScalarFieldEnum | DevoirResourceScalarFieldEnum[]
+  }
+
+  /**
+   * DevoirResource findFirstOrThrow
+   */
+  export type DevoirResourceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which DevoirResource to fetch.
+     */
+    where?: DevoirResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevoirResources to fetch.
+     */
+    orderBy?: DevoirResourceOrderByWithRelationInput | DevoirResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DevoirResources.
+     */
+    cursor?: DevoirResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevoirResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevoirResources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DevoirResources.
+     */
+    distinct?: DevoirResourceScalarFieldEnum | DevoirResourceScalarFieldEnum[]
+  }
+
+  /**
+   * DevoirResource findMany
+   */
+  export type DevoirResourceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which DevoirResources to fetch.
+     */
+    where?: DevoirResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevoirResources to fetch.
+     */
+    orderBy?: DevoirResourceOrderByWithRelationInput | DevoirResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DevoirResources.
+     */
+    cursor?: DevoirResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevoirResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevoirResources.
+     */
+    skip?: number
+    distinct?: DevoirResourceScalarFieldEnum | DevoirResourceScalarFieldEnum[]
+  }
+
+  /**
+   * DevoirResource create
+   */
+  export type DevoirResourceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DevoirResource.
+     */
+    data: XOR<DevoirResourceCreateInput, DevoirResourceUncheckedCreateInput>
+  }
+
+  /**
+   * DevoirResource createMany
+   */
+  export type DevoirResourceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DevoirResources.
+     */
+    data: DevoirResourceCreateManyInput | DevoirResourceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DevoirResource createManyAndReturn
+   */
+  export type DevoirResourceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many DevoirResources.
+     */
+    data: DevoirResourceCreateManyInput | DevoirResourceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DevoirResource update
+   */
+  export type DevoirResourceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DevoirResource.
+     */
+    data: XOR<DevoirResourceUpdateInput, DevoirResourceUncheckedUpdateInput>
+    /**
+     * Choose, which DevoirResource to update.
+     */
+    where: DevoirResourceWhereUniqueInput
+  }
+
+  /**
+   * DevoirResource updateMany
+   */
+  export type DevoirResourceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DevoirResources.
+     */
+    data: XOR<DevoirResourceUpdateManyMutationInput, DevoirResourceUncheckedUpdateManyInput>
+    /**
+     * Filter which DevoirResources to update
+     */
+    where?: DevoirResourceWhereInput
+  }
+
+  /**
+   * DevoirResource upsert
+   */
+  export type DevoirResourceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DevoirResource to update in case it exists.
+     */
+    where: DevoirResourceWhereUniqueInput
+    /**
+     * In case the DevoirResource found by the `where` argument doesn't exist, create a new DevoirResource with this data.
+     */
+    create: XOR<DevoirResourceCreateInput, DevoirResourceUncheckedCreateInput>
+    /**
+     * In case the DevoirResource was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DevoirResourceUpdateInput, DevoirResourceUncheckedUpdateInput>
+  }
+
+  /**
+   * DevoirResource delete
+   */
+  export type DevoirResourceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceInclude<ExtArgs> | null
+    /**
+     * Filter which DevoirResource to delete.
+     */
+    where: DevoirResourceWhereUniqueInput
+  }
+
+  /**
+   * DevoirResource deleteMany
+   */
+  export type DevoirResourceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DevoirResources to delete
+     */
+    where?: DevoirResourceWhereInput
+  }
+
+  /**
+   * DevoirResource without action
+   */
+  export type DevoirResourceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevoirResource
+     */
+    select?: DevoirResourceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevoirResourceInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Correction
    */
 
   export type AggregateCorrection = {
     _count: CorrectionCountAggregateOutputType | null
+    _avg: CorrectionAvgAggregateOutputType | null
+    _sum: CorrectionSumAggregateOutputType | null
     _min: CorrectionMinAggregateOutputType | null
     _max: CorrectionMaxAggregateOutputType | null
+  }
+
+  export type CorrectionAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type CorrectionSumAggregateOutputType = {
+    order: number | null
   }
 
   export type CorrectionMinAggregateOutputType = {
     id: string | null
     title: string | null
+    description: string | null
+    contentText: string | null
+    videoUrl: string | null
+    videoPath: string | null
+    externalLink: string | null
+    difficulty: $Enums.Difficulty | null
+    isPublished: boolean | null
+    order: number | null
+    teacherId: string | null
+    createdById: string | null
     contentUrl: string | null
     exerciseId: string | null
     createdAt: Date | null
@@ -20072,6 +23610,16 @@ export namespace Prisma {
   export type CorrectionMaxAggregateOutputType = {
     id: string | null
     title: string | null
+    description: string | null
+    contentText: string | null
+    videoUrl: string | null
+    videoPath: string | null
+    externalLink: string | null
+    difficulty: $Enums.Difficulty | null
+    isPublished: boolean | null
+    order: number | null
+    teacherId: string | null
+    createdById: string | null
     contentUrl: string | null
     exerciseId: string | null
     createdAt: Date | null
@@ -20081,6 +23629,16 @@ export namespace Prisma {
   export type CorrectionCountAggregateOutputType = {
     id: number
     title: number
+    description: number
+    contentText: number
+    videoUrl: number
+    videoPath: number
+    externalLink: number
+    difficulty: number
+    isPublished: number
+    order: number
+    teacherId: number
+    createdById: number
     contentUrl: number
     exerciseId: number
     createdAt: number
@@ -20089,9 +23647,27 @@ export namespace Prisma {
   }
 
 
+  export type CorrectionAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type CorrectionSumAggregateInputType = {
+    order?: true
+  }
+
   export type CorrectionMinAggregateInputType = {
     id?: true
     title?: true
+    description?: true
+    contentText?: true
+    videoUrl?: true
+    videoPath?: true
+    externalLink?: true
+    difficulty?: true
+    isPublished?: true
+    order?: true
+    teacherId?: true
+    createdById?: true
     contentUrl?: true
     exerciseId?: true
     createdAt?: true
@@ -20101,6 +23677,16 @@ export namespace Prisma {
   export type CorrectionMaxAggregateInputType = {
     id?: true
     title?: true
+    description?: true
+    contentText?: true
+    videoUrl?: true
+    videoPath?: true
+    externalLink?: true
+    difficulty?: true
+    isPublished?: true
+    order?: true
+    teacherId?: true
+    createdById?: true
     contentUrl?: true
     exerciseId?: true
     createdAt?: true
@@ -20110,6 +23696,16 @@ export namespace Prisma {
   export type CorrectionCountAggregateInputType = {
     id?: true
     title?: true
+    description?: true
+    contentText?: true
+    videoUrl?: true
+    videoPath?: true
+    externalLink?: true
+    difficulty?: true
+    isPublished?: true
+    order?: true
+    teacherId?: true
+    createdById?: true
     contentUrl?: true
     exerciseId?: true
     createdAt?: true
@@ -20155,6 +23751,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: CorrectionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CorrectionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: CorrectionMinAggregateInputType
@@ -20185,6 +23793,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: CorrectionCountAggregateInputType | true
+    _avg?: CorrectionAvgAggregateInputType
+    _sum?: CorrectionSumAggregateInputType
     _min?: CorrectionMinAggregateInputType
     _max?: CorrectionMaxAggregateInputType
   }
@@ -20192,11 +23802,23 @@ export namespace Prisma {
   export type CorrectionGroupByOutputType = {
     id: string
     title: string
-    contentUrl: string
+    description: string | null
+    contentText: string | null
+    videoUrl: string | null
+    videoPath: string | null
+    externalLink: string | null
+    difficulty: $Enums.Difficulty
+    isPublished: boolean
+    order: number
+    teacherId: string | null
+    createdById: string | null
+    contentUrl: string | null
     exerciseId: string
     createdAt: Date
     updatedAt: Date
     _count: CorrectionCountAggregateOutputType | null
+    _avg: CorrectionAvgAggregateOutputType | null
+    _sum: CorrectionSumAggregateOutputType | null
     _min: CorrectionMinAggregateOutputType | null
     _max: CorrectionMaxAggregateOutputType | null
   }
@@ -20218,6 +23840,16 @@ export namespace Prisma {
   export type CorrectionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    description?: boolean
+    contentText?: boolean
+    videoUrl?: boolean
+    videoPath?: boolean
+    externalLink?: boolean
+    difficulty?: boolean
+    isPublished?: boolean
+    order?: boolean
+    teacherId?: boolean
+    createdById?: boolean
     contentUrl?: boolean
     exerciseId?: boolean
     createdAt?: boolean
@@ -20228,6 +23860,16 @@ export namespace Prisma {
   export type CorrectionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    description?: boolean
+    contentText?: boolean
+    videoUrl?: boolean
+    videoPath?: boolean
+    externalLink?: boolean
+    difficulty?: boolean
+    isPublished?: boolean
+    order?: boolean
+    teacherId?: boolean
+    createdById?: boolean
     contentUrl?: boolean
     exerciseId?: boolean
     createdAt?: boolean
@@ -20238,6 +23880,16 @@ export namespace Prisma {
   export type CorrectionSelectScalar = {
     id?: boolean
     title?: boolean
+    description?: boolean
+    contentText?: boolean
+    videoUrl?: boolean
+    videoPath?: boolean
+    externalLink?: boolean
+    difficulty?: boolean
+    isPublished?: boolean
+    order?: boolean
+    teacherId?: boolean
+    createdById?: boolean
     contentUrl?: boolean
     exerciseId?: boolean
     createdAt?: boolean
@@ -20259,7 +23911,17 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
-      contentUrl: string
+      description: string | null
+      contentText: string | null
+      videoUrl: string | null
+      videoPath: string | null
+      externalLink: string | null
+      difficulty: $Enums.Difficulty
+      isPublished: boolean
+      order: number
+      teacherId: string | null
+      createdById: string | null
+      contentUrl: string | null
       exerciseId: string
       createdAt: Date
       updatedAt: Date
@@ -20659,6 +24321,16 @@ export namespace Prisma {
   interface CorrectionFieldRefs {
     readonly id: FieldRef<"Correction", 'String'>
     readonly title: FieldRef<"Correction", 'String'>
+    readonly description: FieldRef<"Correction", 'String'>
+    readonly contentText: FieldRef<"Correction", 'String'>
+    readonly videoUrl: FieldRef<"Correction", 'String'>
+    readonly videoPath: FieldRef<"Correction", 'String'>
+    readonly externalLink: FieldRef<"Correction", 'String'>
+    readonly difficulty: FieldRef<"Correction", 'Difficulty'>
+    readonly isPublished: FieldRef<"Correction", 'Boolean'>
+    readonly order: FieldRef<"Correction", 'Int'>
+    readonly teacherId: FieldRef<"Correction", 'String'>
+    readonly createdById: FieldRef<"Correction", 'String'>
     readonly contentUrl: FieldRef<"Correction", 'String'>
     readonly exerciseId: FieldRef<"Correction", 'String'>
     readonly createdAt: FieldRef<"Correction", 'DateTime'>
@@ -47936,6 +51608,10 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     contentUrl: 'contentUrl',
+    videoUrl: 'videoUrl',
+    videoPath: 'videoPath',
+    contentText: 'contentText',
+    externalLink: 'externalLink',
     groupTitle: 'groupTitle',
     advertisementImage: 'advertisementImage',
     advertisementTeacherName: 'advertisementTeacherName',
@@ -47943,6 +51619,7 @@ export namespace Prisma {
     advertisementWhatsapp: 'advertisementWhatsapp',
     advertisementDescription: 'advertisementDescription',
     difficulty: 'difficulty',
+    tags: 'tags',
     isPublished: 'isPublished',
     order: 'order',
     subjectId: 'subjectId',
@@ -47966,9 +51643,64 @@ export namespace Prisma {
   export type ExerciseSectionAssignmentScalarFieldEnum = (typeof ExerciseSectionAssignmentScalarFieldEnum)[keyof typeof ExerciseSectionAssignmentScalarFieldEnum]
 
 
+  export const DevoirScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    contentUrl: 'contentUrl',
+    videoUrl: 'videoUrl',
+    videoPath: 'videoPath',
+    contentText: 'contentText',
+    externalLink: 'externalLink',
+    difficulty: 'difficulty',
+    tags: 'tags',
+    isPublished: 'isPublished',
+    order: 'order',
+    subjectId: 'subjectId',
+    teacherId: 'teacherId',
+    createdById: 'createdById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DevoirScalarFieldEnum = (typeof DevoirScalarFieldEnum)[keyof typeof DevoirScalarFieldEnum]
+
+
+  export const DevoirSectionAssignmentScalarFieldEnum: {
+    id: 'id',
+    devoirId: 'devoirId',
+    bacSection: 'bacSection',
+    createdAt: 'createdAt'
+  };
+
+  export type DevoirSectionAssignmentScalarFieldEnum = (typeof DevoirSectionAssignmentScalarFieldEnum)[keyof typeof DevoirSectionAssignmentScalarFieldEnum]
+
+
+  export const DevoirResourceScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    url: 'url',
+    type: 'type',
+    devoirId: 'devoirId',
+    createdAt: 'createdAt'
+  };
+
+  export type DevoirResourceScalarFieldEnum = (typeof DevoirResourceScalarFieldEnum)[keyof typeof DevoirResourceScalarFieldEnum]
+
+
   export const CorrectionScalarFieldEnum: {
     id: 'id',
     title: 'title',
+    description: 'description',
+    contentText: 'contentText',
+    videoUrl: 'videoUrl',
+    videoPath: 'videoPath',
+    externalLink: 'externalLink',
+    difficulty: 'difficulty',
+    isPublished: 'isPublished',
+    order: 'order',
+    teacherId: 'teacherId',
+    createdById: 'createdById',
     contentUrl: 'contentUrl',
     exerciseId: 'exerciseId',
     createdAt: 'createdAt',
@@ -48735,6 +52467,8 @@ export namespace Prisma {
     createdCourses?: CourseListRelationFilter
     ownedExercises?: ExerciseListRelationFilter
     createdExercises?: ExerciseListRelationFilter
+    ownedDevoirs?: DevoirListRelationFilter
+    createdDevoirs?: DevoirListRelationFilter
     learningObjectives?: LearningObjectiveListRelationFilter
     createdStudyTips?: StudyTipListRelationFilter
     createdStudySessions?: StudySessionListRelationFilter
@@ -48780,6 +52514,8 @@ export namespace Prisma {
     createdCourses?: CourseOrderByRelationAggregateInput
     ownedExercises?: ExerciseOrderByRelationAggregateInput
     createdExercises?: ExerciseOrderByRelationAggregateInput
+    ownedDevoirs?: DevoirOrderByRelationAggregateInput
+    createdDevoirs?: DevoirOrderByRelationAggregateInput
     learningObjectives?: LearningObjectiveOrderByRelationAggregateInput
     createdStudyTips?: StudyTipOrderByRelationAggregateInput
     createdStudySessions?: StudySessionOrderByRelationAggregateInput
@@ -48828,6 +52564,8 @@ export namespace Prisma {
     createdCourses?: CourseListRelationFilter
     ownedExercises?: ExerciseListRelationFilter
     createdExercises?: ExerciseListRelationFilter
+    ownedDevoirs?: DevoirListRelationFilter
+    createdDevoirs?: DevoirListRelationFilter
     learningObjectives?: LearningObjectiveListRelationFilter
     createdStudyTips?: StudyTipListRelationFilter
     createdStudySessions?: StudySessionListRelationFilter
@@ -49002,6 +52740,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentListRelationFilter
     courses?: CourseListRelationFilter
     exercises?: ExerciseListRelationFilter
+    devoirs?: DevoirListRelationFilter
     studyTasks?: StudyTaskListRelationFilter
     plannerTemplates?: PlannerTemplateListRelationFilter
     studentPlannerTasks?: StudentPlannerTaskListRelationFilter
@@ -49027,6 +52766,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentOrderByRelationAggregateInput
     courses?: CourseOrderByRelationAggregateInput
     exercises?: ExerciseOrderByRelationAggregateInput
+    devoirs?: DevoirOrderByRelationAggregateInput
     studyTasks?: StudyTaskOrderByRelationAggregateInput
     plannerTemplates?: PlannerTemplateOrderByRelationAggregateInput
     studentPlannerTasks?: StudentPlannerTaskOrderByRelationAggregateInput
@@ -49056,6 +52796,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentListRelationFilter
     courses?: CourseListRelationFilter
     exercises?: ExerciseListRelationFilter
+    devoirs?: DevoirListRelationFilter
     studyTasks?: StudyTaskListRelationFilter
     plannerTemplates?: PlannerTemplateListRelationFilter
     studentPlannerTasks?: StudentPlannerTaskListRelationFilter
@@ -49809,6 +53550,10 @@ export namespace Prisma {
     title?: StringFilter<"Exercise"> | string
     description?: StringNullableFilter<"Exercise"> | string | null
     contentUrl?: StringNullableFilter<"Exercise"> | string | null
+    videoUrl?: StringNullableFilter<"Exercise"> | string | null
+    videoPath?: StringNullableFilter<"Exercise"> | string | null
+    contentText?: StringNullableFilter<"Exercise"> | string | null
+    externalLink?: StringNullableFilter<"Exercise"> | string | null
     groupTitle?: StringNullableFilter<"Exercise"> | string | null
     advertisementImage?: StringNullableFilter<"Exercise"> | string | null
     advertisementTeacherName?: StringNullableFilter<"Exercise"> | string | null
@@ -49816,6 +53561,7 @@ export namespace Prisma {
     advertisementWhatsapp?: StringNullableFilter<"Exercise"> | string | null
     advertisementDescription?: StringNullableFilter<"Exercise"> | string | null
     difficulty?: EnumDifficultyFilter<"Exercise"> | $Enums.Difficulty
+    tags?: StringNullableListFilter<"Exercise">
     isPublished?: BoolFilter<"Exercise"> | boolean
     order?: IntFilter<"Exercise"> | number
     subjectId?: StringFilter<"Exercise"> | string
@@ -49842,6 +53588,10 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     contentUrl?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
+    videoPath?: SortOrderInput | SortOrder
+    contentText?: SortOrderInput | SortOrder
+    externalLink?: SortOrderInput | SortOrder
     groupTitle?: SortOrderInput | SortOrder
     advertisementImage?: SortOrderInput | SortOrder
     advertisementTeacherName?: SortOrderInput | SortOrder
@@ -49849,6 +53599,7 @@ export namespace Prisma {
     advertisementWhatsapp?: SortOrderInput | SortOrder
     advertisementDescription?: SortOrderInput | SortOrder
     difficulty?: SortOrder
+    tags?: SortOrder
     isPublished?: SortOrder
     order?: SortOrder
     subjectId?: SortOrder
@@ -49878,6 +53629,10 @@ export namespace Prisma {
     title?: StringFilter<"Exercise"> | string
     description?: StringNullableFilter<"Exercise"> | string | null
     contentUrl?: StringNullableFilter<"Exercise"> | string | null
+    videoUrl?: StringNullableFilter<"Exercise"> | string | null
+    videoPath?: StringNullableFilter<"Exercise"> | string | null
+    contentText?: StringNullableFilter<"Exercise"> | string | null
+    externalLink?: StringNullableFilter<"Exercise"> | string | null
     groupTitle?: StringNullableFilter<"Exercise"> | string | null
     advertisementImage?: StringNullableFilter<"Exercise"> | string | null
     advertisementTeacherName?: StringNullableFilter<"Exercise"> | string | null
@@ -49885,6 +53640,7 @@ export namespace Prisma {
     advertisementWhatsapp?: StringNullableFilter<"Exercise"> | string | null
     advertisementDescription?: StringNullableFilter<"Exercise"> | string | null
     difficulty?: EnumDifficultyFilter<"Exercise"> | $Enums.Difficulty
+    tags?: StringNullableListFilter<"Exercise">
     isPublished?: BoolFilter<"Exercise"> | boolean
     order?: IntFilter<"Exercise"> | number
     subjectId?: StringFilter<"Exercise"> | string
@@ -49911,6 +53667,10 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     contentUrl?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
+    videoPath?: SortOrderInput | SortOrder
+    contentText?: SortOrderInput | SortOrder
+    externalLink?: SortOrderInput | SortOrder
     groupTitle?: SortOrderInput | SortOrder
     advertisementImage?: SortOrderInput | SortOrder
     advertisementTeacherName?: SortOrderInput | SortOrder
@@ -49918,6 +53678,7 @@ export namespace Prisma {
     advertisementWhatsapp?: SortOrderInput | SortOrder
     advertisementDescription?: SortOrderInput | SortOrder
     difficulty?: SortOrder
+    tags?: SortOrder
     isPublished?: SortOrder
     order?: SortOrder
     subjectId?: SortOrder
@@ -49941,6 +53702,10 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Exercise"> | string
     description?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
     contentUrl?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    videoUrl?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    videoPath?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    contentText?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    externalLink?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
     groupTitle?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
     advertisementImage?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
     advertisementTeacherName?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
@@ -49948,6 +53713,7 @@ export namespace Prisma {
     advertisementWhatsapp?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
     advertisementDescription?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
     difficulty?: EnumDifficultyWithAggregatesFilter<"Exercise"> | $Enums.Difficulty
+    tags?: StringNullableListFilter<"Exercise">
     isPublished?: BoolWithAggregatesFilter<"Exercise"> | boolean
     order?: IntWithAggregatesFilter<"Exercise"> | number
     subjectId?: StringWithAggregatesFilter<"Exercise"> | string
@@ -50009,13 +53775,263 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ExerciseSectionAssignment"> | Date | string
   }
 
+  export type DevoirWhereInput = {
+    AND?: DevoirWhereInput | DevoirWhereInput[]
+    OR?: DevoirWhereInput[]
+    NOT?: DevoirWhereInput | DevoirWhereInput[]
+    id?: StringFilter<"Devoir"> | string
+    title?: StringFilter<"Devoir"> | string
+    description?: StringNullableFilter<"Devoir"> | string | null
+    contentUrl?: StringNullableFilter<"Devoir"> | string | null
+    videoUrl?: StringNullableFilter<"Devoir"> | string | null
+    videoPath?: StringNullableFilter<"Devoir"> | string | null
+    contentText?: StringNullableFilter<"Devoir"> | string | null
+    externalLink?: StringNullableFilter<"Devoir"> | string | null
+    difficulty?: EnumDifficultyFilter<"Devoir"> | $Enums.Difficulty
+    tags?: StringNullableListFilter<"Devoir">
+    isPublished?: BoolFilter<"Devoir"> | boolean
+    order?: IntFilter<"Devoir"> | number
+    subjectId?: StringFilter<"Devoir"> | string
+    teacherId?: StringNullableFilter<"Devoir"> | string | null
+    createdById?: StringNullableFilter<"Devoir"> | string | null
+    createdAt?: DateTimeFilter<"Devoir"> | Date | string
+    updatedAt?: DateTimeFilter<"Devoir"> | Date | string
+    subject?: XOR<SubjectRelationFilter, SubjectWhereInput>
+    teacher?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    createdBy?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    sectionAssignments?: DevoirSectionAssignmentListRelationFilter
+    resources?: DevoirResourceListRelationFilter
+  }
+
+  export type DevoirOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    contentUrl?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
+    videoPath?: SortOrderInput | SortOrder
+    contentText?: SortOrderInput | SortOrder
+    externalLink?: SortOrderInput | SortOrder
+    difficulty?: SortOrder
+    tags?: SortOrder
+    isPublished?: SortOrder
+    order?: SortOrder
+    subjectId?: SortOrder
+    teacherId?: SortOrderInput | SortOrder
+    createdById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    subject?: SubjectOrderByWithRelationInput
+    teacher?: UserOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+    sectionAssignments?: DevoirSectionAssignmentOrderByRelationAggregateInput
+    resources?: DevoirResourceOrderByRelationAggregateInput
+  }
+
+  export type DevoirWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DevoirWhereInput | DevoirWhereInput[]
+    OR?: DevoirWhereInput[]
+    NOT?: DevoirWhereInput | DevoirWhereInput[]
+    title?: StringFilter<"Devoir"> | string
+    description?: StringNullableFilter<"Devoir"> | string | null
+    contentUrl?: StringNullableFilter<"Devoir"> | string | null
+    videoUrl?: StringNullableFilter<"Devoir"> | string | null
+    videoPath?: StringNullableFilter<"Devoir"> | string | null
+    contentText?: StringNullableFilter<"Devoir"> | string | null
+    externalLink?: StringNullableFilter<"Devoir"> | string | null
+    difficulty?: EnumDifficultyFilter<"Devoir"> | $Enums.Difficulty
+    tags?: StringNullableListFilter<"Devoir">
+    isPublished?: BoolFilter<"Devoir"> | boolean
+    order?: IntFilter<"Devoir"> | number
+    subjectId?: StringFilter<"Devoir"> | string
+    teacherId?: StringNullableFilter<"Devoir"> | string | null
+    createdById?: StringNullableFilter<"Devoir"> | string | null
+    createdAt?: DateTimeFilter<"Devoir"> | Date | string
+    updatedAt?: DateTimeFilter<"Devoir"> | Date | string
+    subject?: XOR<SubjectRelationFilter, SubjectWhereInput>
+    teacher?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    createdBy?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    sectionAssignments?: DevoirSectionAssignmentListRelationFilter
+    resources?: DevoirResourceListRelationFilter
+  }, "id">
+
+  export type DevoirOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    contentUrl?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
+    videoPath?: SortOrderInput | SortOrder
+    contentText?: SortOrderInput | SortOrder
+    externalLink?: SortOrderInput | SortOrder
+    difficulty?: SortOrder
+    tags?: SortOrder
+    isPublished?: SortOrder
+    order?: SortOrder
+    subjectId?: SortOrder
+    teacherId?: SortOrderInput | SortOrder
+    createdById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DevoirCountOrderByAggregateInput
+    _avg?: DevoirAvgOrderByAggregateInput
+    _max?: DevoirMaxOrderByAggregateInput
+    _min?: DevoirMinOrderByAggregateInput
+    _sum?: DevoirSumOrderByAggregateInput
+  }
+
+  export type DevoirScalarWhereWithAggregatesInput = {
+    AND?: DevoirScalarWhereWithAggregatesInput | DevoirScalarWhereWithAggregatesInput[]
+    OR?: DevoirScalarWhereWithAggregatesInput[]
+    NOT?: DevoirScalarWhereWithAggregatesInput | DevoirScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Devoir"> | string
+    title?: StringWithAggregatesFilter<"Devoir"> | string
+    description?: StringNullableWithAggregatesFilter<"Devoir"> | string | null
+    contentUrl?: StringNullableWithAggregatesFilter<"Devoir"> | string | null
+    videoUrl?: StringNullableWithAggregatesFilter<"Devoir"> | string | null
+    videoPath?: StringNullableWithAggregatesFilter<"Devoir"> | string | null
+    contentText?: StringNullableWithAggregatesFilter<"Devoir"> | string | null
+    externalLink?: StringNullableWithAggregatesFilter<"Devoir"> | string | null
+    difficulty?: EnumDifficultyWithAggregatesFilter<"Devoir"> | $Enums.Difficulty
+    tags?: StringNullableListFilter<"Devoir">
+    isPublished?: BoolWithAggregatesFilter<"Devoir"> | boolean
+    order?: IntWithAggregatesFilter<"Devoir"> | number
+    subjectId?: StringWithAggregatesFilter<"Devoir"> | string
+    teacherId?: StringNullableWithAggregatesFilter<"Devoir"> | string | null
+    createdById?: StringNullableWithAggregatesFilter<"Devoir"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Devoir"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Devoir"> | Date | string
+  }
+
+  export type DevoirSectionAssignmentWhereInput = {
+    AND?: DevoirSectionAssignmentWhereInput | DevoirSectionAssignmentWhereInput[]
+    OR?: DevoirSectionAssignmentWhereInput[]
+    NOT?: DevoirSectionAssignmentWhereInput | DevoirSectionAssignmentWhereInput[]
+    id?: StringFilter<"DevoirSectionAssignment"> | string
+    devoirId?: StringFilter<"DevoirSectionAssignment"> | string
+    bacSection?: EnumBacSectionFilter<"DevoirSectionAssignment"> | $Enums.BacSection
+    createdAt?: DateTimeFilter<"DevoirSectionAssignment"> | Date | string
+    devoir?: XOR<DevoirRelationFilter, DevoirWhereInput>
+  }
+
+  export type DevoirSectionAssignmentOrderByWithRelationInput = {
+    id?: SortOrder
+    devoirId?: SortOrder
+    bacSection?: SortOrder
+    createdAt?: SortOrder
+    devoir?: DevoirOrderByWithRelationInput
+  }
+
+  export type DevoirSectionAssignmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    devoirId_bacSection?: DevoirSectionAssignmentDevoirIdBacSectionCompoundUniqueInput
+    AND?: DevoirSectionAssignmentWhereInput | DevoirSectionAssignmentWhereInput[]
+    OR?: DevoirSectionAssignmentWhereInput[]
+    NOT?: DevoirSectionAssignmentWhereInput | DevoirSectionAssignmentWhereInput[]
+    devoirId?: StringFilter<"DevoirSectionAssignment"> | string
+    bacSection?: EnumBacSectionFilter<"DevoirSectionAssignment"> | $Enums.BacSection
+    createdAt?: DateTimeFilter<"DevoirSectionAssignment"> | Date | string
+    devoir?: XOR<DevoirRelationFilter, DevoirWhereInput>
+  }, "id" | "devoirId_bacSection">
+
+  export type DevoirSectionAssignmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    devoirId?: SortOrder
+    bacSection?: SortOrder
+    createdAt?: SortOrder
+    _count?: DevoirSectionAssignmentCountOrderByAggregateInput
+    _max?: DevoirSectionAssignmentMaxOrderByAggregateInput
+    _min?: DevoirSectionAssignmentMinOrderByAggregateInput
+  }
+
+  export type DevoirSectionAssignmentScalarWhereWithAggregatesInput = {
+    AND?: DevoirSectionAssignmentScalarWhereWithAggregatesInput | DevoirSectionAssignmentScalarWhereWithAggregatesInput[]
+    OR?: DevoirSectionAssignmentScalarWhereWithAggregatesInput[]
+    NOT?: DevoirSectionAssignmentScalarWhereWithAggregatesInput | DevoirSectionAssignmentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DevoirSectionAssignment"> | string
+    devoirId?: StringWithAggregatesFilter<"DevoirSectionAssignment"> | string
+    bacSection?: EnumBacSectionWithAggregatesFilter<"DevoirSectionAssignment"> | $Enums.BacSection
+    createdAt?: DateTimeWithAggregatesFilter<"DevoirSectionAssignment"> | Date | string
+  }
+
+  export type DevoirResourceWhereInput = {
+    AND?: DevoirResourceWhereInput | DevoirResourceWhereInput[]
+    OR?: DevoirResourceWhereInput[]
+    NOT?: DevoirResourceWhereInput | DevoirResourceWhereInput[]
+    id?: StringFilter<"DevoirResource"> | string
+    title?: StringFilter<"DevoirResource"> | string
+    url?: StringFilter<"DevoirResource"> | string
+    type?: StringFilter<"DevoirResource"> | string
+    devoirId?: StringFilter<"DevoirResource"> | string
+    createdAt?: DateTimeFilter<"DevoirResource"> | Date | string
+    devoir?: XOR<DevoirRelationFilter, DevoirWhereInput>
+  }
+
+  export type DevoirResourceOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    url?: SortOrder
+    type?: SortOrder
+    devoirId?: SortOrder
+    createdAt?: SortOrder
+    devoir?: DevoirOrderByWithRelationInput
+  }
+
+  export type DevoirResourceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DevoirResourceWhereInput | DevoirResourceWhereInput[]
+    OR?: DevoirResourceWhereInput[]
+    NOT?: DevoirResourceWhereInput | DevoirResourceWhereInput[]
+    title?: StringFilter<"DevoirResource"> | string
+    url?: StringFilter<"DevoirResource"> | string
+    type?: StringFilter<"DevoirResource"> | string
+    devoirId?: StringFilter<"DevoirResource"> | string
+    createdAt?: DateTimeFilter<"DevoirResource"> | Date | string
+    devoir?: XOR<DevoirRelationFilter, DevoirWhereInput>
+  }, "id">
+
+  export type DevoirResourceOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    url?: SortOrder
+    type?: SortOrder
+    devoirId?: SortOrder
+    createdAt?: SortOrder
+    _count?: DevoirResourceCountOrderByAggregateInput
+    _max?: DevoirResourceMaxOrderByAggregateInput
+    _min?: DevoirResourceMinOrderByAggregateInput
+  }
+
+  export type DevoirResourceScalarWhereWithAggregatesInput = {
+    AND?: DevoirResourceScalarWhereWithAggregatesInput | DevoirResourceScalarWhereWithAggregatesInput[]
+    OR?: DevoirResourceScalarWhereWithAggregatesInput[]
+    NOT?: DevoirResourceScalarWhereWithAggregatesInput | DevoirResourceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DevoirResource"> | string
+    title?: StringWithAggregatesFilter<"DevoirResource"> | string
+    url?: StringWithAggregatesFilter<"DevoirResource"> | string
+    type?: StringWithAggregatesFilter<"DevoirResource"> | string
+    devoirId?: StringWithAggregatesFilter<"DevoirResource"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"DevoirResource"> | Date | string
+  }
+
   export type CorrectionWhereInput = {
     AND?: CorrectionWhereInput | CorrectionWhereInput[]
     OR?: CorrectionWhereInput[]
     NOT?: CorrectionWhereInput | CorrectionWhereInput[]
     id?: StringFilter<"Correction"> | string
     title?: StringFilter<"Correction"> | string
-    contentUrl?: StringFilter<"Correction"> | string
+    description?: StringNullableFilter<"Correction"> | string | null
+    contentText?: StringNullableFilter<"Correction"> | string | null
+    videoUrl?: StringNullableFilter<"Correction"> | string | null
+    videoPath?: StringNullableFilter<"Correction"> | string | null
+    externalLink?: StringNullableFilter<"Correction"> | string | null
+    difficulty?: EnumDifficultyFilter<"Correction"> | $Enums.Difficulty
+    isPublished?: BoolFilter<"Correction"> | boolean
+    order?: IntFilter<"Correction"> | number
+    teacherId?: StringNullableFilter<"Correction"> | string | null
+    createdById?: StringNullableFilter<"Correction"> | string | null
+    contentUrl?: StringNullableFilter<"Correction"> | string | null
     exerciseId?: StringFilter<"Correction"> | string
     createdAt?: DateTimeFilter<"Correction"> | Date | string
     updatedAt?: DateTimeFilter<"Correction"> | Date | string
@@ -50025,7 +54041,17 @@ export namespace Prisma {
   export type CorrectionOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
-    contentUrl?: SortOrder
+    description?: SortOrderInput | SortOrder
+    contentText?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
+    videoPath?: SortOrderInput | SortOrder
+    externalLink?: SortOrderInput | SortOrder
+    difficulty?: SortOrder
+    isPublished?: SortOrder
+    order?: SortOrder
+    teacherId?: SortOrderInput | SortOrder
+    createdById?: SortOrderInput | SortOrder
+    contentUrl?: SortOrderInput | SortOrder
     exerciseId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -50038,7 +54064,17 @@ export namespace Prisma {
     OR?: CorrectionWhereInput[]
     NOT?: CorrectionWhereInput | CorrectionWhereInput[]
     title?: StringFilter<"Correction"> | string
-    contentUrl?: StringFilter<"Correction"> | string
+    description?: StringNullableFilter<"Correction"> | string | null
+    contentText?: StringNullableFilter<"Correction"> | string | null
+    videoUrl?: StringNullableFilter<"Correction"> | string | null
+    videoPath?: StringNullableFilter<"Correction"> | string | null
+    externalLink?: StringNullableFilter<"Correction"> | string | null
+    difficulty?: EnumDifficultyFilter<"Correction"> | $Enums.Difficulty
+    isPublished?: BoolFilter<"Correction"> | boolean
+    order?: IntFilter<"Correction"> | number
+    teacherId?: StringNullableFilter<"Correction"> | string | null
+    createdById?: StringNullableFilter<"Correction"> | string | null
+    contentUrl?: StringNullableFilter<"Correction"> | string | null
     exerciseId?: StringFilter<"Correction"> | string
     createdAt?: DateTimeFilter<"Correction"> | Date | string
     updatedAt?: DateTimeFilter<"Correction"> | Date | string
@@ -50048,13 +54084,25 @@ export namespace Prisma {
   export type CorrectionOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
-    contentUrl?: SortOrder
+    description?: SortOrderInput | SortOrder
+    contentText?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
+    videoPath?: SortOrderInput | SortOrder
+    externalLink?: SortOrderInput | SortOrder
+    difficulty?: SortOrder
+    isPublished?: SortOrder
+    order?: SortOrder
+    teacherId?: SortOrderInput | SortOrder
+    createdById?: SortOrderInput | SortOrder
+    contentUrl?: SortOrderInput | SortOrder
     exerciseId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: CorrectionCountOrderByAggregateInput
+    _avg?: CorrectionAvgOrderByAggregateInput
     _max?: CorrectionMaxOrderByAggregateInput
     _min?: CorrectionMinOrderByAggregateInput
+    _sum?: CorrectionSumOrderByAggregateInput
   }
 
   export type CorrectionScalarWhereWithAggregatesInput = {
@@ -50063,7 +54111,17 @@ export namespace Prisma {
     NOT?: CorrectionScalarWhereWithAggregatesInput | CorrectionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Correction"> | string
     title?: StringWithAggregatesFilter<"Correction"> | string
-    contentUrl?: StringWithAggregatesFilter<"Correction"> | string
+    description?: StringNullableWithAggregatesFilter<"Correction"> | string | null
+    contentText?: StringNullableWithAggregatesFilter<"Correction"> | string | null
+    videoUrl?: StringNullableWithAggregatesFilter<"Correction"> | string | null
+    videoPath?: StringNullableWithAggregatesFilter<"Correction"> | string | null
+    externalLink?: StringNullableWithAggregatesFilter<"Correction"> | string | null
+    difficulty?: EnumDifficultyWithAggregatesFilter<"Correction"> | $Enums.Difficulty
+    isPublished?: BoolWithAggregatesFilter<"Correction"> | boolean
+    order?: IntWithAggregatesFilter<"Correction"> | number
+    teacherId?: StringNullableWithAggregatesFilter<"Correction"> | string | null
+    createdById?: StringNullableWithAggregatesFilter<"Correction"> | string | null
+    contentUrl?: StringNullableWithAggregatesFilter<"Correction"> | string | null
     exerciseId?: StringWithAggregatesFilter<"Correction"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Correction"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Correction"> | Date | string
@@ -52291,6 +56349,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -52336,6 +56396,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -52381,6 +56443,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -52426,6 +56490,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -52623,6 +56689,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
@@ -52647,6 +56714,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
@@ -52671,6 +56739,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
@@ -52695,6 +56764,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
@@ -53528,6 +57598,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -53535,6 +57609,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -53557,6 +57632,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -53564,6 +57643,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -53586,6 +57666,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53593,6 +57677,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53615,6 +57700,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53622,6 +57711,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -53644,6 +57734,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -53651,6 +57745,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -53666,6 +57761,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53673,6 +57772,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53684,6 +57784,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53691,6 +57795,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -53749,10 +57854,275 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DevoirCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subject: SubjectCreateNestedOneWithoutDevoirsInput
+    teacher?: UserCreateNestedOneWithoutOwnedDevoirsInput
+    createdBy?: UserCreateNestedOneWithoutCreatedDevoirsInput
+    sectionAssignments?: DevoirSectionAssignmentCreateNestedManyWithoutDevoirInput
+    resources?: DevoirResourceCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    subjectId: string
+    teacherId?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sectionAssignments?: DevoirSectionAssignmentUncheckedCreateNestedManyWithoutDevoirInput
+    resources?: DevoirResourceUncheckedCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject?: SubjectUpdateOneRequiredWithoutDevoirsNestedInput
+    teacher?: UserUpdateOneWithoutOwnedDevoirsNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedDevoirsNestedInput
+    sectionAssignments?: DevoirSectionAssignmentUpdateManyWithoutDevoirNestedInput
+    resources?: DevoirResourceUpdateManyWithoutDevoirNestedInput
+  }
+
+  export type DevoirUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    subjectId?: StringFieldUpdateOperationsInput | string
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sectionAssignments?: DevoirSectionAssignmentUncheckedUpdateManyWithoutDevoirNestedInput
+    resources?: DevoirResourceUncheckedUpdateManyWithoutDevoirNestedInput
+  }
+
+  export type DevoirCreateManyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    subjectId: string
+    teacherId?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DevoirUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    subjectId?: StringFieldUpdateOperationsInput | string
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirSectionAssignmentCreateInput = {
+    id?: string
+    bacSection: $Enums.BacSection
+    createdAt?: Date | string
+    devoir: DevoirCreateNestedOneWithoutSectionAssignmentsInput
+  }
+
+  export type DevoirSectionAssignmentUncheckedCreateInput = {
+    id?: string
+    devoirId: string
+    bacSection: $Enums.BacSection
+    createdAt?: Date | string
+  }
+
+  export type DevoirSectionAssignmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    devoir?: DevoirUpdateOneRequiredWithoutSectionAssignmentsNestedInput
+  }
+
+  export type DevoirSectionAssignmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    devoirId?: StringFieldUpdateOperationsInput | string
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirSectionAssignmentCreateManyInput = {
+    id?: string
+    devoirId: string
+    bacSection: $Enums.BacSection
+    createdAt?: Date | string
+  }
+
+  export type DevoirSectionAssignmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirSectionAssignmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    devoirId?: StringFieldUpdateOperationsInput | string
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirResourceCreateInput = {
+    id?: string
+    title: string
+    url: string
+    type: string
+    createdAt?: Date | string
+    devoir: DevoirCreateNestedOneWithoutResourcesInput
+  }
+
+  export type DevoirResourceUncheckedCreateInput = {
+    id?: string
+    title: string
+    url: string
+    type: string
+    devoirId: string
+    createdAt?: Date | string
+  }
+
+  export type DevoirResourceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    devoir?: DevoirUpdateOneRequiredWithoutResourcesNestedInput
+  }
+
+  export type DevoirResourceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    devoirId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirResourceCreateManyInput = {
+    id?: string
+    title: string
+    url: string
+    type: string
+    devoirId: string
+    createdAt?: Date | string
+  }
+
+  export type DevoirResourceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirResourceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    devoirId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CorrectionCreateInput = {
     id?: string
     title: string
-    contentUrl: string
+    description?: string | null
+    contentText?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    isPublished?: boolean
+    order?: number
+    teacherId?: string | null
+    createdById?: string | null
+    contentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     exercise: ExerciseCreateNestedOneWithoutCorrectionsInput
@@ -53761,7 +58131,17 @@ export namespace Prisma {
   export type CorrectionUncheckedCreateInput = {
     id?: string
     title: string
-    contentUrl: string
+    description?: string | null
+    contentText?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    isPublished?: boolean
+    order?: number
+    teacherId?: string | null
+    createdById?: string | null
+    contentUrl?: string | null
     exerciseId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -53770,7 +58150,17 @@ export namespace Prisma {
   export type CorrectionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    contentUrl?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     exercise?: ExerciseUpdateOneRequiredWithoutCorrectionsNestedInput
@@ -53779,7 +58169,17 @@ export namespace Prisma {
   export type CorrectionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    contentUrl?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53788,7 +58188,17 @@ export namespace Prisma {
   export type CorrectionCreateManyInput = {
     id?: string
     title: string
-    contentUrl: string
+    description?: string | null
+    contentText?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    isPublished?: boolean
+    order?: number
+    teacherId?: string | null
+    createdById?: string | null
+    contentUrl?: string | null
     exerciseId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -53797,7 +58207,17 @@ export namespace Prisma {
   export type CorrectionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    contentUrl?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -53805,7 +58225,17 @@ export namespace Prisma {
   export type CorrectionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    contentUrl?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56280,6 +60710,12 @@ export namespace Prisma {
     none?: ExerciseWhereInput
   }
 
+  export type DevoirListRelationFilter = {
+    every?: DevoirWhereInput
+    some?: DevoirWhereInput
+    none?: DevoirWhereInput
+  }
+
   export type LearningObjectiveListRelationFilter = {
     every?: LearningObjectiveWhereInput
     some?: LearningObjectiveWhereInput
@@ -56400,6 +60836,10 @@ export namespace Prisma {
   }
 
   export type ExerciseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DevoirOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -57334,6 +61774,10 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     contentUrl?: SortOrder
+    videoUrl?: SortOrder
+    videoPath?: SortOrder
+    contentText?: SortOrder
+    externalLink?: SortOrder
     groupTitle?: SortOrder
     advertisementImage?: SortOrder
     advertisementTeacherName?: SortOrder
@@ -57341,6 +61785,7 @@ export namespace Prisma {
     advertisementWhatsapp?: SortOrder
     advertisementDescription?: SortOrder
     difficulty?: SortOrder
+    tags?: SortOrder
     isPublished?: SortOrder
     order?: SortOrder
     subjectId?: SortOrder
@@ -57360,6 +61805,10 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     contentUrl?: SortOrder
+    videoUrl?: SortOrder
+    videoPath?: SortOrder
+    contentText?: SortOrder
+    externalLink?: SortOrder
     groupTitle?: SortOrder
     advertisementImage?: SortOrder
     advertisementTeacherName?: SortOrder
@@ -57382,6 +61831,10 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     contentUrl?: SortOrder
+    videoUrl?: SortOrder
+    videoPath?: SortOrder
+    contentText?: SortOrder
+    externalLink?: SortOrder
     groupTitle?: SortOrder
     advertisementImage?: SortOrder
     advertisementTeacherName?: SortOrder
@@ -57434,18 +61887,186 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type DevoirSectionAssignmentListRelationFilter = {
+    every?: DevoirSectionAssignmentWhereInput
+    some?: DevoirSectionAssignmentWhereInput
+    none?: DevoirSectionAssignmentWhereInput
+  }
+
+  export type DevoirResourceListRelationFilter = {
+    every?: DevoirResourceWhereInput
+    some?: DevoirResourceWhereInput
+    none?: DevoirResourceWhereInput
+  }
+
+  export type DevoirSectionAssignmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DevoirResourceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DevoirCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    contentUrl?: SortOrder
+    videoUrl?: SortOrder
+    videoPath?: SortOrder
+    contentText?: SortOrder
+    externalLink?: SortOrder
+    difficulty?: SortOrder
+    tags?: SortOrder
+    isPublished?: SortOrder
+    order?: SortOrder
+    subjectId?: SortOrder
+    teacherId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DevoirAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type DevoirMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    contentUrl?: SortOrder
+    videoUrl?: SortOrder
+    videoPath?: SortOrder
+    contentText?: SortOrder
+    externalLink?: SortOrder
+    difficulty?: SortOrder
+    isPublished?: SortOrder
+    order?: SortOrder
+    subjectId?: SortOrder
+    teacherId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DevoirMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    contentUrl?: SortOrder
+    videoUrl?: SortOrder
+    videoPath?: SortOrder
+    contentText?: SortOrder
+    externalLink?: SortOrder
+    difficulty?: SortOrder
+    isPublished?: SortOrder
+    order?: SortOrder
+    subjectId?: SortOrder
+    teacherId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DevoirSumOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type DevoirRelationFilter = {
+    is?: DevoirWhereInput
+    isNot?: DevoirWhereInput
+  }
+
+  export type DevoirSectionAssignmentDevoirIdBacSectionCompoundUniqueInput = {
+    devoirId: string
+    bacSection: $Enums.BacSection
+  }
+
+  export type DevoirSectionAssignmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    devoirId?: SortOrder
+    bacSection?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DevoirSectionAssignmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    devoirId?: SortOrder
+    bacSection?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DevoirSectionAssignmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    devoirId?: SortOrder
+    bacSection?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DevoirResourceCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    url?: SortOrder
+    type?: SortOrder
+    devoirId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DevoirResourceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    url?: SortOrder
+    type?: SortOrder
+    devoirId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DevoirResourceMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    url?: SortOrder
+    type?: SortOrder
+    devoirId?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type CorrectionCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    description?: SortOrder
+    contentText?: SortOrder
+    videoUrl?: SortOrder
+    videoPath?: SortOrder
+    externalLink?: SortOrder
+    difficulty?: SortOrder
+    isPublished?: SortOrder
+    order?: SortOrder
+    teacherId?: SortOrder
+    createdById?: SortOrder
     contentUrl?: SortOrder
     exerciseId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
+  export type CorrectionAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
   export type CorrectionMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    description?: SortOrder
+    contentText?: SortOrder
+    videoUrl?: SortOrder
+    videoPath?: SortOrder
+    externalLink?: SortOrder
+    difficulty?: SortOrder
+    isPublished?: SortOrder
+    order?: SortOrder
+    teacherId?: SortOrder
+    createdById?: SortOrder
     contentUrl?: SortOrder
     exerciseId?: SortOrder
     createdAt?: SortOrder
@@ -57455,10 +62076,24 @@ export namespace Prisma {
   export type CorrectionMinOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    description?: SortOrder
+    contentText?: SortOrder
+    videoUrl?: SortOrder
+    videoPath?: SortOrder
+    externalLink?: SortOrder
+    difficulty?: SortOrder
+    isPublished?: SortOrder
+    order?: SortOrder
+    teacherId?: SortOrder
+    createdById?: SortOrder
     contentUrl?: SortOrder
     exerciseId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type CorrectionSumOrderByAggregateInput = {
+    order?: SortOrder
   }
 
   export type ExerciseNullableRelationFilter = {
@@ -58936,6 +63571,20 @@ export namespace Prisma {
     connect?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
   }
 
+  export type DevoirCreateNestedManyWithoutTeacherInput = {
+    create?: XOR<DevoirCreateWithoutTeacherInput, DevoirUncheckedCreateWithoutTeacherInput> | DevoirCreateWithoutTeacherInput[] | DevoirUncheckedCreateWithoutTeacherInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutTeacherInput | DevoirCreateOrConnectWithoutTeacherInput[]
+    createMany?: DevoirCreateManyTeacherInputEnvelope
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+  }
+
+  export type DevoirCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<DevoirCreateWithoutCreatedByInput, DevoirUncheckedCreateWithoutCreatedByInput> | DevoirCreateWithoutCreatedByInput[] | DevoirUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutCreatedByInput | DevoirCreateOrConnectWithoutCreatedByInput[]
+    createMany?: DevoirCreateManyCreatedByInputEnvelope
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+  }
+
   export type LearningObjectiveCreateNestedManyWithoutUserInput = {
     create?: XOR<LearningObjectiveCreateWithoutUserInput, LearningObjectiveUncheckedCreateWithoutUserInput> | LearningObjectiveCreateWithoutUserInput[] | LearningObjectiveUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LearningObjectiveCreateOrConnectWithoutUserInput | LearningObjectiveCreateOrConnectWithoutUserInput[]
@@ -59122,6 +63771,20 @@ export namespace Prisma {
     connectOrCreate?: ExerciseCreateOrConnectWithoutCreatedByInput | ExerciseCreateOrConnectWithoutCreatedByInput[]
     createMany?: ExerciseCreateManyCreatedByInputEnvelope
     connect?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+  }
+
+  export type DevoirUncheckedCreateNestedManyWithoutTeacherInput = {
+    create?: XOR<DevoirCreateWithoutTeacherInput, DevoirUncheckedCreateWithoutTeacherInput> | DevoirCreateWithoutTeacherInput[] | DevoirUncheckedCreateWithoutTeacherInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutTeacherInput | DevoirCreateOrConnectWithoutTeacherInput[]
+    createMany?: DevoirCreateManyTeacherInputEnvelope
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+  }
+
+  export type DevoirUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<DevoirCreateWithoutCreatedByInput, DevoirUncheckedCreateWithoutCreatedByInput> | DevoirCreateWithoutCreatedByInput[] | DevoirUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutCreatedByInput | DevoirCreateOrConnectWithoutCreatedByInput[]
+    createMany?: DevoirCreateManyCreatedByInputEnvelope
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
   }
 
   export type LearningObjectiveUncheckedCreateNestedManyWithoutUserInput = {
@@ -59438,6 +64101,34 @@ export namespace Prisma {
     update?: ExerciseUpdateWithWhereUniqueWithoutCreatedByInput | ExerciseUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: ExerciseUpdateManyWithWhereWithoutCreatedByInput | ExerciseUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: ExerciseScalarWhereInput | ExerciseScalarWhereInput[]
+  }
+
+  export type DevoirUpdateManyWithoutTeacherNestedInput = {
+    create?: XOR<DevoirCreateWithoutTeacherInput, DevoirUncheckedCreateWithoutTeacherInput> | DevoirCreateWithoutTeacherInput[] | DevoirUncheckedCreateWithoutTeacherInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutTeacherInput | DevoirCreateOrConnectWithoutTeacherInput[]
+    upsert?: DevoirUpsertWithWhereUniqueWithoutTeacherInput | DevoirUpsertWithWhereUniqueWithoutTeacherInput[]
+    createMany?: DevoirCreateManyTeacherInputEnvelope
+    set?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    disconnect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    delete?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    update?: DevoirUpdateWithWhereUniqueWithoutTeacherInput | DevoirUpdateWithWhereUniqueWithoutTeacherInput[]
+    updateMany?: DevoirUpdateManyWithWhereWithoutTeacherInput | DevoirUpdateManyWithWhereWithoutTeacherInput[]
+    deleteMany?: DevoirScalarWhereInput | DevoirScalarWhereInput[]
+  }
+
+  export type DevoirUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<DevoirCreateWithoutCreatedByInput, DevoirUncheckedCreateWithoutCreatedByInput> | DevoirCreateWithoutCreatedByInput[] | DevoirUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutCreatedByInput | DevoirCreateOrConnectWithoutCreatedByInput[]
+    upsert?: DevoirUpsertWithWhereUniqueWithoutCreatedByInput | DevoirUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: DevoirCreateManyCreatedByInputEnvelope
+    set?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    disconnect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    delete?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    update?: DevoirUpdateWithWhereUniqueWithoutCreatedByInput | DevoirUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: DevoirUpdateManyWithWhereWithoutCreatedByInput | DevoirUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: DevoirScalarWhereInput | DevoirScalarWhereInput[]
   }
 
   export type LearningObjectiveUpdateManyWithoutUserNestedInput = {
@@ -59812,6 +64503,34 @@ export namespace Prisma {
     update?: ExerciseUpdateWithWhereUniqueWithoutCreatedByInput | ExerciseUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: ExerciseUpdateManyWithWhereWithoutCreatedByInput | ExerciseUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: ExerciseScalarWhereInput | ExerciseScalarWhereInput[]
+  }
+
+  export type DevoirUncheckedUpdateManyWithoutTeacherNestedInput = {
+    create?: XOR<DevoirCreateWithoutTeacherInput, DevoirUncheckedCreateWithoutTeacherInput> | DevoirCreateWithoutTeacherInput[] | DevoirUncheckedCreateWithoutTeacherInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutTeacherInput | DevoirCreateOrConnectWithoutTeacherInput[]
+    upsert?: DevoirUpsertWithWhereUniqueWithoutTeacherInput | DevoirUpsertWithWhereUniqueWithoutTeacherInput[]
+    createMany?: DevoirCreateManyTeacherInputEnvelope
+    set?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    disconnect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    delete?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    update?: DevoirUpdateWithWhereUniqueWithoutTeacherInput | DevoirUpdateWithWhereUniqueWithoutTeacherInput[]
+    updateMany?: DevoirUpdateManyWithWhereWithoutTeacherInput | DevoirUpdateManyWithWhereWithoutTeacherInput[]
+    deleteMany?: DevoirScalarWhereInput | DevoirScalarWhereInput[]
+  }
+
+  export type DevoirUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<DevoirCreateWithoutCreatedByInput, DevoirUncheckedCreateWithoutCreatedByInput> | DevoirCreateWithoutCreatedByInput[] | DevoirUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutCreatedByInput | DevoirCreateOrConnectWithoutCreatedByInput[]
+    upsert?: DevoirUpsertWithWhereUniqueWithoutCreatedByInput | DevoirUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: DevoirCreateManyCreatedByInputEnvelope
+    set?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    disconnect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    delete?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    update?: DevoirUpdateWithWhereUniqueWithoutCreatedByInput | DevoirUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: DevoirUpdateManyWithWhereWithoutCreatedByInput | DevoirUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: DevoirScalarWhereInput | DevoirScalarWhereInput[]
   }
 
   export type LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput = {
@@ -60254,6 +64973,13 @@ export namespace Prisma {
     connect?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
   }
 
+  export type DevoirCreateNestedManyWithoutSubjectInput = {
+    create?: XOR<DevoirCreateWithoutSubjectInput, DevoirUncheckedCreateWithoutSubjectInput> | DevoirCreateWithoutSubjectInput[] | DevoirUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutSubjectInput | DevoirCreateOrConnectWithoutSubjectInput[]
+    createMany?: DevoirCreateManySubjectInputEnvelope
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+  }
+
   export type StudyTaskCreateNestedManyWithoutSubjectInput = {
     create?: XOR<StudyTaskCreateWithoutSubjectInput, StudyTaskUncheckedCreateWithoutSubjectInput> | StudyTaskCreateWithoutSubjectInput[] | StudyTaskUncheckedCreateWithoutSubjectInput[]
     connectOrCreate?: StudyTaskCreateOrConnectWithoutSubjectInput | StudyTaskCreateOrConnectWithoutSubjectInput[]
@@ -60322,6 +65048,13 @@ export namespace Prisma {
     connectOrCreate?: ExerciseCreateOrConnectWithoutSubjectInput | ExerciseCreateOrConnectWithoutSubjectInput[]
     createMany?: ExerciseCreateManySubjectInputEnvelope
     connect?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+  }
+
+  export type DevoirUncheckedCreateNestedManyWithoutSubjectInput = {
+    create?: XOR<DevoirCreateWithoutSubjectInput, DevoirUncheckedCreateWithoutSubjectInput> | DevoirCreateWithoutSubjectInput[] | DevoirUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutSubjectInput | DevoirCreateOrConnectWithoutSubjectInput[]
+    createMany?: DevoirCreateManySubjectInputEnvelope
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
   }
 
   export type StudyTaskUncheckedCreateNestedManyWithoutSubjectInput = {
@@ -60430,6 +65163,20 @@ export namespace Prisma {
     update?: ExerciseUpdateWithWhereUniqueWithoutSubjectInput | ExerciseUpdateWithWhereUniqueWithoutSubjectInput[]
     updateMany?: ExerciseUpdateManyWithWhereWithoutSubjectInput | ExerciseUpdateManyWithWhereWithoutSubjectInput[]
     deleteMany?: ExerciseScalarWhereInput | ExerciseScalarWhereInput[]
+  }
+
+  export type DevoirUpdateManyWithoutSubjectNestedInput = {
+    create?: XOR<DevoirCreateWithoutSubjectInput, DevoirUncheckedCreateWithoutSubjectInput> | DevoirCreateWithoutSubjectInput[] | DevoirUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutSubjectInput | DevoirCreateOrConnectWithoutSubjectInput[]
+    upsert?: DevoirUpsertWithWhereUniqueWithoutSubjectInput | DevoirUpsertWithWhereUniqueWithoutSubjectInput[]
+    createMany?: DevoirCreateManySubjectInputEnvelope
+    set?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    disconnect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    delete?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    update?: DevoirUpdateWithWhereUniqueWithoutSubjectInput | DevoirUpdateWithWhereUniqueWithoutSubjectInput[]
+    updateMany?: DevoirUpdateManyWithWhereWithoutSubjectInput | DevoirUpdateManyWithWhereWithoutSubjectInput[]
+    deleteMany?: DevoirScalarWhereInput | DevoirScalarWhereInput[]
   }
 
   export type StudyTaskUpdateManyWithoutSubjectNestedInput = {
@@ -60570,6 +65317,20 @@ export namespace Prisma {
     update?: ExerciseUpdateWithWhereUniqueWithoutSubjectInput | ExerciseUpdateWithWhereUniqueWithoutSubjectInput[]
     updateMany?: ExerciseUpdateManyWithWhereWithoutSubjectInput | ExerciseUpdateManyWithWhereWithoutSubjectInput[]
     deleteMany?: ExerciseScalarWhereInput | ExerciseScalarWhereInput[]
+  }
+
+  export type DevoirUncheckedUpdateManyWithoutSubjectNestedInput = {
+    create?: XOR<DevoirCreateWithoutSubjectInput, DevoirUncheckedCreateWithoutSubjectInput> | DevoirCreateWithoutSubjectInput[] | DevoirUncheckedCreateWithoutSubjectInput[]
+    connectOrCreate?: DevoirCreateOrConnectWithoutSubjectInput | DevoirCreateOrConnectWithoutSubjectInput[]
+    upsert?: DevoirUpsertWithWhereUniqueWithoutSubjectInput | DevoirUpsertWithWhereUniqueWithoutSubjectInput[]
+    createMany?: DevoirCreateManySubjectInputEnvelope
+    set?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    disconnect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    delete?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    connect?: DevoirWhereUniqueInput | DevoirWhereUniqueInput[]
+    update?: DevoirUpdateWithWhereUniqueWithoutSubjectInput | DevoirUpdateWithWhereUniqueWithoutSubjectInput[]
+    updateMany?: DevoirUpdateManyWithWhereWithoutSubjectInput | DevoirUpdateManyWithWhereWithoutSubjectInput[]
+    deleteMany?: DevoirScalarWhereInput | DevoirScalarWhereInput[]
   }
 
   export type StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput = {
@@ -61249,6 +66010,10 @@ export namespace Prisma {
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutLessonsInput, CourseUpdateWithoutLessonsInput>, CourseUncheckedUpdateWithoutLessonsInput>
   }
 
+  export type ExerciseCreatetagsInput = {
+    set: string[]
+  }
+
   export type SubjectCreateNestedOneWithoutExercisesInput = {
     create?: XOR<SubjectCreateWithoutExercisesInput, SubjectUncheckedCreateWithoutExercisesInput>
     connectOrCreate?: SubjectCreateOrConnectWithoutExercisesInput
@@ -61369,6 +66134,11 @@ export namespace Prisma {
     connectOrCreate?: LearningObjectiveCreateOrConnectWithoutExerciseInput | LearningObjectiveCreateOrConnectWithoutExerciseInput[]
     createMany?: LearningObjectiveCreateManyExerciseInputEnvelope
     connect?: LearningObjectiveWhereUniqueInput | LearningObjectiveWhereUniqueInput[]
+  }
+
+  export type ExerciseUpdatetagsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type SubjectUpdateOneRequiredWithoutExercisesNestedInput = {
@@ -61617,6 +66387,173 @@ export namespace Prisma {
     upsert?: ExerciseUpsertWithoutSectionAssignmentsInput
     connect?: ExerciseWhereUniqueInput
     update?: XOR<XOR<ExerciseUpdateToOneWithWhereWithoutSectionAssignmentsInput, ExerciseUpdateWithoutSectionAssignmentsInput>, ExerciseUncheckedUpdateWithoutSectionAssignmentsInput>
+  }
+
+  export type DevoirCreatetagsInput = {
+    set: string[]
+  }
+
+  export type SubjectCreateNestedOneWithoutDevoirsInput = {
+    create?: XOR<SubjectCreateWithoutDevoirsInput, SubjectUncheckedCreateWithoutDevoirsInput>
+    connectOrCreate?: SubjectCreateOrConnectWithoutDevoirsInput
+    connect?: SubjectWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutOwnedDevoirsInput = {
+    create?: XOR<UserCreateWithoutOwnedDevoirsInput, UserUncheckedCreateWithoutOwnedDevoirsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOwnedDevoirsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCreatedDevoirsInput = {
+    create?: XOR<UserCreateWithoutCreatedDevoirsInput, UserUncheckedCreateWithoutCreatedDevoirsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedDevoirsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DevoirSectionAssignmentCreateNestedManyWithoutDevoirInput = {
+    create?: XOR<DevoirSectionAssignmentCreateWithoutDevoirInput, DevoirSectionAssignmentUncheckedCreateWithoutDevoirInput> | DevoirSectionAssignmentCreateWithoutDevoirInput[] | DevoirSectionAssignmentUncheckedCreateWithoutDevoirInput[]
+    connectOrCreate?: DevoirSectionAssignmentCreateOrConnectWithoutDevoirInput | DevoirSectionAssignmentCreateOrConnectWithoutDevoirInput[]
+    createMany?: DevoirSectionAssignmentCreateManyDevoirInputEnvelope
+    connect?: DevoirSectionAssignmentWhereUniqueInput | DevoirSectionAssignmentWhereUniqueInput[]
+  }
+
+  export type DevoirResourceCreateNestedManyWithoutDevoirInput = {
+    create?: XOR<DevoirResourceCreateWithoutDevoirInput, DevoirResourceUncheckedCreateWithoutDevoirInput> | DevoirResourceCreateWithoutDevoirInput[] | DevoirResourceUncheckedCreateWithoutDevoirInput[]
+    connectOrCreate?: DevoirResourceCreateOrConnectWithoutDevoirInput | DevoirResourceCreateOrConnectWithoutDevoirInput[]
+    createMany?: DevoirResourceCreateManyDevoirInputEnvelope
+    connect?: DevoirResourceWhereUniqueInput | DevoirResourceWhereUniqueInput[]
+  }
+
+  export type DevoirSectionAssignmentUncheckedCreateNestedManyWithoutDevoirInput = {
+    create?: XOR<DevoirSectionAssignmentCreateWithoutDevoirInput, DevoirSectionAssignmentUncheckedCreateWithoutDevoirInput> | DevoirSectionAssignmentCreateWithoutDevoirInput[] | DevoirSectionAssignmentUncheckedCreateWithoutDevoirInput[]
+    connectOrCreate?: DevoirSectionAssignmentCreateOrConnectWithoutDevoirInput | DevoirSectionAssignmentCreateOrConnectWithoutDevoirInput[]
+    createMany?: DevoirSectionAssignmentCreateManyDevoirInputEnvelope
+    connect?: DevoirSectionAssignmentWhereUniqueInput | DevoirSectionAssignmentWhereUniqueInput[]
+  }
+
+  export type DevoirResourceUncheckedCreateNestedManyWithoutDevoirInput = {
+    create?: XOR<DevoirResourceCreateWithoutDevoirInput, DevoirResourceUncheckedCreateWithoutDevoirInput> | DevoirResourceCreateWithoutDevoirInput[] | DevoirResourceUncheckedCreateWithoutDevoirInput[]
+    connectOrCreate?: DevoirResourceCreateOrConnectWithoutDevoirInput | DevoirResourceCreateOrConnectWithoutDevoirInput[]
+    createMany?: DevoirResourceCreateManyDevoirInputEnvelope
+    connect?: DevoirResourceWhereUniqueInput | DevoirResourceWhereUniqueInput[]
+  }
+
+  export type DevoirUpdatetagsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type SubjectUpdateOneRequiredWithoutDevoirsNestedInput = {
+    create?: XOR<SubjectCreateWithoutDevoirsInput, SubjectUncheckedCreateWithoutDevoirsInput>
+    connectOrCreate?: SubjectCreateOrConnectWithoutDevoirsInput
+    upsert?: SubjectUpsertWithoutDevoirsInput
+    connect?: SubjectWhereUniqueInput
+    update?: XOR<XOR<SubjectUpdateToOneWithWhereWithoutDevoirsInput, SubjectUpdateWithoutDevoirsInput>, SubjectUncheckedUpdateWithoutDevoirsInput>
+  }
+
+  export type UserUpdateOneWithoutOwnedDevoirsNestedInput = {
+    create?: XOR<UserCreateWithoutOwnedDevoirsInput, UserUncheckedCreateWithoutOwnedDevoirsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOwnedDevoirsInput
+    upsert?: UserUpsertWithoutOwnedDevoirsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOwnedDevoirsInput, UserUpdateWithoutOwnedDevoirsInput>, UserUncheckedUpdateWithoutOwnedDevoirsInput>
+  }
+
+  export type UserUpdateOneWithoutCreatedDevoirsNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedDevoirsInput, UserUncheckedCreateWithoutCreatedDevoirsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedDevoirsInput
+    upsert?: UserUpsertWithoutCreatedDevoirsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedDevoirsInput, UserUpdateWithoutCreatedDevoirsInput>, UserUncheckedUpdateWithoutCreatedDevoirsInput>
+  }
+
+  export type DevoirSectionAssignmentUpdateManyWithoutDevoirNestedInput = {
+    create?: XOR<DevoirSectionAssignmentCreateWithoutDevoirInput, DevoirSectionAssignmentUncheckedCreateWithoutDevoirInput> | DevoirSectionAssignmentCreateWithoutDevoirInput[] | DevoirSectionAssignmentUncheckedCreateWithoutDevoirInput[]
+    connectOrCreate?: DevoirSectionAssignmentCreateOrConnectWithoutDevoirInput | DevoirSectionAssignmentCreateOrConnectWithoutDevoirInput[]
+    upsert?: DevoirSectionAssignmentUpsertWithWhereUniqueWithoutDevoirInput | DevoirSectionAssignmentUpsertWithWhereUniqueWithoutDevoirInput[]
+    createMany?: DevoirSectionAssignmentCreateManyDevoirInputEnvelope
+    set?: DevoirSectionAssignmentWhereUniqueInput | DevoirSectionAssignmentWhereUniqueInput[]
+    disconnect?: DevoirSectionAssignmentWhereUniqueInput | DevoirSectionAssignmentWhereUniqueInput[]
+    delete?: DevoirSectionAssignmentWhereUniqueInput | DevoirSectionAssignmentWhereUniqueInput[]
+    connect?: DevoirSectionAssignmentWhereUniqueInput | DevoirSectionAssignmentWhereUniqueInput[]
+    update?: DevoirSectionAssignmentUpdateWithWhereUniqueWithoutDevoirInput | DevoirSectionAssignmentUpdateWithWhereUniqueWithoutDevoirInput[]
+    updateMany?: DevoirSectionAssignmentUpdateManyWithWhereWithoutDevoirInput | DevoirSectionAssignmentUpdateManyWithWhereWithoutDevoirInput[]
+    deleteMany?: DevoirSectionAssignmentScalarWhereInput | DevoirSectionAssignmentScalarWhereInput[]
+  }
+
+  export type DevoirResourceUpdateManyWithoutDevoirNestedInput = {
+    create?: XOR<DevoirResourceCreateWithoutDevoirInput, DevoirResourceUncheckedCreateWithoutDevoirInput> | DevoirResourceCreateWithoutDevoirInput[] | DevoirResourceUncheckedCreateWithoutDevoirInput[]
+    connectOrCreate?: DevoirResourceCreateOrConnectWithoutDevoirInput | DevoirResourceCreateOrConnectWithoutDevoirInput[]
+    upsert?: DevoirResourceUpsertWithWhereUniqueWithoutDevoirInput | DevoirResourceUpsertWithWhereUniqueWithoutDevoirInput[]
+    createMany?: DevoirResourceCreateManyDevoirInputEnvelope
+    set?: DevoirResourceWhereUniqueInput | DevoirResourceWhereUniqueInput[]
+    disconnect?: DevoirResourceWhereUniqueInput | DevoirResourceWhereUniqueInput[]
+    delete?: DevoirResourceWhereUniqueInput | DevoirResourceWhereUniqueInput[]
+    connect?: DevoirResourceWhereUniqueInput | DevoirResourceWhereUniqueInput[]
+    update?: DevoirResourceUpdateWithWhereUniqueWithoutDevoirInput | DevoirResourceUpdateWithWhereUniqueWithoutDevoirInput[]
+    updateMany?: DevoirResourceUpdateManyWithWhereWithoutDevoirInput | DevoirResourceUpdateManyWithWhereWithoutDevoirInput[]
+    deleteMany?: DevoirResourceScalarWhereInput | DevoirResourceScalarWhereInput[]
+  }
+
+  export type DevoirSectionAssignmentUncheckedUpdateManyWithoutDevoirNestedInput = {
+    create?: XOR<DevoirSectionAssignmentCreateWithoutDevoirInput, DevoirSectionAssignmentUncheckedCreateWithoutDevoirInput> | DevoirSectionAssignmentCreateWithoutDevoirInput[] | DevoirSectionAssignmentUncheckedCreateWithoutDevoirInput[]
+    connectOrCreate?: DevoirSectionAssignmentCreateOrConnectWithoutDevoirInput | DevoirSectionAssignmentCreateOrConnectWithoutDevoirInput[]
+    upsert?: DevoirSectionAssignmentUpsertWithWhereUniqueWithoutDevoirInput | DevoirSectionAssignmentUpsertWithWhereUniqueWithoutDevoirInput[]
+    createMany?: DevoirSectionAssignmentCreateManyDevoirInputEnvelope
+    set?: DevoirSectionAssignmentWhereUniqueInput | DevoirSectionAssignmentWhereUniqueInput[]
+    disconnect?: DevoirSectionAssignmentWhereUniqueInput | DevoirSectionAssignmentWhereUniqueInput[]
+    delete?: DevoirSectionAssignmentWhereUniqueInput | DevoirSectionAssignmentWhereUniqueInput[]
+    connect?: DevoirSectionAssignmentWhereUniqueInput | DevoirSectionAssignmentWhereUniqueInput[]
+    update?: DevoirSectionAssignmentUpdateWithWhereUniqueWithoutDevoirInput | DevoirSectionAssignmentUpdateWithWhereUniqueWithoutDevoirInput[]
+    updateMany?: DevoirSectionAssignmentUpdateManyWithWhereWithoutDevoirInput | DevoirSectionAssignmentUpdateManyWithWhereWithoutDevoirInput[]
+    deleteMany?: DevoirSectionAssignmentScalarWhereInput | DevoirSectionAssignmentScalarWhereInput[]
+  }
+
+  export type DevoirResourceUncheckedUpdateManyWithoutDevoirNestedInput = {
+    create?: XOR<DevoirResourceCreateWithoutDevoirInput, DevoirResourceUncheckedCreateWithoutDevoirInput> | DevoirResourceCreateWithoutDevoirInput[] | DevoirResourceUncheckedCreateWithoutDevoirInput[]
+    connectOrCreate?: DevoirResourceCreateOrConnectWithoutDevoirInput | DevoirResourceCreateOrConnectWithoutDevoirInput[]
+    upsert?: DevoirResourceUpsertWithWhereUniqueWithoutDevoirInput | DevoirResourceUpsertWithWhereUniqueWithoutDevoirInput[]
+    createMany?: DevoirResourceCreateManyDevoirInputEnvelope
+    set?: DevoirResourceWhereUniqueInput | DevoirResourceWhereUniqueInput[]
+    disconnect?: DevoirResourceWhereUniqueInput | DevoirResourceWhereUniqueInput[]
+    delete?: DevoirResourceWhereUniqueInput | DevoirResourceWhereUniqueInput[]
+    connect?: DevoirResourceWhereUniqueInput | DevoirResourceWhereUniqueInput[]
+    update?: DevoirResourceUpdateWithWhereUniqueWithoutDevoirInput | DevoirResourceUpdateWithWhereUniqueWithoutDevoirInput[]
+    updateMany?: DevoirResourceUpdateManyWithWhereWithoutDevoirInput | DevoirResourceUpdateManyWithWhereWithoutDevoirInput[]
+    deleteMany?: DevoirResourceScalarWhereInput | DevoirResourceScalarWhereInput[]
+  }
+
+  export type DevoirCreateNestedOneWithoutSectionAssignmentsInput = {
+    create?: XOR<DevoirCreateWithoutSectionAssignmentsInput, DevoirUncheckedCreateWithoutSectionAssignmentsInput>
+    connectOrCreate?: DevoirCreateOrConnectWithoutSectionAssignmentsInput
+    connect?: DevoirWhereUniqueInput
+  }
+
+  export type DevoirUpdateOneRequiredWithoutSectionAssignmentsNestedInput = {
+    create?: XOR<DevoirCreateWithoutSectionAssignmentsInput, DevoirUncheckedCreateWithoutSectionAssignmentsInput>
+    connectOrCreate?: DevoirCreateOrConnectWithoutSectionAssignmentsInput
+    upsert?: DevoirUpsertWithoutSectionAssignmentsInput
+    connect?: DevoirWhereUniqueInput
+    update?: XOR<XOR<DevoirUpdateToOneWithWhereWithoutSectionAssignmentsInput, DevoirUpdateWithoutSectionAssignmentsInput>, DevoirUncheckedUpdateWithoutSectionAssignmentsInput>
+  }
+
+  export type DevoirCreateNestedOneWithoutResourcesInput = {
+    create?: XOR<DevoirCreateWithoutResourcesInput, DevoirUncheckedCreateWithoutResourcesInput>
+    connectOrCreate?: DevoirCreateOrConnectWithoutResourcesInput
+    connect?: DevoirWhereUniqueInput
+  }
+
+  export type DevoirUpdateOneRequiredWithoutResourcesNestedInput = {
+    create?: XOR<DevoirCreateWithoutResourcesInput, DevoirUncheckedCreateWithoutResourcesInput>
+    connectOrCreate?: DevoirCreateOrConnectWithoutResourcesInput
+    upsert?: DevoirUpsertWithoutResourcesInput
+    connect?: DevoirWhereUniqueInput
+    update?: XOR<XOR<DevoirUpdateToOneWithWhereWithoutResourcesInput, DevoirUpdateWithoutResourcesInput>, DevoirUncheckedUpdateWithoutResourcesInput>
   }
 
   export type ExerciseCreateNestedOneWithoutCorrectionsInput = {
@@ -63932,6 +68869,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -63939,6 +68880,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -63960,6 +68902,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -63967,6 +68913,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -63998,6 +68945,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -64005,6 +68956,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -64026,6 +68978,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -64033,6 +68989,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -64056,6 +69013,110 @@ export namespace Prisma {
 
   export type ExerciseCreateManyCreatedByInputEnvelope = {
     data: ExerciseCreateManyCreatedByInput | ExerciseCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DevoirCreateWithoutTeacherInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subject: SubjectCreateNestedOneWithoutDevoirsInput
+    createdBy?: UserCreateNestedOneWithoutCreatedDevoirsInput
+    sectionAssignments?: DevoirSectionAssignmentCreateNestedManyWithoutDevoirInput
+    resources?: DevoirResourceCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirUncheckedCreateWithoutTeacherInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    subjectId: string
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sectionAssignments?: DevoirSectionAssignmentUncheckedCreateNestedManyWithoutDevoirInput
+    resources?: DevoirResourceUncheckedCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirCreateOrConnectWithoutTeacherInput = {
+    where: DevoirWhereUniqueInput
+    create: XOR<DevoirCreateWithoutTeacherInput, DevoirUncheckedCreateWithoutTeacherInput>
+  }
+
+  export type DevoirCreateManyTeacherInputEnvelope = {
+    data: DevoirCreateManyTeacherInput | DevoirCreateManyTeacherInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DevoirCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subject: SubjectCreateNestedOneWithoutDevoirsInput
+    teacher?: UserCreateNestedOneWithoutOwnedDevoirsInput
+    sectionAssignments?: DevoirSectionAssignmentCreateNestedManyWithoutDevoirInput
+    resources?: DevoirResourceCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    subjectId: string
+    teacherId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sectionAssignments?: DevoirSectionAssignmentUncheckedCreateNestedManyWithoutDevoirInput
+    resources?: DevoirResourceUncheckedCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirCreateOrConnectWithoutCreatedByInput = {
+    where: DevoirWhereUniqueInput
+    create: XOR<DevoirCreateWithoutCreatedByInput, DevoirUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type DevoirCreateManyCreatedByInputEnvelope = {
+    data: DevoirCreateManyCreatedByInput | DevoirCreateManyCreatedByInput[]
     skipDuplicates?: boolean
   }
 
@@ -64919,6 +69980,10 @@ export namespace Prisma {
     title?: StringFilter<"Exercise"> | string
     description?: StringNullableFilter<"Exercise"> | string | null
     contentUrl?: StringNullableFilter<"Exercise"> | string | null
+    videoUrl?: StringNullableFilter<"Exercise"> | string | null
+    videoPath?: StringNullableFilter<"Exercise"> | string | null
+    contentText?: StringNullableFilter<"Exercise"> | string | null
+    externalLink?: StringNullableFilter<"Exercise"> | string | null
     groupTitle?: StringNullableFilter<"Exercise"> | string | null
     advertisementImage?: StringNullableFilter<"Exercise"> | string | null
     advertisementTeacherName?: StringNullableFilter<"Exercise"> | string | null
@@ -64926,6 +69991,7 @@ export namespace Prisma {
     advertisementWhatsapp?: StringNullableFilter<"Exercise"> | string | null
     advertisementDescription?: StringNullableFilter<"Exercise"> | string | null
     difficulty?: EnumDifficultyFilter<"Exercise"> | $Enums.Difficulty
+    tags?: StringNullableListFilter<"Exercise">
     isPublished?: BoolFilter<"Exercise"> | boolean
     order?: IntFilter<"Exercise"> | number
     subjectId?: StringFilter<"Exercise"> | string
@@ -64950,6 +70016,61 @@ export namespace Prisma {
   export type ExerciseUpdateManyWithWhereWithoutCreatedByInput = {
     where: ExerciseScalarWhereInput
     data: XOR<ExerciseUpdateManyMutationInput, ExerciseUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type DevoirUpsertWithWhereUniqueWithoutTeacherInput = {
+    where: DevoirWhereUniqueInput
+    update: XOR<DevoirUpdateWithoutTeacherInput, DevoirUncheckedUpdateWithoutTeacherInput>
+    create: XOR<DevoirCreateWithoutTeacherInput, DevoirUncheckedCreateWithoutTeacherInput>
+  }
+
+  export type DevoirUpdateWithWhereUniqueWithoutTeacherInput = {
+    where: DevoirWhereUniqueInput
+    data: XOR<DevoirUpdateWithoutTeacherInput, DevoirUncheckedUpdateWithoutTeacherInput>
+  }
+
+  export type DevoirUpdateManyWithWhereWithoutTeacherInput = {
+    where: DevoirScalarWhereInput
+    data: XOR<DevoirUpdateManyMutationInput, DevoirUncheckedUpdateManyWithoutTeacherInput>
+  }
+
+  export type DevoirScalarWhereInput = {
+    AND?: DevoirScalarWhereInput | DevoirScalarWhereInput[]
+    OR?: DevoirScalarWhereInput[]
+    NOT?: DevoirScalarWhereInput | DevoirScalarWhereInput[]
+    id?: StringFilter<"Devoir"> | string
+    title?: StringFilter<"Devoir"> | string
+    description?: StringNullableFilter<"Devoir"> | string | null
+    contentUrl?: StringNullableFilter<"Devoir"> | string | null
+    videoUrl?: StringNullableFilter<"Devoir"> | string | null
+    videoPath?: StringNullableFilter<"Devoir"> | string | null
+    contentText?: StringNullableFilter<"Devoir"> | string | null
+    externalLink?: StringNullableFilter<"Devoir"> | string | null
+    difficulty?: EnumDifficultyFilter<"Devoir"> | $Enums.Difficulty
+    tags?: StringNullableListFilter<"Devoir">
+    isPublished?: BoolFilter<"Devoir"> | boolean
+    order?: IntFilter<"Devoir"> | number
+    subjectId?: StringFilter<"Devoir"> | string
+    teacherId?: StringNullableFilter<"Devoir"> | string | null
+    createdById?: StringNullableFilter<"Devoir"> | string | null
+    createdAt?: DateTimeFilter<"Devoir"> | Date | string
+    updatedAt?: DateTimeFilter<"Devoir"> | Date | string
+  }
+
+  export type DevoirUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: DevoirWhereUniqueInput
+    update: XOR<DevoirUpdateWithoutCreatedByInput, DevoirUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<DevoirCreateWithoutCreatedByInput, DevoirUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type DevoirUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: DevoirWhereUniqueInput
+    data: XOR<DevoirUpdateWithoutCreatedByInput, DevoirUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type DevoirUpdateManyWithWhereWithoutCreatedByInput = {
+    where: DevoirScalarWhereInput
+    data: XOR<DevoirUpdateManyMutationInput, DevoirUncheckedUpdateManyWithoutCreatedByInput>
   }
 
   export type LearningObjectiveUpsertWithWhereUniqueWithoutUserInput = {
@@ -65388,6 +70509,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
@@ -65411,6 +70533,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
@@ -65874,6 +70997,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -65881,6 +71008,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -65902,6 +71030,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -65909,6 +71041,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     courseId?: string | null
@@ -65932,6 +71065,58 @@ export namespace Prisma {
 
   export type ExerciseCreateManySubjectInputEnvelope = {
     data: ExerciseCreateManySubjectInput | ExerciseCreateManySubjectInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DevoirCreateWithoutSubjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    teacher?: UserCreateNestedOneWithoutOwnedDevoirsInput
+    createdBy?: UserCreateNestedOneWithoutCreatedDevoirsInput
+    sectionAssignments?: DevoirSectionAssignmentCreateNestedManyWithoutDevoirInput
+    resources?: DevoirResourceCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirUncheckedCreateWithoutSubjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    teacherId?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sectionAssignments?: DevoirSectionAssignmentUncheckedCreateNestedManyWithoutDevoirInput
+    resources?: DevoirResourceUncheckedCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirCreateOrConnectWithoutSubjectInput = {
+    where: DevoirWhereUniqueInput
+    create: XOR<DevoirCreateWithoutSubjectInput, DevoirUncheckedCreateWithoutSubjectInput>
+  }
+
+  export type DevoirCreateManySubjectInputEnvelope = {
+    data: DevoirCreateManySubjectInput | DevoirCreateManySubjectInput[]
     skipDuplicates?: boolean
   }
 
@@ -66326,6 +71511,22 @@ export namespace Prisma {
     data: XOR<ExerciseUpdateManyMutationInput, ExerciseUncheckedUpdateManyWithoutSubjectInput>
   }
 
+  export type DevoirUpsertWithWhereUniqueWithoutSubjectInput = {
+    where: DevoirWhereUniqueInput
+    update: XOR<DevoirUpdateWithoutSubjectInput, DevoirUncheckedUpdateWithoutSubjectInput>
+    create: XOR<DevoirCreateWithoutSubjectInput, DevoirUncheckedCreateWithoutSubjectInput>
+  }
+
+  export type DevoirUpdateWithWhereUniqueWithoutSubjectInput = {
+    where: DevoirWhereUniqueInput
+    data: XOR<DevoirUpdateWithoutSubjectInput, DevoirUncheckedUpdateWithoutSubjectInput>
+  }
+
+  export type DevoirUpdateManyWithWhereWithoutSubjectInput = {
+    where: DevoirScalarWhereInput
+    data: XOR<DevoirUpdateManyMutationInput, DevoirUncheckedUpdateManyWithoutSubjectInput>
+  }
+
   export type StudyTaskUpsertWithWhereUniqueWithoutSubjectInput = {
     where: StudyTaskWhereUniqueInput
     update: XOR<StudyTaskUpdateWithoutSubjectInput, StudyTaskUncheckedUpdateWithoutSubjectInput>
@@ -66437,6 +71638,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
@@ -66460,6 +71662,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
@@ -66499,6 +71702,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
@@ -66522,6 +71726,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
@@ -66558,6 +71763,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -66602,6 +71809,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -66662,6 +71871,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -66706,6 +71917,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -66750,6 +71963,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -66794,6 +72009,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -66830,6 +72047,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionCreateNestedManyWithoutSubjectInput
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
@@ -66853,6 +72071,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionUncheckedCreateNestedManyWithoutSubjectInput
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
@@ -66905,6 +72124,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -66949,6 +72170,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -66991,6 +72214,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionUpdateManyWithoutSubjectNestedInput
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
@@ -67014,6 +72238,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionUncheckedUpdateManyWithoutSubjectNestedInput
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
@@ -67051,6 +72276,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -67095,6 +72322,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -67155,6 +72384,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -67199,6 +72430,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -67229,6 +72462,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionCreateNestedManyWithoutSubjectInput
     teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
@@ -67252,6 +72486,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionUncheckedCreateNestedManyWithoutSubjectInput
     teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
@@ -67293,6 +72528,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -67337,6 +72574,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -67386,6 +72625,8 @@ export namespace Prisma {
     ownedCourses?: CourseCreateNestedManyWithoutTeacherInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -67430,6 +72671,8 @@ export namespace Prisma {
     ownedCourses?: CourseUncheckedCreateNestedManyWithoutTeacherInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -67588,6 +72831,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -67595,6 +72842,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -67616,6 +72864,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -67623,6 +72875,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -67855,6 +73108,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionUpdateManyWithoutSubjectNestedInput
     teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
@@ -67878,6 +73132,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionUncheckedUpdateManyWithoutSubjectNestedInput
     teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
@@ -67925,6 +73180,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -67969,6 +73226,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -68024,6 +73283,8 @@ export namespace Prisma {
     ownedCourses?: CourseUpdateManyWithoutTeacherNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -68068,6 +73329,8 @@ export namespace Prisma {
     ownedCourses?: CourseUncheckedUpdateManyWithoutTeacherNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -68600,6 +73863,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionCreateNestedManyWithoutSubjectInput
     teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
     courses?: CourseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
@@ -68623,6 +73887,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionUncheckedCreateNestedManyWithoutSubjectInput
     teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
@@ -68737,6 +74002,8 @@ export namespace Prisma {
     ownedCourses?: CourseCreateNestedManyWithoutTeacherInput
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -68781,6 +74048,8 @@ export namespace Prisma {
     ownedCourses?: CourseUncheckedCreateNestedManyWithoutTeacherInput
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -68830,6 +74099,8 @@ export namespace Prisma {
     ownedCourses?: CourseCreateNestedManyWithoutTeacherInput
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -68874,6 +74145,8 @@ export namespace Prisma {
     ownedCourses?: CourseUncheckedCreateNestedManyWithoutTeacherInput
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -68920,7 +74193,17 @@ export namespace Prisma {
   export type CorrectionCreateWithoutExerciseInput = {
     id?: string
     title: string
-    contentUrl: string
+    description?: string | null
+    contentText?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    isPublished?: boolean
+    order?: number
+    teacherId?: string | null
+    createdById?: string | null
+    contentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -68928,7 +74211,17 @@ export namespace Prisma {
   export type CorrectionUncheckedCreateWithoutExerciseInput = {
     id?: string
     title: string
-    contentUrl: string
+    description?: string | null
+    contentText?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    isPublished?: boolean
+    order?: number
+    teacherId?: string | null
+    createdById?: string | null
+    contentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -69165,6 +74458,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionUpdateManyWithoutSubjectNestedInput
     teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
     courses?: CourseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
@@ -69188,6 +74482,7 @@ export namespace Prisma {
     subjectSections?: SubjectSectionUncheckedUpdateManyWithoutSubjectNestedInput
     teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
@@ -69314,6 +74609,8 @@ export namespace Prisma {
     ownedCourses?: CourseUpdateManyWithoutTeacherNestedInput
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -69358,6 +74655,8 @@ export namespace Prisma {
     ownedCourses?: CourseUncheckedUpdateManyWithoutTeacherNestedInput
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -69413,6 +74712,8 @@ export namespace Prisma {
     ownedCourses?: CourseUpdateManyWithoutTeacherNestedInput
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -69457,6 +74758,8 @@ export namespace Prisma {
     ownedCourses?: CourseUncheckedUpdateManyWithoutTeacherNestedInput
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -69521,7 +74824,17 @@ export namespace Prisma {
     NOT?: CorrectionScalarWhereInput | CorrectionScalarWhereInput[]
     id?: StringFilter<"Correction"> | string
     title?: StringFilter<"Correction"> | string
-    contentUrl?: StringFilter<"Correction"> | string
+    description?: StringNullableFilter<"Correction"> | string | null
+    contentText?: StringNullableFilter<"Correction"> | string | null
+    videoUrl?: StringNullableFilter<"Correction"> | string | null
+    videoPath?: StringNullableFilter<"Correction"> | string | null
+    externalLink?: StringNullableFilter<"Correction"> | string | null
+    difficulty?: EnumDifficultyFilter<"Correction"> | $Enums.Difficulty
+    isPublished?: BoolFilter<"Correction"> | boolean
+    order?: IntFilter<"Correction"> | number
+    teacherId?: StringNullableFilter<"Correction"> | string | null
+    createdById?: StringNullableFilter<"Correction"> | string | null
+    contentUrl?: StringNullableFilter<"Correction"> | string | null
     exerciseId?: StringFilter<"Correction"> | string
     createdAt?: DateTimeFilter<"Correction"> | Date | string
     updatedAt?: DateTimeFilter<"Correction"> | Date | string
@@ -69624,6 +74937,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -69631,6 +74948,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -69652,6 +74970,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -69659,6 +74981,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -69696,6 +75019,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69703,6 +75030,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -69724,6 +75052,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69731,6 +75063,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -69747,11 +75080,829 @@ export namespace Prisma {
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutExerciseNestedInput
   }
 
+  export type SubjectCreateWithoutDevoirsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    bacSection?: $Enums.BacSection
+    color?: string
+    icon?: string
+    order?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    step?: LearningStepCreateNestedOneWithoutSubjectsInput
+    subjectSections?: SubjectSectionCreateNestedManyWithoutSubjectInput
+    teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
+    courses?: CourseCreateNestedManyWithoutSubjectInput
+    exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
+    learningObjectives?: LearningObjectiveCreateNestedManyWithoutSubjectInput
+    studyTips?: StudyTipCreateNestedManyWithoutSubjectInput
+    studySessions?: StudySessionCreateNestedManyWithoutSubjectInput
+  }
+
+  export type SubjectUncheckedCreateWithoutDevoirsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    bacSection?: $Enums.BacSection
+    stepId?: string | null
+    color?: string
+    icon?: string
+    order?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subjectSections?: SubjectSectionUncheckedCreateNestedManyWithoutSubjectInput
+    teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
+    courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
+    learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutSubjectInput
+    studyTips?: StudyTipUncheckedCreateNestedManyWithoutSubjectInput
+    studySessions?: StudySessionUncheckedCreateNestedManyWithoutSubjectInput
+  }
+
+  export type SubjectCreateOrConnectWithoutDevoirsInput = {
+    where: SubjectWhereUniqueInput
+    create: XOR<SubjectCreateWithoutDevoirsInput, SubjectUncheckedCreateWithoutDevoirsInput>
+  }
+
+  export type UserCreateWithoutOwnedDevoirsInput = {
+    id?: string
+    email?: string | null
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    bacSection?: $Enums.BacSection
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    tokenVersion?: number
+    approvalDate?: Date | string | null
+    lastLogin?: Date | string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    progress?: ProgressTrackingCreateNestedManyWithoutUserInput
+    homeworks?: HomeworkSubmissionCreateNestedManyWithoutUserInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    studyTasks?: StudyTaskCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutUserInput
+    communicationsCreated?: CommunicationCreateNestedManyWithoutCreatedByInput
+    teacherProfile?: TeacherProfileCreateNestedOneWithoutTeacherInput
+    teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutTeacherInput
+    ownedCourses?: CourseCreateNestedManyWithoutTeacherInput
+    createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
+    ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
+    createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
+    learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
+    createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
+    createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
+    sessionParticipations?: SessionParticipantCreateNestedManyWithoutUserInput
+    chatMessages?: SessionChatMessageCreateNestedManyWithoutUserInput
+    studyHeartbeats?: StudyHeartbeatCreateNestedManyWithoutUserInput
+    badgesAwarded?: UserStudyBadgeCreateNestedManyWithoutUserInput
+    teacherAdvertisements?: TeacherAdvertisementCreateNestedManyWithoutTeacherInput
+    ownedSquads?: StudySquadCreateNestedManyWithoutOwnerInput
+    squadMemberships?: StudySquadMemberCreateNestedManyWithoutUserInput
+    sentSquadInvitations?: StudySquadInvitationCreateNestedManyWithoutInviterInput
+    receivedSquadInvitations?: StudySquadInvitationCreateNestedManyWithoutInviteeInput
+    squadChatMessages?: StudySquadChatMessageCreateNestedManyWithoutUserInput
+    createdSquadGoals?: StudySquadGoalCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutOwnedDevoirsInput = {
+    id?: string
+    email?: string | null
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    bacSection?: $Enums.BacSection
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    tokenVersion?: number
+    approvalDate?: Date | string | null
+    lastLogin?: Date | string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    progress?: ProgressTrackingUncheckedCreateNestedManyWithoutUserInput
+    homeworks?: HomeworkSubmissionUncheckedCreateNestedManyWithoutUserInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutUserInput
+    communicationsCreated?: CommunicationUncheckedCreateNestedManyWithoutCreatedByInput
+    teacherProfile?: TeacherProfileUncheckedCreateNestedOneWithoutTeacherInput
+    teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutTeacherInput
+    ownedCourses?: CourseUncheckedCreateNestedManyWithoutTeacherInput
+    createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
+    createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
+    learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
+    createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
+    createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
+    sessionParticipations?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: SessionChatMessageUncheckedCreateNestedManyWithoutUserInput
+    studyHeartbeats?: StudyHeartbeatUncheckedCreateNestedManyWithoutUserInput
+    badgesAwarded?: UserStudyBadgeUncheckedCreateNestedManyWithoutUserInput
+    teacherAdvertisements?: TeacherAdvertisementUncheckedCreateNestedManyWithoutTeacherInput
+    ownedSquads?: StudySquadUncheckedCreateNestedManyWithoutOwnerInput
+    squadMemberships?: StudySquadMemberUncheckedCreateNestedManyWithoutUserInput
+    sentSquadInvitations?: StudySquadInvitationUncheckedCreateNestedManyWithoutInviterInput
+    receivedSquadInvitations?: StudySquadInvitationUncheckedCreateNestedManyWithoutInviteeInput
+    squadChatMessages?: StudySquadChatMessageUncheckedCreateNestedManyWithoutUserInput
+    createdSquadGoals?: StudySquadGoalUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutOwnedDevoirsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOwnedDevoirsInput, UserUncheckedCreateWithoutOwnedDevoirsInput>
+  }
+
+  export type UserCreateWithoutCreatedDevoirsInput = {
+    id?: string
+    email?: string | null
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    bacSection?: $Enums.BacSection
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    tokenVersion?: number
+    approvalDate?: Date | string | null
+    lastLogin?: Date | string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    progress?: ProgressTrackingCreateNestedManyWithoutUserInput
+    homeworks?: HomeworkSubmissionCreateNestedManyWithoutUserInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    studyTasks?: StudyTaskCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutUserInput
+    communicationsCreated?: CommunicationCreateNestedManyWithoutCreatedByInput
+    teacherProfile?: TeacherProfileCreateNestedOneWithoutTeacherInput
+    teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutTeacherInput
+    ownedCourses?: CourseCreateNestedManyWithoutTeacherInput
+    createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
+    ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
+    createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
+    createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
+    createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
+    sessionParticipations?: SessionParticipantCreateNestedManyWithoutUserInput
+    chatMessages?: SessionChatMessageCreateNestedManyWithoutUserInput
+    studyHeartbeats?: StudyHeartbeatCreateNestedManyWithoutUserInput
+    badgesAwarded?: UserStudyBadgeCreateNestedManyWithoutUserInput
+    teacherAdvertisements?: TeacherAdvertisementCreateNestedManyWithoutTeacherInput
+    ownedSquads?: StudySquadCreateNestedManyWithoutOwnerInput
+    squadMemberships?: StudySquadMemberCreateNestedManyWithoutUserInput
+    sentSquadInvitations?: StudySquadInvitationCreateNestedManyWithoutInviterInput
+    receivedSquadInvitations?: StudySquadInvitationCreateNestedManyWithoutInviteeInput
+    squadChatMessages?: StudySquadChatMessageCreateNestedManyWithoutUserInput
+    createdSquadGoals?: StudySquadGoalCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedDevoirsInput = {
+    id?: string
+    email?: string | null
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    bacSection?: $Enums.BacSection
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    tokenVersion?: number
+    approvalDate?: Date | string | null
+    lastLogin?: Date | string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    progress?: ProgressTrackingUncheckedCreateNestedManyWithoutUserInput
+    homeworks?: HomeworkSubmissionUncheckedCreateNestedManyWithoutUserInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutUserInput
+    plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutUserInput
+    communicationsCreated?: CommunicationUncheckedCreateNestedManyWithoutCreatedByInput
+    teacherProfile?: TeacherProfileUncheckedCreateNestedOneWithoutTeacherInput
+    teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutTeacherInput
+    ownedCourses?: CourseUncheckedCreateNestedManyWithoutTeacherInput
+    createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
+    createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
+    createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
+    createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
+    sessionParticipations?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: SessionChatMessageUncheckedCreateNestedManyWithoutUserInput
+    studyHeartbeats?: StudyHeartbeatUncheckedCreateNestedManyWithoutUserInput
+    badgesAwarded?: UserStudyBadgeUncheckedCreateNestedManyWithoutUserInput
+    teacherAdvertisements?: TeacherAdvertisementUncheckedCreateNestedManyWithoutTeacherInput
+    ownedSquads?: StudySquadUncheckedCreateNestedManyWithoutOwnerInput
+    squadMemberships?: StudySquadMemberUncheckedCreateNestedManyWithoutUserInput
+    sentSquadInvitations?: StudySquadInvitationUncheckedCreateNestedManyWithoutInviterInput
+    receivedSquadInvitations?: StudySquadInvitationUncheckedCreateNestedManyWithoutInviteeInput
+    squadChatMessages?: StudySquadChatMessageUncheckedCreateNestedManyWithoutUserInput
+    createdSquadGoals?: StudySquadGoalUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedDevoirsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedDevoirsInput, UserUncheckedCreateWithoutCreatedDevoirsInput>
+  }
+
+  export type DevoirSectionAssignmentCreateWithoutDevoirInput = {
+    id?: string
+    bacSection: $Enums.BacSection
+    createdAt?: Date | string
+  }
+
+  export type DevoirSectionAssignmentUncheckedCreateWithoutDevoirInput = {
+    id?: string
+    bacSection: $Enums.BacSection
+    createdAt?: Date | string
+  }
+
+  export type DevoirSectionAssignmentCreateOrConnectWithoutDevoirInput = {
+    where: DevoirSectionAssignmentWhereUniqueInput
+    create: XOR<DevoirSectionAssignmentCreateWithoutDevoirInput, DevoirSectionAssignmentUncheckedCreateWithoutDevoirInput>
+  }
+
+  export type DevoirSectionAssignmentCreateManyDevoirInputEnvelope = {
+    data: DevoirSectionAssignmentCreateManyDevoirInput | DevoirSectionAssignmentCreateManyDevoirInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DevoirResourceCreateWithoutDevoirInput = {
+    id?: string
+    title: string
+    url: string
+    type: string
+    createdAt?: Date | string
+  }
+
+  export type DevoirResourceUncheckedCreateWithoutDevoirInput = {
+    id?: string
+    title: string
+    url: string
+    type: string
+    createdAt?: Date | string
+  }
+
+  export type DevoirResourceCreateOrConnectWithoutDevoirInput = {
+    where: DevoirResourceWhereUniqueInput
+    create: XOR<DevoirResourceCreateWithoutDevoirInput, DevoirResourceUncheckedCreateWithoutDevoirInput>
+  }
+
+  export type DevoirResourceCreateManyDevoirInputEnvelope = {
+    data: DevoirResourceCreateManyDevoirInput | DevoirResourceCreateManyDevoirInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SubjectUpsertWithoutDevoirsInput = {
+    update: XOR<SubjectUpdateWithoutDevoirsInput, SubjectUncheckedUpdateWithoutDevoirsInput>
+    create: XOR<SubjectCreateWithoutDevoirsInput, SubjectUncheckedCreateWithoutDevoirsInput>
+    where?: SubjectWhereInput
+  }
+
+  export type SubjectUpdateToOneWithWhereWithoutDevoirsInput = {
+    where?: SubjectWhereInput
+    data: XOR<SubjectUpdateWithoutDevoirsInput, SubjectUncheckedUpdateWithoutDevoirsInput>
+  }
+
+  export type SubjectUpdateWithoutDevoirsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    color?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    step?: LearningStepUpdateOneWithoutSubjectsNestedInput
+    subjectSections?: SubjectSectionUpdateManyWithoutSubjectNestedInput
+    teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
+    courses?: CourseUpdateManyWithoutSubjectNestedInput
+    exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
+    learningObjectives?: LearningObjectiveUpdateManyWithoutSubjectNestedInput
+    studyTips?: StudyTipUpdateManyWithoutSubjectNestedInput
+    studySessions?: StudySessionUpdateManyWithoutSubjectNestedInput
+  }
+
+  export type SubjectUncheckedUpdateWithoutDevoirsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    stepId?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subjectSections?: SubjectSectionUncheckedUpdateManyWithoutSubjectNestedInput
+    teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
+    learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutSubjectNestedInput
+    studyTips?: StudyTipUncheckedUpdateManyWithoutSubjectNestedInput
+    studySessions?: StudySessionUncheckedUpdateManyWithoutSubjectNestedInput
+  }
+
+  export type UserUpsertWithoutOwnedDevoirsInput = {
+    update: XOR<UserUpdateWithoutOwnedDevoirsInput, UserUncheckedUpdateWithoutOwnedDevoirsInput>
+    create: XOR<UserCreateWithoutOwnedDevoirsInput, UserUncheckedCreateWithoutOwnedDevoirsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutOwnedDevoirsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutOwnedDevoirsInput, UserUncheckedUpdateWithoutOwnedDevoirsInput>
+  }
+
+  export type UserUpdateWithoutOwnedDevoirsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    tokenVersion?: IntFieldUpdateOperationsInput | number
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: ProgressTrackingUpdateManyWithoutUserNestedInput
+    homeworks?: HomeworkSubmissionUpdateManyWithoutUserNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    studyTasks?: StudyTaskUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutUserNestedInput
+    communicationsCreated?: CommunicationUpdateManyWithoutCreatedByNestedInput
+    teacherProfile?: TeacherProfileUpdateOneWithoutTeacherNestedInput
+    teacherAssignments?: TeacherAssignmentUpdateManyWithoutTeacherNestedInput
+    ownedCourses?: CourseUpdateManyWithoutTeacherNestedInput
+    createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
+    ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
+    createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
+    learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
+    createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
+    createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
+    sessionParticipations?: SessionParticipantUpdateManyWithoutUserNestedInput
+    chatMessages?: SessionChatMessageUpdateManyWithoutUserNestedInput
+    studyHeartbeats?: StudyHeartbeatUpdateManyWithoutUserNestedInput
+    badgesAwarded?: UserStudyBadgeUpdateManyWithoutUserNestedInput
+    teacherAdvertisements?: TeacherAdvertisementUpdateManyWithoutTeacherNestedInput
+    ownedSquads?: StudySquadUpdateManyWithoutOwnerNestedInput
+    squadMemberships?: StudySquadMemberUpdateManyWithoutUserNestedInput
+    sentSquadInvitations?: StudySquadInvitationUpdateManyWithoutInviterNestedInput
+    receivedSquadInvitations?: StudySquadInvitationUpdateManyWithoutInviteeNestedInput
+    squadChatMessages?: StudySquadChatMessageUpdateManyWithoutUserNestedInput
+    createdSquadGoals?: StudySquadGoalUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutOwnedDevoirsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    tokenVersion?: IntFieldUpdateOperationsInput | number
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: ProgressTrackingUncheckedUpdateManyWithoutUserNestedInput
+    homeworks?: HomeworkSubmissionUncheckedUpdateManyWithoutUserNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    studyTasks?: StudyTaskUncheckedUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutUserNestedInput
+    communicationsCreated?: CommunicationUncheckedUpdateManyWithoutCreatedByNestedInput
+    teacherProfile?: TeacherProfileUncheckedUpdateOneWithoutTeacherNestedInput
+    teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutTeacherNestedInput
+    ownedCourses?: CourseUncheckedUpdateManyWithoutTeacherNestedInput
+    createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
+    createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
+    learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
+    createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
+    sessionParticipations?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: SessionChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    studyHeartbeats?: StudyHeartbeatUncheckedUpdateManyWithoutUserNestedInput
+    badgesAwarded?: UserStudyBadgeUncheckedUpdateManyWithoutUserNestedInput
+    teacherAdvertisements?: TeacherAdvertisementUncheckedUpdateManyWithoutTeacherNestedInput
+    ownedSquads?: StudySquadUncheckedUpdateManyWithoutOwnerNestedInput
+    squadMemberships?: StudySquadMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentSquadInvitations?: StudySquadInvitationUncheckedUpdateManyWithoutInviterNestedInput
+    receivedSquadInvitations?: StudySquadInvitationUncheckedUpdateManyWithoutInviteeNestedInput
+    squadChatMessages?: StudySquadChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    createdSquadGoals?: StudySquadGoalUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUpsertWithoutCreatedDevoirsInput = {
+    update: XOR<UserUpdateWithoutCreatedDevoirsInput, UserUncheckedUpdateWithoutCreatedDevoirsInput>
+    create: XOR<UserCreateWithoutCreatedDevoirsInput, UserUncheckedCreateWithoutCreatedDevoirsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedDevoirsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedDevoirsInput, UserUncheckedUpdateWithoutCreatedDevoirsInput>
+  }
+
+  export type UserUpdateWithoutCreatedDevoirsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    tokenVersion?: IntFieldUpdateOperationsInput | number
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: ProgressTrackingUpdateManyWithoutUserNestedInput
+    homeworks?: HomeworkSubmissionUpdateManyWithoutUserNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    studyTasks?: StudyTaskUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutUserNestedInput
+    communicationsCreated?: CommunicationUpdateManyWithoutCreatedByNestedInput
+    teacherProfile?: TeacherProfileUpdateOneWithoutTeacherNestedInput
+    teacherAssignments?: TeacherAssignmentUpdateManyWithoutTeacherNestedInput
+    ownedCourses?: CourseUpdateManyWithoutTeacherNestedInput
+    createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
+    ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
+    createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
+    createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
+    createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
+    sessionParticipations?: SessionParticipantUpdateManyWithoutUserNestedInput
+    chatMessages?: SessionChatMessageUpdateManyWithoutUserNestedInput
+    studyHeartbeats?: StudyHeartbeatUpdateManyWithoutUserNestedInput
+    badgesAwarded?: UserStudyBadgeUpdateManyWithoutUserNestedInput
+    teacherAdvertisements?: TeacherAdvertisementUpdateManyWithoutTeacherNestedInput
+    ownedSquads?: StudySquadUpdateManyWithoutOwnerNestedInput
+    squadMemberships?: StudySquadMemberUpdateManyWithoutUserNestedInput
+    sentSquadInvitations?: StudySquadInvitationUpdateManyWithoutInviterNestedInput
+    receivedSquadInvitations?: StudySquadInvitationUpdateManyWithoutInviteeNestedInput
+    squadChatMessages?: StudySquadChatMessageUpdateManyWithoutUserNestedInput
+    createdSquadGoals?: StudySquadGoalUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedDevoirsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    tokenVersion?: IntFieldUpdateOperationsInput | number
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    progress?: ProgressTrackingUncheckedUpdateManyWithoutUserNestedInput
+    homeworks?: HomeworkSubmissionUncheckedUpdateManyWithoutUserNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    studyTasks?: StudyTaskUncheckedUpdateManyWithoutUserNestedInput
+    plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutUserNestedInput
+    communicationsCreated?: CommunicationUncheckedUpdateManyWithoutCreatedByNestedInput
+    teacherProfile?: TeacherProfileUncheckedUpdateOneWithoutTeacherNestedInput
+    teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutTeacherNestedInput
+    ownedCourses?: CourseUncheckedUpdateManyWithoutTeacherNestedInput
+    createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
+    createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
+    createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
+    sessionParticipations?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: SessionChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    studyHeartbeats?: StudyHeartbeatUncheckedUpdateManyWithoutUserNestedInput
+    badgesAwarded?: UserStudyBadgeUncheckedUpdateManyWithoutUserNestedInput
+    teacherAdvertisements?: TeacherAdvertisementUncheckedUpdateManyWithoutTeacherNestedInput
+    ownedSquads?: StudySquadUncheckedUpdateManyWithoutOwnerNestedInput
+    squadMemberships?: StudySquadMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentSquadInvitations?: StudySquadInvitationUncheckedUpdateManyWithoutInviterNestedInput
+    receivedSquadInvitations?: StudySquadInvitationUncheckedUpdateManyWithoutInviteeNestedInput
+    squadChatMessages?: StudySquadChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    createdSquadGoals?: StudySquadGoalUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type DevoirSectionAssignmentUpsertWithWhereUniqueWithoutDevoirInput = {
+    where: DevoirSectionAssignmentWhereUniqueInput
+    update: XOR<DevoirSectionAssignmentUpdateWithoutDevoirInput, DevoirSectionAssignmentUncheckedUpdateWithoutDevoirInput>
+    create: XOR<DevoirSectionAssignmentCreateWithoutDevoirInput, DevoirSectionAssignmentUncheckedCreateWithoutDevoirInput>
+  }
+
+  export type DevoirSectionAssignmentUpdateWithWhereUniqueWithoutDevoirInput = {
+    where: DevoirSectionAssignmentWhereUniqueInput
+    data: XOR<DevoirSectionAssignmentUpdateWithoutDevoirInput, DevoirSectionAssignmentUncheckedUpdateWithoutDevoirInput>
+  }
+
+  export type DevoirSectionAssignmentUpdateManyWithWhereWithoutDevoirInput = {
+    where: DevoirSectionAssignmentScalarWhereInput
+    data: XOR<DevoirSectionAssignmentUpdateManyMutationInput, DevoirSectionAssignmentUncheckedUpdateManyWithoutDevoirInput>
+  }
+
+  export type DevoirSectionAssignmentScalarWhereInput = {
+    AND?: DevoirSectionAssignmentScalarWhereInput | DevoirSectionAssignmentScalarWhereInput[]
+    OR?: DevoirSectionAssignmentScalarWhereInput[]
+    NOT?: DevoirSectionAssignmentScalarWhereInput | DevoirSectionAssignmentScalarWhereInput[]
+    id?: StringFilter<"DevoirSectionAssignment"> | string
+    devoirId?: StringFilter<"DevoirSectionAssignment"> | string
+    bacSection?: EnumBacSectionFilter<"DevoirSectionAssignment"> | $Enums.BacSection
+    createdAt?: DateTimeFilter<"DevoirSectionAssignment"> | Date | string
+  }
+
+  export type DevoirResourceUpsertWithWhereUniqueWithoutDevoirInput = {
+    where: DevoirResourceWhereUniqueInput
+    update: XOR<DevoirResourceUpdateWithoutDevoirInput, DevoirResourceUncheckedUpdateWithoutDevoirInput>
+    create: XOR<DevoirResourceCreateWithoutDevoirInput, DevoirResourceUncheckedCreateWithoutDevoirInput>
+  }
+
+  export type DevoirResourceUpdateWithWhereUniqueWithoutDevoirInput = {
+    where: DevoirResourceWhereUniqueInput
+    data: XOR<DevoirResourceUpdateWithoutDevoirInput, DevoirResourceUncheckedUpdateWithoutDevoirInput>
+  }
+
+  export type DevoirResourceUpdateManyWithWhereWithoutDevoirInput = {
+    where: DevoirResourceScalarWhereInput
+    data: XOR<DevoirResourceUpdateManyMutationInput, DevoirResourceUncheckedUpdateManyWithoutDevoirInput>
+  }
+
+  export type DevoirResourceScalarWhereInput = {
+    AND?: DevoirResourceScalarWhereInput | DevoirResourceScalarWhereInput[]
+    OR?: DevoirResourceScalarWhereInput[]
+    NOT?: DevoirResourceScalarWhereInput | DevoirResourceScalarWhereInput[]
+    id?: StringFilter<"DevoirResource"> | string
+    title?: StringFilter<"DevoirResource"> | string
+    url?: StringFilter<"DevoirResource"> | string
+    type?: StringFilter<"DevoirResource"> | string
+    devoirId?: StringFilter<"DevoirResource"> | string
+    createdAt?: DateTimeFilter<"DevoirResource"> | Date | string
+  }
+
+  export type DevoirCreateWithoutSectionAssignmentsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subject: SubjectCreateNestedOneWithoutDevoirsInput
+    teacher?: UserCreateNestedOneWithoutOwnedDevoirsInput
+    createdBy?: UserCreateNestedOneWithoutCreatedDevoirsInput
+    resources?: DevoirResourceCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirUncheckedCreateWithoutSectionAssignmentsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    subjectId: string
+    teacherId?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resources?: DevoirResourceUncheckedCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirCreateOrConnectWithoutSectionAssignmentsInput = {
+    where: DevoirWhereUniqueInput
+    create: XOR<DevoirCreateWithoutSectionAssignmentsInput, DevoirUncheckedCreateWithoutSectionAssignmentsInput>
+  }
+
+  export type DevoirUpsertWithoutSectionAssignmentsInput = {
+    update: XOR<DevoirUpdateWithoutSectionAssignmentsInput, DevoirUncheckedUpdateWithoutSectionAssignmentsInput>
+    create: XOR<DevoirCreateWithoutSectionAssignmentsInput, DevoirUncheckedCreateWithoutSectionAssignmentsInput>
+    where?: DevoirWhereInput
+  }
+
+  export type DevoirUpdateToOneWithWhereWithoutSectionAssignmentsInput = {
+    where?: DevoirWhereInput
+    data: XOR<DevoirUpdateWithoutSectionAssignmentsInput, DevoirUncheckedUpdateWithoutSectionAssignmentsInput>
+  }
+
+  export type DevoirUpdateWithoutSectionAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject?: SubjectUpdateOneRequiredWithoutDevoirsNestedInput
+    teacher?: UserUpdateOneWithoutOwnedDevoirsNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedDevoirsNestedInput
+    resources?: DevoirResourceUpdateManyWithoutDevoirNestedInput
+  }
+
+  export type DevoirUncheckedUpdateWithoutSectionAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    subjectId?: StringFieldUpdateOperationsInput | string
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resources?: DevoirResourceUncheckedUpdateManyWithoutDevoirNestedInput
+  }
+
+  export type DevoirCreateWithoutResourcesInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subject: SubjectCreateNestedOneWithoutDevoirsInput
+    teacher?: UserCreateNestedOneWithoutOwnedDevoirsInput
+    createdBy?: UserCreateNestedOneWithoutCreatedDevoirsInput
+    sectionAssignments?: DevoirSectionAssignmentCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirUncheckedCreateWithoutResourcesInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    subjectId: string
+    teacherId?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sectionAssignments?: DevoirSectionAssignmentUncheckedCreateNestedManyWithoutDevoirInput
+  }
+
+  export type DevoirCreateOrConnectWithoutResourcesInput = {
+    where: DevoirWhereUniqueInput
+    create: XOR<DevoirCreateWithoutResourcesInput, DevoirUncheckedCreateWithoutResourcesInput>
+  }
+
+  export type DevoirUpsertWithoutResourcesInput = {
+    update: XOR<DevoirUpdateWithoutResourcesInput, DevoirUncheckedUpdateWithoutResourcesInput>
+    create: XOR<DevoirCreateWithoutResourcesInput, DevoirUncheckedCreateWithoutResourcesInput>
+    where?: DevoirWhereInput
+  }
+
+  export type DevoirUpdateToOneWithWhereWithoutResourcesInput = {
+    where?: DevoirWhereInput
+    data: XOR<DevoirUpdateWithoutResourcesInput, DevoirUncheckedUpdateWithoutResourcesInput>
+  }
+
+  export type DevoirUpdateWithoutResourcesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject?: SubjectUpdateOneRequiredWithoutDevoirsNestedInput
+    teacher?: UserUpdateOneWithoutOwnedDevoirsNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedDevoirsNestedInput
+    sectionAssignments?: DevoirSectionAssignmentUpdateManyWithoutDevoirNestedInput
+  }
+
+  export type DevoirUncheckedUpdateWithoutResourcesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    subjectId?: StringFieldUpdateOperationsInput | string
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sectionAssignments?: DevoirSectionAssignmentUncheckedUpdateManyWithoutDevoirNestedInput
+  }
+
   export type ExerciseCreateWithoutCorrectionsInput = {
     id?: string
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -69759,6 +75910,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -69780,6 +75932,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -69787,6 +75943,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -69824,6 +75981,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69831,6 +75992,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -69852,6 +76014,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69859,6 +76025,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -69903,6 +76070,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -69947,6 +76116,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -70046,6 +76217,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -70053,6 +76228,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -70074,6 +76250,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -70081,6 +76261,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -70141,6 +76322,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -70185,6 +76368,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -70296,6 +76481,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70303,6 +76492,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70324,6 +76514,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70331,6 +76525,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -70375,6 +76570,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -70419,6 +76616,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -70552,6 +76751,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -70596,6 +76797,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -70719,6 +76922,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -70763,6 +76968,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -70823,6 +77030,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -70867,6 +77076,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -71040,6 +77251,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -71047,6 +77262,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -71068,6 +77284,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -71075,6 +77295,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -71112,6 +77333,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71119,6 +77344,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71140,6 +77366,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71147,6 +77377,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -71179,6 +77410,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutSubjectInput
@@ -71202,6 +77434,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutSubjectInput
@@ -71331,6 +77564,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -71338,6 +77575,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -71359,6 +77597,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -71366,6 +77608,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -71415,6 +77658,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -71459,6 +77704,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -71507,6 +77754,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutSubjectNestedInput
@@ -71530,6 +77778,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutSubjectNestedInput
@@ -71677,6 +77926,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71684,6 +77937,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71705,6 +77959,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71712,6 +77970,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -71767,6 +78026,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -71811,6 +78072,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -71843,6 +78106,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutSubjectInput
@@ -71866,6 +78130,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutSubjectInput
@@ -71906,6 +78171,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -71950,6 +78217,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -72054,6 +78323,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutSubjectNestedInput
@@ -72077,6 +78347,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutSubjectNestedInput
@@ -72123,6 +78394,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -72167,6 +78440,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -72215,6 +78490,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutSubjectInput
@@ -72238,6 +78514,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutSubjectInput
@@ -72367,6 +78644,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -72374,6 +78655,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -72395,6 +78677,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -72402,6 +78688,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -72451,6 +78738,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -72495,6 +78784,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -72590,6 +78881,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutSubjectNestedInput
@@ -72613,6 +78905,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutSubjectNestedInput
@@ -72760,6 +79053,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72767,6 +79064,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72788,6 +79086,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72795,6 +79097,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -72850,6 +79153,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -72894,6 +79199,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -72992,6 +79299,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
     sessionParticipations?: SessionParticipantCreateNestedManyWithoutUserInput
@@ -73036,6 +79345,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
     sessionParticipations?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
@@ -73111,6 +79422,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
@@ -73134,6 +79446,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
@@ -73224,6 +79537,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -73231,6 +79548,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     createdAt?: Date | string
@@ -73252,6 +79570,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -73259,6 +79581,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -73320,6 +79643,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
     sessionParticipations?: SessionParticipantUpdateManyWithoutUserNestedInput
@@ -73364,6 +79689,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
     sessionParticipations?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
@@ -73451,6 +79778,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
@@ -73474,6 +79802,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
@@ -73576,6 +79905,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73583,6 +79916,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73604,6 +79938,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73611,6 +79949,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -73682,6 +80021,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
@@ -73705,6 +80045,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
@@ -73819,6 +80160,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
     sessionParticipations?: SessionParticipantCreateNestedManyWithoutUserInput
@@ -73863,6 +80206,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
     sessionParticipations?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
@@ -73955,6 +80300,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
@@ -73978,6 +80324,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
@@ -74104,6 +80451,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
     sessionParticipations?: SessionParticipantUpdateManyWithoutUserNestedInput
@@ -74148,6 +80497,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
     sessionParticipations?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
@@ -74191,6 +80542,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -74235,6 +80588,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -74327,6 +80682,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -74371,6 +80728,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -74550,6 +80909,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentCreateNestedManyWithoutSubjectInput
     courses?: CourseCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskCreateNestedManyWithoutSubjectInput
@@ -74573,6 +80933,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedCreateNestedManyWithoutSubjectInput
     courses?: CourseUncheckedCreateNestedManyWithoutSubjectInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutSubjectInput
+    devoirs?: DevoirUncheckedCreateNestedManyWithoutSubjectInput
     studyTasks?: StudyTaskUncheckedCreateNestedManyWithoutSubjectInput
     plannerTemplates?: PlannerTemplateUncheckedCreateNestedManyWithoutSubjectInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedCreateNestedManyWithoutSubjectInput
@@ -74614,6 +80975,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     sessionParticipations?: SessionParticipantCreateNestedManyWithoutUserInput
@@ -74658,6 +81021,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     sessionParticipations?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
@@ -74828,6 +81193,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
@@ -74851,6 +81217,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
@@ -74898,6 +81265,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     sessionParticipations?: SessionParticipantUpdateManyWithoutUserNestedInput
@@ -74942,6 +81311,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     sessionParticipations?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
@@ -75075,6 +81446,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -75119,6 +81492,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -75324,6 +81699,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -75368,6 +81745,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -75546,6 +81925,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -75590,6 +81971,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -75691,6 +82074,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -75735,6 +82120,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -75814,6 +82201,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -75858,6 +82247,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -75907,6 +82298,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -75951,6 +82344,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -76052,6 +82447,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -76096,6 +82493,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -76151,6 +82550,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -76195,6 +82596,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -76274,6 +82677,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -76318,6 +82723,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -76419,6 +82826,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -76463,6 +82872,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -76542,6 +82953,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -76586,6 +82999,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -76687,6 +83102,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -76731,6 +83148,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -76810,6 +83229,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -76854,6 +83275,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -76955,6 +83378,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -76999,6 +83424,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -77078,6 +83505,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -77122,6 +83551,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -77223,6 +83654,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -77267,6 +83700,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -77311,6 +83746,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -77355,6 +83792,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -77450,6 +83889,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -77494,6 +83935,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -77621,6 +84064,8 @@ export namespace Prisma {
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionCreateNestedManyWithoutCreatedByInput
@@ -77665,6 +84110,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     ownedExercises?: ExerciseUncheckedCreateNestedManyWithoutTeacherInput
     createdExercises?: ExerciseUncheckedCreateNestedManyWithoutCreatedByInput
+    ownedDevoirs?: DevoirUncheckedCreateNestedManyWithoutTeacherInput
+    createdDevoirs?: DevoirUncheckedCreateNestedManyWithoutCreatedByInput
     learningObjectives?: LearningObjectiveUncheckedCreateNestedManyWithoutUserInput
     createdStudyTips?: StudyTipUncheckedCreateNestedManyWithoutCreatedByInput
     createdStudySessions?: StudySessionUncheckedCreateNestedManyWithoutCreatedByInput
@@ -77756,6 +84203,8 @@ export namespace Prisma {
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUpdateManyWithoutCreatedByNestedInput
@@ -77800,6 +84249,8 @@ export namespace Prisma {
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     ownedExercises?: ExerciseUncheckedUpdateManyWithoutTeacherNestedInput
     createdExercises?: ExerciseUncheckedUpdateManyWithoutCreatedByNestedInput
+    ownedDevoirs?: DevoirUncheckedUpdateManyWithoutTeacherNestedInput
+    createdDevoirs?: DevoirUncheckedUpdateManyWithoutCreatedByNestedInput
     learningObjectives?: LearningObjectiveUncheckedUpdateManyWithoutUserNestedInput
     createdStudyTips?: StudyTipUncheckedUpdateManyWithoutCreatedByNestedInput
     createdStudySessions?: StudySessionUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -78024,6 +84475,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -78031,6 +84486,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -78045,6 +84501,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -78052,10 +84512,49 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
     courseId?: string | null
+    teacherId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DevoirCreateManyTeacherInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    subjectId: string
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DevoirCreateManyCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
+    subjectId: string
     teacherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -78765,6 +85264,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78772,6 +85275,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78793,6 +85297,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78800,6 +85308,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -78821,6 +85330,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78828,6 +85341,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -78842,6 +85356,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78849,6 +85367,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78870,6 +85389,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78877,6 +85400,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -78898,6 +85422,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78905,10 +85433,133 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirUpdateWithoutTeacherInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject?: SubjectUpdateOneRequiredWithoutDevoirsNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedDevoirsNestedInput
+    sectionAssignments?: DevoirSectionAssignmentUpdateManyWithoutDevoirNestedInput
+    resources?: DevoirResourceUpdateManyWithoutDevoirNestedInput
+  }
+
+  export type DevoirUncheckedUpdateWithoutTeacherInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    subjectId?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sectionAssignments?: DevoirSectionAssignmentUncheckedUpdateManyWithoutDevoirNestedInput
+    resources?: DevoirResourceUncheckedUpdateManyWithoutDevoirNestedInput
+  }
+
+  export type DevoirUncheckedUpdateManyWithoutTeacherInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    subjectId?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subject?: SubjectUpdateOneRequiredWithoutDevoirsNestedInput
+    teacher?: UserUpdateOneWithoutOwnedDevoirsNestedInput
+    sectionAssignments?: DevoirSectionAssignmentUpdateManyWithoutDevoirNestedInput
+    resources?: DevoirResourceUpdateManyWithoutDevoirNestedInput
+  }
+
+  export type DevoirUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    subjectId?: StringFieldUpdateOperationsInput | string
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sectionAssignments?: DevoirSectionAssignmentUncheckedUpdateManyWithoutDevoirNestedInput
+    resources?: DevoirResourceUncheckedUpdateManyWithoutDevoirNestedInput
+  }
+
+  export type DevoirUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    subjectId?: StringFieldUpdateOperationsInput | string
     teacherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -79490,6 +86141,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUpdateManyWithoutSubjectNestedInput
     courses?: CourseUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUpdateManyWithoutSubjectNestedInput
@@ -79513,6 +86165,7 @@ export namespace Prisma {
     teacherAssignments?: TeacherAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
     courses?: CourseUncheckedUpdateManyWithoutSubjectNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutSubjectNestedInput
+    devoirs?: DevoirUncheckedUpdateManyWithoutSubjectNestedInput
     studyTasks?: StudyTaskUncheckedUpdateManyWithoutSubjectNestedInput
     plannerTemplates?: PlannerTemplateUncheckedUpdateManyWithoutSubjectNestedInput
     studentPlannerTasks?: StudentPlannerTaskUncheckedUpdateManyWithoutSubjectNestedInput
@@ -79786,6 +86439,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -79793,9 +86450,29 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     courseId?: string | null
+    teacherId?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DevoirCreateManySubjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    tags?: DevoirCreatetagsInput | string[]
+    isPublished?: boolean
+    order?: number
     teacherId?: string | null
     createdById?: string | null
     createdAt?: Date | string
@@ -80040,6 +86717,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80047,6 +86728,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80068,6 +86750,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80075,6 +86761,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80096,6 +86783,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80103,9 +86794,71 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirUpdateWithoutSubjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teacher?: UserUpdateOneWithoutOwnedDevoirsNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedDevoirsNestedInput
+    sectionAssignments?: DevoirSectionAssignmentUpdateManyWithoutDevoirNestedInput
+    resources?: DevoirResourceUpdateManyWithoutDevoirNestedInput
+  }
+
+  export type DevoirUncheckedUpdateWithoutSubjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sectionAssignments?: DevoirSectionAssignmentUncheckedUpdateManyWithoutDevoirNestedInput
+    resources?: DevoirResourceUncheckedUpdateManyWithoutDevoirNestedInput
+  }
+
+  export type DevoirUncheckedUpdateManyWithoutSubjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: DevoirUpdatetagsInput | string[]
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
     teacherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80472,6 +87225,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     contentUrl?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    contentText?: string | null
+    externalLink?: string | null
     groupTitle?: string | null
     advertisementImage?: string | null
     advertisementTeacherName?: string | null
@@ -80479,6 +87236,7 @@ export namespace Prisma {
     advertisementWhatsapp?: string | null
     advertisementDescription?: string | null
     difficulty?: $Enums.Difficulty
+    tags?: ExerciseCreatetagsInput | string[]
     isPublished?: boolean
     order?: number
     subjectId: string
@@ -80686,6 +87444,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80693,6 +87455,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80714,6 +87477,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80721,6 +87488,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -80742,6 +87510,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
     groupTitle?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementImage?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementTeacherName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80749,6 +87521,7 @@ export namespace Prisma {
     advertisementWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
     advertisementDescription?: NullableStringFieldUpdateOperationsInput | string | null
     difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    tags?: ExerciseUpdatetagsInput | string[]
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     subjectId?: StringFieldUpdateOperationsInput | string
@@ -80977,7 +87750,17 @@ export namespace Prisma {
   export type CorrectionCreateManyExerciseInput = {
     id?: string
     title: string
-    contentUrl: string
+    description?: string | null
+    contentText?: string | null
+    videoUrl?: string | null
+    videoPath?: string | null
+    externalLink?: string | null
+    difficulty?: $Enums.Difficulty
+    isPublished?: boolean
+    order?: number
+    teacherId?: string | null
+    createdById?: string | null
+    contentUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -81076,7 +87859,17 @@ export namespace Prisma {
   export type CorrectionUpdateWithoutExerciseInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    contentUrl?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -81084,7 +87877,17 @@ export namespace Prisma {
   export type CorrectionUncheckedUpdateWithoutExerciseInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    contentUrl?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -81092,7 +87895,17 @@ export namespace Prisma {
   export type CorrectionUncheckedUpdateManyWithoutExerciseInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    contentUrl?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contentText?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    externalLink?: NullableStringFieldUpdateOperationsInput | string | null
+    difficulty?: EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -81314,6 +88127,62 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirSectionAssignmentCreateManyDevoirInput = {
+    id?: string
+    bacSection: $Enums.BacSection
+    createdAt?: Date | string
+  }
+
+  export type DevoirResourceCreateManyDevoirInput = {
+    id?: string
+    title: string
+    url: string
+    type: string
+    createdAt?: Date | string
+  }
+
+  export type DevoirSectionAssignmentUpdateWithoutDevoirInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirSectionAssignmentUncheckedUpdateWithoutDevoirInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirSectionAssignmentUncheckedUpdateManyWithoutDevoirInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirResourceUpdateWithoutDevoirInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirResourceUncheckedUpdateWithoutDevoirInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevoirResourceUncheckedUpdateManyWithoutDevoirInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StudentPlannerTaskCreateManyTemplateInput = {
@@ -81772,6 +88641,10 @@ export namespace Prisma {
      */
     export type ExerciseCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ExerciseCountOutputTypeDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use DevoirCountOutputTypeDefaultArgs instead
+     */
+    export type DevoirCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DevoirCountOutputTypeDefaultArgs<ExtArgs>
+    /**
      * @deprecated Use PlannerTemplateCountOutputTypeDefaultArgs instead
      */
     export type PlannerTemplateCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PlannerTemplateCountOutputTypeDefaultArgs<ExtArgs>
@@ -81843,6 +88716,18 @@ export namespace Prisma {
      * @deprecated Use ExerciseSectionAssignmentDefaultArgs instead
      */
     export type ExerciseSectionAssignmentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ExerciseSectionAssignmentDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DevoirDefaultArgs instead
+     */
+    export type DevoirArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DevoirDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DevoirSectionAssignmentDefaultArgs instead
+     */
+    export type DevoirSectionAssignmentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DevoirSectionAssignmentDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DevoirResourceDefaultArgs instead
+     */
+    export type DevoirResourceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DevoirResourceDefaultArgs<ExtArgs>
     /**
      * @deprecated Use CorrectionDefaultArgs instead
      */

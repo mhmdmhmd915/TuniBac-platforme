@@ -205,6 +205,20 @@ const ExerciseItemIcon: React.FC<{ completed?: boolean; inProgress?: boolean }> 
   )
 }
 
+const DevoirItemIcon: React.FC<{
+  hasVideo?: boolean
+  hasPdf?: boolean
+  hasLink?: boolean
+}> = ({ hasVideo, hasPdf, hasLink }) => {
+  const Icon = hasVideo ? PlayCircle : hasPdf ? FileText : hasLink ? Link2 : FileCheck
+  return (
+    <span className="relative flex h-8 w-8 items-center justify-center rounded-lg shrink-0 bg-amber-500 text-white">
+      <Icon size={15} />
+      <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full ring-2 ring-white dark:ring-[#0f172f] bg-slate-300" />
+    </span>
+  )
+}
+
 const StatusDot: React.FC<{ size?: 'sm' | 'md' | 'lg'; percent: number }> = ({
   size = 'md',
   percent,
@@ -427,21 +441,23 @@ const ProgressDashboard: React.FC<{
   )
 }
 
-const CourseExerciseItems: React.FC<{
+const CourseExerciseDevoirItems: React.FC<{
   subject: PathSubjectNode
-  onOpen: (type: 'course' | 'exercise', id: string) => void
+  onOpen: (type: 'course' | 'exercise' | 'devoir', id: string) => void
   aggregate: AggregateProgress | null
 }> = ({ subject, onOpen, aggregate }) => {
   const [showCourses, setShowCourses] = useState(true)
   const [showExercises, setShowExercises] = useState(false)
+  const [showDevoirs, setShowDevoirs] = useState(false)
 
   return (
-    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+    <div className="mt-4 grid gap-3 sm:grid-cols-3">
       <div className="rounded-2xl border border-sky-100 dark:border-sky-500/15 bg-sky-50/40 dark:bg-sky-500/5 p-4">
         <button
           onClick={() => {
             setShowCourses((v) => !v)
             setShowExercises(false)
+            setShowDevoirs(false)
           }}
           className="flex w-full items-center justify-between"
         >
@@ -524,6 +540,7 @@ const CourseExerciseItems: React.FC<{
           onClick={() => {
             setShowExercises((v) => !v)
             setShowCourses(false)
+            setShowDevoirs(false)
           }}
           className="flex w-full items-center justify-between"
         >
@@ -594,6 +611,83 @@ const CourseExerciseItems: React.FC<{
           )}
         </AnimatePresence>
       </div>
+
+      <div className="rounded-2xl border border-amber-100 dark:border-amber-500/15 bg-amber-50/40 dark:bg-amber-500/5 p-4">
+        <button
+          onClick={() => {
+            setShowDevoirs((v) => !v)
+            setShowCourses(false)
+            setShowExercises(false)
+          }}
+          className="flex w-full items-center justify-between"
+        >
+          <span className="flex items-center gap-2 font-semibold text-amber-900 dark:text-amber-100">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+              <FileCheck size={15} />
+            </span>
+            Devoirs
+            <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-bold text-amber-700 dark:text-amber-300">
+              {subject.devoirCount}
+            </span>
+          </span>
+          <ChevronDown
+            size={16}
+            className={`text-amber-700 dark:text-amber-300 transition-transform ${showDevoirs ? 'rotate-180' : ''}`}
+          />
+        </button>
+        <AnimatePresence initial={false}>
+          {showDevoirs && (
+            <motion.ul
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={{
+                visible: {
+                  opacity: 1,
+                  height: 'auto',
+                  transition: { staggerChildren: 0.04, duration: 0.3, delayChildren: 0.02 },
+                },
+                hidden: { opacity: 0, height: 0 },
+              }}
+              className="overflow-hidden"
+            >
+              {subject.devoirs.length === 0 && (
+                <motion.li
+                  variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
+                  className="pt-3 text-sm text-text-muted-light dark:text-text-muted"
+                >
+                  Aucun devoir pour le moment.
+                </motion.li>
+              )}
+              {subject.devoirs.map((devoir) => {
+                return (
+                  <motion.li
+                    key={devoir.id}
+                    variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  >
+                    <button
+                      onClick={() => onOpen('devoir', devoir.id)}
+                      className="group mt-2 flex w-full items-center justify-between gap-2 rounded-xl border border-transparent bg-white/70 dark:bg-white/5 px-3 py-2 text-left text-sm hover:border-amber-400/40 hover:bg-amber-500/5 transition-all"
+                    >
+                      <span className="flex items-center gap-2 min-w-0">
+                        <DevoirItemIcon
+                          hasVideo={devoir.hasVideo}
+                          hasPdf={devoir.hasPdf}
+                          hasLink={devoir.hasLink}
+                        />
+                        <span className="line-clamp-1 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
+                          {devoir.title}
+                        </span>
+                      </span>
+                    </button>
+                  </motion.li>
+                )
+              })}
+            </motion.ul>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   )
 }
@@ -602,7 +696,7 @@ const SubjectBranch: React.FC<{
   subject: PathSubjectNode
   expanded: boolean
   onToggle: () => void
-  onOpen: (type: 'course' | 'exercise', id: string) => void
+  onOpen: (type: 'course' | 'exercise' | 'devoir', id: string) => void
   aggregate: AggregateProgress | null
 }> = ({ subject, expanded, onToggle, onOpen, aggregate }) => {
   const subjPercent = aggregate?.bySubject?.[subject.id]?.percent ?? subject.progress.percent
@@ -627,7 +721,7 @@ const SubjectBranch: React.FC<{
             {subject.name}
           </span>
           <span className="block text-xs text-text-muted-light dark:text-text-muted">
-            {subject.courseCount} cours · {subject.exerciseCount} exercices
+            {subject.courseCount} cours · {subject.exerciseCount} exercices · {subject.devoirCount} devoirs
           </span>
         </span>
         <div className="flex items-center gap-2">
@@ -650,7 +744,7 @@ const SubjectBranch: React.FC<{
             transition={{ duration: 0.35, ease: 'easeOut' }}
             className="overflow-hidden"
           >
-            <CourseExerciseItems subject={subject} onOpen={onOpen} aggregate={aggregate} />
+            <CourseExerciseDevoirItems subject={subject} onOpen={onOpen} aggregate={aggregate} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -666,7 +760,7 @@ const StepRoadmapItem: React.FC<{
   onToggle: () => void
   expandedSubjectId: string | null
   onToggleSubject: (id: string | null) => void
-  onOpen: (type: 'course' | 'exercise', id: string) => void
+  onOpen: (type: 'course' | 'exercise' | 'devoir', id: string) => void
   aggregate: AggregateProgress | null
 }> = ({ step, index, total, expanded, onToggle, expandedSubjectId, onToggleSubject, onOpen, aggregate }) => {
   const stepColor = step.color || '#071840'
@@ -726,6 +820,9 @@ const StepRoadmapItem: React.FC<{
               </span>
               <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1 font-semibold text-emerald-700 dark:text-emerald-300">
                 <Pencil size={13} /> {step.exerciseCount} exercices
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-1 font-semibold text-amber-700 dark:text-amber-300">
+                <FileCheck size={13} /> {step.devoirCount} devoirs
               </span>
             </div>
             <div className="w-36">
@@ -1069,8 +1166,14 @@ const LearningPath: React.FC = () => {
     }
   }, [])
 
-  const openContent = (type: 'course' | 'exercise', id: string) => {
-    navigate(type === 'course' ? `/courses/${id}` : `/exercises/${id}`, {
+  const openContent = (type: 'course' | 'exercise' | 'devoir', id: string) => {
+    const path =
+      type === 'course'
+        ? `/courses/${id}`
+        : type === 'exercise'
+        ? `/exercises/${id}`
+        : `/devoirs/${id}`
+    navigate(path, {
       state: { fromLearningPath: true },
     })
   }

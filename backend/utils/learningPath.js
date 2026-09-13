@@ -172,7 +172,7 @@ const buildLearningPathTree = async (req) => {
     : subjects;
 
   const subjectIds = scopedSubjects.map((s) => s.id);
-  const [courses, exercises] = await Promise.all([
+  const [courses, exercises, devoirs] = await Promise.all([
     subjectIds.length > 0
       ? prisma.course.findMany({
           where: { subjectId: { in: subjectIds } },
@@ -217,6 +217,30 @@ const buildLearningPathTree = async (req) => {
           },
         })
       : Promise.resolve([]),
+    subjectIds.length > 0
+      ? prisma.devoir.findMany({
+          where: { subjectId: { in: subjectIds } },
+          orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            difficulty: true,
+            isPublished: true,
+            order: true,
+            contentUrl: true,
+            videoPath: true,
+            videoUrl: true,
+            contentText: true,
+            externalLink: true,
+            subjectId: true,
+            sectionAssignments: { select: { bacSection: true } },
+            subject: {
+              select: { bacSection: true, subjectSections: { select: { bacSection: true } } },
+            },
+          },
+        })
+      : Promise.resolve([]),
   ]);
 
   // Progress: completed course/exercise ids for this user.
@@ -250,9 +274,18 @@ const buildLearningPathTree = async (req) => {
     if (isTeacher) return sectionOK;
     return e.isPublished && sectionOK;
   });
+  const visibleDevoirs = devoirs.filter((d) => {
+    if (isAdmin) return true;
+    const sectionOK = useSections.length === 0
+      ? true
+      : isContentVisibleForSections({ content: d, sections: useSections });
+    if (isTeacher) return sectionOK;
+    return d.isPublished && sectionOK;
+  });
 
   const coursesBySubject = new Map();
   const exercisesBySubject = new Map();
+  const devoirsBySubject = new Map();
   for (const course of visibleCourses) {
     if (!coursesBySubject.has(course.subjectId)) coursesBySubject.set(course.subjectId, []);
     coursesBySubject.get(course.subjectId).push({
@@ -282,12 +315,28 @@ const buildLearningPathTree = async (req) => {
       completed: completedExerciseIds.has(exercise.id),
     });
   }
+  for (const devoir of visibleDevoirs) {
+    if (!devoirsBySubject.has(devoir.subjectId)) devoirsBySubject.set(devoir.subjectId, []);
+    devoirsBySubject.get(devoir.subjectId).push({
+      id: devoir.id,
+      title: devoir.title,
+      description: devoir.description,
+      difficulty: devoir.difficulty,
+      isPublished: devoir.isPublished,
+      order: devoir.order,
+      hasVideo: Boolean(devoir.videoPath || devoir.videoUrl),
+      hasPdf: Boolean(devoir.contentUrl),
+      hasText: Boolean(devoir.contentText),
+      hasLink: Boolean(devoir.externalLink),
+    });
+  }
 
   const subjectsByStep = new Map();
   for (const subject of subjects) {
     const courses = coursesBySubject.get(subject.id) || [];
     const exercises = exercisesBySubject.get(subject.id) || [];
-    const total = courses.length + exercises.length;
+    const devoirs = devoirsBySubject.get(subject.id) || [];
+    const total = courses.length + exercises.length + devoirs.length;
     const done = courses.filter((c) => c.completed).length + exercises.filter((e) => e.completed).length;
 
     if (!subjectsByStep.has(subject.stepId)) subjectsByStep.set(subject.stepId, []);
@@ -303,8 +352,10 @@ const buildLearningPathTree = async (req) => {
       sections: subject.subjectSections.map((s) => s.bacSection),
       courses,
       exercises,
+      devoirs,
       courseCount: courses.length,
       exerciseCount: exercises.length,
+      devoirCount: devoirs.length,
       progress: {
         completed: done,
         total,
@@ -324,6 +375,7 @@ const buildLearningPathTree = async (req) => {
         subjectCount: stepSubjects.length,
         courseCount: stepSubjects.reduce((sum, s) => sum + s.courseCount, 0),
         exerciseCount: stepSubjects.reduce((sum, s) => sum + s.exerciseCount, 0),
+        devoirCount: stepSubjects.reduce((sum, s) => sum + s.devoirCount, 0),
         progress: {
           completed: done,
           total,

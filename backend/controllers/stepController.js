@@ -63,7 +63,7 @@ const getPublicSteps = async (req, res) => {
     });
 
     const stepIds = steps.map((s) => s.id);
-    const [courseCounts, exerciseCounts] = await Promise.all([
+    const [courseCounts, exerciseCounts, devoirCounts] = await Promise.all([
       prisma.course.groupBy({
         by: ['subjectId'],
         where: { subject: { stepId: { in: stepIds } }, isPublished: true },
@@ -74,9 +74,15 @@ const getPublicSteps = async (req, res) => {
         where: { subject: { stepId: { in: stepIds } }, isPublished: true },
         _count: { _all: true },
       }),
+      prisma.devoir.groupBy({
+        by: ['subjectId'],
+        where: { subject: { stepId: { in: stepIds } }, isPublished: true },
+        _count: { _all: true },
+      }),
     ]);
     const courseCountBySubject = new Map(courseCounts.map((r) => [r.subjectId, r._count._all]));
     const exerciseCountBySubject = new Map(exerciseCounts.map((r) => [r.subjectId, r._count._all]));
+    const devoirCountBySubject = new Map(devoirCounts.map((r) => [r.subjectId, r._count._all]));
 
     const subjects = await prisma.subject.findMany({
       where: { stepId: { in: stepIds }, isActive: true },
@@ -85,9 +91,10 @@ const getPublicSteps = async (req, res) => {
 
     const countsByStep = new Map();
     for (const subject of subjects) {
-      const entry = countsByStep.get(subject.stepId) || { courses: 0, exercises: 0 };
+      const entry = countsByStep.get(subject.stepId) || { courses: 0, exercises: 0, devoirs: 0 };
       entry.courses += courseCountBySubject.get(subject.id) || 0;
       entry.exercises += exerciseCountBySubject.get(subject.id) || 0;
+      entry.devoirs += devoirCountBySubject.get(subject.id) || 0;
       countsByStep.set(subject.stepId, entry);
     }
 
@@ -97,6 +104,7 @@ const getPublicSteps = async (req, res) => {
         subjectCount: step._count.subjects,
         courseCount: countsByStep.get(step.id)?.courses || 0,
         exerciseCount: countsByStep.get(step.id)?.exercises || 0,
+        devoirCount: countsByStep.get(step.id)?.devoirs || 0,
       })),
     });
   } catch (error) {

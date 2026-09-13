@@ -279,6 +279,10 @@ exports.Prisma.ExerciseScalarFieldEnum = {
   title: 'title',
   description: 'description',
   contentUrl: 'contentUrl',
+  videoUrl: 'videoUrl',
+  videoPath: 'videoPath',
+  contentText: 'contentText',
+  externalLink: 'externalLink',
   groupTitle: 'groupTitle',
   advertisementImage: 'advertisementImage',
   advertisementTeacherName: 'advertisementTeacherName',
@@ -286,6 +290,7 @@ exports.Prisma.ExerciseScalarFieldEnum = {
   advertisementWhatsapp: 'advertisementWhatsapp',
   advertisementDescription: 'advertisementDescription',
   difficulty: 'difficulty',
+  tags: 'tags',
   isPublished: 'isPublished',
   order: 'order',
   subjectId: 'subjectId',
@@ -303,9 +308,55 @@ exports.Prisma.ExerciseSectionAssignmentScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.DevoirScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  contentUrl: 'contentUrl',
+  videoUrl: 'videoUrl',
+  videoPath: 'videoPath',
+  contentText: 'contentText',
+  externalLink: 'externalLink',
+  difficulty: 'difficulty',
+  tags: 'tags',
+  isPublished: 'isPublished',
+  order: 'order',
+  subjectId: 'subjectId',
+  teacherId: 'teacherId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DevoirSectionAssignmentScalarFieldEnum = {
+  id: 'id',
+  devoirId: 'devoirId',
+  bacSection: 'bacSection',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.DevoirResourceScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  url: 'url',
+  type: 'type',
+  devoirId: 'devoirId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.CorrectionScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  description: 'description',
+  contentText: 'contentText',
+  videoUrl: 'videoUrl',
+  videoPath: 'videoPath',
+  externalLink: 'externalLink',
+  difficulty: 'difficulty',
+  isPublished: 'isPublished',
+  order: 'order',
+  teacherId: 'teacherId',
+  createdById: 'createdById',
   contentUrl: 'contentUrl',
   exerciseId: 'exerciseId',
   createdAt: 'createdAt',
@@ -781,6 +832,9 @@ exports.Prisma.ModelName = {
   Lesson: 'Lesson',
   Exercise: 'Exercise',
   ExerciseSectionAssignment: 'ExerciseSectionAssignment',
+  Devoir: 'Devoir',
+  DevoirSectionAssignment: 'DevoirSectionAssignment',
+  DevoirResource: 'DevoirResource',
   Correction: 'Correction',
   ProgressTracking: 'ProgressTracking',
   Enrollment: 'Enrollment',

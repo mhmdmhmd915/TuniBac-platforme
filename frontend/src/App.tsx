@@ -14,6 +14,7 @@ const CourseList = lazy(() => import('./pages/CourseList'))
 const CourseDetail = lazy(() => import('./pages/CourseDetail'))
 const ExerciseList = lazy(() => import('./pages/ExerciseList'))
 const ExerciseDetail = lazy(() => import('./pages/ExerciseDetail'))
+const DevoirDetail = lazy(() => import('./pages/DevoirDetail'))
 const FAQ = lazy(() => import('./pages/FAQ'))
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
 const LearningPath = lazy(() => import('./pages/LearningPath'))
@@ -225,6 +226,14 @@ function App() {
               }
             />
             <Route
+              path="/admin/content-tree/devoir/:id"
+              element={
+                <ProtectedRoute adminOnly>
+                  <ContentItemEditor />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/admin/teachers"
               element={
                 <ProtectedRoute adminOnly>
@@ -277,6 +286,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ExerciseDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/devoirs/:id"
+              element={
+                <ProtectedRoute>
+                  <DevoirDetail />
                 </ProtectedRoute>
               }
             />
