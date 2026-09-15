@@ -441,252 +441,451 @@ const ProgressDashboard: React.FC<{
   )
 }
 
+type ContentCategory = 'courses' | 'exercises' | 'devoirs'
+
+const DifficultyBadge: React.FC<{ difficulty?: string | null }> = ({ difficulty }) => {
+  if (!difficulty) return null
+  const d = difficulty.toLowerCase()
+  const color =
+    d.includes('facile') || d.startsWith('easy') || d.includes('sahla') || d.includes('سهلة')
+      ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20'
+      : d.includes('moyen') || d.startsWith('medium') || d.includes('وسطى') || d.includes('moyenne')
+      ? 'bg-amber-50 text-amber-700 border-amber-200/60 dark:bg-amber-500/10 dark:text-amber-300 dark:border-amber-500/20'
+      : d.includes('difficile') || d.startsWith('hard') || d.includes('صعبة') || d.includes('difficile')
+      ? 'bg-rose-50 text-rose-700 border-rose-200/60 dark:bg-rose-500/10 dark:text-rose-300 dark:border-rose-500/20'
+      : 'bg-slate-50 text-slate-700 border-slate-200/60 dark:bg-slate-500/10 dark:text-slate-300 dark:border-slate-500/20'
+  return (
+    <span className={`shrink-0 inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${color}`}>
+      {difficulty}
+    </span>
+  )
+}
+
 const CourseExerciseDevoirItems: React.FC<{
   subject: PathSubjectNode
   onOpen: (type: 'course' | 'exercise' | 'devoir', id: string) => void
   aggregate: AggregateProgress | null
 }> = ({ subject, onOpen, aggregate }) => {
-  const [showCourses, setShowCourses] = useState(true)
-  const [showExercises, setShowExercises] = useState(false)
-  const [showDevoirs, setShowDevoirs] = useState(false)
+  const getDefaultCategory = (): ContentCategory => {
+    if (subject.courseCount > 0) return 'courses'
+    if (subject.exerciseCount > 0) return 'exercises'
+    return 'devoirs'
+  }
+
+  const [activeCategory, setActiveCategory] = useState<ContentCategory>(getDefaultCategory())
+  const subjPercent = aggregate?.bySubject?.[subject.id]?.percent ?? subject.progress.percent
+
+  const categories: { key: ContentCategory; label: string; count: number; icon: typeof BookOpenCheck; activeCls: string; inactiveCls: string; accentBg: string; accentBgDark: string }[] = [
+    {
+      key: 'courses',
+      label: 'Cours',
+      count: subject.courseCount,
+      icon: BookOpenCheck,
+      activeCls: 'bg-sky-600 text-white border-sky-600 shadow-[0_6px_16px_-6px_rgba(14,165,233,0.55)]',
+      inactiveCls: 'bg-white dark:bg-white/5 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-white/10 hover:border-sky-300 hover:text-sky-700 dark:hover:border-sky-500/40 dark:hover:text-sky-300',
+      accentBg: 'bg-sky-50/70 dark:bg-sky-500/5',
+      accentBgDark: 'dark:bg-sky-500/5',
+    },
+    {
+      key: 'exercises',
+      label: 'Exercices',
+      count: subject.exerciseCount,
+      icon: Pencil,
+      activeCls: 'bg-emerald-600 text-white border-emerald-600 shadow-[0_6px_16px_-6px_rgba(16,185,129,0.55)]',
+      inactiveCls: 'bg-white dark:bg-white/5 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-white/10 hover:border-emerald-300 hover:text-emerald-700 dark:hover:border-emerald-500/40 dark:hover:text-emerald-300',
+      accentBg: 'bg-emerald-50/70 dark:bg-emerald-500/5',
+      accentBgDark: 'dark:bg-emerald-500/5',
+    },
+    {
+      key: 'devoirs',
+      label: 'Devoirs',
+      count: subject.devoirCount,
+      icon: FileCheck,
+      activeCls: 'bg-amber-500 text-white border-amber-500 shadow-[0_6px_16px_-6px_rgba(245,158,11,0.55)]',
+      inactiveCls: 'bg-white dark:bg-white/5 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-white/10 hover:border-amber-300 hover:text-amber-700 dark:hover:border-amber-500/40 dark:hover:text-amber-300',
+      accentBg: 'bg-amber-50/70 dark:bg-amber-500/5',
+      accentBgDark: 'dark:bg-amber-500/5',
+    },
+  ]
+
+  const active = categories.find((c) => c.key === activeCategory)!
+
+  const handleCategoryClick = (key: ContentCategory) => {
+    setActiveCategory(key)
+  }
 
   return (
-    <div className="mt-4 grid gap-3 sm:grid-cols-3">
-      <div className="rounded-2xl border border-sky-100 dark:border-sky-500/15 bg-sky-50/40 dark:bg-sky-500/5 p-4">
-        <button
-          onClick={() => {
-            setShowCourses((v) => !v)
-            setShowExercises(false)
-            setShowDevoirs(false)
-          }}
-          className="flex w-full items-center justify-between"
-        >
-          <span className="flex items-center gap-2 font-semibold text-sky-900 dark:text-sky-100">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-500 text-white">
-              <BookOpenCheck size={15} />
-            </span>
-            Cours
-            <span className="rounded-full bg-sky-500/15 px-2 py-0.5 text-xs font-bold text-sky-700 dark:text-sky-300">
-              {subject.courseCount}
-            </span>
-          </span>
-          <ChevronDown
-            size={16}
-            className={`text-sky-700 dark:text-sky-300 transition-transform ${showCourses ? 'rotate-180' : ''}`}
-          />
-        </button>
-        <AnimatePresence initial={false}>
-          {showCourses && (
-            <motion.ul
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={{
-                visible: {
-                  opacity: 1,
-                  height: 'auto',
-                  transition: { staggerChildren: 0.04, duration: 0.3, delayChildren: 0.02 },
-                },
-                hidden: { opacity: 0, height: 0 },
-              }}
-              className="overflow-hidden"
-            >
-              {subject.courses.length === 0 && (
-                <motion.li
-                  variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
-                  className="pt-3 text-sm text-text-muted-light dark:text-text-muted"
-                >
-                  Aucun cours pour le moment.
-                </motion.li>
-              )}
-              {subject.courses.map((course) => {
-                const courseAgg = aggregate?.byCourse?.[course.id]
-                const completed = courseAgg?.completed ?? course.completed
-                const inProgress = !completed && (courseAgg?.lastReadPos ?? 0) > 0
-                return (
-                  <motion.li
-                    key={course.id}
-                    variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                  >
-                    <button
-                      onClick={() => onOpen('course', course.id)}
-                      className="group mt-2 flex w-full items-center justify-between gap-2 rounded-xl border border-transparent bg-white/70 dark:bg-white/5 px-3 py-2 text-left text-sm hover:border-sky-400/40 hover:bg-sky-500/5 transition-all"
-                    >
-                      <span className="flex items-center gap-2 min-w-0">
-                        <CourseItemIcon
-                          hasVideo={course.hasVideo}
-                          hasPdf={course.hasPdf}
-                          hasLink={course.hasLink}
-                          completed={completed}
-                          inProgress={inProgress}
-                        />
-                        <span className="line-clamp-1 group-hover:text-sky-700 dark:group-hover:text-sky-300 transition-colors">
-                          {course.title}
-                        </span>
-                      </span>
-                      <ItemStatus completed={completed} />
-                    </button>
-                  </motion.li>
-                )
-              })}
-            </motion.ul>
-          )}
-        </AnimatePresence>
-      </div>
+    <div className="mt-5">
+      <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0f172f]/60 shadow-sm overflow-hidden">
+        <div className="px-5 pt-5 pb-4 sm:px-6 sm:pt-6 sm:pb-5 border-b border-slate-100 dark:border-white/5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex items-start gap-3">
+              <div className="relative shrink-0">
+                <SubjectIcon color={subject.color} />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-xl sm:text-2xl font-black text-[#071840] dark:text-white tracking-tight leading-tight">
+                  {subject.name}
+                </h3>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 font-medium">
+                  Votre parcours en <span className="font-bold text-slate-700 dark:text-slate-200">{subject.name}</span>
+                </p>
+                {subject.description && (
+                  <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500 line-clamp-2">
+                    {subject.description}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="flex flex-col items-end">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Progression
+                </span>
+                <span className="text-2xl font-black text-[#071840] dark:text-white leading-none">
+                  {Math.round(subjPercent)}%
+                </span>
+              </div>
+              <div className="w-12 h-12 relative shrink-0">
+                <svg viewBox="0 0 48 48" className="w-full h-full -rotate-90">
+                  <circle cx="24" cy="24" r="20" fill="none" stroke="#e2e8f0" strokeWidth="4" className="dark:stroke-white/10" />
+                  <circle
+                    cx="24"
+                    cy="24"
+                    r="20"
+                    fill="none"
+                    stroke={subject.color || '#1d4ed8'}
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeDasharray={2 * Math.PI * 20}
+                    strokeDashoffset={2 * Math.PI * 20 * (1 - Math.max(0, Math.min(100, subjPercent)) / 100)}
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div className="rounded-2xl border border-emerald-100 dark:border-emerald-500/15 bg-emerald-50/40 dark:bg-emerald-500/5 p-4">
-        <button
-          onClick={() => {
-            setShowExercises((v) => !v)
-            setShowCourses(false)
-            setShowDevoirs(false)
-          }}
-          className="flex w-full items-center justify-between"
-        >
-          <span className="flex items-center gap-2 font-semibold text-emerald-900 dark:text-emerald-100">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white">
-              <Pencil size={15} />
-            </span>
-            Exercices
-            <span className="rounded-full bg-emerald-600/15 px-2 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-300">
-              {subject.exerciseCount}
-            </span>
-          </span>
-          <ChevronDown
-            size={16}
-            className={`text-emerald-800 dark:text-emerald-300 transition-transform ${showExercises ? 'rotate-180' : ''}`}
-          />
-        </button>
-        <AnimatePresence initial={false}>
-          {showExercises && (
-            <motion.ul
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={{
-                visible: {
-                  opacity: 1,
-                  height: 'auto',
-                  transition: { staggerChildren: 0.04, duration: 0.3, delayChildren: 0.02 },
-                },
-                hidden: { opacity: 0, height: 0 },
-              }}
-              className="overflow-hidden"
-            >
-              {subject.exercises.length === 0 && (
-                <motion.li
-                  variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
-                  className="pt-3 text-sm text-text-muted-light dark:text-text-muted"
+        <div className={`px-5 pt-4 pb-4 sm:px-6 sm:pt-5 ${active.accentBg} ${active.accentBgDark} border-b border-slate-100/60 dark:border-white/5`}>
+          <div className="flex flex-wrap gap-2 p-1.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 ring-1 ring-slate-200/70 dark:ring-white/10">
+            {categories.map((cat) => {
+              const isActive = activeCategory === cat.key
+              const CatIcon = cat.icon
+              return (
+                <button
+                  key={cat.key}
+                  onClick={() => handleCategoryClick(cat.key)}
+                  className={`
+                    relative flex-1 min-w-[110px] sm:flex-1 sm:min-w-0 flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5
+                    text-sm font-bold transition-all duration-200 ease-out
+                    ${isActive ? cat.activeCls : cat.inactiveCls}
+                  `}
                 >
-                  Aucun exercice pour le moment.
-                </motion.li>
-              )}
-              {subject.exercises.map((exercise) => {
-                const exAgg = aggregate?.byExercise?.[exercise.id]
-                const completed = exAgg?.completed ?? exercise.completed
-                const inProgress = !completed && (exAgg?.lastReadPos ?? 0) > 0
-                return (
-                  <motion.li
-                    key={exercise.id}
-                    variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  <CatIcon size={16} strokeWidth={2.1} />
+                  <span>{cat.label}</span>
+                  <span
+                    className={`
+                      inline-flex items-center justify-center rounded-full px-2 py-0.5 text-[11px] font-black
+                      ${isActive
+                        ? 'bg-white/20 text-white'
+                        : 'bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300'
+                      }
+                    `}
                   >
-                    <button
-                      onClick={() => onOpen('exercise', exercise.id)}
-                      className="group mt-2 flex w-full items-center justify-between gap-2 rounded-xl border border-transparent bg-white/70 dark:bg-white/5 px-3 py-2 text-left text-sm hover:border-emerald-500/40 hover:bg-emerald-500/5 transition-all"
-                    >
-                      <span className="flex items-center gap-2 min-w-0">
-                        <ExerciseItemIcon completed={completed} inProgress={inProgress} />
-                        <span className="line-clamp-1 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
-                          {exercise.title}
-                        </span>
-                      </span>
-                      <ItemStatus completed={completed} />
-                    </button>
-                  </motion.li>
-                )
-              })}
-            </motion.ul>
-          )}
-        </AnimatePresence>
-      </div>
+                    {cat.count}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
 
-      <div className="rounded-2xl border border-amber-100 dark:border-amber-500/15 bg-amber-50/40 dark:bg-amber-500/5 p-4">
-        <button
-          onClick={() => {
-            setShowDevoirs((v) => !v)
-            setShowCourses(false)
-            setShowExercises(false)
-          }}
-          className="flex w-full items-center justify-between"
-        >
-          <span className="flex items-center gap-2 font-semibold text-amber-900 dark:text-amber-100">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
-              <FileCheck size={15} />
-            </span>
-            Devoirs
-            <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-bold text-amber-700 dark:text-amber-300">
-              {subject.devoirCount}
-            </span>
-          </span>
-          <ChevronDown
-            size={16}
-            className={`text-amber-700 dark:text-amber-300 transition-transform ${showDevoirs ? 'rotate-180' : ''}`}
-          />
-        </button>
-        <AnimatePresence initial={false}>
-          {showDevoirs && (
-            <motion.ul
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={{
-                visible: {
-                  opacity: 1,
-                  height: 'auto',
-                  transition: { staggerChildren: 0.04, duration: 0.3, delayChildren: 0.02 },
-                },
-                hidden: { opacity: 0, height: 0 },
-              }}
-              className="overflow-hidden"
-            >
-              {subject.devoirs.length === 0 && (
-                <motion.li
-                  variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
-                  className="pt-3 text-sm text-text-muted-light dark:text-text-muted"
-                >
-                  Aucun devoir pour le moment.
-                </motion.li>
-              )}
-              {subject.devoirs.map((devoir) => {
-                return (
-                  <motion.li
-                    key={devoir.id}
-                    variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                  >
-                    <button
-                      onClick={() => onOpen('devoir', devoir.id)}
-                      className="group mt-2 flex w-full items-center justify-between gap-2 rounded-xl border border-transparent bg-white/70 dark:bg-white/5 px-3 py-2 text-left text-sm hover:border-amber-400/40 hover:bg-amber-500/5 transition-all"
-                    >
-                      <span className="flex items-center gap-2 min-w-0">
-                        <DevoirItemIcon
-                          hasVideo={devoir.hasVideo}
-                          hasPdf={devoir.hasPdf}
-                          hasLink={devoir.hasLink}
-                        />
-                        <span className="line-clamp-1 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
-                          {devoir.title}
-                        </span>
-                      </span>
-                    </button>
-                  </motion.li>
-                )
-              })}
-            </motion.ul>
-          )}
-        </AnimatePresence>
+        <div className="px-5 py-5 sm:px-6 sm:py-6">
+          <AnimatePresence mode="wait">
+            {activeCategory === 'courses' && (
+              <motion.div
+                key="courses"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+              >
+                {subject.courses.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-14 text-center px-4">
+                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-sky-50 dark:bg-sky-500/10 text-sky-500 mb-4">
+                      <BookOpenCheck size={30} strokeWidth={1.8} />
+                    </div>
+                    <p className="text-base font-bold text-slate-700 dark:text-slate-200">
+                      ما فماش دروس متاحة في المادة هاذي توا.
+                    </p>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                      Les cours seront ajoutés prochainement — revenez plus tard.
+                    </p>
+                  </div>
+                ) : (
+                  <ul className="space-y-3">
+                    {subject.courses.map((course, idx) => {
+                      const courseAgg = aggregate?.byCourse?.[course.id]
+                      const completed = courseAgg?.completed ?? course.completed
+                      const inProgress = !completed && (courseAgg?.lastReadPos ?? 0) > 0
+                      return (
+                        <motion.li
+                          key={course.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, ease: 'easeOut', delay: idx * 0.03 }}
+                        >
+                          <button
+                            onClick={() => onOpen('course', course.id)}
+                            className="group relative w-full flex items-stretch gap-4 rounded-2xl border border-slate-200/70 dark:border-white/10 bg-white dark:bg-white/5 p-4 text-left hover:border-sky-400/50 hover:shadow-[0_10px_30px_-15px_rgba(14,165,233,0.35)] hover:-translate-y-0.5 transition-all duration-200"
+                          >
+                            <CourseItemIcon
+                              hasVideo={course.hasVideo}
+                              hasPdf={course.hasPdf}
+                              hasLink={course.hasLink}
+                              completed={completed}
+                              inProgress={inProgress}
+                            />
+                            <div className="min-w-0 flex-1 flex flex-col">
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="min-w-0 flex-1">
+                                  <h4 className="font-black text-slate-800 dark:text-white text-base leading-tight group-hover:text-sky-700 dark:group-hover:text-sky-300 transition-colors">
+                                    {course.title}
+                                  </h4>
+                                  {course.description && (
+                                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                                      {course.description}
+                                    </p>
+                                  )}
+                                </div>
+                                <ItemStatus completed={completed} />
+                              </div>
+                              <div className="mt-3 flex flex-wrap items-center gap-2">
+                                <DifficultyBadge difficulty={course.difficulty} />
+                                {course.hasVideo && (
+                                  <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-slate-200/70 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-2.5 py-0.5 text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                                    <PlayCircle size={11} /> Vidéo
+                                  </span>
+                                )}
+                                {course.hasPdf && (
+                                  <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-slate-200/70 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-2.5 py-0.5 text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                                    <FileText size={11} /> PDF
+                                  </span>
+                                )}
+                                {inProgress && !completed && (
+                                  <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-sky-500/10 border border-sky-500/20 px-2.5 py-0.5 text-[10px] font-bold text-sky-700 dark:text-sky-300">
+                                    En cours
+                                  </span>
+                                )}
+                                {completed && (
+                                  <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
+                                    <CheckCircle2 size={11} /> Terminé
+                                  </span>
+                                )}
+                              </div>
+                              <div className="mt-3 flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <span className={`inline-flex items-center rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                                    completed
+                                      ? 'bg-emerald-600 text-white'
+                                      : inProgress
+                                      ? 'bg-sky-600 text-white'
+                                      : 'bg-sky-600 text-white group-hover:bg-sky-700'
+                                  }`}>
+                                    {completed ? 'Revoir' : inProgress ? 'Continuer' : 'Commencer'}
+                                    <ChevronRight size={13} className="ml-1" />
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                        </motion.li>
+                      )
+                    })}
+                  </ul>
+                )}
+              </motion.div>
+            )}
+
+            {activeCategory === 'exercises' && (
+              <motion.div
+                key="exercises"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+              >
+                {subject.exercises.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-14 text-center px-4">
+                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 mb-4">
+                      <Pencil size={30} strokeWidth={1.8} />
+                    </div>
+                    <p className="text-base font-bold text-slate-700 dark:text-slate-200">
+                      مفيهاش تمارين متاحة توا في هاذي المادة.
+                    </p>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                      Les exercices arrivent — préparez vos carnets !
+                    </p>
+                  </div>
+                ) : (
+                  <ul className="space-y-3">
+                    {subject.exercises.map((exercise, idx) => {
+                      const exAgg = aggregate?.byExercise?.[exercise.id]
+                      const completed = exAgg?.completed ?? exercise.completed
+                      const inProgress = !completed && (exAgg?.lastReadPos ?? 0) > 0
+                      return (
+                        <motion.li
+                          key={exercise.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, ease: 'easeOut', delay: idx * 0.03 }}
+                        >
+                          <button
+                            onClick={() => onOpen('exercise', exercise.id)}
+                            className="group relative w-full flex items-stretch gap-4 rounded-2xl border border-slate-200/70 dark:border-white/10 bg-white dark:bg-white/5 p-4 text-left hover:border-emerald-500/50 hover:shadow-[0_10px_30px_-15px_rgba(16,185,129,0.35)] hover:-translate-y-0.5 transition-all duration-200"
+                          >
+                            <ExerciseItemIcon completed={completed} inProgress={inProgress} />
+                            <div className="min-w-0 flex-1 flex flex-col">
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="min-w-0 flex-1">
+                                  <h4 className="font-black text-slate-800 dark:text-white text-base leading-tight group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
+                                    {exercise.title}
+                                  </h4>
+                                  {exercise.groupTitle && (
+                                    <p className="mt-0.5 text-[11px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                                      {exercise.groupTitle}
+                                    </p>
+                                  )}
+                                  {exercise.description && (
+                                    <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                                      {exercise.description}
+                                    </p>
+                                  )}
+                                </div>
+                                <ItemStatus completed={completed} />
+                              </div>
+                              <div className="mt-3 flex flex-wrap items-center gap-2">
+                                <DifficultyBadge difficulty={exercise.difficulty} />
+                                {inProgress && !completed && (
+                                  <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-sky-500/10 border border-sky-500/20 px-2.5 py-0.5 text-[10px] font-bold text-sky-700 dark:text-sky-300">
+                                    En cours
+                                  </span>
+                                )}
+                                {completed && (
+                                  <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
+                                    <CheckCircle2 size={11} /> Terminé
+                                  </span>
+                                )}
+                              </div>
+                              <div className="mt-3 flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <span className={`inline-flex items-center rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                                    completed
+                                      ? 'bg-emerald-600 text-white'
+                                      : inProgress
+                                      ? 'bg-sky-600 text-white'
+                                      : 'bg-emerald-600 text-white group-hover:bg-emerald-700'
+                                  }`}>
+                                    {completed ? 'Voir la correction' : inProgress ? 'Continuer' : 'Résoudre'}
+                                    <ChevronRight size={13} className="ml-1" />
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                        </motion.li>
+                      )
+                    })}
+                  </ul>
+                )}
+              </motion.div>
+            )}
+
+            {activeCategory === 'devoirs' && (
+              <motion.div
+                key="devoirs"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+              >
+                {subject.devoirs.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-14 text-center px-4">
+                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-amber-50 dark:bg-amber-500/10 text-amber-500 mb-4">
+                      <FileCheck size={30} strokeWidth={1.8} />
+                    </div>
+                    <p className="text-base font-bold text-slate-700 dark:text-slate-200">
+                      مفيهاش واجبات متاحة توا في هاذي المادة.
+                    </p>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                      Les devoirs de maison sont à venir — patience !
+                    </p>
+                  </div>
+                ) : (
+                  <ul className="space-y-3">
+                    {subject.devoirs.map((devoir, idx) => (
+                      <motion.li
+                        key={devoir.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeOut', delay: idx * 0.03 }}
+                      >
+                        <button
+                          onClick={() => onOpen('devoir', devoir.id)}
+                          className="group relative w-full flex items-stretch gap-4 rounded-2xl border border-slate-200/70 dark:border-white/10 bg-white dark:bg-white/5 p-4 text-left hover:border-amber-400/60 hover:shadow-[0_10px_30px_-15px_rgba(245,158,11,0.35)] hover:-translate-y-0.5 transition-all duration-200"
+                        >
+                          <DevoirItemIcon
+                            hasVideo={devoir.hasVideo}
+                            hasPdf={devoir.hasPdf}
+                            hasLink={devoir.hasLink}
+                          />
+                          <div className="min-w-0 flex-1 flex flex-col">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="min-w-0 flex-1">
+                                <h4 className="font-black text-slate-800 dark:text-white text-base leading-tight group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
+                                  {devoir.title}
+                                </h4>
+                                {devoir.description && (
+                                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                                    {devoir.description}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="mt-3 flex flex-wrap items-center gap-2">
+                              <DifficultyBadge difficulty={devoir.difficulty} />
+                              {devoir.hasVideo && (
+                                <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-slate-200/70 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-2.5 py-0.5 text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                                  <PlayCircle size={11} /> Vidéo
+                                </span>
+                              )}
+                              {devoir.hasPdf && (
+                                <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-slate-200/70 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-2.5 py-0.5 text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                                  <FileText size={11} /> PDF
+                                </span>
+                              )}
+                              {devoir.hasLink && (
+                                <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-slate-200/70 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-2.5 py-0.5 text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                                  <Link2 size={11} /> Lien
+                                </span>
+                              )}
+                            </div>
+                            <div className="mt-3 flex items-center justify-between">
+                              <span className="inline-flex items-center rounded-xl bg-amber-500 text-white px-3.5 py-1.5 text-xs font-bold group-hover:bg-amber-600 transition-all">
+                                Lire le devoir
+                                <ChevronRight size={13} className="ml-1" />
+                              </span>
+                            </div>
+                          </div>
+                        </button>
+                      </motion.li>
+                    ))}
+                  </ul>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   )
