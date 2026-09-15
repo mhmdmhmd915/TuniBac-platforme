@@ -11,7 +11,7 @@ const {
 } = require('../controllers/devoirController');
 const { authMiddleware, roleMiddleware, optionalAuthUserMiddleware, bacOnlyMiddleware } = require('../middleware/authMiddleware');
 
-router.get('/', optionalAuthUserMiddleware, getAllDevoirs);
+router.get('/', optionalAuthUserMiddleware, bacOnlyMiddleware, getAllDevoirs);
 router.get('/:id', authMiddleware, bacOnlyMiddleware, getDevoirById);
 router.post('/', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), createDevoir);
 router.put('/reorder', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), reorderDevoirs);
