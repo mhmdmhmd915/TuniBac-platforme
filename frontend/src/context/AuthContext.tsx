@@ -27,6 +27,45 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const VALID_TRACKS: readonly EducationTrack[] = ['BAC', 'OTHER'];
+
+function isEducationTrack(value: unknown): value is EducationTrack {
+  return typeof value === 'string' && VALID_TRACKS.includes(value as EducationTrack);
+}
+
+function warnMissingTrack(rawShape: Record<string, unknown>) {
+  if (import.meta.env.PROD) return;
+  try {
+    const role = typeof rawShape?.role === 'string' ? rawShape.role : undefined;
+    const status = typeof rawShape?.status === 'string' ? rawShape.status : undefined;
+    const track = rawShape?.educationTrack;
+    // eslint-disable-next-line no-console
+    console.warn(
+      '[AuthContext] Missing or invalid educationTrack for user. Falling back to BAC. ' +
+        `(role=${String(role ?? '?')}, status=${String(status ?? '?')}, received=${String(track ?? 'undefined')})`,
+    );
+  } catch {
+    /* swallow */
+  }
+}
+
+function normalizeUser(raw: any): User {
+  if (!raw || typeof raw !== 'object') return raw as User;
+  const rawTrack = raw.educationTrack;
+  if (isEducationTrack(rawTrack)) {
+    return raw as User;
+  }
+  if (
+    typeof raw.role === 'string' &&
+    raw.role !== 'ADMIN' &&
+    raw.role !== 'TEACHER' &&
+    typeof raw.status === 'string'
+  ) {
+    warnMissingTrack(raw);
+  }
+  return { ...raw, educationTrack: 'BAC' as const } satisfies User as User;
+}
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
@@ -46,7 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
           api.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
           const response = await authAPI.getCurrentUser();
-          setUser(response.data.user);
+          setUser(normalizeUser(response.data.user));
           setToken(storedToken);
         } catch (error) {
           // Token invalid or expired
@@ -65,9 +104,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = (newToken: string, newUser: User) => {
+    const normalized = normalizeUser(newUser);
     localStorage.setItem('token', newToken);
     setToken(newToken);
-    setUser(newUser);
+    setUser(normalized);
     api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
   };
 

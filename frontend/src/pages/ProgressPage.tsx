@@ -315,25 +315,32 @@ const ProgressPage: React.FC = () => {
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#071840] to-brand-blue text-white text-2xl font-black shadow-md">
             {(user?.firstName?.[0] || user?.email?.[0] || 'U').toUpperCase()}
           </div>
-          <div className="min-w-0">
+          <div className="min-w-0 space-y-2">
             <h2 className="text-xl font-black text-[#071840] dark:text-white truncate">
               {user?.firstName} {user?.lastName}
             </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400">
               {user?.email}
             </p>
+            <div className="flex flex-wrap gap-2">
+              {isOtherTrack && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-bold text-indigo-700 border border-indigo-100">
+                  <Target size={13} /> Parcours&nbsp;: Autre (Non Bac)
+                </span>
+              )}
+              {user?.bacSection && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-3 py-1.5 text-xs font-bold text-sky-700 border border-sky-100">
+                  <CalendarDays size={13} /> Parcours&nbsp;: Bac {user.bacSection.replace(/_/g, ' ')}
+                </span>
+              )}
+              {!isOtherTrack && !user?.bacSection && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-3 py-1.5 text-xs font-bold text-sky-700 border border-sky-100">
+                  <CalendarDays size={13} /> Parcours&nbsp;: Bac
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex-1 flex flex-wrap gap-2 justify-end">
-            {user?.bacSection && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-3 py-1.5 text-xs font-bold text-sky-700 border border-sky-100">
-                <CalendarDays size={13} /> Bac {user.bacSection.replace(/_/g, ' ')}
-              </span>
-            )}
-            {isOtherTrack && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-bold text-indigo-700 border border-indigo-100">
-                <Target size={13} /> Autre Étudiant · Non Bac
-              </span>
-            )}
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 border border-emerald-100">
               <Check size={13} /> {user?.status || 'ACTIVE'}
             </span>

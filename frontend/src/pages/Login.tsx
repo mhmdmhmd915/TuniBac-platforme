@@ -32,9 +32,31 @@ const Login = () => {
       const nextUser = response.data.user
       const fromState = location.state as { from?: { pathname?: string; search?: string } } | null
       const fallbackPath =
-        nextUser.role === 'ADMIN' ? '/admin' : nextUser.role === 'TEACHER' ? '/teacher' : '/learning-path'
-      const fromPath = fromState?.from?.pathname
-        ? `${fromState.from.pathname}${fromState.from.search || ''}`
+        nextUser.role === 'ADMIN'
+          ? '/admin'
+          : nextUser.role === 'TEACHER'
+            ? '/teacher'
+            : nextUser.educationTrack === 'OTHER'
+              ? '/study-planner'
+              : '/learning-path'
+
+      const TRACK_ROLE_SPECIFIC_PATHS: readonly string[] = [
+        '/learning-path',
+        '/study-planner',
+        '/profile',
+        '/progress',
+        '/admin',
+        '/teacher',
+        '/dashboard',
+      ] as const;
+      const fromRaw = fromState?.from?.pathname;
+      const fromSafe =
+        typeof fromRaw === 'string' &&
+        fromRaw.length > 0 &&
+        !TRACK_ROLE_SPECIFIC_PATHS.some((p) => fromRaw === p || fromRaw.startsWith(p + '/'));
+
+      const fromPath = fromSafe && fromRaw
+        ? `${fromRaw}${fromState?.from?.search || ''}`
         : fallbackPath
 
       login(response.data.token, nextUser)

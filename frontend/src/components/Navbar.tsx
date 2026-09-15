@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom'
 import { Menu, X, Sun, Moon, LogOut, BookOpen, MessageSquare, Settings, Calendar, GraduationCap, User, ShoppingCart } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { usePlatformSettings } from '../context/PlatformSettingsContext'
 import BrandLogo from './BrandLogo'
 import { toDisplayTunisianPhone } from '../lib/phone'
+
+const VALID_TRACKS: readonly string[] = ['BAC', 'OTHER']
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -19,6 +21,19 @@ const Navbar = () => {
   const hasStudentAccess = !!user && !isAdmin && user.status === 'APPROVED'
   const pendingOnly = !!user && !isAdmin && user.status !== 'APPROVED'
   const isOtherStudent = hasStudentAccess && user.educationTrack === 'OTHER'
+
+  useEffect(() => {
+    if (!hasStudentAccess) return
+    if (import.meta.env.PROD) return
+    const track = (user as any)?.educationTrack
+    if (typeof track !== 'string' || !VALID_TRACKS.includes(track)) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        '[Navbar] Approved student without a valid educationTrack. ' +
+          `(received=${String(track ?? 'undefined')}, status=${String((user as any)?.status ?? '?')})`,
+      )
+    }
+  }, [hasStudentAccess, user])
 
   return (
     <nav className="glass-morphism sticky top-0 z-50 px-6 py-4">
