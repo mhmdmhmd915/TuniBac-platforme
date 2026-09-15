@@ -9,14 +9,14 @@ const {
   publishDevoir,
   reorderDevoirs,
 } = require('../controllers/devoirController');
-const { authMiddleware, roleMiddleware, optionalAuthUserMiddleware } = require('../middleware/authMiddleware');
+const { authMiddleware, roleMiddleware, optionalAuthUserMiddleware, bacOnlyMiddleware } = require('../middleware/authMiddleware');
 
 router.get('/', optionalAuthUserMiddleware, getAllDevoirs);
-router.get('/:id', authMiddleware, getDevoirById);
-router.post('/', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), createDevoir);
-router.put('/reorder', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), reorderDevoirs);
-router.put('/:id/publish', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), publishDevoir);
-router.put('/:id', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), updateDevoir);
-router.delete('/:id', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), deleteDevoir);
+router.get('/:id', authMiddleware, bacOnlyMiddleware, getDevoirById);
+router.post('/', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), createDevoir);
+router.put('/reorder', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), reorderDevoirs);
+router.put('/:id/publish', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), publishDevoir);
+router.put('/:id', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), updateDevoir);
+router.delete('/:id', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), deleteDevoir);
 
 module.exports = router;

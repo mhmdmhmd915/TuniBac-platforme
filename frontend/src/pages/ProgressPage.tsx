@@ -104,7 +104,8 @@ const ProgressDashboard: React.FC<{
   loading: boolean
   aggregate: AggregateProgress | null
   objectives: ObjectiveItem[]
-}> = ({ loading, aggregate, objectives }) => {
+  isOtherTrack?: boolean
+}> = ({ loading, aggregate, objectives, isOtherTrack = false }) => {
   const percent = aggregate?.overallPercent ?? 0
   const recent = objectives.slice(0, 5)
 
@@ -127,37 +128,49 @@ const ProgressDashboard: React.FC<{
   return (
     <div className="mb-8 grid gap-6 overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-        <ProgressRing percent={percent} />
+        {!isOtherTrack && <ProgressRing percent={percent} />}
         <div className="flex-1 space-y-4">
           <div>
             <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              Progression globale
+              {isOtherTrack ? 'Profil Étudiant' : 'Progression globale'}
             </div>
             <div className="mt-1 text-2xl font-black text-[#071840]">
-              Ton avancement vers le Bac
+              {isOtherTrack ? 'Espace Autre Étudiant' : 'Ton avancement vers le Bac'}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-xl border border-sky-100 bg-sky-50/60 p-3">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-sky-700">
-                <PlayCircle size={13} /> Cours
+          {isOtherTrack ? (
+            <div className="rounded-xl border border-indigo-100 bg-indigo-50/60 p-3">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-700">
+                <Target size={13} /> Fonctionnalités disponibles
               </div>
-              <div className="mt-1 text-lg font-black text-slate-800">
-                {aggregate?.coursesCompleted ?? 0}/
-                {aggregate?.coursesTotal ?? 0}
+              <ul className="mt-2 text-sm font-medium text-slate-700 list-disc pl-5 space-y-1">
+                <li>Live Study (étude en ligne collaborative)</li>
+                <li>Study Planner (gestion des tâches personnelles)</li>
+              </ul>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-xl border border-sky-100 bg-sky-50/60 p-3">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-sky-700">
+                  <PlayCircle size={13} /> Cours
+                </div>
+                <div className="mt-1 text-lg font-black text-slate-800">
+                  {aggregate?.coursesCompleted ?? 0}/
+                  {aggregate?.coursesTotal ?? 0}
+                </div>
+              </div>
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50/60 p-3">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700">
+                  <Pencil size={13} /> Exercices
+                </div>
+                <div className="mt-1 text-lg font-black text-slate-800">
+                  {aggregate?.exercisesCompleted ?? 0}/
+                  {aggregate?.exercisesTotal ?? 0}
+                </div>
               </div>
             </div>
-            <div className="rounded-xl border border-emerald-100 bg-emerald-50/60 p-3">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700">
-                <Pencil size={13} /> Exercices
-              </div>
-              <div className="mt-1 text-lg font-black text-slate-800">
-                {aggregate?.exercisesCompleted ?? 0}/
-                {aggregate?.exercisesTotal ?? 0}
-              </div>
-            </div>
-          </div>
+          )}
 
           {currentGoal && (
             <div className="rounded-xl border border-amber-200/60 bg-gradient-to-br from-amber-50 to-white p-3">
@@ -242,14 +255,18 @@ const ProgressPage: React.FC = () => {
   const [objectives, setObjectives] = useState<ObjectiveItem[]>([])
   const [tips, setTips] = useState<TipItem[]>([])
   const [loading, setLoading] = useState(true)
+  const isOtherTrack = user?.educationTrack === 'OTHER'
 
   useEffect(() => {
     let active = true
     setLoading(true)
+    const tipsPromise = isOtherTrack
+      ? Promise.resolve([])
+      : tipsAPI.listPublic({ bacSection: user?.bacSection as any }).catch(() => [])
     Promise.allSettled([
-      progressAPI.getAggregate?.().catch(() => null) as any,
+      isOtherTrack ? Promise.resolve(null) : (progressAPI.getAggregate?.().catch(() => null) as any),
       objectivesAPI.listMy().catch(() => []),
-      tipsAPI.listPublic({ bacSection: user?.bacSection as any }).catch(() => []),
+      tipsPromise,
     ]).then(([aggRes, objRes, tipsRes]) => {
       if (!active) return
       const aggData = aggRes.status === 'fulfilled' ? (aggRes.value ?? null) : null
@@ -263,7 +280,7 @@ const ProgressPage: React.FC = () => {
     return () => {
       active = false
     }
-  }, [user?.bacSection])
+  }, [user?.bacSection, user?.educationTrack, isOtherTrack])
 
   const markComplete = async (id: string) => {
     try {
@@ -279,10 +296,10 @@ const ProgressPage: React.FC = () => {
         <div>
           <h1 className="flex items-center gap-2 text-2xl font-bold text-text-light dark:text-text sm:text-3xl">
             <BarChart3 size={26} className="text-sky-600" />
-            Profile & Progression
+            {isOtherTrack ? 'Profil Étudiant' : 'Profile & Progression'}
           </h1>
           <p className="mt-1 text-sm text-text-muted-light dark:text-text-muted">
-            شوف تقدمك كامل، objectifs و نصائح.
+            {isOtherTrack ? 'Tes informations et fonctionnalités.' : 'شوف تقدمك كامل، objectifs و نصائح.'}
           </p>
         </div>
         <button
@@ -307,9 +324,16 @@ const ProgressPage: React.FC = () => {
             </p>
           </div>
           <div className="flex-1 flex flex-wrap gap-2 justify-end">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-3 py-1.5 text-xs font-bold text-sky-700 border border-sky-100">
-              <CalendarDays size={13} /> Bac {user?.bacSection?.replace(/_/g, ' ')}
-            </span>
+            {user?.bacSection && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-3 py-1.5 text-xs font-bold text-sky-700 border border-sky-100">
+                <CalendarDays size={13} /> Bac {user.bacSection.replace(/_/g, ' ')}
+              </span>
+            )}
+            {isOtherTrack && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-bold text-indigo-700 border border-indigo-100">
+                <Target size={13} /> Autre Étudiant · Non Bac
+              </span>
+            )}
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 border border-emerald-100">
               <Check size={13} /> {user?.status || 'ACTIVE'}
             </span>
@@ -317,9 +341,9 @@ const ProgressPage: React.FC = () => {
         </div>
       </div>
 
-      <ProgressDashboard loading={loading} aggregate={aggregate} objectives={objectives} />
+      <ProgressDashboard loading={loading} aggregate={aggregate} objectives={objectives} isOtherTrack={isOtherTrack} />
 
-      {tips.length > 0 && (
+      {!isOtherTrack && tips.length > 0 && (
         <div className="overflow-hidden rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50/50 to-white p-6 shadow-sm">
           <h3 className="mb-4 flex items-center gap-2 text-lg font-black text-blue-900">
             <Lightbulb size={20} className="text-blue-700" /> نصائح للنجاح

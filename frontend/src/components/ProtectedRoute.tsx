@@ -5,9 +5,10 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
   adminOnly?: boolean;
   teacherOnly?: boolean;
+  bacTrackOnly?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = false, teacherOnly = false }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = false, teacherOnly = false, bacTrackOnly = false }) => {
   const { user, isLoading } = useAuth();
   const location = useLocation();
 
@@ -30,6 +31,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = f
 
   if (teacherOnly && user.role !== 'TEACHER' && user.role !== 'ADMIN') {
     return <Navigate to="/learning-path" replace />;
+  }
+
+  if (bacTrackOnly && user.educationTrack === 'OTHER') {
+    return <Navigate to="/study-planner" replace />;
   }
 
   return <>{children}</>;

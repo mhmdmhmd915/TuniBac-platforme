@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { authMiddleware } = require('../middleware/authMiddleware');
+const { authMiddleware, bacOnlyMiddleware } = require('../middleware/authMiddleware');
 
 const {
   listMySquads,
@@ -21,7 +21,7 @@ const {
   sendChatMessage,
 } = require('../controllers/studySquadController');
 
-router.use(authMiddleware);
+router.use(authMiddleware, bacOnlyMiddleware);
 
 router.get('/mine', listMySquads);
 router.get('/invitations', listMyInvitations);

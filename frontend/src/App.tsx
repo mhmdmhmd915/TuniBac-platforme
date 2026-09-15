@@ -75,7 +75,7 @@ function App() {
             <Route
               path="/learning-path"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute bacTrackOnly>
                   <LearningPath />
                 </ProtectedRoute>
               }
@@ -92,7 +92,7 @@ function App() {
             <Route
               path="/teachers"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute bacTrackOnly>
                   <TeachersList />
                 </ProtectedRoute>
               }
@@ -100,7 +100,7 @@ function App() {
             <Route
               path="/shop"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute bacTrackOnly>
                   <ShopList />
                 </ProtectedRoute>
               }
@@ -108,7 +108,7 @@ function App() {
             <Route
               path="/shop/:id"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute bacTrackOnly>
                   <ProductDetail />
                 </ProtectedRoute>
               }
@@ -260,7 +260,7 @@ function App() {
             <Route
               path="/courses"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute bacTrackOnly>
                   <CourseList />
                 </ProtectedRoute>
               }
@@ -268,7 +268,7 @@ function App() {
             <Route
               path="/courses/:id"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute bacTrackOnly>
                   <CourseDetail />
                 </ProtectedRoute>
               }
@@ -276,7 +276,7 @@ function App() {
             <Route
               path="/exercises"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute bacTrackOnly>
                   <ExerciseList />
                 </ProtectedRoute>
               }
@@ -284,7 +284,7 @@ function App() {
             <Route
               path="/exercises/:id"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute bacTrackOnly>
                   <ExerciseDetail />
                 </ProtectedRoute>
               }
@@ -292,7 +292,7 @@ function App() {
             <Route
               path="/devoirs/:id"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute bacTrackOnly>
                   <DevoirDetail />
                 </ProtectedRoute>
               }

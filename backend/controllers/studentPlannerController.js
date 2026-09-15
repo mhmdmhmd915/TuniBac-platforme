@@ -20,6 +20,11 @@ const optionalRelationId = (value) => {
 
 // A student may reference a subject if it belongs to their section (primary OR assigned).
 const assertSubjectAccess = async (req, subjectId) => {
+  if (req.user.educationTrack === 'OTHER') {
+    if (!subjectId) return { ok: true };
+    return { error: 'Other students cannot reference BAC subjects' };
+  }
+
   const subject = await prisma.subject.findUnique({
     where: { id: subjectId },
     select: {
@@ -44,10 +49,15 @@ const assertSubjectAccess = async (req, subjectId) => {
 async function getStudentPlannerTasks(req, res) {
   try {
     const userId = req.user.id;
-    await Promise.all([
-      migrateLegacyStudyTasks(userId),
-      ensurePublishedTemplatesForStudent(userId, req.user.bacSection),
-    ]);
+    const isOther = req.user.educationTrack === 'OTHER';
+    if (!isOther && req.user.bacSection) {
+      await Promise.all([
+        migrateLegacyStudyTasks(userId),
+        ensurePublishedTemplatesForStudent(userId, req.user.bacSection),
+      ]);
+    } else {
+      await migrateLegacyStudyTasks(userId);
+    }
 
     const items = await prisma.studentPlannerTask.findMany({
       where: { userId },
@@ -68,14 +78,19 @@ async function createStudentPlannerTask(req, res) {
       return res.status(400).json({ message: 'Invalid due date' });
     }
 
-    const subjectId = String(req.body?.subjectId || '').trim();
-    if (!subjectId) {
+    const isOther = req.user.educationTrack === 'OTHER';
+    const subjectIdRaw = String(req.body?.subjectId || '').trim();
+    const subjectId = subjectIdRaw || null;
+
+    if (!isOther && !subjectId) {
       return res.status(400).json({ message: 'Subject is required' });
     }
 
-    const access = await assertSubjectAccess(req, subjectId);
-    if (access.error) {
-      return res.status(400).json({ message: access.error });
+    if (subjectId) {
+      const access = await assertSubjectAccess(req, subjectId);
+      if (access.error) {
+        return res.status(400).json({ message: access.error });
+      }
     }
 
     const title = String(req.body?.title || '').trim();
@@ -146,11 +161,18 @@ async function updateStudentPlannerTask(req, res) {
     }
 
     if (req.body?.subjectId !== undefined) {
-      const subjectId = String(req.body?.subjectId || '').trim();
-      if (!subjectId) return res.status(400).json({ message: 'Subject is required' });
+      const isOther = req.user.educationTrack === 'OTHER';
+      const subjectIdRaw = String(req.body?.subjectId || '').trim();
+      const subjectId = subjectIdRaw || null;
 
-      const access = await assertSubjectAccess(req, subjectId);
-      if (access.error) return res.status(400).json({ message: access.error });
+      if (!isOther && !subjectId) {
+        return res.status(400).json({ message: 'Subject is required' });
+      }
+
+      if (subjectId) {
+        const access = await assertSubjectAccess(req, subjectId);
+        if (access.error) return res.status(400).json({ message: access.error });
+      }
 
       data.subjectId = subjectId;
     }

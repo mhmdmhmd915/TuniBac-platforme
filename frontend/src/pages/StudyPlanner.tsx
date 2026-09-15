@@ -36,8 +36,8 @@ interface Task {
   id: string;
   title: string;
   description?: string;
-  subjectId: string;
-  subject: Subject;
+  subjectId: string | null;
+  subject: Subject | null;
   dueAt: string;
   priority?: string;
   completed: boolean;
@@ -227,26 +227,33 @@ const StudyPlanner = () => {
   const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
+      const isOther = user?.educationTrack === 'OTHER';
       const [tasksRes, subjectsRes, stepsRes] = await Promise.all([
         studentPlannerAPI.getTasks(),
-        subjectsAPI.getAll({
-          activeOnly: true,
-          bacSection: user?.bacSection,
-        }),
+        isOther
+          ? Promise.resolve({ data: [] as Subject[] })
+          : subjectsAPI.getAll({
+              activeOnly: true,
+              bacSection: user?.bacSection,
+            }),
         stepsAPI.getPublic().catch(() => ({ data: { steps: [] } })),
       ]);
       setTasks(tasksRes.data);
-      setSubjects(subjectsRes.data);
+      const baseSubjects: Subject[] = subjectsRes.data || [];
+      const effectiveSubjects = isOther
+        ? [{ id: '', name: 'Général', color: '#6366F1' }, ...baseSubjects]
+        : baseSubjects;
+      setSubjects(effectiveSubjects);
       setSteps((stepsRes.data as any)?.steps || []);
-      if (subjectsRes.data.length > 0) {
-        setFormData(prev => ({ ...prev, subjectId: subjectsRes.data[0].id }));
+      if (effectiveSubjects.length > 0) {
+        setFormData(prev => ({ ...prev, subjectId: effectiveSubjects[0].id }));
       }
     } catch (err) {
       logger.error('Error fetching data', err);
     } finally {
       setIsLoading(false);
     }
-  }, [user?.bacSection]);
+  }, [user?.bacSection, user?.educationTrack]);
 
   const loadCoursesForSubject = useCallback(async (subjectId: string) => {
     if (!subjectId) {
@@ -362,12 +369,15 @@ const StudyPlanner = () => {
   };
 
   const handleOpenEditModal = (task: Task) => {
-    setSubjects(prev => (prev.some(subject => subject.id === task.subjectId) ? prev : [...prev, task.subject]));
+    const subjectId = task.subjectId ?? '';
+    if (task.subject && !subjects.some(s => s.id === subjectId)) {
+      setSubjects(prev => [...prev, task.subject as Subject]);
+    }
     const { dueDate, dueTime } = splitDueAt(task.dueAt);
     setFormData({
       title: task.title,
       description: task.description || '',
-      subjectId: task.subjectId,
+      subjectId,
       stepId: (task as any).stepId || '',
       courseId: (task as any).courseId || '',
       exerciseId: (task as any).exerciseId || '',

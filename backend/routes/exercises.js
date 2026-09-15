@@ -12,17 +12,17 @@ const {
   upsertCorrection,
   deleteCorrection,
 } = require('../controllers/exerciseController');
-const { authMiddleware, roleMiddleware, optionalAuthUserMiddleware } = require('../middleware/authMiddleware');
+const { authMiddleware, roleMiddleware, optionalAuthUserMiddleware, bacOnlyMiddleware } = require('../middleware/authMiddleware');
 
-router.get('/', optionalAuthUserMiddleware, getAllExercises);
-router.get('/:id', authMiddleware, getExerciseById);
-router.post('/', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), createExercise);
-router.put('/reorder', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), reorderExercises);
-router.put('/:id/publish', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), publishExercise);
-router.get('/:id/corrections/:correctionId', authMiddleware, getCorrection);
-router.put('/:id/corrections/:correctionId', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), upsertCorrection);
-router.delete('/:id/corrections/:correctionId', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), deleteCorrection);
-router.put('/:id', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), updateExercise);
-router.delete('/:id', authMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), deleteExercise);
+router.get('/', optionalAuthUserMiddleware, bacOnlyMiddleware, getAllExercises);
+router.get('/:id', authMiddleware, bacOnlyMiddleware, getExerciseById);
+router.post('/', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), createExercise);
+router.put('/reorder', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), reorderExercises);
+router.put('/:id/publish', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), publishExercise);
+router.get('/:id/corrections/:correctionId', authMiddleware, bacOnlyMiddleware, getCorrection);
+router.put('/:id/corrections/:correctionId', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), upsertCorrection);
+router.delete('/:id/corrections/:correctionId', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), deleteCorrection);
+router.put('/:id', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), updateExercise);
+router.delete('/:id', authMiddleware, bacOnlyMiddleware, roleMiddleware(['ADMIN', 'TEACHER']), deleteExercise);
 
 module.exports = router;

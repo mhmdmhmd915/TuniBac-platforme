@@ -19,6 +19,7 @@ const loadAuthenticatedUser = async (decoded) => {
       lastName: true,
       status: true,
       bacSection: true,
+      educationTrack: true,
       isVerified: true,
       createdAt: true,
       tokenVersion: true,
@@ -43,6 +44,7 @@ const loadAuthenticatedUser = async (decoded) => {
       lastName: user.lastName,
       status: user.status,
       bacSection: user.bacSection,
+      educationTrack: user.educationTrack || 'BAC',
       isVerified: user.isVerified,
       createdAt: user.createdAt,
     },
@@ -121,11 +123,19 @@ const roleMiddleware = (allowedRoles) => {
   };
 };
 
+const bacOnlyMiddleware = (req, res, next) => {
+  if (req.user?.educationTrack === 'OTHER') {
+    return res.status(403).json({ message: 'Access denied: BAC content only' });
+  }
+  next();
+};
+
 module.exports = {
   authMiddleware,
   authUserMiddleware,
   optionalAuthUserMiddleware,
   adminMiddleware,
   roleMiddleware,
+  bacOnlyMiddleware,
   loadAuthenticatedUser,
 };

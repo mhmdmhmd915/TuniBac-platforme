@@ -104,14 +104,21 @@ const createSession = async (req, res) => {
     }
 
     const { title, studySquadId, subjectId, topic } = req.body || {};
-  const bacSection = req.user.bacSection;
+    const bacSection = req.user.bacSection || null;
+    const isOther = req.user.educationTrack === 'OTHER';
+
+    if (!isOther && !bacSection) {
+      return res.status(400).json({ message: 'BAC section is required for BAC students' });
+    }
 
   const session = await prisma.$transaction(async (tx) => {
     let squadIdForSession = null;
     if (studySquadId) {
       if (typeof studySquadId !== 'string') throw Object.assign(new Error('Invalid squad id'), { statusCode: 400 });
+      const where = { squadId: studySquadId, userId: req.user.id, squad: { status: 'ACTIVE' } };
+      if (!isOther) where.squad.bacSection = bacSection;
       const membership = await tx.studySquadMember.findFirst({
-        where: { squadId: studySquadId, userId: req.user.id, squad: { status: 'ACTIVE', bacSection: req.user.bacSection } },
+        where,
         include: { squad: true },
       });
       if (!membership) throw Object.assign(new Error('Not authorized to create a session for this squad'), { statusCode: 403 });
@@ -192,7 +199,10 @@ const listMySectionSessions = async (req, res) => {
     const sections = await resolveSectionList(req);
     const where = { status: 'ACTIVE', studySquadId: null };
 
-    if (sections) {
+    const isOther = req.user.educationTrack === 'OTHER';
+    if (isOther) {
+      where.bacSection = null;
+    } else if (sections) {
       where.bacSection = { in: sections };
     }
 
@@ -275,8 +285,15 @@ const getSessionById = async (req, res) => {
       return res.status(400).json({ message: 'Session is closed' });
     }
 
-    if (req.user.role === 'STUDENT' && session.bacSection !== req.user.bacSection) {
-      return res.status(403).json({ message: 'Session belongs to a different section' });
+    if (req.user.role === 'STUDENT') {
+      const userIsOther = req.user.educationTrack === 'OTHER';
+      const sessionIsOther = session.bacSection == null;
+      if (userIsOther !== sessionIsOther) {
+        return res.status(403).json({ message: 'Session belongs to a different track' });
+      }
+      if (!userIsOther && session.bacSection !== req.user.bacSection) {
+        return res.status(403).json({ message: 'Session belongs to a different section' });
+      }
     }
 
     if (req.user.role === 'STUDENT') {

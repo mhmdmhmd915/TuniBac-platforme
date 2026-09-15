@@ -295,7 +295,7 @@ const UsersPage: React.FC = () => {
     firstName: string;
     lastName: string;
     phone: string;
-    bacSection: BacSection;
+    bacSection: BacSection | null;
     role: UserRole;
   } | null>(null);
 
@@ -337,11 +337,28 @@ const UsersPage: React.FC = () => {
       render: (value) => <RoleBadge role={value as UserRole} />,
     },
     {
+      header: 'Track',
+      key: 'educationTrack',
+      render: (_value, user) => (
+        <span
+          className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold border ${
+            user.educationTrack === 'OTHER'
+              ? 'bg-indigo-50 text-indigo-700 border-indigo-100'
+              : 'bg-sky-50 text-sky-700 border-sky-100'
+          }`}
+        >
+          {user.educationTrack === 'OTHER' ? '🌱 Autre / Non Bac' : '🎓 Bac'}
+        </span>
+      ),
+    },
+    {
       header: 'Section',
       key: 'bacSection',
-      render: (value) => (
+      render: (value, user) => (
         <span className="text-sm text-gray-600 dark:text-gray-300">
-          {BAC_SECTION_LABELS[value as BacSection]}
+          {user.educationTrack === 'OTHER' || !value
+            ? <span className="italic text-gray-400">— Non Bac</span>
+            : BAC_SECTION_LABELS[value as BacSection]}
         </span>
       ),
     },
@@ -532,6 +549,7 @@ const UsersPage: React.FC = () => {
         'firstName',
         'lastName',
         'phone',
+        'educationTrack',
         'bacSection',
         'role',
         'status',
@@ -543,7 +561,8 @@ const UsersPage: React.FC = () => {
         escape(u.firstName),
         escape(u.lastName),
         escape(u.phone || ''),
-        escape(BAC_SECTION_LABELS[u.bacSection]),
+        escape(u.educationTrack || 'BAC'),
+        escape(u.educationTrack === 'OTHER' || !u.bacSection ? '' : BAC_SECTION_LABELS[u.bacSection]),
         escape(u.role),
         escape(u.status),
         escape(u.createdAt),
@@ -769,10 +788,10 @@ const UsersPage: React.FC = () => {
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <select
-                    value={editForm.bacSection}
+                    value={editForm.bacSection ?? ''}
                     onChange={(e) =>
                       setEditForm((p) =>
-                        p ? { ...p, bacSection: e.target.value as BacSection } : p
+                        p ? { ...p, bacSection: e.target.value ? (e.target.value as BacSection) : null } : p
                       )
                     }
                     className="w-full rounded-2xl bg-gray-50 px-4 py-3 dark:bg-white/5"

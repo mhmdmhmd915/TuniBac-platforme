@@ -47,8 +47,11 @@ const Dashboard = () => {
     }
   }, [])
 
-  // Students now live on the Learning Path home page.
+  // Bac students go to Learning Path; Other students land on Study Planner.
   if (user?.role === 'STUDENT') {
+    if (user.educationTrack === 'OTHER') {
+      return <Navigate to="/study-planner" replace />
+    }
     return <Navigate to="/learning-path" replace />
   }
 

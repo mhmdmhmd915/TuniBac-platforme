@@ -2,13 +2,16 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import api, { authAPI } from '../services/api';
 import type { BacSection } from '../constants/bacSections';
 
+export type EducationTrack = 'BAC' | 'OTHER';
+
 interface User {
   id: string;
   email?: string | null;
   phone?: string | null;
   firstName: string;
   lastName: string;
-  bacSection: BacSection;
+  bacSection: BacSection | null;
+  educationTrack: EducationTrack;
   role: 'STUDENT' | 'TEACHER' | 'ADMIN';
   status: 'PENDING' | 'APPROVED' | 'SUSPENDED' | 'REJECTED';
   createdAt?: string;

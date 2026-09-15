@@ -5,6 +5,8 @@ import { Phone, Lock, User, ArrowRight, Loader2 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { authAPI } from '../services/api'
 import { BAC_SECTION_OPTIONS, DEFAULT_BAC_SECTION } from '../constants/bacSections'
+import type { BacSection } from '../constants/bacSections'
+import type { EducationTrack } from '../context/AuthContext'
 import BrandLogo from '../components/BrandLogo'
 import { normalizeTunisianPhone, sanitizeTunisianPhoneInput } from '../lib/phone'
 
@@ -15,13 +17,15 @@ const Register = () => {
     phone: '',
     password: '',
     confirmPassword: '',
-    bacSection: DEFAULT_BAC_SECTION,
+    bacSection: DEFAULT_BAC_SECTION as BacSection | null,
+    educationTrack: 'BAC' as EducationTrack,
   })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+  const isOtherTrack = formData.educationTrack === 'OTHER'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -45,7 +49,8 @@ const Register = () => {
         lastName: formData.lastName.trim(),
         phone: normalizedPhone,
         password: formData.password,
-        bacSection: formData.bacSection,
+        bacSection: isOtherTrack ? null : formData.bacSection,
+        educationTrack: formData.educationTrack,
       })
       const nextUser = response.data.user
       const fromState = location.state as { from?: { pathname?: string; search?: string } } | null
@@ -68,12 +73,20 @@ const Register = () => {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const nextValue = e.target.name === 'phone'
       ? sanitizeTunisianPhoneInput(e.target.value)
       : e.target.value
 
     setFormData({ ...formData, [e.target.name]: nextValue })
+  }
+
+  const handleTrackChange = (track: EducationTrack) => {
+    setFormData({
+      ...formData,
+      educationTrack: track,
+      bacSection: track === 'OTHER' ? null : DEFAULT_BAC_SECTION,
+    })
   }
 
   const handlePhonePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
@@ -167,23 +180,55 @@ const Register = () => {
             </p>
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="register-bac-section" className="text-sm font-medium text-text-muted-light dark:text-text-muted ml-1">Bac Section</label>
-            <select
-              id="register-bac-section"
-              name="bacSection"
-              value={formData.bacSection}
-              onChange={(e) => setFormData({ ...formData, bacSection: e.target.value as typeof formData.bacSection })}
-              required
-              className="w-full bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 rounded-2xl py-4 px-4 text-text-light dark:text-text focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
-            >
-              {BAC_SECTION_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-text-muted-light dark:text-text-muted ml-1">Type d'Étudiant</label>
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                type="button"
+                onClick={() => handleTrackChange('BAC')}
+                className={`rounded-2xl p-4 text-left border-2 transition-all ${
+                  !isOtherTrack
+                    ? 'border-accent bg-accent/10 text-accent'
+                    : 'border-black/10 dark:border-white/10 bg-secondary-light/50 dark:bg-secondary/50 text-text-light dark:text-text hover:border-accent/40'
+                }`}
+              >
+                <div className="text-sm font-bold mb-1">🎓 Bac Tunisien</div>
+                <div className="text-xs opacity-75">Cours, exercices, devoirs, live study, planner</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTrackChange('OTHER')}
+                className={`rounded-2xl p-4 text-left border-2 transition-all ${
+                  isOtherTrack
+                    ? 'border-accent bg-accent/10 text-accent'
+                    : 'border-black/10 dark:border-white/10 bg-secondary-light/50 dark:bg-secondary/50 text-text-light dark:text-text hover:border-accent/40'
+                }`}
+              >
+                <div className="text-sm font-bold mb-1">🌱 Autre / Non Bac</div>
+                <div className="text-xs opacity-75">Live Study + Study Planner uniquement</div>
+              </button>
+            </div>
           </div>
+
+          {!isOtherTrack && (
+            <div className="space-y-2">
+              <label htmlFor="register-bac-section" className="text-sm font-medium text-text-muted-light dark:text-text-muted ml-1">Bac Section</label>
+              <select
+                id="register-bac-section"
+                name="bacSection"
+                value={formData.bacSection ?? ''}
+                onChange={handleChange}
+                required={!isOtherTrack}
+                className="w-full bg-secondary-light/50 dark:bg-secondary/50 border border-black/10 dark:border-white/10 rounded-2xl py-4 px-4 text-text-light dark:text-text focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
+              >
+                {BAC_SECTION_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div className="space-y-2">
             <label htmlFor="register-password" className="text-sm font-medium text-text-muted-light dark:text-text-muted ml-1">Password</label>

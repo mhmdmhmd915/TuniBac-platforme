@@ -8,6 +8,7 @@ export type BacSection =
   | 'ECONOMIE_GESTION'
   | 'INFORMATIQUE'
   | 'SPORT';
+export type EducationTrack = 'BAC' | 'OTHER';
 
 export interface AdminUserRow {
   id: string;
@@ -15,7 +16,8 @@ export interface AdminUserRow {
   firstName: string;
   lastName: string;
   phone?: string | null;
-  bacSection: BacSection;
+  bacSection: BacSection | null;
+  educationTrack: EducationTrack;
   role: UserRole;
   status: UserStatus;
   approvalDate?: string;

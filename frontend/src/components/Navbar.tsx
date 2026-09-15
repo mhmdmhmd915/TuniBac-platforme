@@ -18,6 +18,7 @@ const Navbar = () => {
   const isTeacher = user?.role === 'TEACHER'
   const hasStudentAccess = !!user && !isAdmin && user.status === 'APPROVED'
   const pendingOnly = !!user && !isAdmin && user.status !== 'APPROVED'
+  const isOtherStudent = hasStudentAccess && user.educationTrack === 'OTHER'
 
   return (
     <nav className="glass-morphism sticky top-0 z-50 px-6 py-4">
@@ -33,7 +34,7 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center space-x-8">
-          {!isAdmin && (
+          {!isAdmin && !isOtherStudent && (
             <>
               <Link to="/courses" className="text-text-light dark:text-text hover:text-accent transition-colors">Courses</Link>
               <Link to="/exercises" className="text-text-light dark:text-text hover:text-accent transition-colors">Exercises</Link>
@@ -44,26 +45,35 @@ const Navbar = () => {
           {hasStudentAccess && (
             <>
               <div className="h-6 w-px bg-black/10 dark:bg-white/10" />
-              <Link to="/learning-path" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
-                <BookOpen size={14} />
-                <span>Learning Path</span>
-              </Link>
+              {!isOtherStudent && (
+                <Link to="/learning-path" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
+                  <BookOpen size={14} />
+                  <span>Learning Path</span>
+                </Link>
+              )}
               <Link to="/live-study" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
                 <MessageSquare size={14} />
-                <span>Live Study</span>
+                <span className="relative">
+                  Live Study
+                  {isOtherStudent && <span className="absolute -top-1.5 -right-5 w-2 h-2 rounded-full bg-red-500" title="Other student available" />}
+                </span>
               </Link>
               <Link to="/study-planner" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
                 <Calendar size={14} />
                 <span>Planner</span>
               </Link>
-              <Link to="/teachers" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
-                <User size={14} className="text-teal-600" />
-                <span>Enseignants</span>
-              </Link>
-              <Link to="/shop" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
-                <ShoppingCart size={14} className="text-rose-600" />
-                <span>Boutique</span>
-              </Link>
+              {!isOtherStudent && (
+                <>
+                  <Link to="/teachers" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
+                    <User size={14} className="text-teal-600" />
+                    <span>Enseignants</span>
+                  </Link>
+                  <Link to="/shop" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
+                    <ShoppingCart size={14} className="text-rose-600" />
+                    <span>Boutique</span>
+                  </Link>
+                </>
+              )}
               <Link to="/profile" className="flex items-center space-x-1 text-text-light dark:text-text hover:text-accent transition-colors">
                 <User size={14} />
                 <span>Profil</span>
@@ -165,7 +175,7 @@ const Navbar = () => {
             exit={{ opacity: 0, y: -20 }}
             className="lg:hidden absolute top-full left-0 w-full bg-primary-light dark:bg-primary border-t border-black/10 dark:border-white/10 p-6 flex flex-col space-y-4"
           >
-            {!isAdmin && (
+            {!isAdmin && !isOtherStudent && (
               <>
                 <Link to="/courses" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Courses</Link>
                 <Link to="/exercises" onClick={() => setIsOpen(false)} className="text-lg text-text-light dark:text-text">Exercises</Link>
@@ -175,21 +185,27 @@ const Navbar = () => {
             {hasStudentAccess && (
               <>
                 <div className="h-px bg-black/10 dark:bg-white/10" />
-                <Link to="/learning-path" onClick={() => setIsOpen(false)} className="flex items-center gap-2 text-lg text-text-light dark:text-text">
-                  <BookOpen size={16} /> Learning Path
-                </Link>
+                {!isOtherStudent && (
+                  <Link to="/learning-path" onClick={() => setIsOpen(false)} className="flex items-center gap-2 text-lg text-text-light dark:text-text">
+                    <BookOpen size={16} /> Learning Path
+                  </Link>
+                )}
                 <Link to="/live-study" onClick={() => setIsOpen(false)} className="flex items-center gap-2 text-lg text-text-light dark:text-text">
                   <MessageSquare size={16} /> Live Study
                 </Link>
                 <Link to="/study-planner" onClick={() => setIsOpen(false)} className="flex items-center gap-2 text-lg text-text-light dark:text-text">
                   <Calendar size={16} /> Study Planner
                 </Link>
-                <Link to="/teachers" onClick={() => setIsOpen(false)} className="flex items-center gap-2 text-lg text-text-light dark:text-text">
-                  <User size={16} className="text-teal-600" /> Enseignants
-                </Link>
-                <Link to="/shop" onClick={() => setIsOpen(false)} className="flex items-center gap-2 text-lg text-text-light dark:text-text">
-                  <ShoppingCart size={16} className="text-rose-600" /> Boutique
-                </Link>
+                {!isOtherStudent && (
+                  <>
+                    <Link to="/teachers" onClick={() => setIsOpen(false)} className="flex items-center gap-2 text-lg text-text-light dark:text-text">
+                      <User size={16} className="text-teal-600" /> Enseignants
+                    </Link>
+                    <Link to="/shop" onClick={() => setIsOpen(false)} className="flex items-center gap-2 text-lg text-text-light dark:text-text">
+                      <ShoppingCart size={16} className="text-rose-600" /> Boutique
+                    </Link>
+                  </>
+                )}
                 <Link to="/profile" onClick={() => setIsOpen(false)} className="flex items-center gap-2 text-lg text-text-light dark:text-text">
                   <User size={16} /> Profil
                 </Link>

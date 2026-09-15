@@ -63,7 +63,7 @@ const resolveSectionScope = async (req) => {
   }
 
   if (req.user?.role === 'STUDENT') {
-    return req.user.bacSection || DEFAULT_BAC_SECTION;
+    return req.user.bacSection || null;
   }
 
   if (req.user?.role === 'TEACHER') {
@@ -112,7 +112,7 @@ const resolveSectionList = async (req) => {
   }
 
   if (req.user?.role === 'STUDENT') {
-    return [req.user.bacSection || DEFAULT_BAC_SECTION];
+    return req.user.bacSection ? [req.user.bacSection] : [];
   }
 
   if (req.user?.role === 'TEACHER') {

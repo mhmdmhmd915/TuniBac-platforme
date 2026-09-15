@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { authMiddleware } = require('../middleware/authMiddleware');
+const { authMiddleware, bacOnlyMiddleware } = require('../middleware/authMiddleware');
 const { getLearningPath } = require('../controllers/learningPathController');
 
-router.get('/', authMiddleware, getLearningPath);
+router.get('/', authMiddleware, bacOnlyMiddleware, getLearningPath);
 
 module.exports = router;

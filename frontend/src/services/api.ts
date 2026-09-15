@@ -2,6 +2,7 @@ import { api } from '../lib/api/http';
 import { uploadMultipartVideo, type MultipartVideoUploadState } from '../lib/uploads/multipartVideo';
 import { uploadFileViaBackend, uploadToSignedUrl } from '../lib/uploads/sharedUpload';
 import type { BacSection } from '../constants/bacSections';
+import type { EducationTrack } from '../context/AuthContext';
 
 const buildSingleFileFormData = (fieldName: string, file: File) => {
   const formData = new FormData()
@@ -86,7 +87,7 @@ export type VideoUploadOptions = {
 
 // Auth API
 export const authAPI = {
-  register: (data: { firstName: string; lastName: string; phone: string; password: string; bacSection: BacSection }) =>
+  register: (data: { firstName: string; lastName: string; phone: string; password: string; bacSection?: BacSection | null | null; educationTrack?: EducationTrack }) =>
     api.post('/auth/register', data),
   login: (data: { phone: string; password: string }) =>
     api.post('/auth/login', data),
@@ -96,7 +97,7 @@ export const authAPI = {
 
 // Subjects API
 export const subjectsAPI = {
-  getAll: (params?: { activeOnly?: boolean; bacSection?: BacSection }) =>
+  getAll: (params?: { activeOnly?: boolean; bacSection?: BacSection | null }) =>
     api.get('/subjects', { params }),
   getById: (id: string) =>
     api.get(`/subjects/${id}`),
@@ -231,7 +232,7 @@ export const objectivesAPI = {
 };
 
 export const tipsAPI = {
-  listPublic: (params?: { stepId?: string; subjectId?: string; bacSection?: BacSection }) =>
+  listPublic: (params?: { stepId?: string; subjectId?: string; bacSection?: BacSection | null }) =>
     api.get('/tips/public', { params }).then((res) => (res.data as any)?.tips || res.data),
   listAll: () => api.get('/tips/all').then((res) => (res.data as any)?.tips || res.data),
   create: (payload: {
@@ -240,7 +241,7 @@ export const tipsAPI = {
     stepId?: string
     subjectId?: string
     courseId?: string
-    bacSection?: BacSection
+    bacSection?: BacSection | null
     order?: number
     isPublished?: boolean
   }) => api.post('/tips', payload),
@@ -274,7 +275,7 @@ export const adminTeachersAPI = {
 
 // Courses API
 export const coursesAPI = {
-  getAll: (params?: { subjectId?: string; search?: string; bacSection?: BacSection }) =>
+  getAll: (params?: { subjectId?: string; search?: string; bacSection?: BacSection | null }) =>
     api.get('/courses', { params }),
   getById: (id: string) =>
     api.get(`/courses/${id}`),
@@ -305,7 +306,7 @@ export const coursesAPI = {
 
 // Devoirs API
 export const devoirsAPI = {
-  getAll: (params?: { subjectId?: string; search?: string; bacSection?: BacSection }) =>
+  getAll: (params?: { subjectId?: string; search?: string; bacSection?: BacSection | null }) =>
     api.get('/devoirs', { params }),
   getById: (id: string) =>
     api.get(`/devoirs/${id}`),
@@ -323,7 +324,7 @@ export const devoirsAPI = {
 
 // Exercises API
 export const exercisesAPI = {
-  getAll: (params?: { subjectId?: string; courseId?: string; difficulty?: string; bacSection?: BacSection }) =>
+  getAll: (params?: { subjectId?: string; courseId?: string; difficulty?: string; bacSection?: BacSection | null }) =>
     api.get('/exercises', { params }),
   getById: (id: string) =>
     api.get(`/exercises/${id}`),
@@ -356,20 +357,20 @@ export const usersAPI = {
 };
 
 export const communicationsAPI = {
-  getStudentFeed: (params?: { limit?: number; bacSection?: BacSection }) =>
+  getStudentFeed: (params?: { limit?: number; bacSection?: BacSection | null }) =>
     api.get('/communications', { params }),
 };
 
 // Admin API
 export const adminAPI = {
-  getStats: (params?: { bacSection?: BacSection }) =>
+  getStats: (params?: { bacSection?: BacSection | null }) =>
     api.get('/admin/stats', { params }),
 
   getUsers: (params?: {
     search?: string;
     status?: string;
     role?: string;
-    bacSection?: BacSection;
+    bacSection?: BacSection | null;
     sortBy?: string;
     sortOrder?: string;
     page?: number;
@@ -412,7 +413,7 @@ export const adminAPI = {
   bulkDeleteUsers: (userIds: string[]) =>
     api.post('/admin/users/bulk-delete', { userIds }),
 
-  getSubjects: (params?: { activeOnly?: boolean; bacSection?: BacSection }) =>
+  getSubjects: (params?: { activeOnly?: boolean; bacSection?: BacSection | null }) =>
     api.get('/admin/subjects', { params }),
 
   getSubjectUsage: (id: string) =>
@@ -599,7 +600,7 @@ export const adminAPI = {
   createResource: (data: any) =>
     api.post('/admin/resources', data),
 
-  getSubmissions: (params?: { bacSection?: BacSection }) =>
+  getSubmissions: (params?: { bacSection?: BacSection | null }) =>
     api.get('/admin/submissions', { params }),
 
   reviewSubmission: (id: string, data: any) =>
@@ -666,7 +667,7 @@ export const adminAPI = {
     priority?: string;
     status?: string;
     visibility?: string;
-    bacSection?: BacSection;
+    bacSection?: BacSection | null;
     fromDate?: string;
     toDate?: string;
     sortBy?: string;
@@ -755,7 +756,7 @@ export const adminAPI = {
 };
 
 export const plannerAPI = {
-  getTasks: (params?: { bacSection?: BacSection }) => api.get('/planner', { params }),
+  getTasks: (params?: { bacSection?: BacSection | null }) => api.get('/planner', { params }),
   createTask: (data: any) => api.post('/planner', data),
   updateTask: (id: string, data: any) => api.put(`/planner/${id}`, data),
   deleteTask: (id: string) => api.delete(`/planner/${id}`),
@@ -780,7 +781,7 @@ export const adminPlannerTemplatesAPI = {
 
 // Parascolaires API
 export const parascolairesAPI = {
-  getAll: (params?: { bacSection?: BacSection }) => api.get('/parascolaires', { params }),
+  getAll: (params?: { bacSection?: BacSection | null }) => api.get('/parascolaires', { params }),
   getById: (id: string) => api.get(`/parascolaires/${id}`),
   create: (data: any) => api.post('/parascolaires', data),
   update: (id: string, data: any) => api.put(`/parascolaires/${id}`, data),

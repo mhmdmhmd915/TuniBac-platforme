@@ -24,14 +24,23 @@ const signUserToken = (user) =>
 
 const register = async (req, res) => {
   try {
-    const { password, firstName, lastName, phone, bacSection } = req.body;
+    const { password, firstName, lastName, phone, bacSection, educationTrack } = req.body;
     const normalizedPhone = normalizeTunisianPhone(phone);
     const normalizedFirstName = String(firstName || '').trim();
     const normalizedLastName = String(lastName || '').trim();
-    const normalizedBacSection = resolveRequestedBacSection(bacSection);
 
-    if (!phone || !password || !normalizedFirstName || !normalizedLastName || !normalizedBacSection) {
+    const normalizedTrackRaw = String(educationTrack || 'BAC').trim().toUpperCase();
+    const normalizedTrack = normalizedTrackRaw === 'OTHER' ? 'OTHER' : 'BAC';
+    const isOtherTrack = normalizedTrack === 'OTHER';
+
+    const normalizedBacSection = isOtherTrack ? null : resolveRequestedBacSection(bacSection);
+
+    if (!phone || !password || !normalizedFirstName || !normalizedLastName) {
       return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    if (!isOtherTrack && !normalizedBacSection) {
+      return res.status(400).json({ message: 'Bac section is required for Bac students' });
     }
 
     if (!normalizedPhone) {
@@ -60,6 +69,7 @@ const register = async (req, res) => {
         lastName: normalizedLastName,
         phone: normalizedPhone,
         bacSection: normalizedBacSection,
+        educationTrack: normalizedTrack,
         role: 'STUDENT',
         status: 'PENDING',
       },
@@ -70,6 +80,7 @@ const register = async (req, res) => {
         firstName: true,
         lastName: true,
         bacSection: true,
+        educationTrack: true,
         role: true,
         status: true,
         createdAt: true,
@@ -77,7 +88,9 @@ const register = async (req, res) => {
       },
     });
 
-    await ensurePublishedTemplatesForStudent(user.id, user.bacSection);
+    if (!isOtherTrack && user.bacSection) {
+      await ensurePublishedTemplatesForStudent(user.id, user.bacSection);
+    }
 
     const token = signUserToken(user);
 
@@ -90,6 +103,7 @@ const register = async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         bacSection: user.bacSection,
+        educationTrack: user.educationTrack,
         role: user.role,
         status: user.status,
         createdAt: user.createdAt,
@@ -137,6 +151,7 @@ const login = async (req, res) => {
         firstName: true,
         lastName: true,
         bacSection: true,
+        educationTrack: true,
         role: true,
         status: true,
         createdAt: true,
@@ -156,6 +171,7 @@ const login = async (req, res) => {
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
         bacSection: updatedUser.bacSection,
+        educationTrack: updatedUser.educationTrack,
         role: updatedUser.role,
         status: updatedUser.status,
         createdAt: updatedUser.createdAt,
@@ -176,6 +192,7 @@ const getCurrentUser = async (req, res) => {
         firstName: req.user.firstName,
         lastName: req.user.lastName,
         bacSection: req.user.bacSection,
+        educationTrack: req.user.educationTrack,
         role: req.user.role,
         status: req.user.status,
         isVerified: req.user.isVerified,
