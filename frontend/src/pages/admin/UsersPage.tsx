@@ -87,7 +87,7 @@ const RoleBadge = ({ role }: { role: UserRole }) => (
 );
 
 const UsersPage: React.FC = () => {
-  const [currentBacSection, setCurrentBacSection] = useState<BacSection>(() => {
+  const [currentBacSection] = useState<BacSection>(() => {
     const stored = localStorage.getItem(ADMIN_SECTION_STORAGE_KEY);
     if (stored && BAC_SECTION_OPTIONS.some((option) => option.value === stored)) {
       return stored as BacSection;
@@ -95,6 +95,7 @@ const UsersPage: React.FC = () => {
 
     return DEFAULT_BAC_SECTION;
   });
+  const [bacSectionFilter, setBacSectionFilter] = useState<BacSection | ''>('');
   const [users, setUsers] = useState<AdminUserRow[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -159,14 +160,21 @@ const UsersPage: React.FC = () => {
         search: search.trim() || undefined,
         status: statusFilter || undefined,
         role: roleFilter || undefined,
-        bacSection: currentBacSection,
+        ...(bacSectionFilter ? { bacSection: bacSectionFilter } : {}),
         sortBy,
         sortOrder,
         page,
         pageSize,
       });
-      setUsers(response.data.items || []);
-      setTotal(Number(response.data.total || 0));
+      const items = Array.isArray(response.data)
+        ? response.data
+        : Array.isArray(response.data?.items)
+          ? response.data.items
+          : Array.isArray(response.data?.data)
+            ? response.data.data
+            : response.data?.users || [];
+      setUsers(items as AdminUserRow[]);
+      setTotal(Number(response.data?.total ?? Array.isArray(response.data) ? response.data.length : 0));
     } catch (error) {
       showToast('error', getErrorMessage(error));
     } finally {
@@ -180,7 +188,7 @@ const UsersPage: React.FC = () => {
 
   useEffect(() => {
     const requestKey = JSON.stringify({
-      currentBacSection,
+      bacSectionFilter,
       search,
       statusFilter,
       roleFilter,
@@ -200,12 +208,12 @@ const UsersPage: React.FC = () => {
     }, 200);
 
     return () => window.clearTimeout(timeout);
-  }, [currentBacSection, search, statusFilter, roleFilter, sortBy, sortOrder, page, pageSize]);
+  }, [bacSectionFilter, search, statusFilter, roleFilter, sortBy, sortOrder, page, pageSize]);
 
   useEffect(() => {
     setPage(1);
     setSelectedUsers([]);
-  }, [currentBacSection, search, statusFilter, roleFilter, sortBy, sortOrder, pageSize]);
+  }, [bacSectionFilter, search, statusFilter, roleFilter, sortBy, sortOrder, pageSize]);
 
   const handleApproveUser = async (id: string) => {
     try {
@@ -337,7 +345,7 @@ const UsersPage: React.FC = () => {
       render: (value) => <RoleBadge role={value as UserRole} />,
     },
     {
-      header: 'Track',
+      header: 'Parcours',
       key: 'educationTrack',
       render: (_value, user) => (
         <span
@@ -347,18 +355,11 @@ const UsersPage: React.FC = () => {
               : 'bg-sky-50 text-sky-700 border-sky-100'
           }`}
         >
-          {user.educationTrack === 'OTHER' ? '🌱 Autre / Non Bac' : '🎓 Bac'}
-        </span>
-      ),
-    },
-    {
-      header: 'Section',
-      key: 'bacSection',
-      render: (value, user) => (
-        <span className="text-sm text-gray-600 dark:text-gray-300">
-          {user.educationTrack === 'OTHER' || !value
-            ? <span className="italic text-gray-400">— Non Bac</span>
-            : BAC_SECTION_LABELS[value as BacSection]}
+          {user.educationTrack === 'OTHER'
+            ? 'Autre (Non Bac)'
+            : user.bacSection
+              ? BAC_SECTION_LABELS[user.bacSection as BacSection]
+              : 'Bac'}
         </span>
       ),
     },
@@ -517,17 +518,24 @@ const UsersPage: React.FC = () => {
           search: search.trim() || undefined,
           status: statusFilter || undefined,
           role: roleFilter || undefined,
-          bacSection: currentBacSection,
+          ...(bacSectionFilter ? { bacSection: bacSectionFilter } : {}),
           sortBy,
           sortOrder,
           page: currentPage,
           pageSize: pageSizeExport,
         });
 
-        const batch = (response.data.items || []) as AdminUserRow[];
+        const arr = Array.isArray(response.data)
+          ? response.data
+          : Array.isArray(response.data?.items)
+            ? response.data.items
+            : Array.isArray(response.data?.data)
+              ? response.data.data
+              : response.data?.users || [];
+        const batch = arr as AdminUserRow[];
         all = all.concat(batch);
 
-        const totalCount = Number(response.data.total || 0);
+        const totalCount = Number(response.data?.total ?? (Array.isArray(response.data) ? response.data.length : 0));
 
         if (batch.length === 0 || all.length >= totalCount) {
           hasMore = false;
@@ -608,7 +616,7 @@ const UsersPage: React.FC = () => {
           <div>
             <SectionTitle 
               title="User Management" 
-              subtitle={`Approve, reject, suspend, and delete users for ${BAC_SECTION_LABELS[currentBacSection]}`} 
+              subtitle={`Manage and review platform users across all tracks and roles${bacSectionFilter ? ` — filtered to ${BAC_SECTION_LABELS[bacSectionFilter]}` : ''}`} 
             />
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -630,10 +638,11 @@ const UsersPage: React.FC = () => {
           <SearchBar value={search} onChange={setSearch} placeholder="Rechercher..." />
           <select
             className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 dark:border-white/10 dark:bg-white/5 dark:text-white"
-            value={currentBacSection}
-            onChange={(e) => setCurrentBacSection(e.target.value as BacSection)}
+            value={bacSectionFilter}
+            onChange={(e) => setBacSectionFilter(e.target.value as BacSection | '')}
             aria-label="Filter by bac section"
           >
+            <option value="">Toutes sections</option>
             {BAC_SECTION_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}

@@ -15,6 +15,7 @@ const ADMIN_USER_BASE_SELECT = {
   lastName: true,
   phone: true,
   bacSection: true,
+  educationTrack: true,
   role: true,
   status: true,
   approvalDate: true,

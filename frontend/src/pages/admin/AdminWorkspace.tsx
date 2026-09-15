@@ -72,7 +72,8 @@ type SectionKey =
 
 type ToastType = 'success' | 'error' | 'warning';
 type ModalSection = Exclude<SectionKey, 'dashboard' | 'users'>;
-type Role = 'ADMIN' | 'STUDENT';
+type Role = 'ADMIN' | 'STUDENT' | 'TEACHER';
+type EducationTrack = 'BAC' | 'OTHER';
 type Difficulty = 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
 
 interface Subject {
@@ -172,8 +173,10 @@ interface AdminUser {
   phone?: string | null;
   firstName: string;
   lastName: string;
-  bacSection: BacSection;
+  bacSection?: BacSection | null;
+  educationTrack?: EducationTrack | null;
   role: Role;
+  status?: string | null;
   isVerified: boolean;
   createdAt: string;
 }
@@ -695,7 +698,7 @@ const AdminWorkspace = () => {
         ['exercises', exercisesAPI.getAll(scopedParams)],
         ['subjects', subjectsAPI.getAll(scopedParams)],
         ['parascolaires', parascolairesAPI.getAll(scopedParams)],
-        ['users', adminAPI.getUsers({ page: 1, pageSize: 50, bacSection: currentBacSection })],
+        ['users', adminAPI.getUsers({ page: 1, pageSize: 100 })],
         ['plannerTemplates', adminPlannerTemplatesAPI.getAll()],
       ] as const;
 
@@ -1651,6 +1654,30 @@ const AdminWorkspace = () => {
       ),
     },
     {
+      header: 'Parcours',
+      key: 'educationTrack',
+      render: (_value, user) => {
+        const isOther = String(user.educationTrack || 'BAC') === 'OTHER';
+        if (isOther) {
+          return (
+            <span className="inline-flex items-center rounded-full bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-700 border border-indigo-100">
+              Autre (Non Bac)
+            </span>
+          );
+        }
+        const section = user.bacSection
+          ? BAC_SECTION_OPTIONS.find((o) => o.value === user.bacSection)?.label ||
+            String(user.bacSection).replace(/_/g, ' ')
+          : null;
+        const label = section ? `Bac ${section}` : 'Bac';
+        return (
+          <span className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-bold text-sky-700 border border-sky-100">
+            {label}
+          </span>
+        );
+      },
+    },
+    {
       header: 'Role',
       key: 'role',
       render: (value) => (
@@ -1658,12 +1685,34 @@ const AdminWorkspace = () => {
           className={`rounded-full px-3 py-1 text-xs font-semibold ${
             value === 'ADMIN'
               ? 'bg-violet-500/10 text-violet-500'
-              : 'bg-slate-500/10 text-slate-500'
+              : value === 'TEACHER'
+                ? 'bg-emerald-500/10 text-emerald-600'
+                : 'bg-slate-500/10 text-slate-500'
           }`}
         >
           {String(value)}
         </span>
       ),
+    },
+    {
+      header: 'Status',
+      key: 'status',
+      render: (value) => {
+        const v = String(value || 'PENDING');
+        const cls =
+          v === 'APPROVED'
+            ? 'bg-emerald-500/10 text-emerald-600'
+            : v === 'PENDING'
+              ? 'bg-amber-500/10 text-amber-600'
+              : v === 'REJECTED'
+                ? 'bg-rose-500/10 text-rose-600'
+                : v === 'SUSPENDED'
+                  ? 'bg-red-500/10 text-red-600'
+                  : 'bg-slate-500/10 text-slate-600';
+        return (
+          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${cls}`}>{v}</span>
+        );
+      },
     },
     {
       header: 'Verified',
