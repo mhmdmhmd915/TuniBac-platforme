@@ -58,18 +58,17 @@ function App() {
       <Navbar />
       <main className="flex-grow">
         <ErrorBoundary>
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<RegisterEntry />} />
-            <Route path="/register/form" element={<Register />} />
-            <Route path="/pending-approval" element={<PendingApproval />} />
+          <Routes>
+            <Route path="/" element={<Suspense fallback={<PageLoader />}><LandingPage /></Suspense>} />
+            <Route path="/login" element={<Suspense fallback={<PageLoader />}><Login /></Suspense>} />
+            <Route path="/register" element={<Suspense fallback={<PageLoader />}><RegisterEntry /></Suspense>} />
+            <Route path="/register/form" element={<Suspense fallback={<PageLoader />}><Register /></Suspense>} />
+            <Route path="/pending-approval" element={<Suspense fallback={<PageLoader />}><PendingApproval /></Suspense>} />
             <Route
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <Suspense fallback={<PageLoader />}><Dashboard /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -77,7 +76,7 @@ function App() {
               path="/learning-path"
               element={
                 <ProtectedRoute bacTrackOnly>
-                  <LearningPath />
+                  <Suspense fallback={<PageLoader />}><LearningPath /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -85,16 +84,16 @@ function App() {
               path="/teacher"
               element={
                 <ProtectedRoute teacherOnly>
-                  <TeacherWorkspace />
+                  <Suspense fallback={<PageLoader />}><TeacherWorkspace /></Suspense>
                 </ProtectedRoute>
               }
             />
-            <Route path="/teachers/:id" element={<TeacherPublicProfile />} />
+            <Route path="/teachers/:id" element={<Suspense fallback={<PageLoader />}><TeacherPublicProfile /></Suspense>} />
             <Route
               path="/teachers"
               element={
                 <ProtectedRoute bacTrackOnly>
-                  <TeachersList />
+                  <Suspense fallback={<PageLoader />}><TeachersList /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -102,7 +101,7 @@ function App() {
               path="/shop"
               element={
                 <ProtectedRoute bacTrackOnly>
-                  <ShopList />
+                  <Suspense fallback={<PageLoader />}><ShopList /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -110,7 +109,7 @@ function App() {
               path="/shop/:id"
               element={
                 <ProtectedRoute bacTrackOnly>
-                  <ProductDetail />
+                  <Suspense fallback={<PageLoader />}><ProductDetail /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -118,7 +117,7 @@ function App() {
               path="/profile"
               element={
                 <ProtectedRoute>
-                  <ProgressPage />
+                  <Suspense fallback={<PageLoader />}><ProgressPage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -126,7 +125,7 @@ function App() {
               path="/admin/tips"
               element={
                 <ProtectedRoute adminOnly>
-                  <TipsPage />
+                  <Suspense fallback={<PageLoader />}><TipsPage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -134,7 +133,7 @@ function App() {
               path="/study-planner"
               element={
                 <ProtectedRoute>
-                  <StudyPlanner />
+                  <Suspense fallback={<PageLoader />}><StudyPlanner /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -142,7 +141,7 @@ function App() {
               path="/live-study"
               element={
                 <ProtectedRoute>
-                  <SessionsList />
+                  <Suspense fallback={<PageLoader />}><SessionsList /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -150,7 +149,7 @@ function App() {
               path="/live-study/:sessionId"
               element={
                 <ProtectedRoute>
-                  <StudyRoom />
+                  <Suspense fallback={<PageLoader />}><StudyRoom /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -158,7 +157,7 @@ function App() {
               path="/admin"
               element={
                 <ProtectedRoute adminOnly>
-                  <AdminDashboard />
+                  <Suspense fallback={<PageLoader />}><AdminDashboard /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -166,7 +165,7 @@ function App() {
               path="/admin/subjects"
               element={
                 <ProtectedRoute adminOnly>
-                  <SubjectsPage />
+                  <Suspense fallback={<PageLoader />}><SubjectsPage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -174,7 +173,7 @@ function App() {
               path="/admin/users"
               element={
                 <ProtectedRoute adminOnly>
-                  <UsersPage />
+                  <Suspense fallback={<PageLoader />}><UsersPage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -182,7 +181,7 @@ function App() {
               path="/admin/settings"
               element={
                 <ProtectedRoute adminOnly>
-                  <SettingsPage />
+                  <Suspense fallback={<PageLoader />}><SettingsPage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -190,7 +189,7 @@ function App() {
               path="/admin/uploads"
               element={
                 <ProtectedRoute adminOnly>
-                  <UploadsPage />
+                  <Suspense fallback={<PageLoader />}><UploadsPage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -198,7 +197,7 @@ function App() {
               path="/admin/platform-offer"
               element={
                 <ProtectedRoute adminOnly>
-                  <PlatformOfferPage />
+                  <Suspense fallback={<PageLoader />}><PlatformOfferPage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -206,7 +205,7 @@ function App() {
               path="/admin/content-tree"
               element={
                 <ProtectedRoute adminOnly>
-                  <ContentTreePage />
+                  <Suspense fallback={<PageLoader />}><ContentTreePage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -214,7 +213,7 @@ function App() {
               path="/admin/content-tree/course/:id"
               element={
                 <ProtectedRoute adminOnly>
-                  <ContentItemEditor />
+                  <Suspense fallback={<PageLoader />}><ContentItemEditor /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -222,7 +221,7 @@ function App() {
               path="/admin/content-tree/exercise/:id"
               element={
                 <ProtectedRoute adminOnly>
-                  <ContentItemEditor />
+                  <Suspense fallback={<PageLoader />}><ContentItemEditor /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -230,7 +229,7 @@ function App() {
               path="/admin/content-tree/devoir/:id"
               element={
                 <ProtectedRoute adminOnly>
-                  <ContentItemEditor />
+                  <Suspense fallback={<PageLoader />}><ContentItemEditor /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -238,7 +237,7 @@ function App() {
               path="/admin/teachers"
               element={
                 <ProtectedRoute adminOnly>
-                  <TeachersPage />
+                  <Suspense fallback={<PageLoader />}><TeachersPage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -246,7 +245,7 @@ function App() {
               path="/admin/teacher-ads"
               element={
                 <ProtectedRoute adminOnly>
-                  <TeacherAdsPage />
+                  <Suspense fallback={<PageLoader />}><TeacherAdsPage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -254,7 +253,7 @@ function App() {
               path="/admin/shop"
               element={
                 <ProtectedRoute adminOnly>
-                  <ShopPage />
+                  <Suspense fallback={<PageLoader />}><ShopPage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -262,7 +261,7 @@ function App() {
               path="/courses"
               element={
                 <ProtectedRoute bacTrackOnly>
-                  <CourseList />
+                  <Suspense fallback={<PageLoader />}><CourseList /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -270,7 +269,7 @@ function App() {
               path="/courses/:id"
               element={
                 <ProtectedRoute bacTrackOnly>
-                  <CourseDetail />
+                  <Suspense fallback={<PageLoader />}><CourseDetail /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -278,7 +277,7 @@ function App() {
               path="/exercises"
               element={
                 <ProtectedRoute bacTrackOnly>
-                  <ExerciseList />
+                  <Suspense fallback={<PageLoader />}><ExerciseList /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -286,7 +285,7 @@ function App() {
               path="/exercises/:id"
               element={
                 <ProtectedRoute bacTrackOnly>
-                  <ExerciseDetail />
+                  <Suspense fallback={<PageLoader />}><ExerciseDetail /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -294,18 +293,18 @@ function App() {
               path="/devoirs/:id"
               element={
                 <ProtectedRoute bacTrackOnly>
-                  <DevoirDetail />
+                  <Suspense fallback={<PageLoader />}><DevoirDetail /></Suspense>
                 </ProtectedRoute>
               }
             />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/parascolaires" element={<ParascolairesList />} />
-            <Route path="/parascolaires/:id" element={<ParascolaireDetail />} />
+            <Route path="/faq" element={<Suspense fallback={<PageLoader />}><FAQ /></Suspense>} />
+            <Route path="/parascolaires" element={<Suspense fallback={<PageLoader />}><ParascolairesList /></Suspense>} />
+            <Route path="/parascolaires/:id" element={<Suspense fallback={<PageLoader />}><ParascolaireDetail /></Suspense>} />
             <Route
               path="/admin/live-study"
               element={
                 <ProtectedRoute adminOnly>
-                  <AdminLiveStudyPage />
+                  <Suspense fallback={<PageLoader />}><AdminLiveStudyPage /></Suspense>
                 </ProtectedRoute>
               }
             />
@@ -313,12 +312,11 @@ function App() {
               path="/study-squads/:id"
               element={
                 <ProtectedRoute>
-                  <StudySquadDetail />
+                  <Suspense fallback={<PageLoader />}><StudySquadDetail /></Suspense>
                 </ProtectedRoute>
               }
             />
           </Routes>
-          </Suspense>
         </ErrorBoundary>
       </main>
       <Footer />

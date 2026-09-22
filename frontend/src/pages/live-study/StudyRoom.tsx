@@ -166,6 +166,22 @@ const formatTimer = (startedAt: string, tick: number) => {
   void tick
 }
 
+const SessionTimer: React.FC<{ startedAt: string }> = ({ startedAt }) => {
+  const [tick, setTick] = useState(0)
+  useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 1000)
+    return () => clearInterval(id)
+  }, [])
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1.5">
+      <Clock size={13} className="text-[#0B5ED7]" />
+      <span className="font-mono text-xs font-black text-[#0B5ED7]">
+        {formatTimer(startedAt, tick)}
+      </span>
+    </span>
+  )
+}
+
 const formatTime = (iso: string) => {
   try {
     return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -201,6 +217,9 @@ const StudyRoom: React.FC = () => {
   const mediaManagerRef = useRef<WebRtcMediaManager | null>(null)
   const unsubscribePeerJoinedRef = useRef<(() => void) | null>(null)
   const didJoinRoomRef = useRef<boolean>(false)
+  const bootstrapRanRef = useRef<boolean>(false)
+  const messageInputRef = useRef('')
+  const remoteAudioRefs = useRef<Record<string, HTMLAudioElement | null>>({})
 
   const [session, setSession] = useState<SessionInfo | null>(null)
   const [loading, setLoading] = useState(true)
@@ -209,29 +228,31 @@ const StudyRoom: React.FC = () => {
   const [mediaErrorToast, setMediaErrorToast] = useState<string | null>(null)
   const [participants, setParticipants] = useState<Participant[]>([])
   const [messages, setMessages] = useState<ChatMessage[]>([])
-  const [messageInput, setMessageInput] = useState('')
   const [sendingMsg, setSendingMsg] = useState(false)
   const [micOn, setMicOn] = useState(false)
   const [camOn, setCamOn] = useState(false)
   const [togglingMic, setTogglingMic] = useState(false)
   const [togglingCam, setTogglingCam] = useState(false)
-  const [tick, setTick] = useState(0)
   const [prevBadgeIds, setPrevBadgeIds] = useState<Set<string>>(new Set())
   const [badgeToasts, setBadgeToasts] = useState<ToastBadge[]>([])
   const [joined, setJoined] = useState(false)
   const [leaving, setLeaving] = useState(false)
   const [finishing, setFinishing] = useState(false)
   const [remoteStreams, setRemoteStreams] = useState<RemoteStreamMap>({})
+  const [messageInputState, setMessageInputState] = useState('')
+  const [needsAudioEnable, setNeedsAudioEnable] = useState<Record<string, boolean>>({})
 
   const meId = (user as any)?.id || (user as any)?._id || (user as any)?.userId || ''
 
-  useEffect(() => {
-    const id = setInterval(() => setTick((t) => t + 1), 1000)
-    return () => clearInterval(id)
+  const setMessageInput = useCallback((v: string) => {
+    messageInputRef.current = v
+    setMessageInputState(v)
   }, [])
 
   useEffect(() => {
     if (!sessionId) return
+    if (bootstrapRanRef.current) return
+    bootstrapRanRef.current = true
     let cancelled = false
     let unsubscribeListeners: (() => void) | undefined
 
@@ -410,7 +431,7 @@ const StudyRoom: React.FC = () => {
       try { unsubscribePeerJoinedRef.current?.() } catch {}
       unsubscribePeerJoinedRef.current = null
     }
-  }, [sessionId, navigate, meId, joined])
+  }, [sessionId, navigate, meId])
 
   useEffect(() => {
     if (!sessionId || !joined) return
@@ -512,13 +533,14 @@ const StudyRoom: React.FC = () => {
 
   const sendMessage = useCallback(async (e?: React.FormEvent) => {
     e?.preventDefault()
-    const content = messageInput.trim()
+    const content = messageInputRef.current.trim()
     if (!content || !sessionId || sendingMsg) return
     if (content.length > 1000) return
+    messageInputRef.current = ''
+    setMessageInputState('')
     setSendingMsg(true)
     try {
       const sent = await liveStudyAPI.sendChat(sessionId, { content })
-      setMessageInput('')
       if (sent) {
         const incoming: ChatMessage = sent.message || sent
         setMessages((prev) => {
@@ -527,16 +549,19 @@ const StudyRoom: React.FC = () => {
           return [...prev, incoming]
         })
       }
-    } catch {} finally {
+    } catch {
+      messageInputRef.current = content
+      setMessageInputState(content)
+    } finally {
       setSendingMsg(false)
     }
-  }, [messageInput, sessionId, sendingMsg])
+  }, [sessionId, sendingMsg])
 
   const handleMessageInputChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setMessageInput(e.target.value.slice(0, 1000))
     },
-    []
+    [setMessageInput]
   )
 
   const handleMessageInputKeyDown = useCallback(
@@ -548,6 +573,70 @@ const StudyRoom: React.FC = () => {
     },
     [sendMessage]
   )
+
+  const enableParticipantAudio = useCallback((pid: string) => {
+    const videoEl = remoteVideoRefs.current[pid]
+    const audioEl = remoteAudioRefs.current[pid]
+    const tryPlay = async (el: HTMLMediaElement | null | undefined) => {
+      if (!el) return
+      try {
+        el.muted = false
+        try { await el.play() } catch {}
+      } catch {}
+    }
+    void tryPlay(videoEl)
+    void tryPlay(audioEl)
+    setNeedsAudioEnable((prev) => ({ ...prev, [pid]: false }))
+  }, [])
+
+  const attachRemoteStreamToMedia = useCallback((pid: string) => {
+    const stream = remoteStreams[pid] || null
+    const videoEl = remoteVideoRefs.current[pid]
+    const audioEl = remoteAudioRefs.current[pid]
+    if (videoEl) {
+      videoEl.playsInline = true
+      try { videoEl.srcObject = stream } catch {}
+      if (!stream) return
+      const tryAuto = async () => {
+        try {
+          const p = videoEl.play()
+          if (p && typeof (p as any).catch === 'function') {
+            ;(p as any).catch(() => {
+              setNeedsAudioEnable((prev) => ({ ...prev, [pid]: true }))
+            })
+          }
+        } catch {
+          setNeedsAudioEnable((prev) => ({ ...prev, [pid]: true }))
+        }
+      }
+      void tryAuto()
+    }
+    if (audioEl) {
+      try { (audioEl as any).playsInline = true } catch {}
+      try { audioEl.srcObject = stream } catch {}
+      if (!stream) return
+      const tryAutoA = async () => {
+        try {
+          const p = audioEl.play()
+          if (p && typeof (p as any).catch === 'function') {
+            ;(p as any).catch(() => {
+              setNeedsAudioEnable((prev) => ({ ...prev, [pid]: true }))
+            })
+          }
+        } catch {
+          setNeedsAudioEnable((prev) => ({ ...prev, [pid]: true }))
+        }
+      }
+      void tryAutoA()
+    }
+  }, [remoteStreams])
+
+  useEffect(() => {
+    Object.keys(remoteStreams).forEach((pid) => {
+      if (pid === meId) return
+      attachRemoteStreamToMedia(pid)
+    })
+  }, [remoteStreams, attachRemoteStreamToMedia, meId])
 
   const showMediaError = (msg: string) => {
     setMediaErrorToast(msg)
@@ -974,12 +1063,12 @@ const StudyRoom: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1.5">
-              <Clock size={13} className="text-[#0B5ED7]" />
-              <span className="font-mono text-xs font-black text-[#0B5ED7]">
-                {session?.startedAt ? formatTimer(session.startedAt, tick) : '00:00'}
+            {session?.startedAt ? <SessionTimer startedAt={session.startedAt} /> : (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1.5">
+                <Clock size={13} className="text-[#0B5ED7]" />
+                <span className="font-mono text-xs font-black text-[#0B5ED7]">00:00</span>
               </span>
-            </span>
+            )}
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5">
               <Users size={13} className="text-emerald-600" />
               <span className="text-xs font-black text-emerald-700">
@@ -1045,6 +1134,14 @@ const StudyRoom: React.FC = () => {
                 node.srcObject = remoteStream || null
               }
             }
+            const attachAudio = (node: HTMLAudioElement | null) => {
+              if (isMe) return
+              remoteAudioRefs.current[p.id] = node
+              if (node) {
+                try { (node as any).playsInline = true } catch {}
+                node.srcObject = remoteStream || null
+              }
+            }
 
             return (
               <div
@@ -1060,6 +1157,12 @@ const StudyRoom: React.FC = () => {
                     className="h-full w-full object-cover"
                   />
                 ) : null}
+                <audio
+                  ref={attachAudio}
+                  autoPlay
+                  playsInline
+                  muted={isMe}
+                />
                 {showAvatar && (
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span
@@ -1073,6 +1176,16 @@ const StudyRoom: React.FC = () => {
                       {isMe && ' (You)'}
                     </p>
                   </div>
+                )}
+
+                {!isMe && needsAudioEnable[p.id] && (
+                  <button
+                    type="button"
+                    onClick={() => enableParticipantAudio(p.id)}
+                    className="absolute top-2 left-2 right-2 z-10 inline-flex items-center justify-center gap-1 rounded-full bg-amber-500/95 px-3 py-1.5 text-[11px] font-black text-white shadow-lg backdrop-blur-sm hover:bg-amber-600 transition-colors"
+                  >
+                    🔊 Activer le son
+                  </button>
                 )}
 
                 <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between gap-2">
@@ -1331,7 +1444,7 @@ const StudyRoom: React.FC = () => {
               <div className="flex items-end gap-2">
                 <div className="flex-1 min-w-0 relative">
                   <textarea
-                    value={messageInput}
+                    value={messageInputState}
                     onChange={handleMessageInputChange}
                     onKeyDown={handleMessageInputKeyDown}
                     rows={1}
@@ -1340,12 +1453,12 @@ const StudyRoom: React.FC = () => {
                     style={{ maxHeight: '120px' }}
                   />
                   <span className="pointer-events-none absolute bottom-2 right-3 text-[10px] font-bold text-slate-400">
-                    {messageInput.length}/1000
+                    {messageInputState.length}/1000
                   </span>
                 </div>
                 <button
                   type="submit"
-                  disabled={sendingMsg || !messageInput.trim()}
+                  disabled={sendingMsg || !messageInputState.trim()}
                   className="shrink-0 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0B5ED7] text-white shadow-[0_10px_24px_-8px_rgba(11,94,215,0.7)] transition-all hover:bg-[#094fb8] disabled:opacity-50"
                 >
                   {sendingMsg ? (

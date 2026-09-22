@@ -65,7 +65,12 @@ export class WebRtcMediaManager {
       const exists = senders.some((s) => s.track && s.track.id === track.id)
       if (!exists) {
         try {
-          pc.addTrack(track, localStream)
+          const transceiver = pc.addTrack(track, localStream)
+          try {
+            if ((transceiver as any)?.direction && (transceiver as any).direction !== 'sendrecv') {
+              try { (transceiver as any).direction = 'sendrecv' } catch {}
+            }
+          } catch {}
         } catch {
           /* ignore invalid state addTrack on closed etc */
         }
@@ -79,43 +84,87 @@ export class WebRtcMediaManager {
     let ignoreOffer = false
     let isSettingRemoteAnswerPending = false
 
+    pc.oniceconnectionstatechange = () => {
+      console.log('[webrtc] iceConnectionState', remoteUserId, pc.iceConnectionState, 'gatheringState', pc.iceGatheringState, 'signalingState', pc.signalingState)
+    }
+    pc.onicegatheringstatechange = () => {
+      console.log('[webrtc] iceGatheringState', remoteUserId, pc.iceGatheringState)
+    }
+
     pc.onicecandidate = (ev) => {
       if (ev.candidate) {
+        console.log('[webrtc] ice candidate ->', remoteUserId, ev.candidate.candidate?.slice(0, 80))
         sendSignaling('webrtc:ice', {
           sessionId: this.sessionId,
           to: remoteUserId,
           candidate: ev.candidate,
         })
+      } else {
+        console.log('[webrtc] ice gathering END for', remoteUserId)
       }
     }
 
     pc.ontrack = (ev) => {
-      const [remoteStream] = ev.streams || []
-      if (!remoteStream) return
-      if (!this.remoteStreams[remoteUserId] || this.remoteStreams[remoteUserId].id !== remoteStream.id) {
+      console.log('[webrtc] ontrack', remoteUserId, 'track kind=', ev.track.kind, 'readyState=', ev.track.readyState, 'streams.length=', ev.streams?.length || 0, 'stream IDs=', (ev.streams || []).map((s) => s.id))
+      let [remoteStream] = ev.streams || []
+      if (!remoteStream && ev.track) {
+        console.warn('[webrtc] ontrack streams empty, building merged per-peer MediaStream for track', ev.track.kind)
+        if (!this.remoteStreams[remoteUserId]) {
+          this.remoteStreams[remoteUserId] = new MediaStream()
+        }
+        remoteStream = this.remoteStreams[remoteUserId]
+        try {
+          if (remoteStream && !remoteStream.getTracks().some((t) => t.id === ev.track.id)) {
+            remoteStream.addTrack(ev.track)
+          }
+        } catch (e) {
+          console.warn('[webrtc] addTrack to merged stream failed', e)
+        }
+      }
+      if (!remoteStream) {
+        console.warn('[webrtc] ontrack no stream, track discarded')
+        return
+      }
+      const prev = this.remoteStreams[remoteUserId]
+      if (!prev || prev.id !== remoteStream.id) {
         this.remoteStreams[remoteUserId] = remoteStream
         this.notifyStreams()
+        return
+      }
+      if (prev && !prev.getTracks().some((t) => t.id === ev.track.id)) {
+        try {
+          prev.addTrack(ev.track)
+          this.notifyStreams()
+        } catch (e) {
+          console.warn('[webrtc] merge addTrack failed', e)
+        }
       }
     }
 
     pc.onnegotiationneeded = async () => {
+      if (makingOffer) {
+        console.warn('[webrtc] onnegotiationneeded makingOffer=true guard -> skip (double fire prevented)', remoteUserId)
+        return
+      }
+      makingOffer = true
       try {
-        makingOffer = true
+        if (pc.signalingState !== 'stable') {
+          console.warn('[webrtc] onnegotiationneeded signaling not stable, skip', remoteUserId, pc.signalingState)
+          return
+        }
         await pc.setLocalDescription()
+        const desc = pc.localDescription
+        console.log('[webrtc] LOCAL OFFER type=', desc?.type, 'sdp audio lines=', (desc?.sdp?.match(/^m=audio/gm) || []).length, 'video lines=', (desc?.sdp?.match(/^m=video/gm) || []).length, 'sdp sample=', desc?.sdp?.slice(0, 180))
         sendSignaling('webrtc:offer', {
           sessionId: this.sessionId,
           to: remoteUserId,
-          sdp: pc.localDescription,
+          sdp: desc,
         })
       } catch (e) {
-        console.warn('[webrtc] negotiation failed', e)
+        console.warn('[webrtc] negotiation failed', remoteUserId, e)
       } finally {
         makingOffer = false
       }
-    }
-
-    pc.onsignalingstatechange = () => {
-      isSettingRemoteAnswerPending = pc.signalingState === 'have-local-offer'
     }
 
     ;(pc as any).__tunibac_polite = polite
@@ -128,6 +177,9 @@ export class WebRtcMediaManager {
       ignoreOffer = v
     }
     ;(pc as any).__tunibac_isSettingRemoteAnswerPending = () => isSettingRemoteAnswerPending
+    ;(pc as any).__tunibac_setAnswerPending = (v: boolean) => {
+      isSettingRemoteAnswerPending = v
+    }
 
     this.addLocalTracksToPeer(pc)
 
@@ -171,6 +223,7 @@ export class WebRtcMediaManager {
         const offerCollision =
           (makingOffer || pc.signalingState !== 'stable') && !isSettingRemoteAnswerPending
         const ignoreOffer = !polite && offerCollision
+        console.log('[webrtc] INCOMING OFFER from', peerId, 'polite=', polite, 'makingOffer=', makingOffer, 'answerPending=', isSettingRemoteAnswerPending, 'collision=', offerCollision, 'ignore=', ignoreOffer, 'signalingState=', pc.signalingState)
         if (ignoreOffer) {
           return
         }
@@ -178,10 +231,12 @@ export class WebRtcMediaManager {
           await this.setRemoteDescription(pc, ev.sdp)
           this.flushPendingCandidates(peerId, pc)
           await pc.setLocalDescription()
+          const desc = pc.localDescription
+          console.log('[webrtc] OUT ANSWER to', peerId, 'type=', desc?.type, 'audio m-lines=', (desc?.sdp?.match(/^m=audio/gm) || []).length, 'video m-lines=', (desc?.sdp?.match(/^m=video/gm) || []).length)
           sendSignaling('webrtc:answer', {
             sessionId: this.sessionId,
             to: peerId,
-            sdp: pc.localDescription,
+            sdp: desc,
           })
         } catch (e) {
           console.warn('[webrtc] offer handle failed', e)
@@ -192,14 +247,23 @@ export class WebRtcMediaManager {
         const pc = this.pcMap[peerId]
         if (!pc) return
         try {
-          const stableReady =
-            pc.signalingState === 'have-local-offer' || pc.signalingState === 'have-remote-offer'
-          if (stableReady || pc.remoteDescription == null) {
+          const setAnswerPending = (pc as any).__tunibac_setAnswerPending
+          if (typeof setAnswerPending === 'function') setAnswerPending(true)
+          const validState =
+            pc.signalingState === 'have-local-offer'
+          console.log('[webrtc] INCOMING ANSWER from', peerId, 'signalingState=', pc.signalingState, 'validState=', validState)
+          if (validState || pc.remoteDescription == null) {
             await this.setRemoteDescription(pc, ev.sdp)
             this.flushPendingCandidates(peerId, pc)
+            console.log('[webrtc] ANSWER APPLIED remoteDescription.type=', pc.remoteDescription?.type, 'signalingState now=', pc.signalingState)
+          } else {
+            console.warn('[webrtc] ANSWER state invalid, skipped setRemoteDescription to avoid InvalidStateError', peerId, pc.signalingState)
           }
         } catch (e) {
           console.warn('[webrtc] answer handle failed', e)
+        } finally {
+          const setAnswerPending = (pc as any).__tunibac_setAnswerPending
+          if (typeof setAnswerPending === 'function') setAnswerPending(false)
         }
       },
       onIce: (ev) => {
@@ -208,12 +272,14 @@ export class WebRtcMediaManager {
         if (!pc) {
           this.pendingCandidates[peerId] = this.pendingCandidates[peerId] || []
           this.pendingCandidates[peerId].push(ev.candidate)
+          console.log('[webrtc] ICE queued (no PC yet)', peerId, 'queue len=', this.pendingCandidates[peerId].length)
           return
         }
         try {
+          console.log('[webrtc] ICE applying', peerId, (ev.candidate?.candidate || 'end-of-candidates').slice(0, 80))
           void pc.addIceCandidate(ev.candidate)
-        } catch {
-          /* ignore */
+        } catch (e) {
+          console.warn('[webrtc] ice add candidate failed', peerId, e)
         }
       },
       onBye: (ev) => {
@@ -232,11 +298,10 @@ export class WebRtcMediaManager {
     const peerJoinedHandler = (ev: any) => {
       const who = ev?.userId
       if (!who || who === this.userId) return
-      const pc = this.ensurePeer(who, false)
+      if (this.knownPeers.has(who)) return
+      this.ensurePeer(who, false)
       this.knownPeers.add(who)
-      if (pc.signalingState === 'stable') {
-        pc.dispatchEvent(new Event('negotiationneeded'))
-      }
+      console.log('[webrtc] peer-joined ensurePeer created', who)
     }
     this.socket.on(peerJoinedEv, peerJoinedHandler)
 
@@ -252,7 +317,8 @@ export class WebRtcMediaManager {
 
   async addOrReplaceLocalTracks() {
     const peerEntries = Object.entries(this.pcMap)
-    for (const [peerId, pc] of peerEntries) {
+    console.log('[webrtc] addOrReplaceLocalTracks peers=', peerEntries.length, 'tracks now=', this.getLocalTracks().map((t) => t.kind).join(','))
+    for (const [_peerId, pc] of peerEntries) {
       if (pc.signalingState === 'closed') continue
       const wantedTracks = this.getLocalTracks()
       const wantedIds = new Set(wantedTracks.map((t) => t.id))
@@ -266,14 +332,6 @@ export class WebRtcMediaManager {
         }
       }
       this.addLocalTracksToPeer(pc)
-      if (pc.signalingState === 'stable') {
-        try {
-          pc.dispatchEvent(new Event('negotiationneeded'))
-        } catch {
-          /* ignore */
-        }
-      }
-      void peerId
     }
   }
 

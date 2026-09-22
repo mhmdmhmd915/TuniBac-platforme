@@ -12,32 +12,33 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = f
   const { user, isLoading } = useAuth();
   const location = useLocation();
 
-  if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-  }
+  const roleOK = !adminOnly || user?.role === 'ADMIN';
+  const teacherOK = !teacherOnly || user?.role === 'TEACHER' || user?.role === 'ADMIN';
+  const statusOK = !user || user.role === 'ADMIN' || user.status === 'APPROVED';
+  const bacOK = !bacTrackOnly || !user || user.educationTrack !== 'OTHER';
 
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
+  const redirectTo = (() => {
+    if (isLoading) return null;
+    if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
+    if (user.role !== 'ADMIN' && user.status !== 'APPROVED') return <Navigate to="/pending-approval" replace />;
+    if (!roleOK) return <Navigate to={user?.role === 'TEACHER' ? '/teacher' : '/learning-path'} replace />;
+    if (!teacherOK) return <Navigate to="/learning-path" replace />;
+    if (!bacOK) return <Navigate to="/study-planner" replace />;
+    if (!statusOK) return <Navigate to="/pending-approval" replace />;
+    return null;
+  })();
 
-  // If not admin and not approved, redirect to pending page
-  if (user.role !== 'ADMIN' && user.status !== 'APPROVED') {
-    return <Navigate to="/pending-approval" replace />;
-  }
-
-  if (adminOnly && user.role !== 'ADMIN') {
-    return <Navigate to={user.role === 'TEACHER' ? '/teacher' : '/learning-path'} replace />;
-  }
-
-  if (teacherOnly && user.role !== 'TEACHER' && user.role !== 'ADMIN') {
-    return <Navigate to="/learning-path" replace />;
-  }
-
-  if (bacTrackOnly && user.educationTrack === 'OTHER') {
-    return <Navigate to="/study-planner" replace />;
-  }
-
-  return <>{children}</>;
+  return (
+    <div className="contents">
+      {isLoading ? (
+        <div className="min-h-screen flex items-center justify-center">Loading...</div>
+      ) : redirectTo ? (
+        redirectTo
+      ) : (
+        <>{children}</>
+      )}
+    </div>
+  );
 };
 
 export default ProtectedRoute;

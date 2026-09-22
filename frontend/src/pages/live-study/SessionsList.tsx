@@ -234,7 +234,8 @@ const SessionsList: React.FC = () => {
   const [cancelInvLoading, setCancelInvLoading] = useState<Record<string, boolean>>({})
   const [leaveLoading, setLeaveLoading] = useState(false)
   const [disbandLoading, setDisbandLoading] = useState(false)
-  const [chatInput, setChatInput] = useState('')
+  const [chatInputState, setChatInputState] = useState('')
+  const chatInputRef = useRef('')
   const [chatLoading, setChatLoading] = useState(false)
   const chatBottomRef = useRef<HTMLDivElement>(null)
   const [goalForm, setGoalForm] = useState<{ title: string; description: string; targetDate: string; progress: number; completed: boolean }>({ title: '', description: '', targetDate: '', progress: 0, completed: false })
@@ -242,6 +243,11 @@ const SessionsList: React.FC = () => {
   const [goalLoading, setGoalLoading] = useState(false)
   const chatListenerBoundRef = useRef(false)
   const updateListenerBoundRef = useRef(false)
+
+  const setChatInput = useCallback((v: string) => {
+    chatInputRef.current = v
+    setChatInputState(v)
+  }, [])
 
   // ============= PUBLIC LIVE STUDY =============
   const loadSessions = async () => {
@@ -636,21 +642,23 @@ const SessionsList: React.FC = () => {
 
   const sendSquadChat = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!squadDetail || !chatInput.trim()) return
+    const content = chatInputRef.current.trim()
+    if (!squadDetail || !content) return
     try {
       setChatLoading(true)
-      await studySquadAPI.sendChatMessage(squadDetail.id, { content: chatInput.trim() })
-      setChatInput('')
+      await studySquadAPI.sendChatMessage(squadDetail.id, { content })
+      chatInputRef.current = ''
+      setChatInputState('')
     } finally {
       setChatLoading(false)
     }
-  }, [squadDetail, chatInput])
+  }, [squadDetail])
 
   const handleSquadChatInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setChatInput(e.target.value)
     },
-    []
+    [setChatInput]
   )
 
   const upsertGoal = async (e: React.FormEvent) => {
@@ -1241,9 +1249,9 @@ const SessionsList: React.FC = () => {
                       <div ref={chatBottomRef} />
                     </div>
                     <form onSubmit={sendSquadChat} className="flex gap-2">
-                      <input value={chatInput} onChange={handleSquadChatInputChange} placeholder="Write to your squad…" maxLength={1000}
+                      <input value={chatInputState} onChange={handleSquadChatInputChange} placeholder="Write to your squad…" maxLength={1000}
                         className="flex-1 px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none focus:ring-2 focus:ring-[#0B5ED7]/40 focus:border-[#0B5ED7]" />
-                      <button type="submit" disabled={chatLoading || !chatInput.trim()} className="inline-flex items-center gap-1.5 rounded-xl bg-[#0B5ED7] hover:bg-[#094fb8] disabled:opacity-50 text-white px-4 py-2.5 text-sm font-black transition-colors">
+                      <button type="submit" disabled={chatLoading || !chatInputState.trim()} className="inline-flex items-center gap-1.5 rounded-xl bg-[#0B5ED7] hover:bg-[#094fb8] disabled:opacity-50 text-white px-4 py-2.5 text-sm font-black transition-colors">
                         {chatLoading ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}
                       </button>
                     </form>

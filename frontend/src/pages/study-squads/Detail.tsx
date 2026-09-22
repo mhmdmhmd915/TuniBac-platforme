@@ -70,25 +70,33 @@ const Detail = () => {
   const [cancelInvLoading, setCancelInvLoading] = useState<Record<string, boolean>>({});
   const [leaveLoading, setLeaveLoading] = useState(false);
   const [disbandLoading, setDisbandLoading] = useState(false);
-  const [chatInput, setChatInput] = useState('');
+  const [chatInputState, setChatInputState] = useState('');
+  const chatInputRef = useRef('');
   const [chatLoading, setChatLoading] = useState(false);
   const chatBottomRef = useRef<HTMLDivElement>(null);
   const [goalForm, setGoalForm] = useState<{ title: string; description: string; targetDate: string; progress: number; completed: boolean }>({ title: '', description: '', targetDate: '', progress: 0, completed: false });
   const [goalEditOpen, setGoalEditOpen] = useState(false);
   const [goalLoading, setGoalLoading] = useState(false);
+  const hasLoadedOnceRef = useRef(false);
   const membershipGatesRef = useRef<{ hasChatListener: boolean; hasSquadUpdateListener: boolean }>({ hasChatListener: false, hasSquadUpdateListener: false });
 
-  const load = useCallback(async () => {
+  const setChatInput = useCallback((v: string) => {
+    chatInputRef.current = v;
+    setChatInputState(v);
+  }, []);
+
+  const setGoalField = useCallback(<K extends keyof typeof goalForm>(key: K, val: typeof goalForm[K]) => {
+    setGoalForm((prev) => ({ ...prev, [key]: val }));
+  }, []);
+
+  const initialLoad = useCallback(async () => {
     if (!id) return;
     try {
       setLoading(true);
       setErr(null);
       const data = await studySquadAPI.getSquad(id);
-      setSquad(data?.id ? data : (data as any)?.squad || null);
-      if (data && !data.id && (data as any)?.squad?.id) {
-        // already handled
-      }
       const sq = data?.id ? data : (data as any)?.squad || null;
+      setSquad(sq);
       if (sq?.goal) {
         setGoalForm({
           title: sq.goal.title || '',
@@ -98,6 +106,7 @@ const Detail = () => {
           completed: !!sq.goal.completed,
         });
       }
+      hasLoadedOnceRef.current = true;
     } catch (e: any) {
       const msg = e?.response?.data?.message || e?.message || 'Failed to load squad';
       setErr(msg);
@@ -106,7 +115,27 @@ const Detail = () => {
     }
   }, [id]);
 
-  useEffect(() => { load(); }, [load]);
+  const refreshSquad = useCallback(async () => {
+    if (!id) return;
+    try {
+      const data = await studySquadAPI.getSquad(id);
+      const sq = data?.id ? data : (data as any)?.squad || null;
+      if (sq) {
+        setSquad(sq);
+        if (sq.goal) {
+          setGoalForm({
+            title: sq.goal.title || '',
+            description: sq.goal.description || '',
+            targetDate: sq.goal.targetDate ? new Date(sq.goal.targetDate).toISOString().slice(0, 10) : '',
+            progress: Number(sq.goal.progress || 0),
+            completed: !!sq.goal.completed,
+          });
+        }
+      }
+    } catch (_e) { /* ignore */ }
+  }, [id]);
+
+  useEffect(() => { initialLoad(); }, [initialLoad]);
 
   useEffect(() => {
     if (!id) return;
@@ -128,9 +157,9 @@ const Detail = () => {
       };
       const onUpdate = (payload: any) => {
         if (payload?.squadId && payload.squadId !== id) return;
-        load();
+        refreshSquad();
       };
-      const onInv = () => load();
+      const onInv = () => refreshSquad();
       s.on(`study-squad:chat:${id}`, onChat);
       s.on('study-squad:chat', onChat);
       if (!membershipGatesRef.current.hasSquadUpdateListener) {
@@ -141,10 +170,9 @@ const Detail = () => {
       return () => {
         s.off(`study-squad:chat:${id}`, onChat);
         s.off('study-squad:chat', onChat);
-        // don't remove squad:update since singleton app, but safe to leave
       };
     } catch (_e) { /* ignore */ }
-  }, [id, load]);
+  }, [id, refreshSquad]);
 
   useEffect(() => {
     try { chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' }); } catch {}
@@ -195,7 +223,7 @@ const Detail = () => {
       await studySquadAPI.inviteByPhone(squad.id, { phone: invitePhone.trim() });
       setInviteSuccess(`Invitation sent to ${invitePhone.trim()}`);
       setInvitePhone('');
-      await load();
+      await refreshSquad();
       setTimeout(() => setInviteSuccess(null), 3000);
     } catch (e: any) {
       setInviteError(e?.response?.data?.message || 'Failed to send invitation');
@@ -209,7 +237,7 @@ const Detail = () => {
     try {
       setCancelInvLoading((p) => ({ ...p, [invId]: true }));
       await studySquadAPI.cancelInvitation(squad.id, invId);
-      await load();
+      await refreshSquad();
     } finally {
       setCancelInvLoading((p) => ({ ...p, [invId]: false }));
     }
@@ -221,7 +249,7 @@ const Detail = () => {
     try {
       setRemoveLoading((p) => ({ ...p, [userId]: true }));
       await studySquadAPI.removeMember(squad.id, userId);
-      await load();
+      await refreshSquad();
     } finally {
       setRemoveLoading((p) => ({ ...p, [userId]: false }));
     }
@@ -232,7 +260,7 @@ const Detail = () => {
     try {
       setRenameLoading(true);
       await studySquadAPI.renameSquad(squad.id, { name: renameValue.trim() });
-      await load();
+      await refreshSquad();
       setRenameOpen(false);
       setRenameValue('');
     } finally {
@@ -267,9 +295,10 @@ const Detail = () => {
 
   const sendChat = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!squad?.id || !chatInput.trim()) return;
-    const content = chatInput.trim();
-    setChatInput('');
+    const content = chatInputRef.current.trim();
+    if (!squad?.id || !content) return;
+    chatInputRef.current = '';
+    setChatInputState('');
     try {
       setChatLoading(true);
       const out = await studySquadAPI.sendChatMessage(squad.id, { content });
@@ -283,15 +312,16 @@ const Detail = () => {
       }
     } catch (e: any) {
       alert(e?.response?.data?.message || 'Failed to send');
-      setChatInput(content);
+      chatInputRef.current = content;
+      setChatInputState(content);
     } finally {
       setChatLoading(false);
     }
-  }, [squad?.id, chatInput]);
+  }, [squad?.id]);
 
   const handleChatInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setChatInput(e.target.value);
-  }, []);
+  }, [setChatInput]);
 
   const saveGoal = async () => {
     if (!squad?.id) return;
@@ -315,7 +345,7 @@ const Detail = () => {
     }
   };
 
-  if (loading) {
+  if (loading || !hasLoadedOnceRef.current) {
     return <div className="min-h-[60vh] flex items-center justify-center gap-2 text-slate-500"><Loader2 size={20} className="animate-spin" /> Loading squad...</div>;
   }
   if (err) {
@@ -501,24 +531,24 @@ const Detail = () => {
               <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-800 p-4 bg-slate-50/50 dark:bg-slate-950/30">
                 <div>
                   <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Goal title</label>
-                  <input value={goalForm.title} onChange={(e) => setGoalForm({ ...goalForm, title: e.target.value })} placeholder="e.g. نكمل Math chapitre 4 قبل الجمعة" maxLength={140} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 outline-none focus:ring-2 focus:ring-sky-500/30 text-sm" />
+                  <input value={goalForm.title} onChange={(e) => setGoalField('title', e.target.value)} placeholder="e.g. نكمل Math chapitre 4 قبل الجمعة" maxLength={140} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 outline-none focus:ring-2 focus:ring-sky-500/30 text-sm" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Description</label>
-                  <textarea value={goalForm.description} onChange={(e) => setGoalForm({ ...goalForm, description: e.target.value })} rows={2} maxLength={1000} placeholder="Optional details..." className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 outline-none focus:ring-2 focus:ring-sky-500/30 text-sm resize-none" />
+                  <textarea value={goalForm.description} onChange={(e) => setGoalField('description', e.target.value)} rows={2} maxLength={1000} placeholder="Optional details..." className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 outline-none focus:ring-2 focus:ring-sky-500/30 text-sm resize-none" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 flex items-center gap-1"><CalendarDays size={12} /> Target date</label>
-                    <input type="date" value={goalForm.targetDate} onChange={(e) => setGoalForm({ ...goalForm, targetDate: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 outline-none focus:ring-2 focus:ring-sky-500/30 text-sm" />
+                    <input type="date" value={goalForm.targetDate} onChange={(e) => setGoalField('targetDate', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 outline-none focus:ring-2 focus:ring-sky-500/30 text-sm" />
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Progress {goalForm.progress || 0}%</label>
-                    <input type="range" min={0} max={100} value={goalForm.progress} onChange={(e) => setGoalForm({ ...goalForm, progress: Number(e.target.value) })} className="w-full accent-sky-600 mt-2" />
+                    <input type="range" min={0} max={100} value={goalForm.progress} onChange={(e) => setGoalField('progress', Number(e.target.value))} className="w-full accent-sky-600 mt-2" />
                   </div>
                 </div>
                 <label className="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200 cursor-pointer">
-                  <input type="checkbox" checked={goalForm.completed} onChange={(e) => setGoalForm({ ...goalForm, completed: e.target.checked })} className="accent-emerald-600 w-4 h-4" />
+                  <input type="checkbox" checked={goalForm.completed} onChange={(e) => setGoalField('completed', e.target.checked)} className="accent-emerald-600 w-4 h-4" />
                   Mark as completed
                 </label>
                 <div className="flex justify-end">
@@ -558,7 +588,7 @@ const Detail = () => {
           <section className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden flex flex-col" style={{ minHeight: 520 }}>
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
               <h2 className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"><MessageCircle size={18} className="text-sky-600" /> Squad Chat</h2>
-              <button onClick={load} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500" title="Refresh"><RefreshCw size={14} /></button>
+              <button onClick={refreshSquad} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500" title="Refresh"><RefreshCw size={14} /></button>
             </div>
             <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3 bg-slate-50/40 dark:bg-slate-950/20">
               {chat.length === 0 ? (
@@ -588,13 +618,13 @@ const Detail = () => {
             <form onSubmit={sendChat} className="px-5 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900/80">
               <div className="flex items-center gap-2">
                 <input
-                  value={chatInput}
+                  value={chatInputState}
                   onChange={handleChatInputChange}
                   placeholder="Write a message..."
                   className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 text-sm"
                   maxLength={1000}
                 />
-                <button disabled={chatLoading || !chatInput.trim()} className="shrink-0 p-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed text-white" title="Send">
+                <button disabled={chatLoading || !chatInputState.trim()} className="shrink-0 p-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed text-white" title="Send">
                   {chatLoading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
                 </button>
               </div>
