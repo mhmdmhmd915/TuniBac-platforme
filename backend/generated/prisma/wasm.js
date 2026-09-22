@@ -130,6 +130,7 @@ exports.Prisma.UserScalarFieldEnum = {
   lastName: 'lastName',
   phone: 'phone',
   bacSection: 'bacSection',
+  educationTrack: 'educationTrack',
   role: 'role',
   status: 'status',
   tokenVersion: 'tokenVersion',
@@ -728,6 +729,11 @@ exports.BacSection = exports.$Enums.BacSection = {
   ECONOMIE_GESTION: 'ECONOMIE_GESTION',
   INFORMATIQUE: 'INFORMATIQUE',
   SPORT: 'SPORT'
+};
+
+exports.EducationTrack = exports.$Enums.EducationTrack = {
+  BAC: 'BAC',
+  OTHER: 'OTHER'
 };
 
 exports.Role = exports.$Enums.Role = {

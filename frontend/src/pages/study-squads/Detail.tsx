@@ -158,6 +158,8 @@ const Detail = () => {
   const activeSessions = sessions.filter((s) => s.status === 'ACTIVE');
   const stats = squad?.stats;
   const isOwner = squad?.myRole === 'OWNER' || squad?.ownerId === user?.id;
+  const membersSorted = useMemo(() => members.slice().sort((a, b) => (a.role === 'OWNER' ? -1 : b.role === 'OWNER' ? 1 : 0)), [members]);
+  const totalMin = Number(stats?.totalMinutes || 0);
 
   const copyCode = async () => {
     if (!squad?.invitationCode) return;
@@ -263,7 +265,7 @@ const Detail = () => {
     }
   };
 
-  const sendChat = async (e: React.FormEvent) => {
+  const sendChat = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!squad?.id || !chatInput.trim()) return;
     const content = chatInput.trim();
@@ -285,7 +287,11 @@ const Detail = () => {
     } finally {
       setChatLoading(false);
     }
-  };
+  }, [squad?.id, chatInput]);
+
+  const handleChatInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setChatInput(e.target.value);
+  }, []);
 
   const saveGoal = async () => {
     if (!squad?.id) return;
@@ -327,9 +333,6 @@ const Detail = () => {
     );
   }
   if (!squad) return null;
-
-  const membersSorted = useMemo(() => members.slice().sort((a, b) => (a.role === 'OWNER' ? -1 : b.role === 'OWNER' ? 1 : 0)), [members]);
-  const totalMin = Number(stats?.totalMinutes || 0);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -586,7 +589,7 @@ const Detail = () => {
               <div className="flex items-center gap-2">
                 <input
                   value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
+                  onChange={handleChatInputChange}
                   placeholder="Write a message..."
                   className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 text-sm"
                   maxLength={1000}

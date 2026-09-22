@@ -71,6 +71,11 @@ enum CommunicationAudience {
   ALL_STUDENTS
 }
 
+enum EducationTrack {
+  BAC
+  OTHER
+}
+
 model User {
   id                       String                  @id @default(uuid())
   email                    String?                 @unique
@@ -78,7 +83,8 @@ model User {
   firstName                String
   lastName                 String
   phone                    String?                 @unique
-  bacSection               BacSection              @default(SCIENCES_EXPERIMENTALES)
+  bacSection               BacSection?
+  educationTrack           EducationTrack          @default(BAC)
   role                     Role                    @default(STUDENT)
   status                   UserStatus              @default(PENDING)
   tokenVersion             Int                     @default(0)
@@ -120,6 +126,7 @@ model User {
   @@index([approvalDate])
   @@index([role, status, createdAt])
   @@index([bacSection, status, createdAt])
+  @@index([educationTrack, status, createdAt])
 }
 
 model LearningStep {
@@ -534,8 +541,8 @@ model StudyTask {
   id          String        @id @default(cuid())
   title       String
   description String?
-  subjectId   String
-  subject     Subject       @relation(fields: [subjectId], references: [id])
+  subjectId   String?
+  subject     Subject?      @relation(fields: [subjectId], references: [id], onDelete: SetNull)
   stepId      String?
   step        LearningStep? @relation(fields: [stepId], references: [id], onDelete: SetNull)
   courseId    String?
@@ -602,8 +609,8 @@ model StudentPlannerTask {
   attachmentMimeType  String?
   attachmentSizeBytes Int?
   isPersonal          Boolean          @default(false)
-  subjectId           String
-  subject             Subject          @relation(fields: [subjectId], references: [id])
+  subjectId           String?
+  subject             Subject?         @relation(fields: [subjectId], references: [id], onDelete: SetNull)
   stepId              String?
   step                LearningStep?    @relation(fields: [stepId], references: [id], onDelete: SetNull)
   courseId            String?
@@ -782,7 +789,7 @@ enum StudyBadgeThresholdUnit {
 
 model StudySession {
   id           String               @id @default(uuid())
-  bacSection   BacSection
+  bacSection   BacSection?
   subjectId    String?
   subject      Subject?             @relation(fields: [subjectId], references: [id])
   topic        String?
@@ -825,7 +832,7 @@ enum StudySquadInvitationStatus {
 model StudySquad {
   id             String                  @id @default(uuid())
   name           String
-  bacSection     BacSection
+  bacSection     BacSection?
   ownerId        String
   owner          User                    @relation("StudySquadOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   invitationCode String                  @unique(map: "StudySquad_invitationCode_unique")
@@ -907,7 +914,7 @@ model SessionParticipant {
   session    StudySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   userId     String
   user       User         @relation("SessionParticipantUser", fields: [userId], references: [id])
-  bacSection BacSection
+  bacSection BacSection?
   joinedAt   DateTime     @default(now())
   leftAt     DateTime?
   isActive   Boolean      @default(true)
@@ -927,7 +934,7 @@ model SessionChatMessage {
   session    StudySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   userId     String
   user       User         @relation("SessionChatUser", fields: [userId], references: [id])
-  bacSection BacSection
+  bacSection BacSection?
   content    String       @db.VarChar(1000)
   createdAt  DateTime     @default(now())
 
@@ -941,7 +948,7 @@ model StudyHeartbeat {
   user       User          @relation("StudyHeartbeatUser", fields: [userId], references: [id])
   sessionId  String?
   session    StudySession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
-  bacSection BacSection
+  bacSection BacSection?
   minuteKey  DateTime      @db.Timestamptz(0)
   minutes    Int           @default(1)
   createdAt  DateTime      @default(now())
@@ -966,13 +973,13 @@ model StudyBadge {
 }
 
 model UserStudyBadge {
-  id          String     @id @default(uuid())
+  id          String      @id @default(uuid())
   userId      String
-  user        User       @relation("UserBadgeOwner", fields: [userId], references: [id])
+  user        User        @relation("UserBadgeOwner", fields: [userId], references: [id])
   badgeId     String
-  badge       StudyBadge @relation(fields: [badgeId], references: [id])
-  bacSection  BacSection
-  awardedAt   DateTime   @default(now())
+  badge       StudyBadge  @relation(fields: [badgeId], references: [id])
+  bacSection  BacSection?
+  awardedAt   DateTime    @default(now())
   evidenceRef String?
 
   @@unique([userId, badgeId])

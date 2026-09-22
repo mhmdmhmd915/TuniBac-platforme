@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowLeft,
@@ -122,7 +122,7 @@ const normalizeParticipant = (raw: any): Participant | null => {
     p.userId ||
     p.user_id ||
     userNested.id ||
-    (typeof name === 'string' ? name : 'anon') + '-' + Math.random().toString(36).slice(2, 7)
+    (typeof name === 'string' ? name : 'anon') + '-' + (p.role || 'member')
   const active =
     typeof p.active === 'boolean'
       ? p.active
@@ -260,12 +260,15 @@ const StudyRoom: React.FC = () => {
                       ? [m.user?.firstName || '', m.user?.lastName || ''].filter(Boolean).join(' ').trim()
                       : '') ||
                     'Student'
+                  const sid = String(m?.senderId || m?.userId || 'anon')
+                  const scontent = String(m?.content || '')
+                  const screated = m?.createdAt ? String(m.createdAt) : new Date().toISOString()
                   return {
-                    id: String(m?.id || Math.random().toString(36).slice(2)),
-                    senderId: String(m?.senderId || m?.userId || 'anon'),
+                    id: String(m?.id || `${sid}-${scontent.slice(0, 48)}-${screated}`),
+                    senderId: sid,
                     senderName,
-                    content: String(m?.content || ''),
-                    createdAt: m?.createdAt ? String(m.createdAt) : new Date().toISOString(),
+                    content: scontent,
+                    createdAt: screated,
                   }
                 })
                 .filter((m: ChatMessage) => m.content)
@@ -361,12 +364,15 @@ const StudyRoom: React.FC = () => {
             ? [rawMsg.user?.firstName || '', rawMsg.user?.lastName || ''].filter(Boolean).join(' ').trim()
             : '') ||
           'Student'
+        const senderIdForMsg = String(rawMsg?.senderId || rawMsg?.userId || 'anon')
+        const contentForMsg = String(rawMsg?.content || '')
+        const createdAtForMsg = rawMsg?.createdAt ? String(rawMsg.createdAt) : new Date().toISOString()
         const msg: ChatMessage = {
-          id: String(rawMsg?.id || Math.random().toString(36).slice(2)),
-          senderId: String(rawMsg?.senderId || rawMsg?.userId || 'anon'),
+          id: String(rawMsg?.id || `${senderIdForMsg}-${contentForMsg.slice(0, 48)}-${createdAtForMsg}`),
+          senderId: senderIdForMsg,
           senderName,
-          content: String(rawMsg?.content || ''),
-          createdAt: rawMsg?.createdAt ? String(rawMsg.createdAt) : new Date().toISOString(),
+          content: contentForMsg,
+          createdAt: createdAtForMsg,
         }
         if (!msg.content) return
         setMessages((prev) => {
@@ -504,7 +510,7 @@ const StudyRoom: React.FC = () => {
     }
   }, [sessionId])
 
-  const sendMessage = async (e?: React.FormEvent) => {
+  const sendMessage = useCallback(async (e?: React.FormEvent) => {
     e?.preventDefault()
     const content = messageInput.trim()
     if (!content || !sessionId || sendingMsg) return
@@ -515,12 +521,33 @@ const StudyRoom: React.FC = () => {
       setMessageInput('')
       if (sent) {
         const incoming: ChatMessage = sent.message || sent
-        setMessages((prev) => [...prev, incoming])
+        setMessages((prev) => {
+          const exists = prev.some((m) => incoming.id && m.id && m.id === incoming.id)
+          if (exists) return prev
+          return [...prev, incoming]
+        })
       }
     } catch {} finally {
       setSendingMsg(false)
     }
-  }
+  }, [messageInput, sessionId, sendingMsg])
+
+  const handleMessageInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setMessageInput(e.target.value.slice(0, 1000))
+    },
+    []
+  )
+
+  const handleMessageInputKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault()
+        void sendMessage()
+      }
+    },
+    [sendMessage]
+  )
 
   const showMediaError = (msg: string) => {
     setMediaErrorToast(msg)
@@ -1249,7 +1276,7 @@ const StudyRoom: React.FC = () => {
                   const initials = buildInitials(m.senderName || m.senderId)
                   return (
                     <motion.div
-                      key={m.id || m.createdAt + Math.random()}
+                      key={m.id || `${m.senderId}-${m.createdAt}-${String(m.content || '').slice(0, 16)}`}
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.2 }}
@@ -1305,15 +1332,8 @@ const StudyRoom: React.FC = () => {
                 <div className="flex-1 min-w-0 relative">
                   <textarea
                     value={messageInput}
-                    onChange={(e) =>
-                      setMessageInput(e.target.value.slice(0, 1000))
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault()
-                        void sendMessage()
-                      }
-                    }}
+                    onChange={handleMessageInputChange}
+                    onKeyDown={handleMessageInputKeyDown}
                     rows={1}
                     placeholder="Type a message… (Enter to send)"
                     className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 caret-[#0B5ED7] outline-none transition-all focus:border-[#0B5ED7] focus:bg-white focus:ring-2 focus:ring-[#0B5ED7]/15 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-white/10"

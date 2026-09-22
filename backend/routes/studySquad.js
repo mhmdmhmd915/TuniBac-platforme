@@ -21,7 +21,7 @@ const {
   sendChatMessage,
 } = require('../controllers/studySquadController');
 
-router.use(authMiddleware, bacOnlyMiddleware);
+router.use(authMiddleware);
 
 router.get('/mine', listMySquads);
 router.get('/invitations', listMyInvitations);

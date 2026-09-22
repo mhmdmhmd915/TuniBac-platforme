@@ -175,8 +175,10 @@ const attachSocketServer = (httpServer, options = {}) => {
       return;
     }
 
-    if (user.role === 'STUDENT' && user.bacSection) {
-      socket.join(`section:${user.bacSection}`);
+    if (user.role === 'STUDENT') {
+      if (user.bacSection) {
+        socket.join(`section:${user.bacSection}`);
+      }
 
       try {
         const memberships = await prisma.studySquadMember.findMany({
@@ -188,6 +190,8 @@ const attachSocketServer = (httpServer, options = {}) => {
         }
       } catch (_e) { /* ignore */ }
     }
+
+    socket.join(`user:${user.id}`);
 
     socket.on('session:join-room', async (sessionIdStr, callback) => {
       try {
@@ -665,7 +669,7 @@ const attachSocketServer = (httpServer, options = {}) => {
         if (!squadAccess.ok) {
           return callback?.({ ok: false, error: 'Access denied' });
         }
-        io.to(`session:${sessionId}`).emit('webrtc:offer', { from: user.id, to, sessionId, sdp });
+        io.to(`user:${to}`).emit('webrtc:offer', { from: user.id, to, sessionId, sdp });
         callback?.({ ok: true });
       } catch (err) {
         logger.error('webrtc:offer error', err);
@@ -693,7 +697,7 @@ const attachSocketServer = (httpServer, options = {}) => {
         if (!squadAccess.ok) {
           return callback?.({ ok: false, error: 'Access denied' });
         }
-        io.to(`session:${sessionId}`).emit('webrtc:answer', { from: user.id, to, sessionId, sdp });
+        io.to(`user:${to}`).emit('webrtc:answer', { from: user.id, to, sessionId, sdp });
         callback?.({ ok: true });
       } catch (err) {
         logger.error('webrtc:answer error', err);
@@ -721,7 +725,7 @@ const attachSocketServer = (httpServer, options = {}) => {
         if (!squadAccess.ok) {
           return callback?.({ ok: false, error: 'Access denied' });
         }
-        io.to(`session:${sessionId}`).emit('webrtc:ice', { from: user.id, to, sessionId, candidate });
+        io.to(`user:${to}`).emit('webrtc:ice', { from: user.id, to, sessionId, candidate });
         callback?.({ ok: true });
       } catch (err) {
         logger.error('webrtc:ice error', err);
@@ -749,7 +753,12 @@ const attachSocketServer = (httpServer, options = {}) => {
         if (!squadAccess.ok) {
           return callback?.({ ok: false, error: 'Access denied' });
         }
-        io.to(`session:${sessionId}`).emit('webrtc:bye', { from: user.id, to: to || '*', sessionId });
+        const finalTo = to || '*';
+        if (finalTo && finalTo !== '*') {
+          io.to(`user:${finalTo}`).emit('webrtc:bye', { from: user.id, to: finalTo, sessionId });
+        } else {
+          io.to(`session:${sessionId}`).emit('webrtc:bye', { from: user.id, to: finalTo, sessionId });
+        }
         callback?.({ ok: true });
       } catch (err) {
         logger.error('webrtc:bye error', err);

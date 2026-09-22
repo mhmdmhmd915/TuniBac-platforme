@@ -246,6 +246,14 @@ export namespace $Enums {
 export type BacSection = (typeof BacSection)[keyof typeof BacSection]
 
 
+export const EducationTrack: {
+  BAC: 'BAC',
+  OTHER: 'OTHER'
+};
+
+export type EducationTrack = (typeof EducationTrack)[keyof typeof EducationTrack]
+
+
 export const Role: {
   STUDENT: 'STUDENT',
   TEACHER: 'TEACHER',
@@ -377,6 +385,10 @@ export type StudyBadgeThresholdUnit = (typeof StudyBadgeThresholdUnit)[keyof typ
 export type BacSection = $Enums.BacSection
 
 export const BacSection: typeof $Enums.BacSection
+
+export type EducationTrack = $Enums.EducationTrack
+
+export const EducationTrack: typeof $Enums.EducationTrack
 
 export type Role = $Enums.Role
 
@@ -5582,6 +5594,7 @@ export namespace Prisma {
     lastName: string | null
     phone: string | null
     bacSection: $Enums.BacSection | null
+    educationTrack: $Enums.EducationTrack | null
     role: $Enums.Role | null
     status: $Enums.UserStatus | null
     tokenVersion: number | null
@@ -5600,6 +5613,7 @@ export namespace Prisma {
     lastName: string | null
     phone: string | null
     bacSection: $Enums.BacSection | null
+    educationTrack: $Enums.EducationTrack | null
     role: $Enums.Role | null
     status: $Enums.UserStatus | null
     tokenVersion: number | null
@@ -5618,6 +5632,7 @@ export namespace Prisma {
     lastName: number
     phone: number
     bacSection: number
+    educationTrack: number
     role: number
     status: number
     tokenVersion: number
@@ -5646,6 +5661,7 @@ export namespace Prisma {
     lastName?: true
     phone?: true
     bacSection?: true
+    educationTrack?: true
     role?: true
     status?: true
     tokenVersion?: true
@@ -5664,6 +5680,7 @@ export namespace Prisma {
     lastName?: true
     phone?: true
     bacSection?: true
+    educationTrack?: true
     role?: true
     status?: true
     tokenVersion?: true
@@ -5682,6 +5699,7 @@ export namespace Prisma {
     lastName?: true
     phone?: true
     bacSection?: true
+    educationTrack?: true
     role?: true
     status?: true
     tokenVersion?: true
@@ -5786,7 +5804,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone: string | null
-    bacSection: $Enums.BacSection
+    bacSection: $Enums.BacSection | null
+    educationTrack: $Enums.EducationTrack
     role: $Enums.Role
     status: $Enums.UserStatus
     tokenVersion: number
@@ -5824,6 +5843,7 @@ export namespace Prisma {
     lastName?: boolean
     phone?: boolean
     bacSection?: boolean
+    educationTrack?: boolean
     role?: boolean
     status?: boolean
     tokenVersion?: boolean
@@ -5872,6 +5892,7 @@ export namespace Prisma {
     lastName?: boolean
     phone?: boolean
     bacSection?: boolean
+    educationTrack?: boolean
     role?: boolean
     status?: boolean
     tokenVersion?: boolean
@@ -5890,6 +5911,7 @@ export namespace Prisma {
     lastName?: boolean
     phone?: boolean
     bacSection?: boolean
+    educationTrack?: boolean
     role?: boolean
     status?: boolean
     tokenVersion?: boolean
@@ -5974,7 +5996,8 @@ export namespace Prisma {
       firstName: string
       lastName: string
       phone: string | null
-      bacSection: $Enums.BacSection
+      bacSection: $Enums.BacSection | null
+      educationTrack: $Enums.EducationTrack
       role: $Enums.Role
       status: $Enums.UserStatus
       tokenVersion: number
@@ -6412,6 +6435,7 @@ export namespace Prisma {
     readonly lastName: FieldRef<"User", 'String'>
     readonly phone: FieldRef<"User", 'String'>
     readonly bacSection: FieldRef<"User", 'BacSection'>
+    readonly educationTrack: FieldRef<"User", 'EducationTrack'>
     readonly role: FieldRef<"User", 'Role'>
     readonly status: FieldRef<"User", 'UserStatus'>
     readonly tokenVersion: FieldRef<"User", 'Int'>
@@ -29719,7 +29743,7 @@ export namespace Prisma {
     id: string
     title: string
     description: string | null
-    subjectId: string
+    subjectId: string | null
     stepId: string | null
     courseId: string | null
     exerciseId: string | null
@@ -29766,7 +29790,7 @@ export namespace Prisma {
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    subject?: boolean | StudyTask$subjectArgs<ExtArgs>
     step?: boolean | StudyTask$stepArgs<ExtArgs>
     course?: boolean | StudyTask$courseArgs<ExtArgs>
     exercise?: boolean | StudyTask$exerciseArgs<ExtArgs>
@@ -29789,7 +29813,7 @@ export namespace Prisma {
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    subject?: boolean | StudyTask$subjectArgs<ExtArgs>
     step?: boolean | StudyTask$stepArgs<ExtArgs>
     course?: boolean | StudyTask$courseArgs<ExtArgs>
     exercise?: boolean | StudyTask$exerciseArgs<ExtArgs>
@@ -29815,14 +29839,14 @@ export namespace Prisma {
   }
 
   export type StudyTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    subject?: boolean | StudyTask$subjectArgs<ExtArgs>
     step?: boolean | StudyTask$stepArgs<ExtArgs>
     course?: boolean | StudyTask$courseArgs<ExtArgs>
     exercise?: boolean | StudyTask$exerciseArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type StudyTaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    subject?: boolean | StudyTask$subjectArgs<ExtArgs>
     step?: boolean | StudyTask$stepArgs<ExtArgs>
     course?: boolean | StudyTask$courseArgs<ExtArgs>
     exercise?: boolean | StudyTask$exerciseArgs<ExtArgs>
@@ -29832,7 +29856,7 @@ export namespace Prisma {
   export type $StudyTaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "StudyTask"
     objects: {
-      subject: Prisma.$SubjectPayload<ExtArgs>
+      subject: Prisma.$SubjectPayload<ExtArgs> | null
       step: Prisma.$LearningStepPayload<ExtArgs> | null
       course: Prisma.$CoursePayload<ExtArgs> | null
       exercise: Prisma.$ExercisePayload<ExtArgs> | null
@@ -29842,7 +29866,7 @@ export namespace Prisma {
       id: string
       title: string
       description: string | null
-      subjectId: string
+      subjectId: string | null
       stepId: string | null
       courseId: string | null
       exerciseId: string | null
@@ -30218,7 +30242,7 @@ export namespace Prisma {
    */
   export interface Prisma__StudyTaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    subject<T extends SubjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SubjectDefaultArgs<ExtArgs>>): Prisma__SubjectClient<$Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    subject<T extends StudyTask$subjectArgs<ExtArgs> = {}>(args?: Subset<T, StudyTask$subjectArgs<ExtArgs>>): Prisma__SubjectClient<$Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     step<T extends StudyTask$stepArgs<ExtArgs> = {}>(args?: Subset<T, StudyTask$stepArgs<ExtArgs>>): Prisma__LearningStepClient<$Result.GetResult<Prisma.$LearningStepPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     course<T extends StudyTask$courseArgs<ExtArgs> = {}>(args?: Subset<T, StudyTask$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     exercise<T extends StudyTask$exerciseArgs<ExtArgs> = {}>(args?: Subset<T, StudyTask$exerciseArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
@@ -30582,6 +30606,21 @@ export namespace Prisma {
      * Filter which StudyTasks to delete
      */
     where?: StudyTaskWhereInput
+  }
+
+  /**
+   * StudyTask.subject
+   */
+  export type StudyTask$subjectArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subject
+     */
+    select?: SubjectSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectInclude<ExtArgs> | null
+    where?: SubjectWhereInput
   }
 
   /**
@@ -32070,7 +32109,7 @@ export namespace Prisma {
     attachmentMimeType: string | null
     attachmentSizeBytes: number | null
     isPersonal: boolean
-    subjectId: string
+    subjectId: string | null
     stepId: string | null
     courseId: string | null
     exerciseId: string | null
@@ -32121,7 +32160,7 @@ export namespace Prisma {
     templateId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    subject?: boolean | StudentPlannerTask$subjectArgs<ExtArgs>
     step?: boolean | StudentPlannerTask$stepArgs<ExtArgs>
     course?: boolean | StudentPlannerTask$courseArgs<ExtArgs>
     exercise?: boolean | StudentPlannerTask$exerciseArgs<ExtArgs>
@@ -32151,7 +32190,7 @@ export namespace Prisma {
     templateId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    subject?: boolean | StudentPlannerTask$subjectArgs<ExtArgs>
     step?: boolean | StudentPlannerTask$stepArgs<ExtArgs>
     course?: boolean | StudentPlannerTask$courseArgs<ExtArgs>
     exercise?: boolean | StudentPlannerTask$exerciseArgs<ExtArgs>
@@ -32184,7 +32223,7 @@ export namespace Prisma {
   }
 
   export type StudentPlannerTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    subject?: boolean | StudentPlannerTask$subjectArgs<ExtArgs>
     step?: boolean | StudentPlannerTask$stepArgs<ExtArgs>
     course?: boolean | StudentPlannerTask$courseArgs<ExtArgs>
     exercise?: boolean | StudentPlannerTask$exerciseArgs<ExtArgs>
@@ -32192,7 +32231,7 @@ export namespace Prisma {
     template?: boolean | StudentPlannerTask$templateArgs<ExtArgs>
   }
   export type StudentPlannerTaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subject?: boolean | SubjectDefaultArgs<ExtArgs>
+    subject?: boolean | StudentPlannerTask$subjectArgs<ExtArgs>
     step?: boolean | StudentPlannerTask$stepArgs<ExtArgs>
     course?: boolean | StudentPlannerTask$courseArgs<ExtArgs>
     exercise?: boolean | StudentPlannerTask$exerciseArgs<ExtArgs>
@@ -32203,7 +32242,7 @@ export namespace Prisma {
   export type $StudentPlannerTaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "StudentPlannerTask"
     objects: {
-      subject: Prisma.$SubjectPayload<ExtArgs>
+      subject: Prisma.$SubjectPayload<ExtArgs> | null
       step: Prisma.$LearningStepPayload<ExtArgs> | null
       course: Prisma.$CoursePayload<ExtArgs> | null
       exercise: Prisma.$ExercisePayload<ExtArgs> | null
@@ -32224,7 +32263,7 @@ export namespace Prisma {
       attachmentMimeType: string | null
       attachmentSizeBytes: number | null
       isPersonal: boolean
-      subjectId: string
+      subjectId: string | null
       stepId: string | null
       courseId: string | null
       exerciseId: string | null
@@ -32596,7 +32635,7 @@ export namespace Prisma {
    */
   export interface Prisma__StudentPlannerTaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    subject<T extends SubjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SubjectDefaultArgs<ExtArgs>>): Prisma__SubjectClient<$Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    subject<T extends StudentPlannerTask$subjectArgs<ExtArgs> = {}>(args?: Subset<T, StudentPlannerTask$subjectArgs<ExtArgs>>): Prisma__SubjectClient<$Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     step<T extends StudentPlannerTask$stepArgs<ExtArgs> = {}>(args?: Subset<T, StudentPlannerTask$stepArgs<ExtArgs>>): Prisma__LearningStepClient<$Result.GetResult<Prisma.$LearningStepPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     course<T extends StudentPlannerTask$courseArgs<ExtArgs> = {}>(args?: Subset<T, StudentPlannerTask$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     exercise<T extends StudentPlannerTask$exerciseArgs<ExtArgs> = {}>(args?: Subset<T, StudentPlannerTask$exerciseArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
@@ -32967,6 +33006,21 @@ export namespace Prisma {
      * Filter which StudentPlannerTasks to delete
      */
     where?: StudentPlannerTaskWhereInput
+  }
+
+  /**
+   * StudentPlannerTask.subject
+   */
+  export type StudentPlannerTask$subjectArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subject
+     */
+    select?: SubjectSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubjectInclude<ExtArgs> | null
+    where?: SubjectWhereInput
   }
 
   /**
@@ -40520,7 +40574,7 @@ export namespace Prisma {
 
   export type StudySessionGroupByOutputType = {
     id: string
-    bacSection: $Enums.BacSection
+    bacSection: $Enums.BacSection | null
     subjectId: string | null
     topic: string | null
     title: string
@@ -40624,7 +40678,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      bacSection: $Enums.BacSection
+      bacSection: $Enums.BacSection | null
       subjectId: string | null
       topic: string | null
       title: string
@@ -41618,7 +41672,7 @@ export namespace Prisma {
   export type StudySquadGroupByOutputType = {
     id: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection: $Enums.BacSection | null
     ownerId: string
     invitationCode: string
     status: $Enums.StudySquadStatus
@@ -41710,7 +41764,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
-      bacSection: $Enums.BacSection
+      bacSection: $Enums.BacSection | null
       ownerId: string
       invitationCode: string
       status: $Enums.StudySquadStatus
@@ -46612,7 +46666,7 @@ export namespace Prisma {
     id: string
     sessionId: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection: $Enums.BacSection | null
     joinedAt: Date
     leftAt: Date | null
     isActive: boolean
@@ -46700,7 +46754,7 @@ export namespace Prisma {
       id: string
       sessionId: string
       userId: string
-      bacSection: $Enums.BacSection
+      bacSection: $Enums.BacSection | null
       joinedAt: Date
       leftAt: Date | null
       isActive: boolean
@@ -47587,7 +47641,7 @@ export namespace Prisma {
     id: string
     sessionId: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection: $Enums.BacSection | null
     content: string
     createdAt: Date
     _count: SessionChatMessageCountAggregateOutputType | null
@@ -47659,7 +47713,7 @@ export namespace Prisma {
       id: string
       sessionId: string
       userId: string
-      bacSection: $Enums.BacSection
+      bacSection: $Enums.BacSection | null
       content: string
       createdAt: Date
     }, ExtArgs["result"]["sessionChatMessage"]>
@@ -48576,7 +48630,7 @@ export namespace Prisma {
     id: string
     userId: string
     sessionId: string | null
-    bacSection: $Enums.BacSection
+    bacSection: $Enums.BacSection | null
     minuteKey: Date
     minutes: number
     createdAt: Date
@@ -48654,7 +48708,7 @@ export namespace Prisma {
       id: string
       userId: string
       sessionId: string | null
-      bacSection: $Enums.BacSection
+      bacSection: $Enums.BacSection | null
       minuteKey: Date
       minutes: number
       createdAt: Date
@@ -50596,7 +50650,7 @@ export namespace Prisma {
     id: string
     userId: string
     badgeId: string
-    bacSection: $Enums.BacSection
+    bacSection: $Enums.BacSection | null
     awardedAt: Date
     evidenceRef: string | null
     _count: UserStudyBadgeCountAggregateOutputType | null
@@ -50668,7 +50722,7 @@ export namespace Prisma {
       id: string
       userId: string
       badgeId: string
-      bacSection: $Enums.BacSection
+      bacSection: $Enums.BacSection | null
       awardedAt: Date
       evidenceRef: string | null
     }, ExtArgs["result"]["userStudyBadge"]>
@@ -51426,6 +51480,7 @@ export namespace Prisma {
     lastName: 'lastName',
     phone: 'phone',
     bacSection: 'bacSection',
+    educationTrack: 'educationTrack',
     role: 'role',
     status: 'status',
     tokenVersion: 'tokenVersion',
@@ -52195,6 +52250,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'EducationTrack'
+   */
+  export type EnumEducationTrackFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EducationTrack'>
+    
+
+
+  /**
+   * Reference to a field of type 'EducationTrack[]'
+   */
+  export type ListEnumEducationTrackFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EducationTrack[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Role'
    */
   export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
@@ -52445,7 +52514,8 @@ export namespace Prisma {
     firstName?: StringFilter<"User"> | string
     lastName?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
-    bacSection?: EnumBacSectionFilter<"User"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"User"> | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFilter<"User"> | $Enums.EducationTrack
     role?: EnumRoleFilter<"User"> | $Enums.Role
     status?: EnumUserStatusFilter<"User"> | $Enums.UserStatus
     tokenVersion?: IntFilter<"User"> | number
@@ -52492,7 +52562,8 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     phone?: SortOrderInput | SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
+    educationTrack?: SortOrder
     role?: SortOrder
     status?: SortOrder
     tokenVersion?: SortOrder
@@ -52542,7 +52613,8 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     firstName?: StringFilter<"User"> | string
     lastName?: StringFilter<"User"> | string
-    bacSection?: EnumBacSectionFilter<"User"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"User"> | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFilter<"User"> | $Enums.EducationTrack
     role?: EnumRoleFilter<"User"> | $Enums.Role
     status?: EnumUserStatusFilter<"User"> | $Enums.UserStatus
     tokenVersion?: IntFilter<"User"> | number
@@ -52589,7 +52661,8 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     phone?: SortOrderInput | SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
+    educationTrack?: SortOrder
     role?: SortOrder
     status?: SortOrder
     tokenVersion?: SortOrder
@@ -52615,7 +52688,8 @@ export namespace Prisma {
     firstName?: StringWithAggregatesFilter<"User"> | string
     lastName?: StringWithAggregatesFilter<"User"> | string
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
-    bacSection?: EnumBacSectionWithAggregatesFilter<"User"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableWithAggregatesFilter<"User"> | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackWithAggregatesFilter<"User"> | $Enums.EducationTrack
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     status?: EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
     tokenVersion?: IntWithAggregatesFilter<"User"> | number
@@ -54467,7 +54541,7 @@ export namespace Prisma {
     id?: StringFilter<"StudyTask"> | string
     title?: StringFilter<"StudyTask"> | string
     description?: StringNullableFilter<"StudyTask"> | string | null
-    subjectId?: StringFilter<"StudyTask"> | string
+    subjectId?: StringNullableFilter<"StudyTask"> | string | null
     stepId?: StringNullableFilter<"StudyTask"> | string | null
     courseId?: StringNullableFilter<"StudyTask"> | string | null
     exerciseId?: StringNullableFilter<"StudyTask"> | string | null
@@ -54479,7 +54553,7 @@ export namespace Prisma {
     userId?: StringFilter<"StudyTask"> | string
     createdAt?: DateTimeFilter<"StudyTask"> | Date | string
     updatedAt?: DateTimeFilter<"StudyTask"> | Date | string
-    subject?: XOR<SubjectRelationFilter, SubjectWhereInput>
+    subject?: XOR<SubjectNullableRelationFilter, SubjectWhereInput> | null
     step?: XOR<LearningStepNullableRelationFilter, LearningStepWhereInput> | null
     course?: XOR<CourseNullableRelationFilter, CourseWhereInput> | null
     exercise?: XOR<ExerciseNullableRelationFilter, ExerciseWhereInput> | null
@@ -54490,7 +54564,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
-    subjectId?: SortOrder
+    subjectId?: SortOrderInput | SortOrder
     stepId?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
     exerciseId?: SortOrderInput | SortOrder
@@ -54516,7 +54590,7 @@ export namespace Prisma {
     NOT?: StudyTaskWhereInput | StudyTaskWhereInput[]
     title?: StringFilter<"StudyTask"> | string
     description?: StringNullableFilter<"StudyTask"> | string | null
-    subjectId?: StringFilter<"StudyTask"> | string
+    subjectId?: StringNullableFilter<"StudyTask"> | string | null
     stepId?: StringNullableFilter<"StudyTask"> | string | null
     courseId?: StringNullableFilter<"StudyTask"> | string | null
     exerciseId?: StringNullableFilter<"StudyTask"> | string | null
@@ -54528,7 +54602,7 @@ export namespace Prisma {
     userId?: StringFilter<"StudyTask"> | string
     createdAt?: DateTimeFilter<"StudyTask"> | Date | string
     updatedAt?: DateTimeFilter<"StudyTask"> | Date | string
-    subject?: XOR<SubjectRelationFilter, SubjectWhereInput>
+    subject?: XOR<SubjectNullableRelationFilter, SubjectWhereInput> | null
     step?: XOR<LearningStepNullableRelationFilter, LearningStepWhereInput> | null
     course?: XOR<CourseNullableRelationFilter, CourseWhereInput> | null
     exercise?: XOR<ExerciseNullableRelationFilter, ExerciseWhereInput> | null
@@ -54539,7 +54613,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
-    subjectId?: SortOrder
+    subjectId?: SortOrderInput | SortOrder
     stepId?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
     exerciseId?: SortOrderInput | SortOrder
@@ -54563,7 +54637,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"StudyTask"> | string
     title?: StringWithAggregatesFilter<"StudyTask"> | string
     description?: StringNullableWithAggregatesFilter<"StudyTask"> | string | null
-    subjectId?: StringWithAggregatesFilter<"StudyTask"> | string
+    subjectId?: StringNullableWithAggregatesFilter<"StudyTask"> | string | null
     stepId?: StringNullableWithAggregatesFilter<"StudyTask"> | string | null
     courseId?: StringNullableWithAggregatesFilter<"StudyTask"> | string | null
     exerciseId?: StringNullableWithAggregatesFilter<"StudyTask"> | string | null
@@ -54722,7 +54796,7 @@ export namespace Prisma {
     attachmentMimeType?: StringNullableFilter<"StudentPlannerTask"> | string | null
     attachmentSizeBytes?: IntNullableFilter<"StudentPlannerTask"> | number | null
     isPersonal?: BoolFilter<"StudentPlannerTask"> | boolean
-    subjectId?: StringFilter<"StudentPlannerTask"> | string
+    subjectId?: StringNullableFilter<"StudentPlannerTask"> | string | null
     stepId?: StringNullableFilter<"StudentPlannerTask"> | string | null
     courseId?: StringNullableFilter<"StudentPlannerTask"> | string | null
     exerciseId?: StringNullableFilter<"StudentPlannerTask"> | string | null
@@ -54730,7 +54804,7 @@ export namespace Prisma {
     templateId?: StringNullableFilter<"StudentPlannerTask"> | string | null
     createdAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
     updatedAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
-    subject?: XOR<SubjectRelationFilter, SubjectWhereInput>
+    subject?: XOR<SubjectNullableRelationFilter, SubjectWhereInput> | null
     step?: XOR<LearningStepNullableRelationFilter, LearningStepWhereInput> | null
     course?: XOR<CourseNullableRelationFilter, CourseWhereInput> | null
     exercise?: XOR<ExerciseNullableRelationFilter, ExerciseWhereInput> | null
@@ -54752,7 +54826,7 @@ export namespace Prisma {
     attachmentMimeType?: SortOrderInput | SortOrder
     attachmentSizeBytes?: SortOrderInput | SortOrder
     isPersonal?: SortOrder
-    subjectId?: SortOrder
+    subjectId?: SortOrderInput | SortOrder
     stepId?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
     exerciseId?: SortOrderInput | SortOrder
@@ -54785,7 +54859,7 @@ export namespace Prisma {
     attachmentMimeType?: StringNullableFilter<"StudentPlannerTask"> | string | null
     attachmentSizeBytes?: IntNullableFilter<"StudentPlannerTask"> | number | null
     isPersonal?: BoolFilter<"StudentPlannerTask"> | boolean
-    subjectId?: StringFilter<"StudentPlannerTask"> | string
+    subjectId?: StringNullableFilter<"StudentPlannerTask"> | string | null
     stepId?: StringNullableFilter<"StudentPlannerTask"> | string | null
     courseId?: StringNullableFilter<"StudentPlannerTask"> | string | null
     exerciseId?: StringNullableFilter<"StudentPlannerTask"> | string | null
@@ -54793,7 +54867,7 @@ export namespace Prisma {
     templateId?: StringNullableFilter<"StudentPlannerTask"> | string | null
     createdAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
     updatedAt?: DateTimeFilter<"StudentPlannerTask"> | Date | string
-    subject?: XOR<SubjectRelationFilter, SubjectWhereInput>
+    subject?: XOR<SubjectNullableRelationFilter, SubjectWhereInput> | null
     step?: XOR<LearningStepNullableRelationFilter, LearningStepWhereInput> | null
     course?: XOR<CourseNullableRelationFilter, CourseWhereInput> | null
     exercise?: XOR<ExerciseNullableRelationFilter, ExerciseWhereInput> | null
@@ -54815,7 +54889,7 @@ export namespace Prisma {
     attachmentMimeType?: SortOrderInput | SortOrder
     attachmentSizeBytes?: SortOrderInput | SortOrder
     isPersonal?: SortOrder
-    subjectId?: SortOrder
+    subjectId?: SortOrderInput | SortOrder
     stepId?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
     exerciseId?: SortOrderInput | SortOrder
@@ -54847,7 +54921,7 @@ export namespace Prisma {
     attachmentMimeType?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
     attachmentSizeBytes?: IntNullableWithAggregatesFilter<"StudentPlannerTask"> | number | null
     isPersonal?: BoolWithAggregatesFilter<"StudentPlannerTask"> | boolean
-    subjectId?: StringWithAggregatesFilter<"StudentPlannerTask"> | string
+    subjectId?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
     stepId?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
     courseId?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
     exerciseId?: StringNullableWithAggregatesFilter<"StudentPlannerTask"> | string | null
@@ -55507,7 +55581,7 @@ export namespace Prisma {
     OR?: StudySessionWhereInput[]
     NOT?: StudySessionWhereInput | StudySessionWhereInput[]
     id?: StringFilter<"StudySession"> | string
-    bacSection?: EnumBacSectionFilter<"StudySession"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"StudySession"> | $Enums.BacSection | null
     subjectId?: StringNullableFilter<"StudySession"> | string | null
     topic?: StringNullableFilter<"StudySession"> | string | null
     title?: StringFilter<"StudySession"> | string
@@ -55526,7 +55600,7 @@ export namespace Prisma {
 
   export type StudySessionOrderByWithRelationInput = {
     id?: SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     subjectId?: SortOrderInput | SortOrder
     topic?: SortOrderInput | SortOrder
     title?: SortOrder
@@ -55548,7 +55622,7 @@ export namespace Prisma {
     AND?: StudySessionWhereInput | StudySessionWhereInput[]
     OR?: StudySessionWhereInput[]
     NOT?: StudySessionWhereInput | StudySessionWhereInput[]
-    bacSection?: EnumBacSectionFilter<"StudySession"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"StudySession"> | $Enums.BacSection | null
     subjectId?: StringNullableFilter<"StudySession"> | string | null
     topic?: StringNullableFilter<"StudySession"> | string | null
     title?: StringFilter<"StudySession"> | string
@@ -55567,7 +55641,7 @@ export namespace Prisma {
 
   export type StudySessionOrderByWithAggregationInput = {
     id?: SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     subjectId?: SortOrderInput | SortOrder
     topic?: SortOrderInput | SortOrder
     title?: SortOrder
@@ -55586,7 +55660,7 @@ export namespace Prisma {
     OR?: StudySessionScalarWhereWithAggregatesInput[]
     NOT?: StudySessionScalarWhereWithAggregatesInput | StudySessionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"StudySession"> | string
-    bacSection?: EnumBacSectionWithAggregatesFilter<"StudySession"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableWithAggregatesFilter<"StudySession"> | $Enums.BacSection | null
     subjectId?: StringNullableWithAggregatesFilter<"StudySession"> | string | null
     topic?: StringNullableWithAggregatesFilter<"StudySession"> | string | null
     title?: StringWithAggregatesFilter<"StudySession"> | string
@@ -55603,7 +55677,7 @@ export namespace Prisma {
     NOT?: StudySquadWhereInput | StudySquadWhereInput[]
     id?: StringFilter<"StudySquad"> | string
     name?: StringFilter<"StudySquad"> | string
-    bacSection?: EnumBacSectionFilter<"StudySquad"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"StudySquad"> | $Enums.BacSection | null
     ownerId?: StringFilter<"StudySquad"> | string
     invitationCode?: StringFilter<"StudySquad"> | string
     status?: EnumStudySquadStatusFilter<"StudySquad"> | $Enums.StudySquadStatus
@@ -55620,7 +55694,7 @@ export namespace Prisma {
   export type StudySquadOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     ownerId?: SortOrder
     invitationCode?: SortOrder
     status?: SortOrder
@@ -55641,7 +55715,7 @@ export namespace Prisma {
     OR?: StudySquadWhereInput[]
     NOT?: StudySquadWhereInput | StudySquadWhereInput[]
     name?: StringFilter<"StudySquad"> | string
-    bacSection?: EnumBacSectionFilter<"StudySquad"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"StudySquad"> | $Enums.BacSection | null
     ownerId?: StringFilter<"StudySquad"> | string
     status?: EnumStudySquadStatusFilter<"StudySquad"> | $Enums.StudySquadStatus
     createdAt?: DateTimeFilter<"StudySquad"> | Date | string
@@ -55657,7 +55731,7 @@ export namespace Prisma {
   export type StudySquadOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     ownerId?: SortOrder
     invitationCode?: SortOrder
     status?: SortOrder
@@ -55674,7 +55748,7 @@ export namespace Prisma {
     NOT?: StudySquadScalarWhereWithAggregatesInput | StudySquadScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"StudySquad"> | string
     name?: StringWithAggregatesFilter<"StudySquad"> | string
-    bacSection?: EnumBacSectionWithAggregatesFilter<"StudySquad"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableWithAggregatesFilter<"StudySquad"> | $Enums.BacSection | null
     ownerId?: StringWithAggregatesFilter<"StudySquad"> | string
     invitationCode?: StringWithAggregatesFilter<"StudySquad"> | string
     status?: EnumStudySquadStatusWithAggregatesFilter<"StudySquad"> | $Enums.StudySquadStatus
@@ -55963,7 +56037,7 @@ export namespace Prisma {
     id?: StringFilter<"SessionParticipant"> | string
     sessionId?: StringFilter<"SessionParticipant"> | string
     userId?: StringFilter<"SessionParticipant"> | string
-    bacSection?: EnumBacSectionFilter<"SessionParticipant"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"SessionParticipant"> | $Enums.BacSection | null
     joinedAt?: DateTimeFilter<"SessionParticipant"> | Date | string
     leftAt?: DateTimeNullableFilter<"SessionParticipant"> | Date | string | null
     isActive?: BoolFilter<"SessionParticipant"> | boolean
@@ -55978,7 +56052,7 @@ export namespace Prisma {
     id?: SortOrder
     sessionId?: SortOrder
     userId?: SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     joinedAt?: SortOrder
     leftAt?: SortOrderInput | SortOrder
     isActive?: SortOrder
@@ -55997,7 +56071,7 @@ export namespace Prisma {
     NOT?: SessionParticipantWhereInput | SessionParticipantWhereInput[]
     sessionId?: StringFilter<"SessionParticipant"> | string
     userId?: StringFilter<"SessionParticipant"> | string
-    bacSection?: EnumBacSectionFilter<"SessionParticipant"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"SessionParticipant"> | $Enums.BacSection | null
     joinedAt?: DateTimeFilter<"SessionParticipant"> | Date | string
     leftAt?: DateTimeNullableFilter<"SessionParticipant"> | Date | string | null
     isActive?: BoolFilter<"SessionParticipant"> | boolean
@@ -56012,7 +56086,7 @@ export namespace Prisma {
     id?: SortOrder
     sessionId?: SortOrder
     userId?: SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     joinedAt?: SortOrder
     leftAt?: SortOrderInput | SortOrder
     isActive?: SortOrder
@@ -56031,7 +56105,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"SessionParticipant"> | string
     sessionId?: StringWithAggregatesFilter<"SessionParticipant"> | string
     userId?: StringWithAggregatesFilter<"SessionParticipant"> | string
-    bacSection?: EnumBacSectionWithAggregatesFilter<"SessionParticipant"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableWithAggregatesFilter<"SessionParticipant"> | $Enums.BacSection | null
     joinedAt?: DateTimeWithAggregatesFilter<"SessionParticipant"> | Date | string
     leftAt?: DateTimeNullableWithAggregatesFilter<"SessionParticipant"> | Date | string | null
     isActive?: BoolWithAggregatesFilter<"SessionParticipant"> | boolean
@@ -56047,7 +56121,7 @@ export namespace Prisma {
     id?: StringFilter<"SessionChatMessage"> | string
     sessionId?: StringFilter<"SessionChatMessage"> | string
     userId?: StringFilter<"SessionChatMessage"> | string
-    bacSection?: EnumBacSectionFilter<"SessionChatMessage"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"SessionChatMessage"> | $Enums.BacSection | null
     content?: StringFilter<"SessionChatMessage"> | string
     createdAt?: DateTimeFilter<"SessionChatMessage"> | Date | string
     session?: XOR<StudySessionRelationFilter, StudySessionWhereInput>
@@ -56058,7 +56132,7 @@ export namespace Prisma {
     id?: SortOrder
     sessionId?: SortOrder
     userId?: SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     content?: SortOrder
     createdAt?: SortOrder
     session?: StudySessionOrderByWithRelationInput
@@ -56072,7 +56146,7 @@ export namespace Prisma {
     NOT?: SessionChatMessageWhereInput | SessionChatMessageWhereInput[]
     sessionId?: StringFilter<"SessionChatMessage"> | string
     userId?: StringFilter<"SessionChatMessage"> | string
-    bacSection?: EnumBacSectionFilter<"SessionChatMessage"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"SessionChatMessage"> | $Enums.BacSection | null
     content?: StringFilter<"SessionChatMessage"> | string
     createdAt?: DateTimeFilter<"SessionChatMessage"> | Date | string
     session?: XOR<StudySessionRelationFilter, StudySessionWhereInput>
@@ -56083,7 +56157,7 @@ export namespace Prisma {
     id?: SortOrder
     sessionId?: SortOrder
     userId?: SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     content?: SortOrder
     createdAt?: SortOrder
     _count?: SessionChatMessageCountOrderByAggregateInput
@@ -56098,7 +56172,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"SessionChatMessage"> | string
     sessionId?: StringWithAggregatesFilter<"SessionChatMessage"> | string
     userId?: StringWithAggregatesFilter<"SessionChatMessage"> | string
-    bacSection?: EnumBacSectionWithAggregatesFilter<"SessionChatMessage"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableWithAggregatesFilter<"SessionChatMessage"> | $Enums.BacSection | null
     content?: StringWithAggregatesFilter<"SessionChatMessage"> | string
     createdAt?: DateTimeWithAggregatesFilter<"SessionChatMessage"> | Date | string
   }
@@ -56110,7 +56184,7 @@ export namespace Prisma {
     id?: StringFilter<"StudyHeartbeat"> | string
     userId?: StringFilter<"StudyHeartbeat"> | string
     sessionId?: StringNullableFilter<"StudyHeartbeat"> | string | null
-    bacSection?: EnumBacSectionFilter<"StudyHeartbeat"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"StudyHeartbeat"> | $Enums.BacSection | null
     minuteKey?: DateTimeFilter<"StudyHeartbeat"> | Date | string
     minutes?: IntFilter<"StudyHeartbeat"> | number
     createdAt?: DateTimeFilter<"StudyHeartbeat"> | Date | string
@@ -56122,7 +56196,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     sessionId?: SortOrderInput | SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     minuteKey?: SortOrder
     minutes?: SortOrder
     createdAt?: SortOrder
@@ -56138,7 +56212,7 @@ export namespace Prisma {
     NOT?: StudyHeartbeatWhereInput | StudyHeartbeatWhereInput[]
     userId?: StringFilter<"StudyHeartbeat"> | string
     sessionId?: StringNullableFilter<"StudyHeartbeat"> | string | null
-    bacSection?: EnumBacSectionFilter<"StudyHeartbeat"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"StudyHeartbeat"> | $Enums.BacSection | null
     minuteKey?: DateTimeFilter<"StudyHeartbeat"> | Date | string
     minutes?: IntFilter<"StudyHeartbeat"> | number
     createdAt?: DateTimeFilter<"StudyHeartbeat"> | Date | string
@@ -56150,7 +56224,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     sessionId?: SortOrderInput | SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     minuteKey?: SortOrder
     minutes?: SortOrder
     createdAt?: SortOrder
@@ -56168,7 +56242,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"StudyHeartbeat"> | string
     userId?: StringWithAggregatesFilter<"StudyHeartbeat"> | string
     sessionId?: StringNullableWithAggregatesFilter<"StudyHeartbeat"> | string | null
-    bacSection?: EnumBacSectionWithAggregatesFilter<"StudyHeartbeat"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableWithAggregatesFilter<"StudyHeartbeat"> | $Enums.BacSection | null
     minuteKey?: DateTimeWithAggregatesFilter<"StudyHeartbeat"> | Date | string
     minutes?: IntWithAggregatesFilter<"StudyHeartbeat"> | number
     createdAt?: DateTimeWithAggregatesFilter<"StudyHeartbeat"> | Date | string
@@ -56263,7 +56337,7 @@ export namespace Prisma {
     id?: StringFilter<"UserStudyBadge"> | string
     userId?: StringFilter<"UserStudyBadge"> | string
     badgeId?: StringFilter<"UserStudyBadge"> | string
-    bacSection?: EnumBacSectionFilter<"UserStudyBadge"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"UserStudyBadge"> | $Enums.BacSection | null
     awardedAt?: DateTimeFilter<"UserStudyBadge"> | Date | string
     evidenceRef?: StringNullableFilter<"UserStudyBadge"> | string | null
     user?: XOR<UserRelationFilter, UserWhereInput>
@@ -56274,7 +56348,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     badgeId?: SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     awardedAt?: SortOrder
     evidenceRef?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
@@ -56289,7 +56363,7 @@ export namespace Prisma {
     NOT?: UserStudyBadgeWhereInput | UserStudyBadgeWhereInput[]
     userId?: StringFilter<"UserStudyBadge"> | string
     badgeId?: StringFilter<"UserStudyBadge"> | string
-    bacSection?: EnumBacSectionFilter<"UserStudyBadge"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"UserStudyBadge"> | $Enums.BacSection | null
     awardedAt?: DateTimeFilter<"UserStudyBadge"> | Date | string
     evidenceRef?: StringNullableFilter<"UserStudyBadge"> | string | null
     user?: XOR<UserRelationFilter, UserWhereInput>
@@ -56300,7 +56374,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     badgeId?: SortOrder
-    bacSection?: SortOrder
+    bacSection?: SortOrderInput | SortOrder
     awardedAt?: SortOrder
     evidenceRef?: SortOrderInput | SortOrder
     _count?: UserStudyBadgeCountOrderByAggregateInput
@@ -56315,7 +56389,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"UserStudyBadge"> | string
     userId?: StringWithAggregatesFilter<"UserStudyBadge"> | string
     badgeId?: StringWithAggregatesFilter<"UserStudyBadge"> | string
-    bacSection?: EnumBacSectionWithAggregatesFilter<"UserStudyBadge"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableWithAggregatesFilter<"UserStudyBadge"> | $Enums.BacSection | null
     awardedAt?: DateTimeWithAggregatesFilter<"UserStudyBadge"> | Date | string
     evidenceRef?: StringNullableWithAggregatesFilter<"UserStudyBadge"> | string | null
   }
@@ -56327,7 +56401,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -56374,7 +56449,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -56421,7 +56497,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -56468,7 +56545,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -56515,7 +56593,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -56533,7 +56612,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -56551,7 +56631,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -58587,7 +58668,7 @@ export namespace Prisma {
     completed?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    subject: SubjectCreateNestedOneWithoutStudyTasksInput
+    subject?: SubjectCreateNestedOneWithoutStudyTasksInput
     step?: LearningStepCreateNestedOneWithoutStudyTasksInput
     course?: CourseCreateNestedOneWithoutStudyTasksInput
     exercise?: ExerciseCreateNestedOneWithoutStudyTasksInput
@@ -58598,7 +58679,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     exerciseId?: string | null
@@ -58623,7 +58704,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subject?: SubjectUpdateOneRequiredWithoutStudyTasksNestedInput
+    subject?: SubjectUpdateOneWithoutStudyTasksNestedInput
     step?: LearningStepUpdateOneWithoutStudyTasksNestedInput
     course?: CourseUpdateOneWithoutStudyTasksNestedInput
     exercise?: ExerciseUpdateOneWithoutStudyTasksNestedInput
@@ -58634,7 +58715,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -58652,7 +58733,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     exerciseId?: string | null
@@ -58683,7 +58764,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -58862,7 +58943,7 @@ export namespace Prisma {
     isPersonal?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    subject: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
+    subject?: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
     step?: LearningStepCreateNestedOneWithoutStudentPlannerTasksInput
     course?: CourseCreateNestedOneWithoutStudentPlannerTasksInput
     exercise?: ExerciseCreateNestedOneWithoutStudentPlannerTasksInput
@@ -58884,7 +58965,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     exerciseId?: string | null
@@ -58910,7 +58991,7 @@ export namespace Prisma {
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subject?: SubjectUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+    subject?: SubjectUpdateOneWithoutStudentPlannerTasksNestedInput
     step?: LearningStepUpdateOneWithoutStudentPlannerTasksNestedInput
     course?: CourseUpdateOneWithoutStudentPlannerTasksNestedInput
     exercise?: ExerciseUpdateOneWithoutStudentPlannerTasksNestedInput
@@ -58932,7 +59013,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -58956,7 +59037,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     exerciseId?: string | null
@@ -58998,7 +59079,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -59724,7 +59805,7 @@ export namespace Prisma {
 
   export type StudySessionCreateInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     topic?: string | null
     title: string
     status?: $Enums.StudySessionStatus
@@ -59740,7 +59821,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedCreateInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     subjectId?: string | null
     topic?: string | null
     title: string
@@ -59756,7 +59837,7 @@ export namespace Prisma {
 
   export type StudySessionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySessionStatusFieldUpdateOperationsInput | $Enums.StudySessionStatus
@@ -59772,7 +59853,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
@@ -59788,7 +59869,7 @@ export namespace Prisma {
 
   export type StudySessionCreateManyInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     subjectId?: string | null
     topic?: string | null
     title: string
@@ -59801,7 +59882,7 @@ export namespace Prisma {
 
   export type StudySessionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySessionStatusFieldUpdateOperationsInput | $Enums.StudySessionStatus
@@ -59811,7 +59892,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
@@ -59825,7 +59906,7 @@ export namespace Prisma {
   export type StudySquadCreateInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     invitationCode: string
     status?: $Enums.StudySquadStatus
     createdAt?: Date | string
@@ -59841,7 +59922,7 @@ export namespace Prisma {
   export type StudySquadUncheckedCreateInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     ownerId: string
     invitationCode: string
     status?: $Enums.StudySquadStatus
@@ -59857,7 +59938,7 @@ export namespace Prisma {
   export type StudySquadUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -59873,7 +59954,7 @@ export namespace Prisma {
   export type StudySquadUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     ownerId?: StringFieldUpdateOperationsInput | string
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
@@ -59889,7 +59970,7 @@ export namespace Prisma {
   export type StudySquadCreateManyInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     ownerId: string
     invitationCode: string
     status?: $Enums.StudySquadStatus
@@ -59900,7 +59981,7 @@ export namespace Prisma {
   export type StudySquadUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -59910,7 +59991,7 @@ export namespace Prisma {
   export type StudySquadUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     ownerId?: StringFieldUpdateOperationsInput | string
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
@@ -60184,7 +60265,7 @@ export namespace Prisma {
 
   export type SessionParticipantCreateInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     joinedAt?: Date | string
     leftAt?: Date | string | null
     isActive?: boolean
@@ -60199,7 +60280,7 @@ export namespace Prisma {
     id?: string
     sessionId: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     joinedAt?: Date | string
     leftAt?: Date | string | null
     isActive?: boolean
@@ -60210,7 +60291,7 @@ export namespace Prisma {
 
   export type SessionParticipantUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -60225,7 +60306,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -60238,7 +60319,7 @@ export namespace Prisma {
     id?: string
     sessionId: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     joinedAt?: Date | string
     leftAt?: Date | string | null
     isActive?: boolean
@@ -60249,7 +60330,7 @@ export namespace Prisma {
 
   export type SessionParticipantUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -60262,7 +60343,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -60273,7 +60354,7 @@ export namespace Prisma {
 
   export type SessionChatMessageCreateInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     content: string
     createdAt?: Date | string
     session: StudySessionCreateNestedOneWithoutChatMessagesInput
@@ -60284,14 +60365,14 @@ export namespace Prisma {
     id?: string
     sessionId: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     content: string
     createdAt?: Date | string
   }
 
   export type SessionChatMessageUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     session?: StudySessionUpdateOneRequiredWithoutChatMessagesNestedInput
@@ -60302,7 +60383,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -60311,14 +60392,14 @@ export namespace Prisma {
     id?: string
     sessionId: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     content: string
     createdAt?: Date | string
   }
 
   export type SessionChatMessageUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -60327,14 +60408,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StudyHeartbeatCreateInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     minuteKey: Date | string
     minutes?: number
     createdAt?: Date | string
@@ -60346,7 +60427,7 @@ export namespace Prisma {
     id?: string
     userId: string
     sessionId?: string | null
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     minuteKey: Date | string
     minutes?: number
     createdAt?: Date | string
@@ -60354,7 +60435,7 @@ export namespace Prisma {
 
   export type StudyHeartbeatUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     minuteKey?: DateTimeFieldUpdateOperationsInput | Date | string
     minutes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60366,7 +60447,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     sessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     minuteKey?: DateTimeFieldUpdateOperationsInput | Date | string
     minutes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60376,7 +60457,7 @@ export namespace Prisma {
     id?: string
     userId: string
     sessionId?: string | null
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     minuteKey: Date | string
     minutes?: number
     createdAt?: Date | string
@@ -60384,7 +60465,7 @@ export namespace Prisma {
 
   export type StudyHeartbeatUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     minuteKey?: DateTimeFieldUpdateOperationsInput | Date | string
     minutes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60394,7 +60475,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     sessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     minuteKey?: DateTimeFieldUpdateOperationsInput | Date | string
     minutes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60497,7 +60578,7 @@ export namespace Prisma {
 
   export type UserStudyBadgeCreateInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     awardedAt?: Date | string
     evidenceRef?: string | null
     user: UserCreateNestedOneWithoutBadgesAwardedInput
@@ -60508,14 +60589,14 @@ export namespace Prisma {
     id?: string
     userId: string
     badgeId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     awardedAt?: Date | string
     evidenceRef?: string | null
   }
 
   export type UserStudyBadgeUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     awardedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evidenceRef?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutBadgesAwardedNestedInput
@@ -60526,7 +60607,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     badgeId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     awardedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evidenceRef?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -60535,14 +60616,14 @@ export namespace Prisma {
     id?: string
     userId: string
     badgeId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     awardedAt?: Date | string
     evidenceRef?: string | null
   }
 
   export type UserStudyBadgeUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     awardedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evidenceRef?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -60551,7 +60632,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     badgeId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     awardedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evidenceRef?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -60586,11 +60667,18 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type EnumBacSectionFilter<$PrismaModel = never> = {
-    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel>
-    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
-    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
-    not?: NestedEnumBacSectionFilter<$PrismaModel> | $Enums.BacSection
+  export type EnumBacSectionNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel> | null
+    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumBacSectionNullableFilter<$PrismaModel> | $Enums.BacSection | null
+  }
+
+  export type EnumEducationTrackFilter<$PrismaModel = never> = {
+    equals?: $Enums.EducationTrack | EnumEducationTrackFieldRefInput<$PrismaModel>
+    in?: $Enums.EducationTrack[] | ListEnumEducationTrackFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EducationTrack[] | ListEnumEducationTrackFieldRefInput<$PrismaModel>
+    not?: NestedEnumEducationTrackFilter<$PrismaModel> | $Enums.EducationTrack
   }
 
   export type EnumRoleFilter<$PrismaModel = never> = {
@@ -60903,6 +60991,7 @@ export namespace Prisma {
     lastName?: SortOrder
     phone?: SortOrder
     bacSection?: SortOrder
+    educationTrack?: SortOrder
     role?: SortOrder
     status?: SortOrder
     tokenVersion?: SortOrder
@@ -60925,6 +61014,7 @@ export namespace Prisma {
     lastName?: SortOrder
     phone?: SortOrder
     bacSection?: SortOrder
+    educationTrack?: SortOrder
     role?: SortOrder
     status?: SortOrder
     tokenVersion?: SortOrder
@@ -60943,6 +61033,7 @@ export namespace Prisma {
     lastName?: SortOrder
     phone?: SortOrder
     bacSection?: SortOrder
+    educationTrack?: SortOrder
     role?: SortOrder
     status?: SortOrder
     tokenVersion?: SortOrder
@@ -60993,14 +61084,24 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type EnumBacSectionWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel>
-    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
-    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
-    not?: NestedEnumBacSectionWithAggregatesFilter<$PrismaModel> | $Enums.BacSection
+  export type EnumBacSectionNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel> | null
+    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumBacSectionNullableWithAggregatesFilter<$PrismaModel> | $Enums.BacSection | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumBacSectionNullableFilter<$PrismaModel>
+    _max?: NestedEnumBacSectionNullableFilter<$PrismaModel>
+  }
+
+  export type EnumEducationTrackWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EducationTrack | EnumEducationTrackFieldRefInput<$PrismaModel>
+    in?: $Enums.EducationTrack[] | ListEnumEducationTrackFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EducationTrack[] | ListEnumEducationTrackFieldRefInput<$PrismaModel>
+    not?: NestedEnumEducationTrackWithAggregatesFilter<$PrismaModel> | $Enums.EducationTrack
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumBacSectionFilter<$PrismaModel>
-    _max?: NestedEnumBacSectionFilter<$PrismaModel>
+    _min?: NestedEnumEducationTrackFilter<$PrismaModel>
+    _max?: NestedEnumEducationTrackFilter<$PrismaModel>
   }
 
   export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -61132,6 +61233,13 @@ export namespace Prisma {
     order?: SortOrder
   }
 
+  export type EnumBacSectionFilter<$PrismaModel = never> = {
+    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel>
+    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
+    not?: NestedEnumBacSectionFilter<$PrismaModel> | $Enums.BacSection
+  }
+
   export type LearningStepNullableRelationFilter = {
     is?: LearningStepWhereInput | null
     isNot?: LearningStepWhereInput | null
@@ -61200,6 +61308,16 @@ export namespace Prisma {
 
   export type SubjectSumOrderByAggregateInput = {
     order?: SortOrder
+  }
+
+  export type EnumBacSectionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel>
+    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
+    not?: NestedEnumBacSectionWithAggregatesFilter<$PrismaModel> | $Enums.BacSection
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBacSectionFilter<$PrismaModel>
+    _max?: NestedEnumBacSectionFilter<$PrismaModel>
   }
 
   export type SubjectRelationFilter = {
@@ -61274,13 +61392,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type EnumBacSectionNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel> | null
-    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumBacSectionNullableFilter<$PrismaModel> | $Enums.BacSection | null
-  }
-
   export type SubjectNullableRelationFilter = {
     is?: SubjectWhereInput | null
     isNot?: SubjectWhereInput | null
@@ -61308,16 +61419,6 @@ export namespace Prisma {
     subjectId?: SortOrder
     bacSection?: SortOrder
     createdAt?: SortOrder
-  }
-
-  export type EnumBacSectionNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel> | null
-    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumBacSectionNullableWithAggregatesFilter<$PrismaModel> | $Enums.BacSection | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumBacSectionNullableFilter<$PrismaModel>
-    _max?: NestedEnumBacSectionNullableFilter<$PrismaModel>
   }
   export type JsonNullableFilter<$PrismaModel = never> = 
     | PatchUndefined<
@@ -63893,8 +63994,12 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type EnumBacSectionFieldUpdateOperationsInput = {
-    set?: $Enums.BacSection
+  export type NullableEnumBacSectionFieldUpdateOperationsInput = {
+    set?: $Enums.BacSection | null
+  }
+
+  export type EnumEducationTrackFieldUpdateOperationsInput = {
+    set?: $Enums.EducationTrack
   }
 
   export type EnumRoleFieldUpdateOperationsInput = {
@@ -65099,6 +65204,10 @@ export namespace Prisma {
     connect?: StudySessionWhereUniqueInput | StudySessionWhereUniqueInput[]
   }
 
+  export type EnumBacSectionFieldUpdateOperationsInput = {
+    set?: $Enums.BacSection
+  }
+
   export type LearningStepUpdateOneWithoutSubjectsNestedInput = {
     create?: XOR<LearningStepCreateWithoutSubjectsInput, LearningStepUncheckedCreateWithoutSubjectsInput>
     connectOrCreate?: LearningStepCreateOrConnectWithoutSubjectsInput
@@ -65455,10 +65564,6 @@ export namespace Prisma {
     create?: XOR<SubjectCreateWithoutTeacherAssignmentsInput, SubjectUncheckedCreateWithoutTeacherAssignmentsInput>
     connectOrCreate?: SubjectCreateOrConnectWithoutTeacherAssignmentsInput
     connect?: SubjectWhereUniqueInput
-  }
-
-  export type NullableEnumBacSectionFieldUpdateOperationsInput = {
-    set?: $Enums.BacSection | null
   }
 
   export type UserUpdateOneRequiredWithoutTeacherAssignmentsNestedInput = {
@@ -66716,10 +66821,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type SubjectUpdateOneRequiredWithoutStudyTasksNestedInput = {
+  export type SubjectUpdateOneWithoutStudyTasksNestedInput = {
     create?: XOR<SubjectCreateWithoutStudyTasksInput, SubjectUncheckedCreateWithoutStudyTasksInput>
     connectOrCreate?: SubjectCreateOrConnectWithoutStudyTasksInput
     upsert?: SubjectUpsertWithoutStudyTasksInput
+    disconnect?: SubjectWhereInput | boolean
+    delete?: SubjectWhereInput | boolean
     connect?: SubjectWhereUniqueInput
     update?: XOR<XOR<SubjectUpdateToOneWithWhereWithoutStudyTasksInput, SubjectUpdateWithoutStudyTasksInput>, SubjectUncheckedUpdateWithoutStudyTasksInput>
   }
@@ -66885,10 +66992,12 @@ export namespace Prisma {
     connect?: PlannerTemplateWhereUniqueInput
   }
 
-  export type SubjectUpdateOneRequiredWithoutStudentPlannerTasksNestedInput = {
+  export type SubjectUpdateOneWithoutStudentPlannerTasksNestedInput = {
     create?: XOR<SubjectCreateWithoutStudentPlannerTasksInput, SubjectUncheckedCreateWithoutStudentPlannerTasksInput>
     connectOrCreate?: SubjectCreateOrConnectWithoutStudentPlannerTasksInput
     upsert?: SubjectUpsertWithoutStudentPlannerTasksInput
+    disconnect?: SubjectWhereInput | boolean
+    delete?: SubjectWhereInput | boolean
     connect?: SubjectWhereUniqueInput
     update?: XOR<XOR<SubjectUpdateToOneWithWhereWithoutStudentPlannerTasksInput, SubjectUpdateWithoutStudentPlannerTasksInput>, SubjectUncheckedUpdateWithoutStudentPlannerTasksInput>
   }
@@ -67893,11 +68002,18 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedEnumBacSectionFilter<$PrismaModel = never> = {
-    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel>
-    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
-    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
-    not?: NestedEnumBacSectionFilter<$PrismaModel> | $Enums.BacSection
+  export type NestedEnumBacSectionNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel> | null
+    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumBacSectionNullableFilter<$PrismaModel> | $Enums.BacSection | null
+  }
+
+  export type NestedEnumEducationTrackFilter<$PrismaModel = never> = {
+    equals?: $Enums.EducationTrack | EnumEducationTrackFieldRefInput<$PrismaModel>
+    in?: $Enums.EducationTrack[] | ListEnumEducationTrackFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EducationTrack[] | ListEnumEducationTrackFieldRefInput<$PrismaModel>
+    not?: NestedEnumEducationTrackFilter<$PrismaModel> | $Enums.EducationTrack
   }
 
   export type NestedEnumRoleFilter<$PrismaModel = never> = {
@@ -67997,14 +68113,24 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedEnumBacSectionWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel>
-    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
-    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
-    not?: NestedEnumBacSectionWithAggregatesFilter<$PrismaModel> | $Enums.BacSection
+  export type NestedEnumBacSectionNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel> | null
+    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumBacSectionNullableWithAggregatesFilter<$PrismaModel> | $Enums.BacSection | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumBacSectionNullableFilter<$PrismaModel>
+    _max?: NestedEnumBacSectionNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumEducationTrackWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EducationTrack | EnumEducationTrackFieldRefInput<$PrismaModel>
+    in?: $Enums.EducationTrack[] | ListEnumEducationTrackFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EducationTrack[] | ListEnumEducationTrackFieldRefInput<$PrismaModel>
+    not?: NestedEnumEducationTrackWithAggregatesFilter<$PrismaModel> | $Enums.EducationTrack
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumBacSectionFilter<$PrismaModel>
-    _max?: NestedEnumBacSectionFilter<$PrismaModel>
+    _min?: NestedEnumEducationTrackFilter<$PrismaModel>
+    _max?: NestedEnumEducationTrackFilter<$PrismaModel>
   }
 
   export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -68090,21 +68216,21 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedEnumBacSectionNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel> | null
-    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumBacSectionNullableFilter<$PrismaModel> | $Enums.BacSection | null
+  export type NestedEnumBacSectionFilter<$PrismaModel = never> = {
+    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel>
+    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
+    not?: NestedEnumBacSectionFilter<$PrismaModel> | $Enums.BacSection
   }
 
-  export type NestedEnumBacSectionNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel> | null
-    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumBacSectionNullableWithAggregatesFilter<$PrismaModel> | $Enums.BacSection | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumBacSectionNullableFilter<$PrismaModel>
-    _max?: NestedEnumBacSectionNullableFilter<$PrismaModel>
+  export type NestedEnumBacSectionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BacSection | EnumBacSectionFieldRefInput<$PrismaModel>
+    in?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BacSection[] | ListEnumBacSectionFieldRefInput<$PrismaModel>
+    not?: NestedEnumBacSectionWithAggregatesFilter<$PrismaModel> | $Enums.BacSection
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBacSectionFilter<$PrismaModel>
+    _max?: NestedEnumBacSectionFilter<$PrismaModel>
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> = 
     | PatchUndefined<
@@ -68456,7 +68582,7 @@ export namespace Prisma {
     completed?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    subject: SubjectCreateNestedOneWithoutStudyTasksInput
+    subject?: SubjectCreateNestedOneWithoutStudyTasksInput
     step?: LearningStepCreateNestedOneWithoutStudyTasksInput
     course?: CourseCreateNestedOneWithoutStudyTasksInput
     exercise?: ExerciseCreateNestedOneWithoutStudyTasksInput
@@ -68466,7 +68592,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     exerciseId?: string | null
@@ -68557,7 +68683,7 @@ export namespace Prisma {
     isPersonal?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    subject: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
+    subject?: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
     step?: LearningStepCreateNestedOneWithoutStudentPlannerTasksInput
     course?: CourseCreateNestedOneWithoutStudentPlannerTasksInput
     exercise?: ExerciseCreateNestedOneWithoutStudentPlannerTasksInput
@@ -68578,7 +68704,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     exerciseId?: string | null
@@ -69202,7 +69328,7 @@ export namespace Prisma {
 
   export type StudySessionCreateWithoutCreatedByInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     topic?: string | null
     title: string
     status?: $Enums.StudySessionStatus
@@ -69217,7 +69343,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedCreateWithoutCreatedByInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     subjectId?: string | null
     topic?: string | null
     title: string
@@ -69242,7 +69368,7 @@ export namespace Prisma {
 
   export type SessionParticipantCreateWithoutUserInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     joinedAt?: Date | string
     leftAt?: Date | string | null
     isActive?: boolean
@@ -69255,7 +69381,7 @@ export namespace Prisma {
   export type SessionParticipantUncheckedCreateWithoutUserInput = {
     id?: string
     sessionId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     joinedAt?: Date | string
     leftAt?: Date | string | null
     isActive?: boolean
@@ -69276,7 +69402,7 @@ export namespace Prisma {
 
   export type SessionChatMessageCreateWithoutUserInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     content: string
     createdAt?: Date | string
     session: StudySessionCreateNestedOneWithoutChatMessagesInput
@@ -69285,7 +69411,7 @@ export namespace Prisma {
   export type SessionChatMessageUncheckedCreateWithoutUserInput = {
     id?: string
     sessionId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     content: string
     createdAt?: Date | string
   }
@@ -69302,7 +69428,7 @@ export namespace Prisma {
 
   export type StudyHeartbeatCreateWithoutUserInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     minuteKey: Date | string
     minutes?: number
     createdAt?: Date | string
@@ -69312,7 +69438,7 @@ export namespace Prisma {
   export type StudyHeartbeatUncheckedCreateWithoutUserInput = {
     id?: string
     sessionId?: string | null
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     minuteKey: Date | string
     minutes?: number
     createdAt?: Date | string
@@ -69330,7 +69456,7 @@ export namespace Prisma {
 
   export type UserStudyBadgeCreateWithoutUserInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     awardedAt?: Date | string
     evidenceRef?: string | null
     badge: StudyBadgeCreateNestedOneWithoutRecipientsInput
@@ -69339,7 +69465,7 @@ export namespace Prisma {
   export type UserStudyBadgeUncheckedCreateWithoutUserInput = {
     id?: string
     badgeId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     awardedAt?: Date | string
     evidenceRef?: string | null
   }
@@ -69409,7 +69535,7 @@ export namespace Prisma {
   export type StudySquadCreateWithoutOwnerInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     invitationCode: string
     status?: $Enums.StudySquadStatus
     createdAt?: Date | string
@@ -69424,7 +69550,7 @@ export namespace Prisma {
   export type StudySquadUncheckedCreateWithoutOwnerInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     invitationCode: string
     status?: $Enums.StudySquadStatus
     createdAt?: Date | string
@@ -69695,7 +69821,7 @@ export namespace Prisma {
     id?: StringFilter<"StudyTask"> | string
     title?: StringFilter<"StudyTask"> | string
     description?: StringNullableFilter<"StudyTask"> | string | null
-    subjectId?: StringFilter<"StudyTask"> | string
+    subjectId?: StringNullableFilter<"StudyTask"> | string | null
     stepId?: StringNullableFilter<"StudyTask"> | string | null
     courseId?: StringNullableFilter<"StudyTask"> | string | null
     exerciseId?: StringNullableFilter<"StudyTask"> | string | null
@@ -69782,7 +69908,7 @@ export namespace Prisma {
     attachmentMimeType?: StringNullableFilter<"StudentPlannerTask"> | string | null
     attachmentSizeBytes?: IntNullableFilter<"StudentPlannerTask"> | number | null
     isPersonal?: BoolFilter<"StudentPlannerTask"> | boolean
-    subjectId?: StringFilter<"StudentPlannerTask"> | string
+    subjectId?: StringNullableFilter<"StudentPlannerTask"> | string | null
     stepId?: StringNullableFilter<"StudentPlannerTask"> | string | null
     courseId?: StringNullableFilter<"StudentPlannerTask"> | string | null
     exerciseId?: StringNullableFilter<"StudentPlannerTask"> | string | null
@@ -70164,7 +70290,7 @@ export namespace Prisma {
     OR?: StudySessionScalarWhereInput[]
     NOT?: StudySessionScalarWhereInput | StudySessionScalarWhereInput[]
     id?: StringFilter<"StudySession"> | string
-    bacSection?: EnumBacSectionFilter<"StudySession"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"StudySession"> | $Enums.BacSection | null
     subjectId?: StringNullableFilter<"StudySession"> | string | null
     topic?: StringNullableFilter<"StudySession"> | string | null
     title?: StringFilter<"StudySession"> | string
@@ -70198,7 +70324,7 @@ export namespace Prisma {
     id?: StringFilter<"SessionParticipant"> | string
     sessionId?: StringFilter<"SessionParticipant"> | string
     userId?: StringFilter<"SessionParticipant"> | string
-    bacSection?: EnumBacSectionFilter<"SessionParticipant"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"SessionParticipant"> | $Enums.BacSection | null
     joinedAt?: DateTimeFilter<"SessionParticipant"> | Date | string
     leftAt?: DateTimeNullableFilter<"SessionParticipant"> | Date | string | null
     isActive?: BoolFilter<"SessionParticipant"> | boolean
@@ -70230,7 +70356,7 @@ export namespace Prisma {
     id?: StringFilter<"SessionChatMessage"> | string
     sessionId?: StringFilter<"SessionChatMessage"> | string
     userId?: StringFilter<"SessionChatMessage"> | string
-    bacSection?: EnumBacSectionFilter<"SessionChatMessage"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"SessionChatMessage"> | $Enums.BacSection | null
     content?: StringFilter<"SessionChatMessage"> | string
     createdAt?: DateTimeFilter<"SessionChatMessage"> | Date | string
   }
@@ -70258,7 +70384,7 @@ export namespace Prisma {
     id?: StringFilter<"StudyHeartbeat"> | string
     userId?: StringFilter<"StudyHeartbeat"> | string
     sessionId?: StringNullableFilter<"StudyHeartbeat"> | string | null
-    bacSection?: EnumBacSectionFilter<"StudyHeartbeat"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"StudyHeartbeat"> | $Enums.BacSection | null
     minuteKey?: DateTimeFilter<"StudyHeartbeat"> | Date | string
     minutes?: IntFilter<"StudyHeartbeat"> | number
     createdAt?: DateTimeFilter<"StudyHeartbeat"> | Date | string
@@ -70287,7 +70413,7 @@ export namespace Prisma {
     id?: StringFilter<"UserStudyBadge"> | string
     userId?: StringFilter<"UserStudyBadge"> | string
     badgeId?: StringFilter<"UserStudyBadge"> | string
-    bacSection?: EnumBacSectionFilter<"UserStudyBadge"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"UserStudyBadge"> | $Enums.BacSection | null
     awardedAt?: DateTimeFilter<"UserStudyBadge"> | Date | string
     evidenceRef?: StringNullableFilter<"UserStudyBadge"> | string | null
   }
@@ -70355,7 +70481,7 @@ export namespace Prisma {
     NOT?: StudySquadScalarWhereInput | StudySquadScalarWhereInput[]
     id?: StringFilter<"StudySquad"> | string
     name?: StringFilter<"StudySquad"> | string
-    bacSection?: EnumBacSectionFilter<"StudySquad"> | $Enums.BacSection
+    bacSection?: EnumBacSectionNullableFilter<"StudySquad"> | $Enums.BacSection | null
     ownerId?: StringFilter<"StudySquad"> | string
     invitationCode?: StringFilter<"StudySquad"> | string
     status?: EnumStudySquadStatusFilter<"StudySquad"> | $Enums.StudySquadStatus
@@ -70563,7 +70689,7 @@ export namespace Prisma {
     completed?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    subject: SubjectCreateNestedOneWithoutStudyTasksInput
+    subject?: SubjectCreateNestedOneWithoutStudyTasksInput
     course?: CourseCreateNestedOneWithoutStudyTasksInput
     exercise?: ExerciseCreateNestedOneWithoutStudyTasksInput
     user: UserCreateNestedOneWithoutStudyTasksInput
@@ -70573,7 +70699,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    subjectId: string
+    subjectId?: string | null
     courseId?: string | null
     exerciseId?: string | null
     date: Date | string
@@ -70612,7 +70738,7 @@ export namespace Prisma {
     isPersonal?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    subject: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
+    subject?: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
     course?: CourseCreateNestedOneWithoutStudentPlannerTasksInput
     exercise?: ExerciseCreateNestedOneWithoutStudentPlannerTasksInput
     user: UserCreateNestedOneWithoutStudentPlannerTasksInput
@@ -70633,7 +70759,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     courseId?: string | null
     exerciseId?: string | null
     userId: string
@@ -71354,7 +71480,7 @@ export namespace Prisma {
 
   export type StudySessionCreateWithoutSubjectInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     topic?: string | null
     title: string
     status?: $Enums.StudySessionStatus
@@ -71369,7 +71495,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedCreateWithoutSubjectInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     topic?: string | null
     title: string
     createdById: string
@@ -71742,7 +71868,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -71788,7 +71915,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -71850,7 +71978,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -71896,7 +72025,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -71942,7 +72072,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -71988,7 +72119,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -72103,7 +72235,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -72149,7 +72282,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -72254,7 +72388,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -72300,7 +72435,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -72362,7 +72498,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -72408,7 +72545,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -72507,7 +72645,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -72553,7 +72692,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -72604,7 +72744,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -72650,7 +72791,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -72913,7 +73055,7 @@ export namespace Prisma {
     completed?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    subject: SubjectCreateNestedOneWithoutStudyTasksInput
+    subject?: SubjectCreateNestedOneWithoutStudyTasksInput
     step?: LearningStepCreateNestedOneWithoutStudyTasksInput
     exercise?: ExerciseCreateNestedOneWithoutStudyTasksInput
     user: UserCreateNestedOneWithoutStudyTasksInput
@@ -72923,7 +73065,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     exerciseId?: string | null
     date: Date | string
@@ -72962,7 +73104,7 @@ export namespace Prisma {
     isPersonal?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    subject: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
+    subject?: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
     step?: LearningStepCreateNestedOneWithoutStudentPlannerTasksInput
     exercise?: ExerciseCreateNestedOneWithoutStudentPlannerTasksInput
     user: UserCreateNestedOneWithoutStudentPlannerTasksInput
@@ -72983,7 +73125,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     exerciseId?: string | null
     userId: string
@@ -73159,7 +73301,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -73205,7 +73348,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -73262,7 +73406,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -73308,7 +73453,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -73981,7 +74127,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -74027,7 +74174,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -74078,7 +74226,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -74124,7 +74273,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -74301,7 +74451,7 @@ export namespace Prisma {
     completed?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    subject: SubjectCreateNestedOneWithoutStudyTasksInput
+    subject?: SubjectCreateNestedOneWithoutStudyTasksInput
     step?: LearningStepCreateNestedOneWithoutStudyTasksInput
     course?: CourseCreateNestedOneWithoutStudyTasksInput
     user: UserCreateNestedOneWithoutStudyTasksInput
@@ -74311,7 +74461,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     date: Date | string
@@ -74350,7 +74500,7 @@ export namespace Prisma {
     isPersonal?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    subject: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
+    subject?: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
     step?: LearningStepCreateNestedOneWithoutStudentPlannerTasksInput
     course?: CourseCreateNestedOneWithoutStudentPlannerTasksInput
     user: UserCreateNestedOneWithoutStudentPlannerTasksInput
@@ -74371,7 +74521,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     userId: string
@@ -74588,7 +74738,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -74634,7 +74785,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -74691,7 +74843,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -74737,7 +74890,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -75140,7 +75294,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -75186,7 +75341,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -75237,7 +75393,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -75283,7 +75440,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -75452,7 +75610,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -75498,7 +75657,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -75555,7 +75715,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -75601,7 +75762,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -76049,7 +76211,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -76095,7 +76258,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -76301,7 +76465,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -76347,7 +76512,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -76549,7 +76715,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -76595,7 +76762,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -76730,7 +76898,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -76776,7 +76945,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -76901,7 +77071,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -76947,7 +77118,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -77009,7 +77181,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -77055,7 +77228,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -77637,7 +77811,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -77683,7 +77858,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -78005,7 +78181,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -78051,7 +78228,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -78150,7 +78328,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -78196,7 +78375,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -78256,7 +78436,7 @@ export namespace Prisma {
     isPersonal?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    subject: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
+    subject?: SubjectCreateNestedOneWithoutStudentPlannerTasksInput
     step?: LearningStepCreateNestedOneWithoutStudentPlannerTasksInput
     course?: CourseCreateNestedOneWithoutStudentPlannerTasksInput
     exercise?: ExerciseCreateNestedOneWithoutStudentPlannerTasksInput
@@ -78277,7 +78457,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     exerciseId?: string | null
@@ -78373,7 +78553,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -78419,7 +78600,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -78717,7 +78899,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -78763,7 +78946,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -79132,7 +79316,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -79178,7 +79363,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -79277,7 +79463,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -79323,7 +79510,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -79621,7 +79809,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -79667,7 +79856,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -80138,7 +80328,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -80184,7 +80375,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -80429,7 +80621,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -80475,7 +80668,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -80521,7 +80715,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -80567,7 +80762,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -80661,7 +80857,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -80707,7 +80904,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -80953,7 +81151,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -80999,7 +81198,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -81046,7 +81246,7 @@ export namespace Prisma {
   export type StudySquadCreateWithoutStudySessionsInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     invitationCode: string
     status?: $Enums.StudySquadStatus
     createdAt?: Date | string
@@ -81061,7 +81261,7 @@ export namespace Prisma {
   export type StudySquadUncheckedCreateWithoutStudySessionsInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     ownerId: string
     invitationCode: string
     status?: $Enums.StudySquadStatus
@@ -81080,7 +81280,7 @@ export namespace Prisma {
 
   export type SessionParticipantCreateWithoutSessionInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     joinedAt?: Date | string
     leftAt?: Date | string | null
     isActive?: boolean
@@ -81093,7 +81293,7 @@ export namespace Prisma {
   export type SessionParticipantUncheckedCreateWithoutSessionInput = {
     id?: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     joinedAt?: Date | string
     leftAt?: Date | string | null
     isActive?: boolean
@@ -81114,7 +81314,7 @@ export namespace Prisma {
 
   export type SessionChatMessageCreateWithoutSessionInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     content: string
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutChatMessagesInput
@@ -81123,7 +81323,7 @@ export namespace Prisma {
   export type SessionChatMessageUncheckedCreateWithoutSessionInput = {
     id?: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     content: string
     createdAt?: Date | string
   }
@@ -81140,7 +81340,7 @@ export namespace Prisma {
 
   export type StudyHeartbeatCreateWithoutSessionInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     minuteKey: Date | string
     minutes?: number
     createdAt?: Date | string
@@ -81150,7 +81350,7 @@ export namespace Prisma {
   export type StudyHeartbeatUncheckedCreateWithoutSessionInput = {
     id?: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     minuteKey: Date | string
     minutes?: number
     createdAt?: Date | string
@@ -81243,7 +81443,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -81289,7 +81490,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -81342,7 +81544,7 @@ export namespace Prisma {
   export type StudySquadUpdateWithoutStudySessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81357,7 +81559,7 @@ export namespace Prisma {
   export type StudySquadUncheckedUpdateWithoutStudySessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     ownerId?: StringFieldUpdateOperationsInput | string
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
@@ -81424,7 +81626,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -81470,7 +81673,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -81621,7 +81825,7 @@ export namespace Prisma {
 
   export type StudySessionCreateWithoutStudySquadInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     topic?: string | null
     title: string
     status?: $Enums.StudySessionStatus
@@ -81636,7 +81840,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedCreateWithoutStudySquadInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     subjectId?: string | null
     topic?: string | null
     title: string
@@ -81677,7 +81881,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -81723,7 +81928,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -81864,7 +82070,7 @@ export namespace Prisma {
   export type StudySquadCreateWithoutMembersInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     invitationCode: string
     status?: $Enums.StudySquadStatus
     createdAt?: Date | string
@@ -81879,7 +82085,7 @@ export namespace Prisma {
   export type StudySquadUncheckedCreateWithoutMembersInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     ownerId: string
     invitationCode: string
     status?: $Enums.StudySquadStatus
@@ -81903,7 +82109,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -81949,7 +82156,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -82007,7 +82215,7 @@ export namespace Prisma {
   export type StudySquadUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -82022,7 +82230,7 @@ export namespace Prisma {
   export type StudySquadUncheckedUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     ownerId?: StringFieldUpdateOperationsInput | string
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
@@ -82052,7 +82260,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -82098,7 +82307,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -82140,7 +82350,7 @@ export namespace Prisma {
   export type StudySquadCreateWithoutInvitationsInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     invitationCode: string
     status?: $Enums.StudySquadStatus
     createdAt?: Date | string
@@ -82155,7 +82365,7 @@ export namespace Prisma {
   export type StudySquadUncheckedCreateWithoutInvitationsInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     ownerId: string
     invitationCode: string
     status?: $Enums.StudySquadStatus
@@ -82179,7 +82389,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -82225,7 +82436,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -82276,7 +82488,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -82322,7 +82535,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -82380,7 +82594,7 @@ export namespace Prisma {
   export type StudySquadUpdateWithoutInvitationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -82395,7 +82609,7 @@ export namespace Prisma {
   export type StudySquadUncheckedUpdateWithoutInvitationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     ownerId?: StringFieldUpdateOperationsInput | string
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
@@ -82425,7 +82639,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -82471,7 +82686,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -82528,7 +82744,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -82574,7 +82791,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -82616,7 +82834,7 @@ export namespace Prisma {
   export type StudySquadCreateWithoutGoalInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     invitationCode: string
     status?: $Enums.StudySquadStatus
     createdAt?: Date | string
@@ -82631,7 +82849,7 @@ export namespace Prisma {
   export type StudySquadUncheckedCreateWithoutGoalInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     ownerId: string
     invitationCode: string
     status?: $Enums.StudySquadStatus
@@ -82655,7 +82873,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -82701,7 +82920,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -82759,7 +82979,7 @@ export namespace Prisma {
   export type StudySquadUpdateWithoutGoalInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -82774,7 +82994,7 @@ export namespace Prisma {
   export type StudySquadUncheckedUpdateWithoutGoalInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     ownerId?: StringFieldUpdateOperationsInput | string
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
@@ -82804,7 +83024,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -82850,7 +83071,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -82892,7 +83114,7 @@ export namespace Prisma {
   export type StudySquadCreateWithoutChatMessagesInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     invitationCode: string
     status?: $Enums.StudySquadStatus
     createdAt?: Date | string
@@ -82907,7 +83129,7 @@ export namespace Prisma {
   export type StudySquadUncheckedCreateWithoutChatMessagesInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     ownerId: string
     invitationCode: string
     status?: $Enums.StudySquadStatus
@@ -82931,7 +83153,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -82977,7 +83200,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -83035,7 +83259,7 @@ export namespace Prisma {
   export type StudySquadUpdateWithoutChatMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -83050,7 +83274,7 @@ export namespace Prisma {
   export type StudySquadUncheckedUpdateWithoutChatMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     ownerId?: StringFieldUpdateOperationsInput | string
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
@@ -83080,7 +83304,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -83126,7 +83351,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -83167,7 +83393,7 @@ export namespace Prisma {
 
   export type StudySessionCreateWithoutParticipantsInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     topic?: string | null
     title: string
     status?: $Enums.StudySessionStatus
@@ -83182,7 +83408,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedCreateWithoutParticipantsInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     subjectId?: string | null
     topic?: string | null
     title: string
@@ -83207,7 +83433,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -83253,7 +83480,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -83310,7 +83538,7 @@ export namespace Prisma {
 
   export type StudySessionUpdateWithoutParticipantsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySessionStatusFieldUpdateOperationsInput | $Enums.StudySessionStatus
@@ -83325,7 +83553,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedUpdateWithoutParticipantsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
@@ -83356,7 +83584,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -83402,7 +83631,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -83443,7 +83673,7 @@ export namespace Prisma {
 
   export type StudySessionCreateWithoutChatMessagesInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     topic?: string | null
     title: string
     status?: $Enums.StudySessionStatus
@@ -83458,7 +83688,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedCreateWithoutChatMessagesInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     subjectId?: string | null
     topic?: string | null
     title: string
@@ -83483,7 +83713,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -83529,7 +83760,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -83586,7 +83818,7 @@ export namespace Prisma {
 
   export type StudySessionUpdateWithoutChatMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySessionStatusFieldUpdateOperationsInput | $Enums.StudySessionStatus
@@ -83601,7 +83833,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedUpdateWithoutChatMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
@@ -83632,7 +83864,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -83678,7 +83911,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -83724,7 +83958,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -83770,7 +84005,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -83816,7 +84052,7 @@ export namespace Prisma {
 
   export type StudySessionCreateWithoutHeartbeatsInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     topic?: string | null
     title: string
     status?: $Enums.StudySessionStatus
@@ -83831,7 +84067,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedCreateWithoutHeartbeatsInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     subjectId?: string | null
     topic?: string | null
     title: string
@@ -83867,7 +84103,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -83913,7 +84150,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -83965,7 +84203,7 @@ export namespace Prisma {
 
   export type StudySessionUpdateWithoutHeartbeatsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySessionStatusFieldUpdateOperationsInput | $Enums.StudySessionStatus
@@ -83980,7 +84218,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedUpdateWithoutHeartbeatsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
@@ -83995,7 +84233,7 @@ export namespace Prisma {
 
   export type UserStudyBadgeCreateWithoutBadgeInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     awardedAt?: Date | string
     evidenceRef?: string | null
     user: UserCreateNestedOneWithoutBadgesAwardedInput
@@ -84004,7 +84242,7 @@ export namespace Prisma {
   export type UserStudyBadgeUncheckedCreateWithoutBadgeInput = {
     id?: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     awardedAt?: Date | string
     evidenceRef?: string | null
   }
@@ -84042,7 +84280,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -84088,7 +84327,8 @@ export namespace Prisma {
     firstName: string
     lastName: string
     phone?: string | null
-    bacSection?: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
+    educationTrack?: $Enums.EducationTrack
     role?: $Enums.Role
     status?: $Enums.UserStatus
     tokenVersion?: number
@@ -84181,7 +84421,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -84227,7 +84468,8 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
+    educationTrack?: EnumEducationTrackFieldUpdateOperationsInput | $Enums.EducationTrack
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     tokenVersion?: IntFieldUpdateOperationsInput | number
@@ -84335,7 +84577,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     exerciseId?: string | null
@@ -84382,7 +84624,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     exerciseId?: string | null
@@ -84592,7 +84834,7 @@ export namespace Prisma {
 
   export type StudySessionCreateManyCreatedByInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     subjectId?: string | null
     topic?: string | null
     title: string
@@ -84605,7 +84847,7 @@ export namespace Prisma {
   export type SessionParticipantCreateManyUserInput = {
     id?: string
     sessionId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     joinedAt?: Date | string
     leftAt?: Date | string | null
     isActive?: boolean
@@ -84617,7 +84859,7 @@ export namespace Prisma {
   export type SessionChatMessageCreateManyUserInput = {
     id?: string
     sessionId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     content: string
     createdAt?: Date | string
   }
@@ -84625,7 +84867,7 @@ export namespace Prisma {
   export type StudyHeartbeatCreateManyUserInput = {
     id?: string
     sessionId?: string | null
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     minuteKey: Date | string
     minutes?: number
     createdAt?: Date | string
@@ -84634,7 +84876,7 @@ export namespace Prisma {
   export type UserStudyBadgeCreateManyUserInput = {
     id?: string
     badgeId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     awardedAt?: Date | string
     evidenceRef?: string | null
   }
@@ -84663,7 +84905,7 @@ export namespace Prisma {
   export type StudySquadCreateManyOwnerInput = {
     id?: string
     name: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     invitationCode: string
     status?: $Enums.StudySquadStatus
     createdAt?: Date | string
@@ -84809,7 +85051,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subject?: SubjectUpdateOneRequiredWithoutStudyTasksNestedInput
+    subject?: SubjectUpdateOneWithoutStudyTasksNestedInput
     step?: LearningStepUpdateOneWithoutStudyTasksNestedInput
     course?: CourseUpdateOneWithoutStudyTasksNestedInput
     exercise?: ExerciseUpdateOneWithoutStudyTasksNestedInput
@@ -84819,7 +85061,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84836,7 +85078,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84927,7 +85169,7 @@ export namespace Prisma {
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subject?: SubjectUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+    subject?: SubjectUpdateOneWithoutStudentPlannerTasksNestedInput
     step?: LearningStepUpdateOneWithoutStudentPlannerTasksNestedInput
     course?: CourseUpdateOneWithoutStudentPlannerTasksNestedInput
     exercise?: ExerciseUpdateOneWithoutStudentPlannerTasksNestedInput
@@ -84948,7 +85190,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84971,7 +85213,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -85657,7 +85899,7 @@ export namespace Prisma {
 
   export type StudySessionUpdateWithoutCreatedByInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySessionStatusFieldUpdateOperationsInput | $Enums.StudySessionStatus
@@ -85672,7 +85914,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedUpdateWithoutCreatedByInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
@@ -85687,7 +85929,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedUpdateManyWithoutCreatedByInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
@@ -85699,7 +85941,7 @@ export namespace Prisma {
 
   export type SessionParticipantUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -85712,7 +85954,7 @@ export namespace Prisma {
   export type SessionParticipantUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -85724,7 +85966,7 @@ export namespace Prisma {
   export type SessionParticipantUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -85735,7 +85977,7 @@ export namespace Prisma {
 
   export type SessionChatMessageUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     session?: StudySessionUpdateOneRequiredWithoutChatMessagesNestedInput
@@ -85744,7 +85986,7 @@ export namespace Prisma {
   export type SessionChatMessageUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -85752,14 +85994,14 @@ export namespace Prisma {
   export type SessionChatMessageUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StudyHeartbeatUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     minuteKey?: DateTimeFieldUpdateOperationsInput | Date | string
     minutes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -85769,7 +86011,7 @@ export namespace Prisma {
   export type StudyHeartbeatUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     minuteKey?: DateTimeFieldUpdateOperationsInput | Date | string
     minutes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -85778,7 +86020,7 @@ export namespace Prisma {
   export type StudyHeartbeatUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     minuteKey?: DateTimeFieldUpdateOperationsInput | Date | string
     minutes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -85786,7 +86028,7 @@ export namespace Prisma {
 
   export type UserStudyBadgeUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     awardedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evidenceRef?: NullableStringFieldUpdateOperationsInput | string | null
     badge?: StudyBadgeUpdateOneRequiredWithoutRecipientsNestedInput
@@ -85795,7 +86037,7 @@ export namespace Prisma {
   export type UserStudyBadgeUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     badgeId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     awardedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evidenceRef?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -85803,7 +86045,7 @@ export namespace Prisma {
   export type UserStudyBadgeUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     badgeId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     awardedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evidenceRef?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -85874,7 +86116,7 @@ export namespace Prisma {
   export type StudySquadUpdateWithoutOwnerInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -85889,7 +86131,7 @@ export namespace Prisma {
   export type StudySquadUncheckedUpdateWithoutOwnerInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -85904,7 +86146,7 @@ export namespace Prisma {
   export type StudySquadUncheckedUpdateManyWithoutOwnerInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     invitationCode?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySquadStatusFieldUpdateOperationsInput | $Enums.StudySquadStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -86060,7 +86302,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    subjectId: string
+    subjectId?: string | null
     courseId?: string | null
     exerciseId?: string | null
     date: Date | string
@@ -86087,7 +86329,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     courseId?: string | null
     exerciseId?: string | null
     userId: string
@@ -86198,7 +86440,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subject?: SubjectUpdateOneRequiredWithoutStudyTasksNestedInput
+    subject?: SubjectUpdateOneWithoutStudyTasksNestedInput
     course?: CourseUpdateOneWithoutStudyTasksNestedInput
     exercise?: ExerciseUpdateOneWithoutStudyTasksNestedInput
     user?: UserUpdateOneRequiredWithoutStudyTasksNestedInput
@@ -86208,7 +86450,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -86225,7 +86467,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -86254,7 +86496,7 @@ export namespace Prisma {
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subject?: SubjectUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+    subject?: SubjectUpdateOneWithoutStudentPlannerTasksNestedInput
     course?: CourseUpdateOneWithoutStudentPlannerTasksNestedInput
     exercise?: ExerciseUpdateOneWithoutStudentPlannerTasksNestedInput
     user?: UserUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
@@ -86275,7 +86517,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
@@ -86298,7 +86540,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
@@ -86571,7 +86813,7 @@ export namespace Prisma {
 
   export type StudySessionCreateManySubjectInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     topic?: string | null
     title: string
     createdById: string
@@ -87139,7 +87381,7 @@ export namespace Prisma {
 
   export type StudySessionUpdateWithoutSubjectInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySessionStatusFieldUpdateOperationsInput | $Enums.StudySessionStatus
@@ -87154,7 +87396,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedUpdateWithoutSubjectInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     createdById?: StringFieldUpdateOperationsInput | string
@@ -87169,7 +87411,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedUpdateManyWithoutSubjectInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     createdById?: StringFieldUpdateOperationsInput | string
@@ -87250,7 +87492,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     exerciseId?: string | null
     date: Date | string
@@ -87277,7 +87519,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     exerciseId?: string | null
     userId: string
@@ -87542,7 +87784,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subject?: SubjectUpdateOneRequiredWithoutStudyTasksNestedInput
+    subject?: SubjectUpdateOneWithoutStudyTasksNestedInput
     step?: LearningStepUpdateOneWithoutStudyTasksNestedInput
     exercise?: ExerciseUpdateOneWithoutStudyTasksNestedInput
     user?: UserUpdateOneRequiredWithoutStudyTasksNestedInput
@@ -87552,7 +87794,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -87569,7 +87811,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -87598,7 +87840,7 @@ export namespace Prisma {
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subject?: SubjectUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+    subject?: SubjectUpdateOneWithoutStudentPlannerTasksNestedInput
     step?: LearningStepUpdateOneWithoutStudentPlannerTasksNestedInput
     exercise?: ExerciseUpdateOneWithoutStudentPlannerTasksNestedInput
     user?: UserUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
@@ -87619,7 +87861,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
@@ -87642,7 +87884,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
@@ -87786,7 +88028,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     date: Date | string
@@ -87813,7 +88055,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     userId: string
@@ -87972,7 +88214,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subject?: SubjectUpdateOneRequiredWithoutStudyTasksNestedInput
+    subject?: SubjectUpdateOneWithoutStudyTasksNestedInput
     step?: LearningStepUpdateOneWithoutStudyTasksNestedInput
     course?: CourseUpdateOneWithoutStudyTasksNestedInput
     user?: UserUpdateOneRequiredWithoutStudyTasksNestedInput
@@ -87982,7 +88224,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -87999,7 +88241,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -88028,7 +88270,7 @@ export namespace Prisma {
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subject?: SubjectUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+    subject?: SubjectUpdateOneWithoutStudentPlannerTasksNestedInput
     step?: LearningStepUpdateOneWithoutStudentPlannerTasksNestedInput
     course?: CourseUpdateOneWithoutStudentPlannerTasksNestedInput
     user?: UserUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
@@ -88049,7 +88291,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
@@ -88072,7 +88314,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
@@ -88199,7 +88441,7 @@ export namespace Prisma {
     attachmentMimeType?: string | null
     attachmentSizeBytes?: number | null
     isPersonal?: boolean
-    subjectId: string
+    subjectId?: string | null
     stepId?: string | null
     courseId?: string | null
     exerciseId?: string | null
@@ -88224,7 +88466,7 @@ export namespace Prisma {
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subject?: SubjectUpdateOneRequiredWithoutStudentPlannerTasksNestedInput
+    subject?: SubjectUpdateOneWithoutStudentPlannerTasksNestedInput
     step?: LearningStepUpdateOneWithoutStudentPlannerTasksNestedInput
     course?: CourseUpdateOneWithoutStudentPlannerTasksNestedInput
     exercise?: ExerciseUpdateOneWithoutStudentPlannerTasksNestedInput
@@ -88245,7 +88487,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88268,7 +88510,7 @@ export namespace Prisma {
     attachmentMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     attachmentSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
     isPersonal?: BoolFieldUpdateOperationsInput | boolean
-    subjectId?: StringFieldUpdateOperationsInput | string
+    subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     stepId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     exerciseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88324,7 +88566,7 @@ export namespace Prisma {
   export type SessionParticipantCreateManySessionInput = {
     id?: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     joinedAt?: Date | string
     leftAt?: Date | string | null
     isActive?: boolean
@@ -88336,7 +88578,7 @@ export namespace Prisma {
   export type SessionChatMessageCreateManySessionInput = {
     id?: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     content: string
     createdAt?: Date | string
   }
@@ -88344,7 +88586,7 @@ export namespace Prisma {
   export type StudyHeartbeatCreateManySessionInput = {
     id?: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     minuteKey: Date | string
     minutes?: number
     createdAt?: Date | string
@@ -88352,7 +88594,7 @@ export namespace Prisma {
 
   export type SessionParticipantUpdateWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -88365,7 +88607,7 @@ export namespace Prisma {
   export type SessionParticipantUncheckedUpdateWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -88377,7 +88619,7 @@ export namespace Prisma {
   export type SessionParticipantUncheckedUpdateManyWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -88388,7 +88630,7 @@ export namespace Prisma {
 
   export type SessionChatMessageUpdateWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutChatMessagesNestedInput
@@ -88397,7 +88639,7 @@ export namespace Prisma {
   export type SessionChatMessageUncheckedUpdateWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -88405,14 +88647,14 @@ export namespace Prisma {
   export type SessionChatMessageUncheckedUpdateManyWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StudyHeartbeatUpdateWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     minuteKey?: DateTimeFieldUpdateOperationsInput | Date | string
     minutes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -88422,7 +88664,7 @@ export namespace Prisma {
   export type StudyHeartbeatUncheckedUpdateWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     minuteKey?: DateTimeFieldUpdateOperationsInput | Date | string
     minutes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -88431,7 +88673,7 @@ export namespace Prisma {
   export type StudyHeartbeatUncheckedUpdateManyWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     minuteKey?: DateTimeFieldUpdateOperationsInput | Date | string
     minutes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -88462,7 +88704,7 @@ export namespace Prisma {
 
   export type StudySessionCreateManyStudySquadInput = {
     id?: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     subjectId?: string | null
     topic?: string | null
     title: string
@@ -88543,7 +88785,7 @@ export namespace Prisma {
 
   export type StudySessionUpdateWithoutStudySquadInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     status?: EnumStudySessionStatusFieldUpdateOperationsInput | $Enums.StudySessionStatus
@@ -88558,7 +88800,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedUpdateWithoutStudySquadInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
@@ -88573,7 +88815,7 @@ export namespace Prisma {
 
   export type StudySessionUncheckedUpdateManyWithoutStudySquadInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     subjectId?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
@@ -88586,14 +88828,14 @@ export namespace Prisma {
   export type UserStudyBadgeCreateManyBadgeInput = {
     id?: string
     userId: string
-    bacSection: $Enums.BacSection
+    bacSection?: $Enums.BacSection | null
     awardedAt?: Date | string
     evidenceRef?: string | null
   }
 
   export type UserStudyBadgeUpdateWithoutBadgeInput = {
     id?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     awardedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evidenceRef?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutBadgesAwardedNestedInput
@@ -88602,7 +88844,7 @@ export namespace Prisma {
   export type UserStudyBadgeUncheckedUpdateWithoutBadgeInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     awardedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evidenceRef?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -88610,7 +88852,7 @@ export namespace Prisma {
   export type UserStudyBadgeUncheckedUpdateManyWithoutBadgeInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    bacSection?: EnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection
+    bacSection?: NullableEnumBacSectionFieldUpdateOperationsInput | $Enums.BacSection | null
     awardedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evidenceRef?: NullableStringFieldUpdateOperationsInput | string | null
   }

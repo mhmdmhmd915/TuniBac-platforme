@@ -232,12 +232,10 @@ export class WebRtcMediaManager {
     const peerJoinedHandler = (ev: any) => {
       const who = ev?.userId
       if (!who || who === this.userId) return
-      // polite=false — existing peers (we) create offer first
       const pc = this.ensurePeer(who, false)
       this.knownPeers.add(who)
-      // kick a negotiation
       if (pc.signalingState === 'stable') {
-        ;(pc as any).onnegotiationneeded?.()
+        pc.dispatchEvent(new Event('negotiationneeded'))
       }
     }
     this.socket.on(peerJoinedEv, peerJoinedHandler)
@@ -253,10 +251,9 @@ export class WebRtcMediaManager {
   }
 
   async addOrReplaceLocalTracks() {
-    const peers = Object.values(this.pcMap)
-    for (const pc of peers) {
+    const peerEntries = Object.entries(this.pcMap)
+    for (const [peerId, pc] of peerEntries) {
       if (pc.signalingState === 'closed') continue
-      // Rebuild senders — remove any without tracks in current localStream
       const wantedTracks = this.getLocalTracks()
       const wantedIds = new Set(wantedTracks.map((t) => t.id))
       for (const sender of pc.getSenders()) {
@@ -269,6 +266,14 @@ export class WebRtcMediaManager {
         }
       }
       this.addLocalTracksToPeer(pc)
+      if (pc.signalingState === 'stable') {
+        try {
+          pc.dispatchEvent(new Event('negotiationneeded'))
+        } catch {
+          /* ignore */
+        }
+      }
+      void peerId
     }
   }
 

@@ -832,7 +832,7 @@ enum StudySquadInvitationStatus {
 model StudySquad {
   id              String                @id @default(uuid())
   name            String
-  bacSection      BacSection
+  bacSection      BacSection?
   ownerId         String
   owner           User                  @relation("StudySquadOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   invitationCode  String                @unique(map: "StudySquad_invitationCode_unique")

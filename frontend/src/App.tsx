@@ -43,6 +43,7 @@ const ProgressPage = lazy(() => import('./pages/ProgressPage'))
 const TipsPage = lazy(() => import('./pages/admin/TipsPage'))
 const SessionsList = lazy(() => import('./pages/live-study/SessionsList'))
 const StudyRoom = lazy(() => import('./pages/live-study/StudyRoom'))
+const StudySquadDetail = lazy(() => import('./pages/study-squads/Detail'))
 const AdminLiveStudyPage = lazy(() => import('./pages/admin/AdminLiveStudyPage'))
 
 const PageLoader = () => (
@@ -305,6 +306,14 @@ function App() {
               element={
                 <ProtectedRoute adminOnly>
                   <AdminLiveStudyPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/study-squads/:id"
+              element={
+                <ProtectedRoute>
+                  <StudySquadDetail />
                 </ProtectedRoute>
               }
             />

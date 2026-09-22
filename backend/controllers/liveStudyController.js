@@ -36,9 +36,9 @@ const autoCloseIfEmpty = async (sessionId) => {
     // #region debug-point SQSS-AUTOCL-02
     logger.info('[DBG-SQSS-AUTOCL] age-check', { sessionId, ageMs, startedAt: session.startedAt, status: session.status });
     // #endregion
-    if (ageMs < 10000) {
+    if (ageMs < 180000) {
       // #region debug-point SQSS-AUTOCL-03
-      logger.info('[DBG-SQSS-AUTOCL] age < 10s PROTECTED (skip close)', { sessionId });
+      logger.info('[DBG-SQSS-AUTOCL] age < 3m PROTECTED (skip close)', { sessionId });
       // #endregion
       return false;
     }
