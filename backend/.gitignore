@@ -31,3 +31,21 @@ tmp-video-tests/*.mp4
 
 # Prisma temporary binaries
 generated/prisma/*.tmp*
+
+# Dev-only QA / debug / DDL / smoke helpers — never commit
+debug_*.js
+reset_*.js
+seed_*.js
+find_*.js
+e2e_*.js
+smoke_*.js
+prod_*.js
+ddl_*.js
+quick_create*.js
+check_users.js
+
+# Root-level one-off dev scripts (not in backend/)
+/seed_*.js
+/debug_*.js
+/smoke_*.js
+
